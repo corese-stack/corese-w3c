@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
 import fr.inria.corese.core.query.QueryProcess;
-import fr.inria.corese.kgram.core.Mappings;
-import fr.inria.corese.sparql.exceptions.EngineException;
+import fr.inria.corese.core.kgram.core.Mappings;
+import fr.inria.corese.core.sparql.exceptions.EngineException;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.RDFC10EvalTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.RDFC10MapTest;

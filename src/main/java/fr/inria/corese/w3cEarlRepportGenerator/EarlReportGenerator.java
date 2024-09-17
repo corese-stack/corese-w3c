@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 import fr.inria.corese.core.Graph;
 import fr.inria.corese.core.print.TripleFormat;
 import fr.inria.corese.core.query.QueryProcess;
-import fr.inria.corese.sparql.exceptions.EngineException;
-import fr.inria.corese.sparql.triple.parser.NSManager;
+import fr.inria.corese.core.sparql.exceptions.EngineException;
+import fr.inria.corese.core.sparql.triple.parser.NSManager;
 
 /**
  * This class generates an EARL report for the Corese software.
@@ -25,9 +25,9 @@ import fr.inria.corese.sparql.triple.parser.NSManager;
  *      submitting implementation reports</a>
  * 
  */
-public class EarlRepportGenerator {
+public class EarlReportGenerator {
 
-    private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger(EarlRepportGenerator.class);
+    private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger(EarlReportGenerator.class);
 
     private final Graph graph;
     // eg "2023-01-25T10:18:04-08:00"
@@ -57,14 +57,12 @@ public class EarlRepportGenerator {
     /**
      * Constructor for the EarlRepportGenerator class.
      */
-    public EarlRepportGenerator() {
+    public EarlReportGenerator() {
         this.graph = Graph.create();
     }
 
     /**
      * Generates the EARL report and writes it to the specified output directory.
-     * 
-     * @param outputDir the output directory where to write the EARL report
      */
     public void generate() {
 
@@ -258,7 +256,7 @@ public class EarlRepportGenerator {
     }
 
     public static void main(String[] args) {
-        EarlRepportGenerator earlRepportGenerator = new EarlRepportGenerator();
+        EarlReportGenerator earlRepportGenerator = new EarlReportGenerator();
         earlRepportGenerator.generate();
     }
 

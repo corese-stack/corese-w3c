@@ -17,7 +17,7 @@ public class Main {
         // Specify paths for tests, resources, and the manifest within the project
         // structure
         private static final Path TESTS_PATH_DIR = BASE_PATH
-                        .resolve("corese-unit-test/src/test/java/fr/inria/corese/w3c");
+                        .resolve("src/test/java/fr/inria/corese/w3c");
 
         /**
          * Main method to execute the application.
