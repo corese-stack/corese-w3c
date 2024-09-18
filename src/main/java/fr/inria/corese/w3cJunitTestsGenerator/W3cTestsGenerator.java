@@ -9,10 +9,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import fr.inria.corese.core.Graph;
-import fr.inria.corese.core.load.Load;
-import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
+import fr.inria.corese.core.load.Load;
+import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory.TestCreationException;
