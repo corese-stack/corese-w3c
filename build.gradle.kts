@@ -33,7 +33,7 @@ dependencies {
     api("com.ibm.icu:icu4j:75.1")
     api("xerces:xercesImpl:2.12.2")
     api("commons-logging:commons-logging:1.3.4")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
+    testImplementation("junit:junit:4.13.2")
 
     implementation("fr.inria.corese:corese-core:5.0.0-SNAPSHOT")
 }
