@@ -1,22 +1,24 @@
 package fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory;
 
+import fr.inria.corese.core.kgram.core.Mappings;
+import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
+import fr.inria.corese.core.query.QueryProcess;
+import fr.inria.corese.core.sparql.exceptions.EngineException;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
-
-import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
-import fr.inria.corese.core.query.QueryProcess;
-import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.sparql.exceptions.EngineException;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.RDFC10EvalTest;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.RDFC10MapTest;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.RDFC10NegativeEvalTest;
 
 /**
  * Factory for creating W3C tests.
  */
 public class W3cTestFactory {
+
+    private static final Logger logger = LogManager.getLogger(W3cTestFactory.class);
 
     /**
      * Map of test type URIs to test types.
@@ -24,7 +26,10 @@ public class W3cTestFactory {
     private static final Map<String, TestType> typeMap = Map.of(
             "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10EvalTest", TestType.RDFC10EvalTest,
             "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10MapTest", TestType.RDFC10MapTest,
-            "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10NegativeEvalTest", TestType.RDFC10NegativeEvalTest);
+            "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10NegativeEvalTest", TestType.RDFC10NegativeEvalTest,
+            "http://www.w3.org/ns/rdftest#TestNQuadsPositiveSyntax", TestType.RDF11NQuadsPositiveSyntaxTest,
+            "http://www.w3.org/ns/rdftest#TestNQuadsNegativeSyntax", TestType.RDF11NQuadsNegativeSyntaxTest,
+            "http://www.w3.org/ns/rdftest#TestNTriplesPositiveSyntax", TestType.RDF11NTriplesPositiveSyntaxTest);
 
     /**
      * Enumeration of test types.
@@ -32,7 +37,10 @@ public class W3cTestFactory {
     public enum TestType {
         RDFC10EvalTest,
         RDFC10MapTest,
-        RDFC10NegativeEvalTest
+        RDFC10NegativeEvalTest,
+        RDF11NQuadsPositiveSyntaxTest,
+        RDF11NQuadsNegativeSyntaxTest,
+        RDF11NTriplesPositiveSyntaxTest
     }
 
     /**
@@ -97,6 +105,24 @@ public class W3cTestFactory {
                         name,
                         comment,
                         URI.create(mappings.getValue("?action").getLabel()));
+            case RDF11NQuadsPositiveSyntaxTest:
+                return new RDF11NQuadsPositiveSyntaxTest(
+                    test,
+                    name,
+                    comment,
+                    URI.create(mappings.getValue("?action").getLabel()));
+            case RDF11NQuadsNegativeSyntaxTest:
+                return new RDF11NQuadsNegativeSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        URI.create(mappings.getValue("?action").getLabel()));
+            case RDF11NTriplesPositiveSyntaxTest:
+                return new RDF11NTriplesNegativeSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        URI.create(mappings.getValue("?action").getLabel()));
             default:
                 throw new TestCreationException("Unsupported test type: " + type);
         }
@@ -132,7 +158,7 @@ public class W3cTestFactory {
         try {
             return Optional.ofNullable(queryProcess.query(query));
         } catch (EngineException e) {
-            e.printStackTrace();
+            logger.error("Error executing query.", e);
             return Optional.empty();
         }
     }

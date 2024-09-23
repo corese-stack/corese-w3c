@@ -6,36 +6,46 @@ plugins {
     signing
 }
 
-repositories {    
-    mavenLocal()    
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
+repositories {
+    mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
     api("fr.com.hp.hpl.jena.rdf.arp:arp:2.2.b")
-    api("org.apache.logging.log4j:log4j-api:2.24.0")
-    api("org.apache.logging.log4j:log4j-core:2.24.0")
-    api("com.github.jsonld-java:jsonld-java:0.13.6")
+
     api("org.apache.jena:jena-arq:5.1.0")
     api("org.apache.jena:jena-tdb:4.10.0")
     api("org.apache.jena:jena-core:5.1.0")
+
     api("org.apache.commons:commons-lang3:3.17.0")
-    api("org.glassfish.jersey.core:jersey-client:3.1.8")
-    api("org.glassfish.jersey.inject:jersey-hk2:3.1.8")
-    api("org.glassfish.jersey.core:jersey-common:3.1.8")
-    api("org.javassist:javassist:3.30.2-GA")
     api("org.apache.httpcomponents.client5:httpclient5:5.3.1")
     api("org.apache.httpcomponents:httpcore-osgi:4.4.16")
+
+    api("org.javassist:javassist:3.30.2-GA")
+
     api("org.glassfish.hk2:osgi-resource-locator:2.4.0")
+
     api("org.jspecify:jspecify:1.0.0")
+
     api("com.ibm.icu:icu4j:75.1")
+
+    api("com.github.jsonld-java:jsonld-java:0.13.6")
+
     api("xerces:xercesImpl:2.12.2")
+
     api("commons-logging:commons-logging:1.3.4")
+
+    val lo4j_version = "2.18.0"
+    api("org.apache.logging.log4j:log4j-slf4j18-impl:${lo4j_version}")
+    api("org.apache.logging.log4j:log4j-api:${lo4j_version}")
+    api("org.apache.logging.log4j:log4j-core:${lo4j_version}")
+    api("org.slf4j:slf4j-api:1.8.0-beta2")
+
     testImplementation("junit:junit:4.13.2")
 
-    implementation("fr.inria.corese:corese-core:5.0.0-SNAPSHOT")
+    api("fr.inria.corese:corese-core:5.0.0-SNAPSHOT") // To be changed for the release version
+    testImplementation("fr.inria.corese:corese-core:5.0.0-SNAPSHOT")
 }
 
 group = "fr.inria.corese"

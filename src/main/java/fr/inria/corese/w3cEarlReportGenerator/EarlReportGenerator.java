@@ -1,4 +1,4 @@
-package fr.inria.corese.w3cEarlRepportGenerator;
+package fr.inria.corese.w3cEarlReportGenerator;
 
 import java.io.IOException;
 import java.nio.file.Files;

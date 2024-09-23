@@ -1,21 +1,21 @@
 package fr.inria.corese.w3cJunitTestsGenerator;
 
-import java.net.URI;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import fr.inria.corese.core.Graph;
 import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
 import fr.inria.corese.core.load.Load;
 import fr.inria.corese.core.query.QueryProcess;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.FileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory.TestCreationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.net.URI;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Generates JUnit test cases from W3C test manifest files.
@@ -67,15 +67,16 @@ public class W3cTestsGenerator {
      * @return The graph containing the manifest file.
      */
     private Graph loadManifest() {
-        logger.info("Loading manifest file: " + manifestUri);
+        logger.info("Loading manifest file: {}", manifestUri);
         Graph graph = Graph.create();
         graph.init();
         Load loader = Load.create(graph);
 
         try {
-            loader.parse(manifestUri.toString());
+            Path manifestLocalPath = FileManager.loadTestFile(manifestUri);
+            loader.parse(manifestLocalPath.toString());
         } catch (Exception e) {
-            logger.error("Error loading manifest file: " + manifestUri, e);
+            logger.error("Error loading manifest file: %s %s", manifestUri, e);
             System.exit(1);
         }
 
