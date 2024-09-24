@@ -9,8 +9,8 @@ import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.FileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory.TestCreationException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.nio.file.Path;
@@ -22,8 +22,7 @@ import java.util.List;
  */
 public class W3cTestsGenerator {
 
-    private static final Logger logger = LogManager.getLogger(W3cTestsGenerator.class);
-
+    private static Logger logger = LoggerFactory.getLogger(W3cTestsGenerator.class);
     private final URI manifestUri;
     private final Path testsPath;
     private final String testName;

@@ -14,9 +14,9 @@ repositories {
 configurations.all {
     resolutionStrategy {
         force(
-            "org.slf4j:jcl-over-slf4j:1.8.0-beta2",
-            "org.slf4j:slf4j-api:1.8.0-beta2",
-            "org.slf4j:slf4j-log4j12:1.8.0-beta2",
+            "org.slf4j:jcl-over-slf4j:1.8.0-beta4",
+            "org.slf4j:slf4j-api:1.8.0-beta4",
+            "org.slf4j:slf4j-log4j12:1.8.0-beta4",
             "org.apache.logging.log4j:log4j-slf4j18-impl:2.18.0")
     }
 }
