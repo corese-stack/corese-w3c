@@ -11,6 +11,12 @@ repositories {
     mavenLocal()
 }
 
+configurations.all {
+    resolutionStrategy {
+        force("org.slf4j:slf4j-api:1.8.0-beta4","org.apache.logging.log4j:log4j-slf4j18-impl:2.18.0")
+    }
+}
+
 dependencies {
     api("fr.com.hp.hpl.jena.rdf.arp:arp:2.2.b")
 
@@ -37,7 +43,7 @@ dependencies {
     api("commons-logging:commons-logging:1.3.4")
 
     val lo4j_version = "2.18.0"
-    api("org.apache.logging.log4j:log4j-slf4j18-impl:${lo4j_version}")
+//    api("org.slf4j:slf4j-api:2.0.0-alpha0")
     api("org.apache.logging.log4j:log4j-api:${lo4j_version}")
     api("org.apache.logging.log4j:log4j-core:${lo4j_version}")
     api("org.slf4j:slf4j-api:1.8.0-beta2")
@@ -45,7 +51,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
 
     api("fr.inria.corese:corese-core:5.0.0-SNAPSHOT") // To be changed for the release version
-    testImplementation("fr.inria.corese:corese-core:5.0.0-SNAPSHOT")
 }
 
 group = "fr.inria.corese"
@@ -70,7 +75,7 @@ tasks {
     }
     test {
         useJUnit()
-    }    
+    }
     shadowJar {
         manifest {
             attributes(
