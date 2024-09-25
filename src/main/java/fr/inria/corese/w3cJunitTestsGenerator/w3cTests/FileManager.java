@@ -121,8 +121,7 @@ public class FileManager {
      * @return file name
      */
     private static String getFileName(URI fileUri) {
-
-         return Paths.get(fileUri).getFileName().toString();
+        return Paths.get(fileUri.getPath()).getFileName().toString();
     }
 
 
