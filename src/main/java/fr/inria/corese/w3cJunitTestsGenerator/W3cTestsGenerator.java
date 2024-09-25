@@ -5,7 +5,7 @@ import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
 import fr.inria.corese.core.load.Load;
 import fr.inria.corese.core.query.QueryProcess;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.FileManager;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory.TestCreationException;
@@ -72,7 +72,7 @@ public class W3cTestsGenerator {
         Load loader = Load.create(graph);
 
         try {
-            Path manifestLocalPath = FileManager.loadImplementationFile(manifestUri);
+            Path manifestLocalPath = TestFileManager.loadImplementationFile(manifestUri);
             loader.parse(manifestLocalPath.toString());
         } catch (Exception e) {
             logger.error("Error loading manifest file: {}", manifestUri, e);
@@ -114,7 +114,7 @@ public class W3cTestsGenerator {
             String test = mapping.getValue("?test").getLabel();
             String type = mapping.getValue("?type").getLabel();
             try {
-                testCases.add(W3cTestFactory.createW3cTest(test, type, exec));
+                testCases.add(W3cTestFactory.createW3cTest(test, type, exec, this.manifestUri));
             } catch (TestCreationException e) {
                 logger.error("Error creating test: " + test, e);
                 System.exit(1);

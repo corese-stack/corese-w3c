@@ -5,9 +5,10 @@ import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
 import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.core.sparql.exceptions.EngineException;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.*;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.Map;
@@ -49,10 +50,11 @@ public class W3cTestFactory {
      * @param test         The name of the test.
      * @param typeUri      The URI of the test type.
      * @param queryProcess The query process.
+     * @param manifestUri  Manifest URI used to resolve the relative address of action and result files
      * @return The W3C test.
      * @throws TestCreationException If an error occurs while creating the test.
      */
-    public static IW3cTest createW3cTest(String test, String typeUri, QueryProcess queryProcess)
+    public static IW3cTest createW3cTest(String test, String typeUri, QueryProcess queryProcess, URI manifestUri)
             throws TestCreationException {
         String query = buildTestDetailQuery(test);
         Mappings mappings = executeQuery(queryProcess, query)
@@ -82,6 +84,8 @@ public class W3cTestFactory {
             }
         }
 
+        logger.info(mappings.getValue("?action").getLabel());
+        logger.info(TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel())).toString());
         switch (type) {
             case RDFC10EvalTest:
                 return new RDFC10EvalTest(
@@ -106,23 +110,26 @@ public class W3cTestFactory {
                         comment,
                         URI.create(mappings.getValue("?action").getLabel()));
             case RDF11NQuadsPositiveSyntaxTest:
+                URI actionPathRDF11NQuadsPositiveSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
                 return new RDF11NQuadsPositiveSyntaxTest(
                     test,
                     name,
                     comment,
-                    URI.create(mappings.getValue("?action").getLabel()));
+                    actionPathRDF11NQuadsPositiveSyntaxTest);
             case RDF11NQuadsNegativeSyntaxTest:
+                URI actionPathRDF11NQuadsNegativeSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
                 return new RDF11NQuadsNegativeSyntaxTest(
                         test,
                         name,
                         comment,
-                        URI.create(mappings.getValue("?action").getLabel()));
+                        actionPathRDF11NQuadsNegativeSyntaxTest);
             case RDF11NTriplesNegativeSyntaxTest:
+                URI actionPathRDF11NTriplesNegativeSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
                 return new RDF11NTriplesNegativeSyntaxTest(
                         test,
                         name,
                         comment,
-                        URI.create(mappings.getValue("?action").getLabel()));
+                        actionPathRDF11NTriplesNegativeSyntaxTest);
             default:
                 throw new TestCreationException("Unsupported test type: " + type);
         }

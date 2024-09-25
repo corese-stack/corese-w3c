@@ -13,14 +13,20 @@ import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class FileManager {
+public class TestFileManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestFileManager.class);
 
     private static final String RESOURCE_PATH_STRING = "src/main/resources/";
     private static final String TEST_RESOURCE_PATH_STRING = "src/test/resources/";
 
-    private FileManager() {
+    private TestFileManager() {
+    }
+
+    public static URI determineRemoteFileURIFromManifestURI(URI manifesturi, URI fileuri) {
+        String filename = getFileName(fileuri);
+        URI relativeFileUri = URI.create("./" + filename);
+        return manifesturi.resolve(relativeFileUri);
     }
 
     public static Path loadImplementationFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
