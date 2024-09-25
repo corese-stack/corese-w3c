@@ -1,6 +1,7 @@
 package fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations;
 
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestUtils;
 
 import java.net.URI;
 import java.util.Set;
@@ -22,9 +23,14 @@ public class RDF11NQuadsNegativeSyntaxTest implements IW3cTest {
 
     @Override
     public Set<String> getImports() {
-        return Set.of("java.io.IOException",
+        return Set.of("fr.inria.corese.w3cJunitTestsGenerator.w3cTests.FileManager",
+                "fr.inria.corese.core.load.LoadException",
+                "java.io.IOException",
+                "java.net.URISyntaxException",
+                "java.net.URI",
                 "java.nio.file.Path",
-                "fr.inria.corese.w3cJunitTestsGenerator.w3cTests.FileManager");
+                "java.security.NoSuchAlgorithmException",
+                "static org.junit.Assert.assertNotEquals");
     }
 
     @Override
@@ -37,25 +43,21 @@ public class RDF11NQuadsNegativeSyntaxTest implements IW3cTest {
             sb.append("    // ").append(this.comment).append("\n");
         }
         sb.append("    @Test\n");
-        sb.append("    public void ").append(test);
-        sb.append("() throws IOException, LoadException, URISyntaxException {\n");
+        sb.append("    public void ").append(TestUtils.sanitizeTestName(test));
+        sb.append("() throws IOException, NoSuchAlgorithmException {\n");
 
         // Test body
         sb.append("        // Load action file\n");
-        sb.append("        Path testFilePath = FileManager.loadTestFile(");
-        sb.append(this.actionFile.toString());
-        sb.append(");");
-        sb.append("        Process command = new ProcessBuilder().inheritIO().command(");
-        sb.append("            \"java\",");
-        sb.append("            \"-jar\", \"./target/corese-server-4.5.1.jar\",");
-        sb.append("            \"-i\", testFilePath.toString(),");
-        sb.append("            \"-if\", \"nquads\",");
-        sb.append("            \"-of\", \"csv\",");
-        sb.append("            \"-q\", \"'SELECT * { ?s ?p ?o } LIMIT 1'\")");
-        sb.append("        .start();");
-
-        // Test assertion
-        sb.append("        assert(command.exitValue() >= 0);\n");
+        sb.append("        Path testFilePath = FileManager.loadTestFile(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
+        sb.append("        Process command = new ProcessBuilder().inheritIO().command(\n");
+        sb.append("                \"java\",\n");
+        sb.append("                \"-jar\", \"./target/corese-server-4.5.1.jar\",\n");
+        sb.append("                \"-i\", testFilePath.toString(),\n");
+        sb.append("                \"-if\", \"nquads\",\n");
+        sb.append("                \"-of\", \"csv\",\n");
+        sb.append("                \"-q\", \"'SELECT * { ?s ?p ?o } LIMIT 1'\")\n");
+        sb.append("            .start();\n");
+        sb.append("        assertNotEquals(0, command.exitValue());\n");
 
         // Footer of the test
         sb.append("    }\n");

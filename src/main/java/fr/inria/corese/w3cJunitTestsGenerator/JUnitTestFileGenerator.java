@@ -1,8 +1,8 @@
 package fr.inria.corese.w3cJunitTestsGenerator;
 
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class JUnitTestFileGenerator {
 
-    private static final Logger logger = LogManager.getLogger(JUnitTestFileGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(JUnitTestFileGenerator.class);
 
     private final URI manifestUri;
     private final String testName;
@@ -262,6 +262,7 @@ public class JUnitTestFileGenerator {
         imports.add("org.junit.runner.Description");
         imports.add("org.junit.AssumptionViolatedException");
         imports.add("org.junit.BeforeClass");
+        imports.add("org.junit.Test");
         imports.add("java.time.format.DateTimeFormatter");
         imports.add("java.time.ZonedDateTime");
         return imports;

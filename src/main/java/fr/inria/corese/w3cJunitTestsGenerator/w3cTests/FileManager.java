@@ -1,7 +1,7 @@
 package fr.inria.corese.w3cJunitTestsGenerator.w3cTests;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class FileManager {
 
-    private static final Logger logger = LogManager.getLogger(FileManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileManager.class);
 
     private static final String RESOURCE_PATH_STRING = "src/main/resources/";
     private static final String TEST_RESOURCE_PATH_STRING = "src/test/resources/";
@@ -40,9 +40,8 @@ public class FileManager {
      * @throws IOException If an I/O error occurs
      */
     private static Path loadFile(URI fileUri, String localFolder) throws IOException, NoSuchAlgorithmException {
-        String fileName = getFileName(fileUri);
         String localFileFolder = localFolder + getPrefixedFilename(fileUri);
-        Path localFilePath = Paths.get(localFileFolder, fileName);
+        Path localFilePath = Paths.get(localFileFolder);
 
         if (Files.exists(localFilePath) && !isRemoteFileDifferent(fileUri, localFilePath)) {
             return localFilePath;
@@ -83,6 +82,8 @@ public class FileManager {
      * @throws IOException If an I/O error occurs
      */
     private static void downloadFile(URI fileUri, Path localFilePath) throws IOException {
+        logger.info("Downloading {} to {}", fileUri.toString(), localFilePath);
+        Files.createDirectories(localFilePath.getParent());
         try (InputStream in = fileUri.toURL().openStream()) {
             Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
         }
@@ -121,7 +122,7 @@ public class FileManager {
      * @return file name
      */
     private static String getFileName(URI fileUri) {
-        return Paths.get(fileUri.getPath()).getFileName().toString();
+         return Paths.get(fileUri.getPath()).getFileName().toString();
     }
 
 
@@ -130,14 +131,14 @@ public class FileManager {
         String[] segments = path.split("/"); // Split the path by slashes
 
         // Check if there are at least two segments
-        if (segments.length >= 2) {
-            String lastSegment = segments[segments.length - 1];
-            String secondLastSegment = segments[segments.length - 2];
+        if (segments.length >= 3) {
+            String lastSegment = segments[segments.length - 2];
+            String secondLastSegment = segments[segments.length - 3];
 
             return secondLastSegment + "/" + lastSegment;
         } else 
-        if (segments.length >= 1) {
-            return segments[segments.length - 1];
+        if (segments.length >= 2) {
+            return segments[segments.length - 2];
         } else {
             // If not enough segments, return the empty string
             return "";

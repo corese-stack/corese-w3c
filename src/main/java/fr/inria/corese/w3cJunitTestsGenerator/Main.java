@@ -28,13 +28,14 @@ public class Main {
          */
         public static void main(String[] args) {
                 generateW3cTests("canonicalRdf", "https://w3c.github.io/rdf-canon/tests/manifest.ttl");
+                generateW3cTests("nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");
         }
 
         /**
          * Initializes and runs the W3cTestsGenerator for generating W3C tests.
          *
          * @param testName     The name of the test suite to generate tests for.
-         * @param manifestPath The path to the manifest file.
+         * @param manifestUri The path to the manifest file.
          */
         private static void generateW3cTests(String testName, String manifestUri) {
                 W3cTestsGenerator generator = new W3cTestsGenerator(testName, URI.create(manifestUri), TESTS_PATH_DIR);

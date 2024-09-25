@@ -1,18 +1,18 @@
 package fr.inria.corese.w3cEarlReportGenerator;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-
-import org.apache.logging.log4j.Logger;
-
 import fr.inria.corese.core.Graph;
 import fr.inria.corese.core.print.TripleFormat;
 import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.core.sparql.exceptions.EngineException;
 import fr.inria.corese.core.sparql.triple.parser.NSManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class generates an EARL report for the Corese software.
@@ -27,7 +27,7 @@ import fr.inria.corese.core.sparql.triple.parser.NSManager;
  */
 public class EarlReportGenerator {
 
-    private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger(EarlReportGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(EarlReportGenerator.class);
 
     private final Graph graph;
     // eg "2023-01-25T10:18:04-08:00"

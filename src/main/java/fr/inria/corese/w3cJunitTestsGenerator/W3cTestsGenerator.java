@@ -72,10 +72,10 @@ public class W3cTestsGenerator {
         Load loader = Load.create(graph);
 
         try {
-            Path manifestLocalPath = FileManager.loadTestFile(manifestUri);
+            Path manifestLocalPath = FileManager.loadImplementationFile(manifestUri);
             loader.parse(manifestLocalPath.toString());
         } catch (Exception e) {
-            logger.error("Error loading manifest file: %s %s", manifestUri, e);
+            logger.error("Error loading manifest file: {}", manifestUri, e);
             System.exit(1);
         }
 
@@ -121,7 +121,7 @@ public class W3cTestsGenerator {
             }
         }
 
-        logger.info("Loaded " + testCases.size() + " test cases.");
+        logger.info("Loaded {} test cases.", testCases.size());
         return testCases;
     }
 

@@ -6,8 +6,8 @@ import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.core.sparql.exceptions.EngineException;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.net.URI;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 public class W3cTestFactory {
 
-    private static final Logger logger = LogManager.getLogger(W3cTestFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(W3cTestFactory.class);
 
     /**
      * Map of test type URIs to test types.
@@ -29,7 +29,7 @@ public class W3cTestFactory {
             "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10NegativeEvalTest", TestType.RDFC10NegativeEvalTest,
             "http://www.w3.org/ns/rdftest#TestNQuadsPositiveSyntax", TestType.RDF11NQuadsPositiveSyntaxTest,
             "http://www.w3.org/ns/rdftest#TestNQuadsNegativeSyntax", TestType.RDF11NQuadsNegativeSyntaxTest,
-            "http://www.w3.org/ns/rdftest#TestNTriplesPositiveSyntax", TestType.RDF11NTriplesPositiveSyntaxTest);
+            "http://www.w3.org/ns/rdftest#TestNTriplesNegativeSyntax", TestType.RDF11NTriplesNegativeSyntaxTest);
 
     /**
      * Enumeration of test types.
@@ -40,7 +40,7 @@ public class W3cTestFactory {
         RDFC10NegativeEvalTest,
         RDF11NQuadsPositiveSyntaxTest,
         RDF11NQuadsNegativeSyntaxTest,
-        RDF11NTriplesPositiveSyntaxTest
+        RDF11NTriplesNegativeSyntaxTest
     }
 
     /**
@@ -117,7 +117,7 @@ public class W3cTestFactory {
                         name,
                         comment,
                         URI.create(mappings.getValue("?action").getLabel()));
-            case RDF11NTriplesPositiveSyntaxTest:
+            case RDF11NTriplesNegativeSyntaxTest:
                 return new RDF11NTriplesNegativeSyntaxTest(
                         test,
                         name,
