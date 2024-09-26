@@ -54,11 +54,12 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
         // Header of the test
         sb.append("    // ").append(this.name).append("\n");
         if (!this.comment.isEmpty()) {
-            sb.append("    // ").append(this.comment).append("\n");
+            String sanitizedComment = this.comment.replaceAll("\\\\u([0-9A-Fa-f]{4})", "");
+            sb.append("    // ").append(sanitizedComment).append("\n");
         }
         sb.append("    @Test\n");
         sb.append("    public void ").append(TestUtils.sanitizeTestName(test));
-        sb.append("() throws IOException, NoSuchAlgorithmException {\n");
+        sb.append("() throws IOException, NoSuchAlgorithmException, InterruptedException {\n");
 
         // Test body
         sb.append("        // Load action file\n");
@@ -70,7 +71,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
         sb.append("                \"-of\", \"csv\",\n");
         sb.append("                \"-q\", \"src/test/resources/sparqlSelectBasic.rq\")\n");
         sb.append("            .start();\n");
-        sb.append("        assertNotEquals(0, command.exitValue());\n");
+        sb.append("        assertNotEquals(0, command.waitFor());\n");
 
         // Footer of the test
         sb.append("    }\n");

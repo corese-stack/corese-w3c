@@ -30,7 +30,8 @@ public class W3cTestFactory {
             "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10NegativeEvalTest", TestType.RDFC10NegativeEvalTest,
             "http://www.w3.org/ns/rdftest#TestNQuadsPositiveSyntax", TestType.RDF11NQuadsPositiveSyntaxTest,
             "http://www.w3.org/ns/rdftest#TestNQuadsNegativeSyntax", TestType.RDF11NQuadsNegativeSyntaxTest,
-            "http://www.w3.org/ns/rdftest#TestNTriplesNegativeSyntax", TestType.RDF11NTriplesNegativeSyntaxTest);
+            "http://www.w3.org/ns/rdftest#TestNTriplesNegativeSyntax", TestType.RDF11NTriplesNegativeSyntaxTest,
+            "http://www.w3.org/ns/rdftest#TestNTriplesPositiveSyntax", TestType.RDF11NTriplesPositiveSyntaxTest);
 
     /**
      * Enumeration of test types.
@@ -41,7 +42,8 @@ public class W3cTestFactory {
         RDFC10NegativeEvalTest,
         RDF11NQuadsPositiveSyntaxTest,
         RDF11NQuadsNegativeSyntaxTest,
-        RDF11NTriplesNegativeSyntaxTest
+        RDF11NTriplesNegativeSyntaxTest,
+        RDF11NTriplesPositiveSyntaxTest
     }
 
     /**
@@ -130,6 +132,13 @@ public class W3cTestFactory {
                         name,
                         comment,
                         actionPathRDF11NTriplesNegativeSyntaxTest);
+            case RDF11NTriplesPositiveSyntaxTest:
+                URI actionPathRDF11NTriplesPositiveSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                return new RDF11NTriplesPositiveSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11NTriplesPositiveSyntaxTest);
             default:
                 throw new TestCreationException("Unsupported test type: " + type);
         }

@@ -27,8 +27,9 @@ public class Main {
          * @param args Command line arguments (not used)
          */
         public static void main(String[] args) {
-                generateW3cTests("canonicalRdf", "https://w3c.github.io/rdf-canon/tests/manifest.ttl");
-                generateW3cTests("nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");
+                // generateW3cTests("canonicalRdf", "https://w3c.github.io/rdf-canon/tests/manifest.ttl");
+                generateW3cTests("rdf11nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");
+                generateW3cTests("rdf11ntriples", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl");
         }
 
         /**
