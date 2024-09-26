@@ -1,5 +1,9 @@
 package fr.inria.corese.w3cJunitTestsGenerator;
 
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -12,17 +16,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
-
 /**
  * Generates a JUnit test file for the W3C test suite.
  */
 public class JUnitTestFileGenerator {
 
-    private static final Logger logger = LogManager.getLogger(JUnitTestFileGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(JUnitTestFileGenerator.class);
 
     private final URI manifestUri;
     private final String testName;
@@ -62,7 +61,6 @@ public class JUnitTestFileGenerator {
      * Creates a directory at the specified path if it does not already exist.
      * 
      * @param directoryPath The path to the directory to create.
-     * @param directoryType The type of directory to create.
      */
     private Path createDirectory(Path directoryPath) {
         if (!Files.exists(directoryPath)) {
@@ -264,6 +262,7 @@ public class JUnitTestFileGenerator {
         imports.add("org.junit.runner.Description");
         imports.add("org.junit.AssumptionViolatedException");
         imports.add("org.junit.BeforeClass");
+        imports.add("org.junit.Test");
         imports.add("java.time.format.DateTimeFormatter");
         imports.add("java.time.ZonedDateTime");
         return imports;

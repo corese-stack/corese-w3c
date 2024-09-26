@@ -1,29 +1,28 @@
 package fr.inria.corese.w3cJunitTestsGenerator;
 
-import java.net.URI;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import fr.inria.corese.core.Graph;
 import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
 import fr.inria.corese.core.load.Load;
 import fr.inria.corese.core.query.QueryProcess;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory.TestCreationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Generates JUnit test cases from W3C test manifest files.
  */
 public class W3cTestsGenerator {
 
-    private static final Logger logger = LogManager.getLogger(W3cTestsGenerator.class);
-
+    private static Logger logger = LoggerFactory.getLogger(W3cTestsGenerator.class);
     private final URI manifestUri;
     private final Path testsPath;
     private final String testName;
@@ -67,15 +66,16 @@ public class W3cTestsGenerator {
      * @return The graph containing the manifest file.
      */
     private Graph loadManifest() {
-        logger.info("Loading manifest file: " + manifestUri);
+        logger.info("Loading manifest file: {}", manifestUri);
         Graph graph = Graph.create();
         graph.init();
         Load loader = Load.create(graph);
 
         try {
-            loader.parse(manifestUri.toString());
+            Path manifestLocalPath = TestFileManager.loadImplementationFile(manifestUri);
+            loader.parse(manifestLocalPath.toString());
         } catch (Exception e) {
-            logger.error("Error loading manifest file: " + manifestUri, e);
+            logger.error("Error loading manifest file: {}", manifestUri, e);
             System.exit(1);
         }
 
@@ -114,14 +114,14 @@ public class W3cTestsGenerator {
             String test = mapping.getValue("?test").getLabel();
             String type = mapping.getValue("?type").getLabel();
             try {
-                testCases.add(W3cTestFactory.createW3cTest(test, type, exec));
+                testCases.add(W3cTestFactory.createW3cTest(test, type, exec, this.manifestUri));
             } catch (TestCreationException e) {
                 logger.error("Error creating test: " + test, e);
                 System.exit(1);
             }
         }
 
-        logger.info("Loaded " + testCases.size() + " test cases.");
+        logger.info("Loaded {} test cases.", testCases.size());
         return testCases;
     }
 

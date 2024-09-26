@@ -1,22 +1,25 @@
 package fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory;
 
+import fr.inria.corese.core.kgram.core.Mappings;
+import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
+import fr.inria.corese.core.query.QueryProcess;
+import fr.inria.corese.core.sparql.exceptions.EngineException;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
-
-import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
-import fr.inria.corese.core.query.QueryProcess;
-import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.sparql.exceptions.EngineException;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.RDFC10EvalTest;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.RDFC10MapTest;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.RDFC10NegativeEvalTest;
 
 /**
  * Factory for creating W3C tests.
  */
 public class W3cTestFactory {
+
+    private static final Logger logger = LoggerFactory.getLogger(W3cTestFactory.class);
 
     /**
      * Map of test type URIs to test types.
@@ -24,7 +27,11 @@ public class W3cTestFactory {
     private static final Map<String, TestType> typeMap = Map.of(
             "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10EvalTest", TestType.RDFC10EvalTest,
             "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10MapTest", TestType.RDFC10MapTest,
-            "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10NegativeEvalTest", TestType.RDFC10NegativeEvalTest);
+            "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10NegativeEvalTest", TestType.RDFC10NegativeEvalTest,
+            "http://www.w3.org/ns/rdftest#TestNQuadsPositiveSyntax", TestType.RDF11NQuadsPositiveSyntaxTest,
+            "http://www.w3.org/ns/rdftest#TestNQuadsNegativeSyntax", TestType.RDF11NQuadsNegativeSyntaxTest,
+            "http://www.w3.org/ns/rdftest#TestNTriplesNegativeSyntax", TestType.RDF11NTriplesNegativeSyntaxTest,
+            "http://www.w3.org/ns/rdftest#TestNTriplesPositiveSyntax", TestType.RDF11NTriplesPositiveSyntaxTest);
 
     /**
      * Enumeration of test types.
@@ -32,7 +39,11 @@ public class W3cTestFactory {
     public enum TestType {
         RDFC10EvalTest,
         RDFC10MapTest,
-        RDFC10NegativeEvalTest
+        RDFC10NegativeEvalTest,
+        RDF11NQuadsPositiveSyntaxTest,
+        RDF11NQuadsNegativeSyntaxTest,
+        RDF11NTriplesNegativeSyntaxTest,
+        RDF11NTriplesPositiveSyntaxTest
     }
 
     /**
@@ -41,10 +52,11 @@ public class W3cTestFactory {
      * @param test         The name of the test.
      * @param typeUri      The URI of the test type.
      * @param queryProcess The query process.
+     * @param manifestUri  Manifest URI used to resolve the relative address of action and result files
      * @return The W3C test.
      * @throws TestCreationException If an error occurs while creating the test.
      */
-    public static IW3cTest createW3cTest(String test, String typeUri, QueryProcess queryProcess)
+    public static IW3cTest createW3cTest(String test, String typeUri, QueryProcess queryProcess, URI manifestUri)
             throws TestCreationException {
         String query = buildTestDetailQuery(test);
         Mappings mappings = executeQuery(queryProcess, query)
@@ -74,6 +86,8 @@ public class W3cTestFactory {
             }
         }
 
+        logger.info(mappings.getValue("?action").getLabel());
+        logger.info(TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel())).toString());
         switch (type) {
             case RDFC10EvalTest:
                 return new RDFC10EvalTest(
@@ -97,6 +111,34 @@ public class W3cTestFactory {
                         name,
                         comment,
                         URI.create(mappings.getValue("?action").getLabel()));
+            case RDF11NQuadsPositiveSyntaxTest:
+                URI actionPathRDF11NQuadsPositiveSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                return new RDF11NQuadsPositiveSyntaxTest(
+                    test,
+                    name,
+                    comment,
+                    actionPathRDF11NQuadsPositiveSyntaxTest);
+            case RDF11NQuadsNegativeSyntaxTest:
+                URI actionPathRDF11NQuadsNegativeSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                return new RDF11NQuadsNegativeSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11NQuadsNegativeSyntaxTest);
+            case RDF11NTriplesNegativeSyntaxTest:
+                URI actionPathRDF11NTriplesNegativeSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                return new RDF11NTriplesNegativeSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11NTriplesNegativeSyntaxTest);
+            case RDF11NTriplesPositiveSyntaxTest:
+                URI actionPathRDF11NTriplesPositiveSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                return new RDF11NTriplesPositiveSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11NTriplesPositiveSyntaxTest);
             default:
                 throw new TestCreationException("Unsupported test type: " + type);
         }
@@ -132,7 +174,7 @@ public class W3cTestFactory {
         try {
             return Optional.ofNullable(queryProcess.query(query));
         } catch (EngineException e) {
-            e.printStackTrace();
+            logger.error("Error executing query.", e);
             return Optional.empty();
         }
     }

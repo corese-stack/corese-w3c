@@ -1,5 +1,8 @@
 # corese-w3c
+
 Test of W3C standards tests suites against Corese. Contains a generation application to generate JUnit tests from W3C tests suites manifest and a report generator from the JUnit test results.
+
+Tested files and manifests are in the `src/test/resources` directory.
 
 ## Implemented tests
 
@@ -7,15 +10,13 @@ Test of W3C standards tests suites against Corese. Contains a generation applica
 
 ## Ongoing implementation
 
-## Future implementation
+- RDF tests
+  - RDF 1.1 tests
+    - [N-Quads tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)
+
+## Planned implementation
 
 - RDF tests
-  - RDF 1.2
-    - [N-Triples tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples)
-    - [N-Quads tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-quads)
-    - [Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-semantics)
-    - [Turtle tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-turtle)
-    - [TriG tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-trig)
   - RDF 1.1 tests
     - [N-Quads tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)
     - [N-Triples tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/)
@@ -33,3 +34,13 @@ Test of W3C standards tests suites against Corese. Contains a generation applica
   - [JSON-LD 1.1 tests](https://json-ld.github.io/json-ld.org/test-suite/reports/)
 - LDP
   - [LDP Tests](https://w3c.github.io/ldp-testsuite/)
+
+## Not implemented in corese
+
+- RDF tests
+  - RDF 1.2
+    - [N-Triples tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples)
+    - [N-Quads tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-quads)
+    - [Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-semantics)
+    - [Turtle tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-turtle)
+    - [TriG tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-trig)
