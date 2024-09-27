@@ -8,22 +8,22 @@ Tested files and manifests are in the `src/test/resources` directory.
 
 - [RDF Canonical](https://w3c.github.io/rdf-canon/tests/)
 
-## Ongoing implementation
-
-- RDF tests
-  - RDF 1.1 tests
-    - [N-Quads tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)
-
-## Planned implementation
-
 - RDF tests
   - RDF 1.1 tests
     - [N-Quads tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)
     - [N-Triples tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/)
-    - [RDF Schema and Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-mt/)
     - [RDF/XML Syntax tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/)
     - [TriG Syntax tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/)
     - [Turtle tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/)
+
+## Ongoing implementation
+
+  
+## Planned implementation
+
+- RDF tests
+  - RDF 1.1 tests
+    - [RDF Schema and Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-mt/)
 - SPARQL tests
   - [SPARQL 1.2 tests](https://w3c.github.io/rdf-tests/sparql/sparql12)
   - [SPARQL 1.1 tests](https://w3c.github.io/rdf-tests/sparql/sparql11)

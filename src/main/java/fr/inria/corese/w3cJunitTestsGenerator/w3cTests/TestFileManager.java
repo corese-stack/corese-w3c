@@ -16,25 +16,13 @@ import java.security.NoSuchAlgorithmException;
 public class TestFileManager {
 
     private static final Logger logger = LoggerFactory.getLogger(TestFileManager.class);
-
-    private static final String RESOURCE_PATH_STRING = "src/main/resources/";
-    private static final String TEST_RESOURCE_PATH_STRING = "src/test/resources/";
+    private static final String RESOURCE_PATH_STRING = "resources/";
 
     private TestFileManager() {
     }
 
-    public static URI determineRemoteFileURIFromManifestURI(URI manifesturi, URI fileuri) {
-        String filename = getFileName(fileuri);
-        URI relativeFileUri = URI.create("./" + filename);
-        return manifesturi.resolve(relativeFileUri);
-    }
-
-    public static Path loadImplementationFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
-        return loadFile(fileUri, RESOURCE_PATH_STRING);
-    }
-
-    public static Path loadTestFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
-        return loadFile(fileUri, TEST_RESOURCE_PATH_STRING);
+    public static void loadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
+        loadFile(fileUri, RESOURCE_PATH_STRING);
     }
 
     /**
@@ -45,16 +33,13 @@ public class TestFileManager {
      * @return Local file path
      * @throws IOException If an I/O error occurs
      */
-    private static Path loadFile(URI fileUri, String localFolder) throws IOException, NoSuchAlgorithmException {
+    private static void loadFile(URI fileUri, String localFolder) throws IOException, NoSuchAlgorithmException {
         String localFileFolder = localFolder + getPrefixedFilename(fileUri);
         Path localFilePath = Paths.get(localFileFolder);
 
-        if (Files.exists(localFilePath) && !isRemoteFileDifferent(fileUri, localFilePath)) {
-            return localFilePath;
+        if (Files.exists(localFilePath) && isRemoteFileDifferent(fileUri, localFilePath)) {
+            downloadFile(fileUri, localFilePath);
         }
-
-        downloadFile(fileUri, localFilePath);
-        return localFilePath;
     }
 
     /**
@@ -87,7 +72,7 @@ public class TestFileManager {
      * @param localFilePath The path to save the file
      * @throws IOException If an I/O error occurs
      */
-    private static void downloadFile(URI fileUri, Path localFilePath) throws IOException {
+    public static void downloadFile(URI fileUri, Path localFilePath) throws IOException {
         logger.info("Downloading {} to {}", fileUri.toString(), localFilePath);
         Files.createDirectories(localFilePath.getParent());
         try (InputStream in = fileUri.toURL().openStream()) {
@@ -127,8 +112,28 @@ public class TestFileManager {
      * @param fileUri URI of the file
      * @return file name
      */
-    private static String getFileName(URI fileUri) {
-         return Paths.get(fileUri.getPath()).getFileName().toString();
+    public static String getFileName(URI fileUri) {
+        return Paths.get(fileUri.getPath()).getFileName().toString();
+    }
+
+    /**
+     * Extracts the file name from a Path
+     *
+     * @param filePath URI of the file
+     * @return file name
+     */
+    public static String getFileName(Path filePath) {
+        return getFileName(filePath.toUri());
+    }
+
+    /**
+     * Extracts the file name from a Path
+     *
+     * @param filePath URI of the file
+     * @return file name
+     */
+    public static String getFileName(String filePath) {
+        return getFileName(URI.create(filePath));
     }
 
 

@@ -72,8 +72,8 @@ public class W3cTestsGenerator {
         Load loader = Load.create(graph);
 
         try {
-            Path manifestLocalPath = TestFileManager.loadImplementationFile(manifestUri);
-            loader.parse(manifestLocalPath.toString());
+            TestFileManager.loadFile(manifestUri);
+            loader.parse(manifestUri.toString());
         } catch (Exception e) {
             logger.error("Error loading manifest file: {}", manifestUri, e);
             System.exit(1);
