@@ -5,7 +5,6 @@ import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
 import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.core.sparql.exceptions.EngineException;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +23,24 @@ public class W3cTestFactory {
     /**
      * Map of test type URIs to test types.
      */
-    private static final Map<String, TestType> typeMap = Map.of(
-            "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10EvalTest", TestType.RDFC10EvalTest,
-            "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10MapTest", TestType.RDFC10MapTest,
-            "https://w3c.github.io/rdf-canon/tests/vocab#RDFC10NegativeEvalTest", TestType.RDFC10NegativeEvalTest,
-            "http://www.w3.org/ns/rdftest#TestNQuadsPositiveSyntax", TestType.RDF11NQuadsPositiveSyntaxTest,
-            "http://www.w3.org/ns/rdftest#TestNQuadsNegativeSyntax", TestType.RDF11NQuadsNegativeSyntaxTest,
-            "http://www.w3.org/ns/rdftest#TestNTriplesNegativeSyntax", TestType.RDF11NTriplesNegativeSyntaxTest,
-            "http://www.w3.org/ns/rdftest#TestNTriplesPositiveSyntax", TestType.RDF11NTriplesPositiveSyntaxTest);
+    private static final Map<String, TestType> typeMap = Map.ofEntries(
+            Map.entry("https://w3c.github.io/rdf-canon/tests/vocab#RDFC10EvalTest", TestType.RDFC10EvalTest),
+            Map.entry("https://w3c.github.io/rdf-canon/tests/vocab#RDFC10MapTest", TestType.RDFC10MapTest),
+            Map.entry("https://w3c.github.io/rdf-canon/tests/vocab#RDFC10NegativeEvalTest", TestType.RDFC10NegativeEvalTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestNQuadsPositiveSyntax", TestType.RDF11NQuadsPositiveSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestNQuadsNegativeSyntax", TestType.RDF11NQuadsNegativeSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestNTriplesNegativeSyntax", TestType.RDF11NTriplesNegativeSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestNTriplesPositiveSyntax", TestType.RDF11NTriplesPositiveSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestTrigNegativeSyntax", TestType.RDF11TrigNegativeSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestTrigPositiveSyntax", TestType.RDF11TrigPositiveSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestTurtleNegativeSyntax", TestType.RDF11TurtleNegativeSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestTurtlePositiveSyntax", TestType.RDF11TurtlePositiveSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestXMLNegativeSyntax", TestType.RDF11XMLNegativeSyntaxTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestXMLEval", TestType.RDF11XMLEvalTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestTrigEval", TestType.RDF11TrigEvalTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestTrigNegativeEval", TestType.RDF11TrigNegativeEvalTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestTurtleEval", TestType.RDF11TurtleEvalTest),
+            Map.entry("http://www.w3.org/ns/rdftest#TestTurtleNegativeEval", TestType.RDF11TurtleNegativeEvalTest));
 
     /**
      * Enumeration of test types.
@@ -43,7 +52,17 @@ public class W3cTestFactory {
         RDF11NQuadsPositiveSyntaxTest,
         RDF11NQuadsNegativeSyntaxTest,
         RDF11NTriplesNegativeSyntaxTest,
-        RDF11NTriplesPositiveSyntaxTest
+        RDF11NTriplesPositiveSyntaxTest,
+        RDF11TrigNegativeSyntaxTest,
+        RDF11TrigPositiveSyntaxTest,
+        RDF11TurtleNegativeSyntaxTest,
+        RDF11TurtlePositiveSyntaxTest,
+        RDF11TrigEvalTest,
+        RDF11TrigNegativeEvalTest,
+        RDF11TurtleEvalTest,
+        RDF11TurtleNegativeEvalTest,
+        RDF11XMLNegativeSyntaxTest,
+        RDF11XMLEvalTest
     }
 
     /**
@@ -87,7 +106,7 @@ public class W3cTestFactory {
         }
 
         logger.info(mappings.getValue("?action").getLabel());
-        logger.info(TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel())).toString());
+        logger.info(manifestUri.toString());
         switch (type) {
             case RDFC10EvalTest:
                 return new RDFC10EvalTest(
@@ -112,33 +131,97 @@ public class W3cTestFactory {
                         comment,
                         URI.create(mappings.getValue("?action").getLabel()));
             case RDF11NQuadsPositiveSyntaxTest:
-                URI actionPathRDF11NQuadsPositiveSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                URI actionPathRDF11NQuadsPositiveSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
                 return new RDF11NQuadsPositiveSyntaxTest(
                     test,
                     name,
                     comment,
                     actionPathRDF11NQuadsPositiveSyntaxTest);
             case RDF11NQuadsNegativeSyntaxTest:
-                URI actionPathRDF11NQuadsNegativeSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                URI actionPathRDF11NQuadsNegativeSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
                 return new RDF11NQuadsNegativeSyntaxTest(
                         test,
                         name,
                         comment,
                         actionPathRDF11NQuadsNegativeSyntaxTest);
             case RDF11NTriplesNegativeSyntaxTest:
-                URI actionPathRDF11NTriplesNegativeSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                URI actionPathRDF11NTriplesNegativeSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
                 return new RDF11NTriplesNegativeSyntaxTest(
                         test,
                         name,
                         comment,
                         actionPathRDF11NTriplesNegativeSyntaxTest);
             case RDF11NTriplesPositiveSyntaxTest:
-                URI actionPathRDF11NTriplesPositiveSyntaxTest = TestFileManager.determineRemoteFileURIFromManifestURI(manifestUri, URI.create(mappings.getValue("?action").getLabel()));
+                URI actionPathRDF11NTriplesPositiveSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
                 return new RDF11NTriplesPositiveSyntaxTest(
                         test,
                         name,
                         comment,
                         actionPathRDF11NTriplesPositiveSyntaxTest);
+            case RDF11XMLNegativeSyntaxTest:
+                URI actionPathRDF11XMLNegativeSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
+                return new RDF11XMLNegativeSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11XMLNegativeSyntaxTest);
+            case RDF11XMLEvalTest:
+                URI actionPathRDF11XMLEvalTest = URI.create(mappings.getValue("?action").getLabel());
+                URI resultPathRDF11XMLEvalTest = URI.create(mappings.getValue("?result").getLabel());
+                return new RDF11XMLEvalTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11XMLEvalTest,
+                        resultPathRDF11XMLEvalTest);
+            case RDF11TrigNegativeEvalTest:
+            case RDF11TrigNegativeSyntaxTest:
+                URI actionPathRDF11TrigNegativeSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
+                return new RDF11TrigNegativeSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11TrigNegativeSyntaxTest);
+            case RDF11TrigPositiveSyntaxTest:
+                URI actionPathRDF11TrigPositiveSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
+                return new RDF11TrigPositiveSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11TrigPositiveSyntaxTest);
+            case RDF11TrigEvalTest:
+                URI actionPathRDF11TrigEvalTest = URI.create(mappings.getValue("?action").getLabel());
+                URI resultPathRDF11TrigEvalTest = URI.create(mappings.getValue("?result").getLabel());
+                return new RDF11TrigEvalTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11TrigEvalTest,
+                        resultPathRDF11TrigEvalTest);
+            case RDF11TurtleNegativeEvalTest:
+            case RDF11TurtleNegativeSyntaxTest: // There are no functional differences between syntax and eval tests
+                URI actionPathRDF11NTurtleNegativeSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
+                return new RDF11TurtleNegativeSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11NTurtleNegativeSyntaxTest);
+            case RDF11TurtlePositiveSyntaxTest:
+                URI actionPathRDF11NTurtlePositiveSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
+                return new RDF11TurtlePositiveSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11NTurtlePositiveSyntaxTest);
+            case RDF11TurtleEvalTest:
+                URI actionPathRDF11TurtleEvalTest = URI.create(mappings.getValue("?action").getLabel());
+                URI resultPathRDF11TurtleEvalTest = URI.create(mappings.getValue("?result").getLabel());
+                return new RDF11TurtleEvalTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathRDF11TurtleEvalTest,
+                        resultPathRDF11TurtleEvalTest);
             default:
                 throw new TestCreationException("Unsupported test type: " + type);
         }

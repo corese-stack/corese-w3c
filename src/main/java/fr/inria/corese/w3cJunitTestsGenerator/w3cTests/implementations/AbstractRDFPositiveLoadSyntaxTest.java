@@ -54,7 +54,7 @@ public abstract class AbstractRDFPositiveLoadSyntaxTest implements IW3cTest {
         // Header of the test
         sb.append("    // ").append(this.name).append("\n");
         if (!this.comment.isEmpty()) {
-            String sanitizedComment = this.comment.replaceAll("\\\\u([0-9A-Fa-f]*)", "");
+            String sanitizedComment = TestUtils.sanitizeComment(this.comment);
             sb.append("    // ").append(sanitizedComment).append("\n");
         }
         sb.append("    @Test\n");
@@ -63,10 +63,10 @@ public abstract class AbstractRDFPositiveLoadSyntaxTest implements IW3cTest {
 
         // Test body
         sb.append("        // Load action file\n");
-        sb.append("        Path testFilePath = TestFileManager.loadTestFile(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
+        sb.append("        TestFileManager.loadFile(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
         sb.append("        Process command = new ProcessBuilder().inheritIO().command(\n");
-        sb.append("                \"corese-command\", \"sparql\",\n"); // FIXME To be replaced by the latest corese-command release
-        sb.append("                \"-i\", testFilePath.toString(),\n");
+        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"sparql\",\n"); // FIXME To be replaced by the latest corese-command release
+        sb.append("                \"-i\", \"").append(this.actionFile).append("\",\n");
         sb.append("                \"-if\", \"").append(this.format).append("\",\n");
         sb.append("                \"-of\", \"csv\",\n");
         sb.append("                \"-q\", \"src/test/resources/sparqlSelectBasic.rq\")\n");

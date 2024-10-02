@@ -1,0 +1,1 @@
+SELECT DISTINCT ?graph { GRAPH ?graph { ?s ?p ?o } }
