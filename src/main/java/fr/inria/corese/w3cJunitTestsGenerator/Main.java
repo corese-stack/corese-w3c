@@ -39,11 +39,11 @@ public class Main {
                         logger.error("Could not download corese-command", e);
                 }*/
                 // generateW3cTests("canonicalRdf", "https://w3c.github.io/rdf-canon/tests/manifest.ttl");
-                generateW3cTests("rdf11nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");
-                generateW3cTests("rdf11ntriples", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl");
-                generateW3cTests("rdf11xml", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl");
-                generateW3cTests("rdf11trig", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl");
-                generateW3cTests("rdf11turtle", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl");
+//                generateW3cTests("rdf11nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");
+//                generateW3cTests("rdf11ntriples", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl");
+//                generateW3cTests("rdf11xml", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl");
+//                generateW3cTests("rdf11trig", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl");
+//                generateW3cTests("rdf11turtle", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl");
                 generateW3cTests("sparql10", "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl");
         }
 

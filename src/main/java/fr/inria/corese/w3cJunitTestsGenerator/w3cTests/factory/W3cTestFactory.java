@@ -262,9 +262,9 @@ public class W3cTestFactory {
                             test,
                             name,
                             comment,
+                            dataPathSPARQLQueryEvaluationTest,
                             resultPathSPARQLQueryEvaluationTest,
-                            queryPathSPARQLQueryEvaluationTest,
-                            dataPathSPARQLQueryEvaluationTest);
+                            queryPathSPARQLQueryEvaluationTest);
                 } else {
                     return new SPARQLQueryEvaluationTest(
                             test,
@@ -296,10 +296,10 @@ public class W3cTestFactory {
         sb.append("    <").append(test).append("> mf:name ?name ;\n");
         sb.append("        mf:action ?action .\n");
         sb.append("    OPTIONAL { ?action qt:query ?query . }\n");
-        sb.append("    OPTIONAL { ?action qt:query ?data . }\n");
-        sb.append("    optional { <").append(test).append("> mf:result ?result } .\n");
-        sb.append("    optional { <").append(test).append("> rdfs:comment ?comment } .\n");
-        sb.append("    optional { <").append(test).append("> rdfc:hashAlgorithm ?hashAlgorithm } .\n");
+        sb.append("    OPTIONAL { ?action qt:data ?data . }\n");
+        sb.append("    OPTIONAL { <").append(test).append("> mf:result ?result } .\n");
+        sb.append("    OPTIONAL { <").append(test).append("> rdfs:comment ?comment } .\n");
+        sb.append("    OPTIONAL { <").append(test).append("> rdfc:hashAlgorithm ?hashAlgorithm } .\n");
         sb.append("}");
         return sb.toString();
     }

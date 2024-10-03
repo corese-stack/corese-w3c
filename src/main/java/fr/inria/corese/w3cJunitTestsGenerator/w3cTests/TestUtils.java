@@ -29,7 +29,7 @@ public class TestUtils {
     private static final Logger logger = LoggerFactory.getLogger(TestUtils.class);
 
     /**
-     * Remove seen name structure that are incompatible with the required format for a java function name.
+     * Remove seen name structure that are incompatible with the format of a java function name.
      * @param originalTestName
      * @return sanitized test name
      */
@@ -37,6 +37,11 @@ public class TestUtils {
         return originalTestName.trim().toLowerCase(Locale.ROOT).replace("-","");
     }
 
+    /**
+     * Created because of tests in the same category but from different manifests and with the same name.
+     * @param testUri
+     * @return a name for tests that is prefixed by parts of its URI path
+     */
     public static String extractLongTestName(String testUri) {
         String[] decomposedTestUri = testUri.split("/");
         String endName = testUri.split("#")[1];
