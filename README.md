@@ -18,6 +18,8 @@ Tested files and manifests are in the `src/test/resources` directory.
 
 ## Ongoing implementation
 
+- SPARQL tests
+  - [SPARQL 1.0 tests](https://w3c.github.io/rdf-tests/sparql/sparql10)
   
 ## Planned implementation
 
