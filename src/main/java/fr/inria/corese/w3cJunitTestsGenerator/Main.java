@@ -44,6 +44,7 @@ public class Main {
                 generateW3cTests("rdf11xml", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl");
                 generateW3cTests("rdf11trig", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl");
                 generateW3cTests("rdf11turtle", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl");
+                generateW3cTests("sparql10", "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl");
         }
 
         /**

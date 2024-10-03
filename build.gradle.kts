@@ -22,39 +22,40 @@ configurations.all {
 }
 
 dependencies {
-    api("fr.com.hp.hpl.jena.rdf.arp:arp:2.2.b")
+    implementation("fr.com.hp.hpl.jena.rdf.arp:arp:2.2.b")
 
-    api("org.apache.jena:jena-arq:5.1.0")
-    api("org.apache.jena:jena-tdb:4.10.0")
-    api("org.apache.jena:jena-core:5.1.0")
+    implementation("org.apache.jena:jena-arq:5.1.0")
+    implementation("org.apache.jena:jena-tdb:4.10.0")
+    implementation("org.apache.jena:jena-core:5.1.0")
 
-    api("org.apache.commons:commons-lang3:3.17.0")
-    api("org.apache.httpcomponents.client5:httpclient5:5.3.1")
-    api("org.apache.httpcomponents:httpcore-osgi:4.4.16")
+    implementation("org.apache.commons:commons-lang3:3.17.0")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+    implementation("org.apache.httpcomponents:httpcore-osgi:4.4.16")
 
-    api("org.javassist:javassist:3.30.2-GA")
+    implementation("org.javassist:javassist:3.30.2-GA")
 
-    api("org.glassfish.hk2:osgi-resource-locator:2.4.0")
+    implementation("org.glassfish.hk2:osgi-resource-locator:2.4.0")
 
-    api("org.jspecify:jspecify:1.0.0")
+    implementation("org.jspecify:jspecify:1.0.0")
 
-    api("com.ibm.icu:icu4j:75.1")
+    implementation("com.ibm.icu:icu4j:75.1")
 
-    api("com.github.jsonld-java:jsonld-java:0.13.6")
+    implementation("com.github.jsonld-java:jsonld-java:0.13.6")
 
-    api("xerces:xercesImpl:2.12.2")
+    implementation("xerces:xercesImpl:2.12.2")
 
-    api("commons-logging:commons-logging:1.3.4")
+    implementation("commons-logging:commons-logging:1.3.4")
 
     val lo4j_version = "2.18.0"
-//    api("org.slf4j:slf4j-api:2.0.0-alpha0")
-    api("org.apache.logging.log4j:log4j-api:${lo4j_version}")
-    api("org.apache.logging.log4j:log4j-core:${lo4j_version}")
-    api("org.slf4j:slf4j-api:1.8.0-beta2")
+    implementation("org.apache.logging.log4j:log4j-api:${lo4j_version}")
+    implementation("org.apache.logging.log4j:log4j-core:${lo4j_version}")
+    implementation("org.slf4j:slf4j-api:1.8.0-beta2")
+
+    implementation("jakarta.activation:jakarta.activation-api:2.1.3")
 
     testImplementation("junit:junit:4.13.2")
 
-    api("fr.inria.corese:corese-core:5.0.0-SNAPSHOT") // To be changed for the release version
+    implementation("fr.inria.corese:corese-core:5.0.0-SNAPSHOT") // To be changed for the release version
 }
 
 group = "fr.inria.corese"

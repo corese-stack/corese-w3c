@@ -40,7 +40,16 @@ public class W3cTestFactory {
             Map.entry("http://www.w3.org/ns/rdftest#TestTrigEval", TestType.RDF11TrigEvalTest),
             Map.entry("http://www.w3.org/ns/rdftest#TestTrigNegativeEval", TestType.RDF11TrigNegativeEvalTest),
             Map.entry("http://www.w3.org/ns/rdftest#TestTurtleEval", TestType.RDF11TurtleEvalTest),
-            Map.entry("http://www.w3.org/ns/rdftest#TestTurtleNegativeEval", TestType.RDF11TurtleNegativeEvalTest));
+            Map.entry("http://www.w3.org/ns/rdftest#TestTurtleNegativeEval", TestType.RDF11TurtleNegativeEvalTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#PositiveSyntaxTest", TestType.SPARQL10PositiveSyntaxTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#PositiveSyntaxTest11", TestType.SPARQL11PositiveSyntaxTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#PositiveUpdateSyntaxTest11", TestType.SPARQL11UpdatePositiveSyntaxTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#NegativeSyntaxTest", TestType.SPARQL10NegativeSyntaxTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#NegativeSyntaxTest11", TestType.SPARQL11NegativeSyntaxTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#NegativeUpdateSyntaxTest11", TestType.SPARQL11UpdateNegativeSyntaxTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#QueryEvaluationTest", TestType.SPARQLQueryEvaluationTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#UpdateEvaluationTest", TestType.SPARQLUpdateEvaluationTest)
+    );
 
     /**
      * Enumeration of test types.
@@ -62,7 +71,15 @@ public class W3cTestFactory {
         RDF11TurtleEvalTest,
         RDF11TurtleNegativeEvalTest,
         RDF11XMLNegativeSyntaxTest,
-        RDF11XMLEvalTest
+        RDF11XMLEvalTest,
+        SPARQL10PositiveSyntaxTest,
+        SPARQL11PositiveSyntaxTest,
+        SPARQL11UpdatePositiveSyntaxTest,
+        SPARQL10NegativeSyntaxTest,
+        SPARQL11NegativeSyntaxTest,
+        SPARQL11UpdateNegativeSyntaxTest,
+        SPARQLQueryEvaluationTest,
+        SPARQLUpdateEvaluationTest
     }
 
     /**
@@ -105,8 +122,6 @@ public class W3cTestFactory {
             }
         }
 
-        logger.info(mappings.getValue("?action").getLabel());
-        logger.info(manifestUri.toString());
         switch (type) {
             case RDFC10EvalTest:
                 return new RDFC10EvalTest(
@@ -222,6 +237,45 @@ public class W3cTestFactory {
                         comment,
                         actionPathRDF11TurtleEvalTest,
                         resultPathRDF11TurtleEvalTest);
+            case SPARQL10NegativeSyntaxTest:
+            case SPARQL11NegativeSyntaxTest:
+                URI actionPathSPARQLNegativeSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
+                return new SPARQLNegativeSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathSPARQLNegativeSyntaxTest);
+            case SPARQL10PositiveSyntaxTest:
+            case SPARQL11PositiveSyntaxTest:
+                URI actionPathSPARQLPositiveSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
+                return new SPARQLPositiveSyntaxTest(
+                        test,
+                        name,
+                        comment,
+                        actionPathSPARQLPositiveSyntaxTest);
+            case SPARQLQueryEvaluationTest:
+                URI resultPathSPARQLQueryEvaluationTest = URI.create(mappings.getValue("?result").getLabel());
+                URI queryPathSPARQLQueryEvaluationTest = URI.create(mappings.getValue("?query").getLabel());
+                if(mappings.getValue("?data") != null) {
+                    URI dataPathSPARQLQueryEvaluationTest = URI.create(mappings.getValue("?data").getLabel());
+                    return new SPARQLQueryEvaluationTest(
+                            test,
+                            name,
+                            comment,
+                            resultPathSPARQLQueryEvaluationTest,
+                            queryPathSPARQLQueryEvaluationTest,
+                            dataPathSPARQLQueryEvaluationTest);
+                } else {
+                    return new SPARQLQueryEvaluationTest(
+                            test,
+                            name,
+                            comment,
+                            resultPathSPARQLQueryEvaluationTest,
+                            queryPathSPARQLQueryEvaluationTest);
+                }
+            case SPARQL11UpdateNegativeSyntaxTest:
+            case SPARQL11UpdatePositiveSyntaxTest:
+            case SPARQLUpdateEvaluationTest:
             default:
                 throw new TestCreationException("Unsupported test type: " + type);
         }
@@ -233,16 +287,21 @@ public class W3cTestFactory {
      * @return The query to retrieve the test details.
      */
     private static String buildTestDetailQuery(String test) {
-        return "PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n"
-                + "PREFIX rdfc: <https://w3c.github.io/rdf-canon/tests/vocab#>\n"
-                + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-                + "SELECT ?name ?comment ?action ?result WHERE {"
-                + " <" + test + "> mf:name ?name ;"
-                + " mf:action ?action ."
-                + " optional { <" + test + "> mf:result ?result } ."
-                + " optional { <" + test + "> rdfs:comment ?comment } ."
-                + " optional { <" + test + "> rdfc:hashAlgorithm ?hashAlgorithm } ."
-                + "}";
+        StringBuilder sb = new StringBuilder();
+        sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
+        sb.append("PREFIX rdfc: <https://w3c.github.io/rdf-canon/tests/vocab#>\n");
+        sb.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n");
+        sb.append("PREFIX qt:     <http://www.w3.org/2001/sw/DataAccess/tests/test-query#>\n");
+        sb.append("SELECT ?name ?comment ?action ?result ?query ?data WHERE {\n");
+        sb.append("    <").append(test).append("> mf:name ?name ;\n");
+        sb.append("        mf:action ?action .\n");
+        sb.append("    OPTIONAL { ?action qt:query ?query . }\n");
+        sb.append("    OPTIONAL { ?action qt:query ?data . }\n");
+        sb.append("    optional { <").append(test).append("> mf:result ?result } .\n");
+        sb.append("    optional { <").append(test).append("> rdfs:comment ?comment } .\n");
+        sb.append("    optional { <").append(test).append("> rdfc:hashAlgorithm ?hashAlgorithm } .\n");
+        sb.append("}");
+        return sb.toString();
     }
 
     /**

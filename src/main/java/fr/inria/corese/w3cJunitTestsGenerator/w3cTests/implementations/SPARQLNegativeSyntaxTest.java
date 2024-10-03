@@ -7,9 +7,9 @@ import java.net.URI;
 import java.util.Set;
 
 /**
- * Generates a test that will check if corese-command refuses to load a file of the given format with an error
+ * Generates a test that will check if corese-command loads a file of the given format and query it with an error
  */
-public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
+public class SPARQLNegativeSyntaxTest implements IW3cTest {
 
     private String test;
     private String name;
@@ -17,22 +17,18 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
 
     private URI actionFile;
 
-    private String format;
-
     /**
      *
      * @param testUri Uri of the test resource from its manifest file
      * @param name Name of the test (typically the end of its URI)
      * @param comment Comment literal from the manifest
      * @param actionUri URI object of mf:action in the manifest
-     * @param format Names of the tested syntax as accepted by the "-if" argument of corese-command
      */
-    protected AbstractRDFNegativeLoadSyntaxTest(String testUri, String name, String comment, URI actionUri, String format) {
+    public SPARQLNegativeSyntaxTest(String testUri, String name, String comment, URI actionUri) {
         this.test = TestUtils.extractLongTestName(testUri);
         this.name = name;
         this.comment = comment;
         this.actionFile = actionUri;
-        this.format = format;
     }
 
     @Override
@@ -66,10 +62,10 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
         sb.append("        TestFileManager.loadFile(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
         sb.append("        Process command = new ProcessBuilder().inheritIO().command(\n");
         sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"sparql\",\n"); // FIXME To be replaced by the latest corese-command release
-        sb.append("                \"-i\", \"").append(this.actionFile).append("\",\n");
-        sb.append("                \"-if\", \"").append(this.format).append("\",\n");
-        sb.append("                \"-of\", \"csv\",\n");
-        sb.append("                \"-q\", \"src/test/resources/sparqlSelectBasic.rq\")\n");
+        sb.append("                \"-i\", \"src/test/resources/sampleData.ttl\",\n");
+        sb.append("                \"-if\", \"turtle\",\n");
+        sb.append("                \"-of\", \"xml\",\n");
+        sb.append("                \"-q\", \"").append(this.actionFile).append("\")\n");
         sb.append("            .start();\n");
         sb.append("        assertNotEquals(0, command.waitFor());\n");
 

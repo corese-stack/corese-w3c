@@ -34,7 +34,7 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
      * @param resultFormat Names of the tested syntax as accepted by the "-of" argument of corese-command
      */
     protected AbstractRDFEvalTest(String testUri, String name, String comment, URI actionUri, URI resultUri, String actionFormat, String resultFormat) {
-        this.test = testUri.split("#")[1];
+        this.test = TestUtils.extractLongTestName(testUri);
         this.name = name;
         this.comment = comment;
         this.actionFile = actionUri;
@@ -77,9 +77,9 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         sb.append("\n");
         sb.append("        TestFileManager.loadFile(URI.create(\"").append(this.resultFile.toString()).append("\"));\n");
         sb.append("        \n");
-        sb.append("        Path convertedActionFilePath = \"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append(" \";\n");
-        sb.append("        Path canonConvertedActionFilePath = \"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\";\n");
-        sb.append("        Path canonConvertedResultFilePath = \"").append(Paths.get(TestFileManager.getFileName(this.resultFile))).append("\";\n");
+        sb.append("        Path convertedActionFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
+        sb.append("        Path canonConvertedActionFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
+        sb.append("        Path canonConvertedResultFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.resultFile))).append("\");\n");
         sb.append("\n");
         sb.append("        // Converting the action file\n");
         sb.append("        Process actionConversionCommand = new ProcessBuilder().inheritIO().command(\n");

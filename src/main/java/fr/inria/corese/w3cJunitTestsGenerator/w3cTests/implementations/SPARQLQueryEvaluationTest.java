@@ -7,32 +7,49 @@ import java.net.URI;
 import java.util.Set;
 
 /**
- * Generates a test that will check if corese-command refuses to load a file of the given format with an error
+ * Generates a test that will check if corese-command loads a file of the given format and query it without error
  */
-public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
+public class SPARQLQueryEvaluationTest implements IW3cTest {
 
     private String test;
     private String name;
     private String comment;
 
-    private URI actionFile;
-
-    private String format;
+    private URI resultFile;
+    private URI dataFile;
+    private URI queryFile;
 
     /**
      *
      * @param testUri Uri of the test resource from its manifest file
      * @param name Name of the test (typically the end of its URI)
      * @param comment Comment literal from the manifest
-     * @param actionUri URI object of mf:action in the manifest
-     * @param format Names of the tested syntax as accepted by the "-if" argument of corese-command
+     * @param resultFile Uri of the file object of the mf:result property
+     * @param queryFile Uri of the file object of the qt:query property linked to the action resource
      */
-    protected AbstractRDFNegativeLoadSyntaxTest(String testUri, String name, String comment, URI actionUri, String format) {
+    public SPARQLQueryEvaluationTest(String testUri, String name, String comment, URI resultFile, URI queryFile) {
         this.test = TestUtils.extractLongTestName(testUri);
         this.name = name;
         this.comment = comment;
-        this.actionFile = actionUri;
-        this.format = format;
+        this.resultFile = resultFile;
+        this.queryFile = queryFile;
+    }
+
+    /**
+     *
+     * @param testUri Uri of the test resource from its manifest file
+     * @param name Name of the test (typically the end of its URI)
+     * @param comment Comment literal from the manifest
+     * @param resultFile Uri of the file object of the mf:result property
+     * @param queryFile Uri of the file object of the qt:query property linked to the action resource
+     */
+    public SPARQLQueryEvaluationTest(String testUri, String name, String comment, URI dataFile, URI resultFile, URI queryFile) {
+        this.test = TestUtils.extractLongTestName(testUri);
+        this.name = name;
+        this.comment = comment;
+        this.dataFile = dataFile;
+        this.resultFile = resultFile;
+        this.queryFile = queryFile;
     }
 
     @Override
@@ -44,7 +61,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
                 "java.net.URI",
                 "java.nio.file.Path",
                 "java.security.NoSuchAlgorithmException",
-                "static org.junit.Assert.assertNotEquals");
+                "static org.junit.Assert.assertEquals");
     }
 
     @Override
@@ -63,15 +80,16 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
 
         // Test body
         sb.append("        // Load action file\n");
-        sb.append("        TestFileManager.loadFile(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
+        sb.append("        TestFileManager.loadFile(URI.create(\"").append(this.resultFile.toString()).append("\"));\n");
+        sb.append("        TestFileManager.loadFile(URI.create(\"").append(this.dataFile.toString()).append("\"));\n");
         sb.append("        Process command = new ProcessBuilder().inheritIO().command(\n");
         sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"sparql\",\n"); // FIXME To be replaced by the latest corese-command release
-        sb.append("                \"-i\", \"").append(this.actionFile).append("\",\n");
-        sb.append("                \"-if\", \"").append(this.format).append("\",\n");
-        sb.append("                \"-of\", \"csv\",\n");
-        sb.append("                \"-q\", \"src/test/resources/sparqlSelectBasic.rq\")\n");
+        sb.append("                \"-i\", \"src/test/resources/sampleData.ttl\",\n");
+        sb.append("                \"-if\", \"turtle\",\n");
+        sb.append("                \"-of\", \"xml\",\n");
+        sb.append("                \"-q\", \"").append(this.queryFile).append("\")\n");
         sb.append("            .start();\n");
-        sb.append("        assertNotEquals(0, command.waitFor());\n");
+        sb.append("        assertEquals(0, command.waitFor());\n");
 
         // Footer of the test
         sb.append("    }\n");

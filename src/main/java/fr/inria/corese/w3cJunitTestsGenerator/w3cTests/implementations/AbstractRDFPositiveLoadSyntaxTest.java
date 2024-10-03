@@ -28,7 +28,7 @@ public abstract class AbstractRDFPositiveLoadSyntaxTest implements IW3cTest {
      * @param format Names of the tested syntax as accepted by the "-if" argument of corese-command
      */
     protected AbstractRDFPositiveLoadSyntaxTest(String testUri, String name, String comment, URI actionUri, String format) {
-        this.test = testUri.split("#")[1];
+        this.test = TestUtils.extractLongTestName(testUri);
         this.name = name;
         this.comment = comment;
         this.actionFile = actionUri;
