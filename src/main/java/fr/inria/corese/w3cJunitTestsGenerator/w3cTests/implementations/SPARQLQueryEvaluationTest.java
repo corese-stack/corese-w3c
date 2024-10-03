@@ -92,9 +92,17 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
     public String generate() {
         StringBuilder sb = new StringBuilder();
 
+        String localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".xml";
+        if(this.resultFile.toString().endsWith("ttl")) {
+            localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".ttl";
+        }
+
         // Header of the test
         sb.append("    // ").append(this.name).append(" SPARQL Evaluation Test\n");
         sb.append("    // ").append(this.testUri).append("\n");
+        sb.append("    // Result file: ").append(this.resultFile).append("\n");
+        sb.append("    // Query file: ").append(this.queryFile).append("\n");
+        sb.append("    // Data file: ").append(this.dataFile).append("\n");
         if (!this.comment.isEmpty()) {
             String sanitizedComment = TestUtils.sanitizeComment(this.comment);
             sb.append("    // ").append(sanitizedComment).append("\n");
@@ -108,19 +116,31 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
         sb.append("        Process command = new ProcessBuilder().inheritIO().command(\n");
         sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"sparql\",\n"); // FIXME To be replaced by the latest corese-command release
         if(this.dataFile != null) {
-        sb.append("                \"-i\", \"").append(TestFileManager.getLocalFilePath(this.dataFile)).append("\",\n");
+            sb.append("                \"-i\", \"").append(TestFileManager.getLocalFilePath(this.dataFile)).append("\",\n");
         } else {
             sb.append("                \"-i\", \"").append(SAMPLE_DATA_FILE_PATH_STRING).append("\",\n");
         }
         sb.append("                \"-if\", \"turtle\",\n");
-        sb.append("                \"-of\", \"xml\",\n");
-        sb.append("                \"-o\", \"").append(TestFileManager.RESOURCE_PATH_STRING).append(this.testName).append(".xml\",\n");
+        if(this.resultFile.toString().endsWith("ttl")) {
+            sb.append("                \"-of\", \"").append("turtle").append("\",\n");
+        } else {
+            sb.append("                \"-of\", \"").append("xml").append("\",\n");
+        }
+        if(this.resultFile.toString().endsWith("ttl")) {
+            sb.append("                \"-o\", \"").append(TestFileManager.RESOURCE_PATH_STRING).append(this.testName).append(".ttl").append("\",\n");
+        } else {
+            sb.append("                \"-o\", \"").append(TestFileManager.RESOURCE_PATH_STRING).append(this.testName).append(".xml").append("\",\n");
+        }
         sb.append("                \"-q\", \"").append(TestFileManager.getLocalFilePath(this.queryFile)).append("\")\n");
         sb.append("            .start();\n");
-        sb.append("        boolean comparison = TestUtils.compareXMLSparqlResultFiles(Path.of(\"")
-                .append(TestFileManager.getLocalFilePath(this.resultFile)).append("\"), Path.of(\"")
-                .append(TestFileManager.RESOURCE_PATH_STRING).append(this.testName).append(".xml\"));\n");
         sb.append("        assertEquals(0, command.waitFor());\n");
+        if(this.resultFile.toString().endsWith("ttl")) {
+            sb.append("        boolean comparison = TestUtils.compareFilesLineByLine(Path.of(\"");
+        } else {
+            sb.append("        boolean comparison = TestUtils.compareXMLSparqlResultFiles(Path.of(\"");
+        }
+        sb.append(TestFileManager.getLocalFilePath(this.resultFile)).append("\"), Path.of(\"");
+        sb.append(localResultFile).append("\"));\n");
         sb.append("        assertTrue(comparison);\n");
 
         // Footer of the test
