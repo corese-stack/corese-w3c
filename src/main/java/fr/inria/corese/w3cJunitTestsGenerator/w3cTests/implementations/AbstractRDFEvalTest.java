@@ -3,15 +3,21 @@ package fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 
 /**
  * Abstract class for the tests that chack that the conversion of an RDF file from one format to another are identical (using RDF canonical)
  */
 public abstract class AbstractRDFEvalTest implements IW3cTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractRDFEvalTest.class);
 
     private String test;
     private String name;
@@ -34,13 +40,20 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
      * @param resultFormat Names of the tested syntax as accepted by the "-of" argument of corese-command
      */
     protected AbstractRDFEvalTest(String testUri, String name, String comment, URI actionUri, URI resultUri, String actionFormat, String resultFormat) {
-        this.test = testUri.split("#")[1];
+        this.test = TestUtils.extractLongTestName(testUri);
         this.name = name;
         this.comment = comment;
         this.actionFile = actionUri;
         this.resultFile = resultUri;
         this.actionFormat = actionFormat;
         this.resultFormat = resultFormat;
+
+        try {
+            TestFileManager.loadFile(actionUri);
+            TestFileManager.loadFile(resultUri);
+        } catch (IOException | NoSuchAlgorithmException e) {
+            logger.error("Error during test file loading", e);
+        }
     }
 
     @Override
@@ -73,13 +86,12 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
 
         // Test body
         sb.append("        // Load action file\n");
-        sb.append("        TestFileManager.loadFile(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
-        sb.append("\n");
-        sb.append("        TestFileManager.loadFile(URI.create(\"").append(this.resultFile.toString()).append("\"));\n");
+        sb.append("        Path localActionFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
+        sb.append("        Path localResultFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.resultFile.toString()).append("\"));\n");
         sb.append("        \n");
-        sb.append("        Path convertedActionFilePath = \"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append(" \";\n");
-        sb.append("        Path canonConvertedActionFilePath = \"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\";\n");
-        sb.append("        Path canonConvertedResultFilePath = \"").append(Paths.get(TestFileManager.getFileName(this.resultFile))).append("\";\n");
+        sb.append("        Path convertedActionFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
+        sb.append("        Path canonConvertedActionFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
+        sb.append("        Path canonConvertedResultFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.resultFile))).append("\");\n");
         sb.append("\n");
         sb.append("        // Converting the action file\n");
         sb.append("        Process actionConversionCommand = new ProcessBuilder().inheritIO().command(\n");

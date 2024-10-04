@@ -16,30 +16,36 @@ import java.security.NoSuchAlgorithmException;
 public class TestFileManager {
 
     private static final Logger logger = LoggerFactory.getLogger(TestFileManager.class);
-    private static final String RESOURCE_PATH_STRING = "resources/";
+    public static final String RESOURCE_PATH_STRING = "src/test/resources/";
 
     private TestFileManager() {
     }
 
-    public static void loadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
-        loadFile(fileUri, RESOURCE_PATH_STRING);
-    }
 
     /**
      * Download a file from a URI to a local path and check if the local file is
      * identical to the remote file. Replace the local file if it is different.
-     * 
+     *
      * @param fileUri File URI
-     * @return Local file path
      * @throws IOException If an I/O error occurs
      */
-    private static void loadFile(URI fileUri, String localFolder) throws IOException, NoSuchAlgorithmException {
-        String localFileFolder = localFolder + getPrefixedFilename(fileUri);
+    public static void loadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
+        String localFileFolder = RESOURCE_PATH_STRING + getPrefixedFilename(fileUri);
         Path localFilePath = Paths.get(localFileFolder);
 
-        if (Files.exists(localFilePath) && isRemoteFileDifferent(fileUri, localFilePath)) {
+        if(! Files.exists(localFilePath) || (Files.exists(localFilePath) && isRemoteFileDifferent(fileUri, localFilePath))) {
             downloadFile(fileUri, localFilePath);
         }
+    }
+
+    /**
+     *
+     * @param remoteFileUri Remote URI that can be used to determine the local path of the file
+     * @return The path to the local copy of the file
+     */
+    public static Path getLocalFilePath(URI remoteFileUri) {
+        String localFileFolder = RESOURCE_PATH_STRING + getPrefixedFilename(remoteFileUri);
+        return Paths.get(localFileFolder);
     }
 
     /**

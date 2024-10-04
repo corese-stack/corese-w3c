@@ -30,7 +30,7 @@ public class W3cTestsGenerator {
     /**
      * Constructs a new W3cTestsGenerator with the specified test name, manifest
      * file path and test directory path.
-     * 
+     *
      * @param testName    The name of the test.
      * @param manifestUri The URI of the manifest file.
      * @param testsPath   The path to tests directory.
@@ -62,7 +62,7 @@ public class W3cTestsGenerator {
 
     /**
      * Loads the W3C test manifest file into a graph.
-     * 
+     *
      * @return The graph containing the manifest file.
      */
     private Graph loadManifest() {
@@ -78,6 +78,25 @@ public class W3cTestsGenerator {
             logger.error("Error loading manifest file: {}", manifestUri, e);
             System.exit(1);
         }
+        QueryProcess exec = QueryProcess.create(graph);
+        String query = buildInclusionQuery();
+        Mappings mappings;
+
+        try {
+            mappings = exec.query(query);
+            for (Mapping mapping : mappings) {
+                String inclusion = mapping.getValue("?inclusion").getLabel();
+                try {
+                    TestFileManager.loadFile(URI.create(inclusion));
+                    loader.parse(inclusion);
+                } catch (Exception e) {
+                    logger.error("Error loading inclusion {}", inclusion, e);
+                    System.exit(1);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error executing inclusion query.", e);
+        }
 
         return graph;
     }
@@ -88,7 +107,7 @@ public class W3cTestsGenerator {
 
     /**
      * Gets the list of test cases from the specified graph.
-     * 
+     *
      * @param graph The graph containing the test cases.
      * @return The list of test cases.
      */
@@ -127,18 +146,31 @@ public class W3cTestsGenerator {
 
     /**
      * Builds a query to retrieve the test cases from the manifest file.
-     * 
+     *
      * @return The query to retrieve the test cases.
      */
     private String buildTestCasesQuery() {
-        return "PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n" +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-                "\n" +
-                "SELECT ?type ?test WHERE {\n" +
-                "  ?manifest a mf:Manifest .\n" +
-                "  ?manifest mf:entries/rdf:rest*/rdf:first ?test .\n" +
-                "  ?test rdf:type ?type .\n" +
-                "} ORDER BY ?test";
+        StringBuilder sb = new StringBuilder();
+        sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
+        sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
+        sb.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n");
+        sb.append("\n");
+        sb.append("SELECT ?type ?test WHERE {\n");
+        sb.append("  ?manifest a mf:Manifest .\n");
+        sb.append("  ?manifest mf:entries/rdf:rest*/rdf:first ?test .\n");
+        sb.append("  ?test rdf:type ?type .\n");
+        sb.append("} ORDER BY ?test");
+        return sb.toString();
+    }
+
+    private String buildInclusionQuery() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
+        sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
+        sb.append("SELECT DISTINCT ?inclusion WHERE {\n");
+        sb.append("    ?manifest a mf:Manifest ;\n");
+        sb.append("        mf:include/rdf:rest*/rdf:first ?inclusion .\n");
+        sb.append("}");
+        return sb.toString();
     }
 }

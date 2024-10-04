@@ -18,6 +18,8 @@ Tested files and manifests are in the `src/test/resources` directory.
 
 ## Ongoing implementation
 
+- SPARQL tests
+  - [SPARQL 1.0 tests](https://w3c.github.io/rdf-tests/sparql/sparql10)
   
 ## Planned implementation
 
@@ -27,7 +29,6 @@ Tested files and manifests are in the `src/test/resources` directory.
 - SPARQL tests
   - [SPARQL 1.2 tests](https://w3c.github.io/rdf-tests/sparql/sparql12)
   - [SPARQL 1.1 tests](https://w3c.github.io/rdf-tests/sparql/sparql11)
-  - [SPARQL 1.0 tests](https://w3c.github.io/rdf-tests/sparql/sparql10)
 - SHACL tests
   - [SHACL 1.1 tests](https://w3c.github.io/data-shapes/data-shapes-test-suite/)
 - JSON-LD tests

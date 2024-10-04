@@ -37,3 +37,5 @@ bin/**/*.nt
 bin/**/*.nq
 bin/**/*.ttl
 bin/**/*.rdf
+
+src/test/resources/*.xml
