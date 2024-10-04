@@ -15,6 +15,8 @@ Tested files and manifests are in the `src/test/resources` directory.
     - [RDF/XML Syntax tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/)
     - [TriG Syntax tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/)
     - [Turtle tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/)
+- SPARQL tests
+  - [SPARQL 1.0 tests](https://w3c.github.io/rdf-tests/sparql/sparql10)
 
 ## Ongoing implementation
 
