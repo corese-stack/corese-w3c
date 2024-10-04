@@ -50,3 +50,4 @@ Tested files and manifests are in the `src/test/resources` directory.
 
 - Some tests for SPARQL 1.0 use a turtle format for the results of SELECT queries. To our knowledge, this format is not part of the SPARQL 1.0 norm
 - The vocabulary used to define SHACL tests is an extension of the Manifest vocabulary used in all other tests. As of 04/10/2024, it is not dereferencable or available on Linked Open Vocabularies
+  - A [issues](https://github.com/w3c/shacl/issues/86) has been filled.
