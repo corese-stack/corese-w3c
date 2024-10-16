@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/lessThanOrEquals-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:a0fba421-1341-432a-8cab-275761133dcd> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/lessThanOrEquals-001.test#TestShape-property1> sh:lessThanOrEquals <http://datashapes.org/sh/tests/core/property/lessThanOrEquals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/lessThanOrEquals-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:LessThanOrEqualsConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value 5 .
+
+<urn:uuid:a88bb8c1-46f4-4f47-a318-546bc195b251> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/lessThanOrEquals-001.test#TestShape-property1> sh:lessThanOrEquals <http://datashapes.org/sh/tests/core/property/lessThanOrEquals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/lessThanOrEquals-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:LessThanOrEqualsConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value 6 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:a0fba421-1341-432a-8cab-275761133dcd> ;
+  sh:result <urn:uuid:a88bb8c1-46f4-4f47-a318-546bc195b251> .
+

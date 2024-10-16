@@ -1,0 +1,37 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/languageIn-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:db94c9a4-a602-4ab3-a318-1e35f62c0c2e> a sh:ValidationResult ;
+  sh:focusNode ns1:Berg ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/languageIn-001.test#NewZealandLanguagesShape-prefLabel> sh:languageIn (\"en\"\n  \"mi\") ;\n  sh:path <http://datashapes.org/sh/tests/core/property/languageIn-001.test#prefLabel>" ;
+  sh:resultPath ns1:prefLabel ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:LanguageInConstraintComponent ;
+  sh:sourceShape ns1:NewZealandLanguagesShape-prefLabel ;
+  sh:value "Berg" .
+
+<urn:uuid:739cc2cb-f93a-4a66-85a8-ca60e7067579> a sh:ValidationResult ;
+  sh:focusNode ns1:Berg ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/languageIn-001.test#NewZealandLanguagesShape-prefLabel> sh:languageIn (\"en\"\n  \"mi\") ;\n  sh:path <http://datashapes.org/sh/tests/core/property/languageIn-001.test#prefLabel>" ;
+  sh:resultPath ns1:prefLabel ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:LanguageInConstraintComponent ;
+  sh:sourceShape ns1:NewZealandLanguagesShape-prefLabel ;
+  sh:value "Berg"@de .
+
+<urn:uuid:2ad0ff75-60d5-4a47-b174-d348ddbc4f57> a sh:ValidationResult ;
+  sh:focusNode ns1:Berg ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/languageIn-001.test#NewZealandLanguagesShape-prefLabel> sh:languageIn (\"en\"\n  \"mi\") ;\n  sh:path <http://datashapes.org/sh/tests/core/property/languageIn-001.test#prefLabel>" ;
+  sh:resultPath ns1:prefLabel ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:LanguageInConstraintComponent ;
+  sh:sourceShape ns1:NewZealandLanguagesShape-prefLabel ;
+  sh:value ns1:BergLabel .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:2ad0ff75-60d5-4a47-b174-d348ddbc4f57> ;
+  sh:result <urn:uuid:db94c9a4-a602-4ab3-a318-1e35f62c0c2e> ;
+  sh:result <urn:uuid:739cc2cb-f93a-4a66-85a8-ca60e7067579> .
+

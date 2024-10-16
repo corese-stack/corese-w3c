@@ -1,0 +1,37 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/datatype-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:972c2560-074b-49f7-bcb0-d10e838e0685> a sh:ValidationResult ;
+  sh:focusNode xsd:integer ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/datatype-001.test#TestShape> a sh:NodeShape ;\n  sh:datatype xsd:integer ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/datatype-001.test#TestClass> ;\n  sh:targetNode xsd:integer ;\n  sh:targetNode \"aldi\"^^xsd:integer ;\n  sh:targetNode 42" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value xsd:integer .
+
+<urn:uuid:3acf0bdb-c000-4d34-aa7e-236b1b2b635f> a sh:ValidationResult ;
+  sh:focusNode _:b6 ;
+  sh:focusNodeDetail "_:b6"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/datatype-001.test#TestShape> a sh:NodeShape ;\n  sh:datatype xsd:integer ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/datatype-001.test#TestClass> ;\n  sh:targetNode xsd:integer ;\n  sh:targetNode \"aldi\"^^xsd:integer ;\n  sh:targetNode 42" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value _:b6 ;
+  sh:valueDetail "_:b6"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:a18f1b63-3954-4e40-92ac-7d51babf97c0> a sh:ValidationResult ;
+  sh:focusNode "aldi"^^xsd:integer ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/datatype-001.test#TestShape> a sh:NodeShape ;\n  sh:datatype xsd:integer ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/datatype-001.test#TestClass> ;\n  sh:targetNode xsd:integer ;\n  sh:targetNode \"aldi\"^^xsd:integer ;\n  sh:targetNode 42" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "aldi"^^xsd:integer .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:3acf0bdb-c000-4d34-aa7e-236b1b2b635f> ;
+  sh:result <urn:uuid:972c2560-074b-49f7-bcb0-d10e838e0685> ;
+  sh:result <urn:uuid:a18f1b63-3954-4e40-92ac-7d51babf97c0> .
+

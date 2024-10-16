@@ -1,0 +1,38 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:00bed870-ce81-4bed-a5fe-4a2689db0b07> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#TestShape> a sh:NodeShape ;\n  rdfs:label \"Test shape\" ;\n  sh:sparql <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#TestShape-sparql> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#ValidResource1>" ;
+  sh:resultPath rdfs:label ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:SPARQLConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "Invalid resource 1" .
+
+<urn:uuid:3a23317e-4276-491a-b935-315d70da2e76> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#TestShape> a sh:NodeShape ;\n  rdfs:label \"Test shape\" ;\n  sh:sparql <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#TestShape-sparql> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#ValidResource1>" ;
+  sh:resultPath rdfs:label ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:SPARQLConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "Invalid label 2" .
+
+<urn:uuid:4a3cd6fb-e296-49ee-b926-997dd5ba4f41> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#TestShape> a sh:NodeShape ;\n  rdfs:label \"Test shape\" ;\n  sh:sparql <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#TestShape-sparql> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/sparql/node/sparql-001.test#ValidResource1>" ;
+  sh:resultPath rdfs:label ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:SPARQLConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "Invalid label 1" .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:00bed870-ce81-4bed-a5fe-4a2689db0b07> ;
+  sh:result <urn:uuid:4a3cd6fb-e296-49ee-b926-997dd5ba4f41> ;
+  sh:result <urn:uuid:3a23317e-4276-491a-b935-315d70da2e76> .
+

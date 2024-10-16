@@ -1,0 +1,47 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://example.org/shacl/tests/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:027189d4-3c9d-46e9-84e8-101ee11902ea> a sh:ValidationResult ;
+  sh:focusNode ns1:i ;
+  sh:resultMessage "Fail at: <http://example.org/shacl/tests/s1> a sh:PropertyShape ;\n  sh:class <http://example.org/shacl/tests/C> ;\n  sh:path ([sh:inversePath <http://example.org/shacl/tests/p>]\n  [sh:inversePath <http://example.org/shacl/tests/p>]) ;\n  sh:targetNode <http://example.org/shacl/tests/i>" ;
+  sh:resultPath "([sh:inversePath <http://example.org/shacl/tests/p>]\n[sh:inversePath <http://example.org/shacl/tests/p>])"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:s1 ;
+  sh:value ns1:k .
+
+<urn:uuid:dbedf17e-8ca1-4ba0-9d40-33bd6d08a880> a sh:ValidationResult ;
+  sh:focusNode ns1:i ;
+  sh:resultMessage "Fail at: <http://example.org/shacl/tests/s1> a sh:PropertyShape ;\n  sh:class <http://example.org/shacl/tests/C> ;\n  sh:path ([sh:inversePath <http://example.org/shacl/tests/p>]\n  [sh:inversePath <http://example.org/shacl/tests/p>]) ;\n  sh:targetNode <http://example.org/shacl/tests/i>" ;
+  sh:resultPath "([sh:inversePath <http://example.org/shacl/tests/p>]\n[sh:inversePath <http://example.org/shacl/tests/p>])"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:s1 ;
+  sh:value ns1:l .
+
+<urn:uuid:dd512d40-0d3c-419b-9fbb-f6951ac1caa0> a sh:ValidationResult ;
+  sh:focusNode ns1:i ;
+  sh:resultMessage "Fail at: <http://example.org/shacl/tests/s2> a sh:PropertyShape ;\n  sh:class <http://example.org/shacl/tests/C> ;\n  sh:path ([sh:inversePath <http://example.org/shacl/tests/p>]\n  [sh:inversePath <http://example.org/shacl/tests/p>]) ;\n  sh:targetNode <http://example.org/shacl/tests/i>" ;
+  sh:resultPath "([sh:inversePath <http://example.org/shacl/tests/p>]\n[sh:inversePath <http://example.org/shacl/tests/p>])"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:s2 ;
+  sh:value ns1:l .
+
+<urn:uuid:8c9df63f-f2cb-4f28-92fc-fa77f28331dc> a sh:ValidationResult ;
+  sh:focusNode ns1:i ;
+  sh:resultMessage "Fail at: <http://example.org/shacl/tests/s2> a sh:PropertyShape ;\n  sh:class <http://example.org/shacl/tests/C> ;\n  sh:path ([sh:inversePath <http://example.org/shacl/tests/p>]\n  [sh:inversePath <http://example.org/shacl/tests/p>]) ;\n  sh:targetNode <http://example.org/shacl/tests/i>" ;
+  sh:resultPath "([sh:inversePath <http://example.org/shacl/tests/p>]\n[sh:inversePath <http://example.org/shacl/tests/p>])"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:s2 ;
+  sh:value ns1:k .
+
+_:bb4 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:027189d4-3c9d-46e9-84e8-101ee11902ea> ;
+  sh:result <urn:uuid:dbedf17e-8ca1-4ba0-9d40-33bd6d08a880> ;
+  sh:result <urn:uuid:8c9df63f-f2cb-4f28-92fc-fa77f28331dc> ;
+  sh:result <urn:uuid:dd512d40-0d3c-419b-9fbb-f6951ac1caa0> .
+

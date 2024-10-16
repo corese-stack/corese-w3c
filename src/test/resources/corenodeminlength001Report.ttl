@@ -1,0 +1,45 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/minLength-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:5da5dd75-1159-400c-b1f8-33a2328f9d83> a sh:ValidationResult ;
+  sh:focusNode 123 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/minLength-001.test#TestShape> a sh:NodeShape ;\n  sh:minLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/minLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/minLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinLengthConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value 123 .
+
+<urn:uuid:74d12c97-5e9a-4484-bcbd-0492a51a818c> a sh:ValidationResult ;
+  sh:focusNode <a:b> ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/minLength-001.test#TestShape> a sh:NodeShape ;\n  sh:minLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/minLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/minLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinLengthConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value <a:b> .
+
+<urn:uuid:bae7847f-d219-4e8b-8f29-5b3c6d592e15> a sh:ValidationResult ;
+  sh:focusNode "Hel" ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/minLength-001.test#TestShape> a sh:NodeShape ;\n  sh:minLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/minLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/minLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinLengthConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "Hel" .
+
+<urn:uuid:277acec5-c2d4-4b89-a140-cd6e435663f8> a sh:ValidationResult ;
+  sh:focusNode _:b7 ;
+  sh:focusNodeDetail "_:b7"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/minLength-001.test#TestShape> a sh:NodeShape ;\n  sh:minLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/minLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/minLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinLengthConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value _:b7 ;
+  sh:valueDetail "_:b7"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:277acec5-c2d4-4b89-a140-cd6e435663f8> ;
+  sh:result <urn:uuid:74d12c97-5e9a-4484-bcbd-0492a51a818c> ;
+  sh:result <urn:uuid:5da5dd75-1159-400c-b1f8-33a2328f9d83> ;
+  sh:result <urn:uuid:bae7847f-d219-4e8b-8f29-5b3c6d592e15> .
+

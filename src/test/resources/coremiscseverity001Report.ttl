@@ -1,0 +1,16 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/misc/severity-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:d1d699d2-a33b-4631-8b7f-d062a0c354bb> a sh:ValidationResult ;
+  sh:focusNode "Hello" ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/misc/severity-001.test#TestShape> a sh:NodeShape ;\n  sh:datatype xsd:integer ;\n  sh:severity sh:Warning ;\n  sh:targetNode \"Hello\"" ;
+  sh:resultSeverity sh:Warning ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "Hello" .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:d1d699d2-a33b-4631-8b7f-d062a0c354bb> .
+

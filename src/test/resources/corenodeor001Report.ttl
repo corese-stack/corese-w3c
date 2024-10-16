@@ -1,0 +1,25 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/or-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:d7771e48-8405-4803-90ad-83f6d0f0360b> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidRectangle2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/or-001.test#RectangleWithArea> a rdfs:Class ;\n  a sh:NodeShape ;\n  rdfs:subClassOf rdfs:Resource ;\n  sh:or ([sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/or-001.test#height>] ;\n    sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/or-001.test#width>]]\n  [sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/or-001.test#area>]])" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:OrConstraintComponent ;
+  sh:sourceShape ns1:RectangleWithArea ;
+  sh:value ns1:InvalidRectangle2 .
+
+<urn:uuid:a7ab8707-0e60-4c7b-8be3-20a6d56c6098> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidRectangle1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/or-001.test#RectangleWithArea> a rdfs:Class ;\n  a sh:NodeShape ;\n  rdfs:subClassOf rdfs:Resource ;\n  sh:or ([sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/or-001.test#height>] ;\n    sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/or-001.test#width>]]\n  [sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/or-001.test#area>]])" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:OrConstraintComponent ;
+  sh:sourceShape ns1:RectangleWithArea ;
+  sh:value ns1:InvalidRectangle1 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:a7ab8707-0e60-4c7b-8be3-20a6d56c6098> ;
+  sh:result <urn:uuid:d7771e48-8405-4803-90ad-83f6d0f0360b> .
+

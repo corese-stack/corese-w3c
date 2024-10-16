@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/class-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:a9c9e117-d8a4-44b1-8544-afbdfb0bfe42> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/class-001.test#TestShape-testProperty> rdfs:label \"test property\" ;\n  sh:class <http://datashapes.org/sh/tests/core/property/class-001.test#SuperClass> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/class-001.test#testProperty>" ;
+  sh:resultPath ns1:testProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape-testProperty ;
+  sh:value ns1:InvalidResource1 .
+
+<urn:uuid:405a16c1-a306-47a2-8978-e9e5096986e4> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/class-001.test#TestShape-testProperty> rdfs:label \"test property\" ;\n  sh:class <http://datashapes.org/sh/tests/core/property/class-001.test#SuperClass> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/class-001.test#testProperty>" ;
+  sh:resultPath ns1:testProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape-testProperty ;
+  sh:value "A string" .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:a9c9e117-d8a4-44b1-8544-afbdfb0bfe42> ;
+  sh:result <urn:uuid:405a16c1-a306-47a2-8978-e9e5096986e4> .
+

@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/path/path-inverse-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:894c0119-043d-4b7e-ab39-ab9d52eda240> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-inverse-001.test#TestShape-P> a sh:PropertyShape ;\n  sh:maxCount 2 ;\n  sh:minCount 2 ;\n  sh:path [sh:inversePath <http://datashapes.org/sh/tests/core/path/path-inverse-001.test#child>]" ;
+  sh:resultPath "[sh:inversePath <http://datashapes.org/sh/tests/core/path/path-inverse-001.test#child>]"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxCountConstraintComponent ;
+  sh:sourceShape ns1:TestShape-P ;
+  sh:value 3 .
+
+<urn:uuid:506e02f3-a2d8-4960-9ddb-e7f16606e099> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-inverse-001.test#TestShape-P> a sh:PropertyShape ;\n  sh:maxCount 2 ;\n  sh:minCount 2 ;\n  sh:path [sh:inversePath <http://datashapes.org/sh/tests/core/path/path-inverse-001.test#child>]" ;
+  sh:resultPath "[sh:inversePath <http://datashapes.org/sh/tests/core/path/path-inverse-001.test#child>]"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+  sh:sourceShape ns1:TestShape-P ;
+  sh:value 1 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:506e02f3-a2d8-4960-9ddb-e7f16606e099> ;
+  sh:result <urn:uuid:894c0119-043d-4b7e-ab39-ab9d52eda240> .
+

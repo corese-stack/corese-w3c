@@ -1,0 +1,18 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://example.org/shacl/tests/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<urn:uuid:8dec42bd-b5ff-49b0-8ada-f7392e44e548> a sh:ValidationResult ;
+  sh:focusNode ns1:j ;
+  sh:resultMessage "Fail at: <http://example.org/shacl/tests/s1> a sh:NodeShape ;\n  sh:class <http://example.org/shacl/tests/C> ;\n  sh:targetNode <http://example.org/shacl/tests/i> ;\n  sh:targetNode <http://example.org/shacl/tests/j>" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:s1 ;
+  sh:value ns1:j .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:8dec42bd-b5ff-49b0-8ada-f7392e44e548> .
+

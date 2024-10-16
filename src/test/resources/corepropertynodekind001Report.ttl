@@ -1,0 +1,287 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:0f2518ab-342a-4398-a5bb-7267565bf30f> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNode ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b42 ;
+  sh:value "Literal" .
+
+<urn:uuid:3e9671f3-2419-42ed-957b-c2093d5524df> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:Literal ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b47 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:a0ef7476-79e9-492c-a772-f6824ae38ee6> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNode ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b45 ;
+  sh:value _:b0 ;
+  sh:valueDetail "_:b0"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:f1f42c2d-4668-404c-bf29-0c7c8ada520f> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNode ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b42 ;
+  sh:value "Literal" .
+
+<urn:uuid:efc5557f-e40b-42e1-b8a1-6e4bf3cd593e> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b45 ;
+  sh:value "Literal" .
+
+<urn:uuid:cd9bc349-9e9d-4846-8cfc-d8b97465108d> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:Literal ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b47 ;
+  sh:value _:b2 ;
+  sh:valueDetail "_:b2"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:51272376-b7bd-439a-8b42-24172b7431db> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRIAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNode ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b42 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:a5668534-0a9d-484c-8e34-90dd99029c3d> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRIAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:Literal ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b47 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:8b1bec89-a7de-4ccd-a7af-6144e4afbb21> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNodeOrIRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b43 ;
+  sh:value "Literal" .
+
+<urn:uuid:1a30980f-96bb-4048-932d-b8131b87ecff> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNodeOrLiteral ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b44 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:7d7bbce9-6356-4227-ad6e-ff4d68fdd8eb> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRIAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNodeOrLiteral ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b44 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:7c568f92-618f-46b3-9c84-6708daebba62> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRIAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNode ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b42 ;
+  sh:value "Literal" .
+
+<urn:uuid:6e12c82a-a04b-408e-bb6d-be6d638d8173> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRIAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b45 ;
+  sh:value "Literal" .
+
+<urn:uuid:91030e99-8d6f-4938-b75d-ebd91a0a7b50> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRIOrLiteral ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b46 ;
+  sh:value _:b1 ;
+  sh:valueDetail "_:b1"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:4911ed19-fb33-4052-bc48-e840928c6dbc> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRIAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNodeOrIRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b43 ;
+  sh:value "Literal" .
+
+<urn:uuid:cf0f1358-5bdc-47b6-8cc1-9f8ce30aca3d> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b45 ;
+  sh:value _:b2 ;
+  sh:valueDetail "_:b2"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:eb807c37-b916-4730-928b-3fa8defdfaee> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:Literal ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b47 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:76ce1bdb-d4d5-455e-99a9-92741b07c925> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b45 ;
+  sh:value _:b1 ;
+  sh:valueDetail "_:b1"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:0c95f28d-0cf7-4fb4-8e0b-80b53896cbd3> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNode ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRIOrLiteral ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b46 ;
+  sh:value _:b0 ;
+  sh:valueDetail "_:b0"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:dffd01a2-53a0-47b7-a69a-d1211639ffce> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b45 ;
+  sh:value "Literal" .
+
+<urn:uuid:843f8b58-a40b-4996-aa9f-c33f83d8363f> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNodeOrIRI ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b43 ;
+  sh:value "Literal" .
+
+<urn:uuid:c70ac0c4-5713-463a-9e1a-8d019154d4b5> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndLiteral ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:IRIOrLiteral ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b46 ;
+  sh:value _:b2 ;
+  sh:valueDetail "_:b2"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:35fd2476-0fc0-4b62-960b-2e36bd62c8ad> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNode ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b42 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:6c1bd8a2-5c19-4268-b7a2-28876042f3ff> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:Literal ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b47 ;
+  sh:value _:b1 ;
+  sh:valueDetail "_:b1"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+<urn:uuid:cc078153-494e-4966-822b-922dab9e83e2> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNodeAndIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNodeOrLiteral ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b44 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:bb90a9ab-5562-4a13-a529-f0c71880258a> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithIRI ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:BlankNode ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b42 ;
+  sh:value rdfs:Class .
+
+<urn:uuid:6b2ec808-15cd-4867-9054-3a2a5ddcfded> a sh:ValidationResult ;
+  sh:focusNode ns1:InstanceWithBlankNode ;
+  sh:resultMessage "Fail at: [sh:nodeKind sh:Literal ;\n  sh:path <http://datashapes.org/sh/tests/core/property/nodeKind-001.test#myProperty>]" ;
+  sh:resultPath ns1:myProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape _:b47 ;
+  sh:value _:b0 ;
+  sh:valueDetail "_:b0"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:35fd2476-0fc0-4b62-960b-2e36bd62c8ad> ;
+  sh:result <urn:uuid:f1f42c2d-4668-404c-bf29-0c7c8ada520f> ;
+  sh:result <urn:uuid:bb90a9ab-5562-4a13-a529-f0c71880258a> ;
+  sh:result <urn:uuid:51272376-b7bd-439a-8b42-24172b7431db> ;
+  sh:result <urn:uuid:7c568f92-618f-46b3-9c84-6708daebba62> ;
+  sh:result <urn:uuid:0f2518ab-342a-4398-a5bb-7267565bf30f> ;
+  sh:result <urn:uuid:8b1bec89-a7de-4ccd-a7af-6144e4afbb21> ;
+  sh:result <urn:uuid:4911ed19-fb33-4052-bc48-e840928c6dbc> ;
+  sh:result <urn:uuid:843f8b58-a40b-4996-aa9f-c33f83d8363f> ;
+  sh:result <urn:uuid:cc078153-494e-4966-822b-922dab9e83e2> ;
+  sh:result <urn:uuid:1a30980f-96bb-4048-932d-b8131b87ecff> ;
+  sh:result <urn:uuid:7d7bbce9-6356-4227-ad6e-ff4d68fdd8eb> ;
+  sh:result <urn:uuid:a0ef7476-79e9-492c-a772-f6824ae38ee6> ;
+  sh:result <urn:uuid:76ce1bdb-d4d5-455e-99a9-92741b07c925> ;
+  sh:result <urn:uuid:dffd01a2-53a0-47b7-a69a-d1211639ffce> ;
+  sh:result <urn:uuid:cf0f1358-5bdc-47b6-8cc1-9f8ce30aca3d> ;
+  sh:result <urn:uuid:6e12c82a-a04b-408e-bb6d-be6d638d8173> ;
+  sh:result <urn:uuid:efc5557f-e40b-42e1-b8a1-6e4bf3cd593e> ;
+  sh:result <urn:uuid:0c95f28d-0cf7-4fb4-8e0b-80b53896cbd3> ;
+  sh:result <urn:uuid:91030e99-8d6f-4938-b75d-ebd91a0a7b50> ;
+  sh:result <urn:uuid:c70ac0c4-5713-463a-9e1a-8d019154d4b5> ;
+  sh:result <urn:uuid:6b2ec808-15cd-4867-9054-3a2a5ddcfded> ;
+  sh:result <urn:uuid:eb807c37-b916-4730-928b-3fa8defdfaee> ;
+  sh:result <urn:uuid:6c1bd8a2-5c19-4268-b7a2-28876042f3ff> ;
+  sh:result <urn:uuid:cd9bc349-9e9d-4846-8cfc-d8b97465108d> ;
+  sh:result <urn:uuid:3e9671f3-2419-42ed-957b-c2093d5524df> ;
+  sh:result <urn:uuid:a5668534-0a9d-484c-8e34-90dd99029c3d> .
+

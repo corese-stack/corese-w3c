@@ -1,0 +1,17 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/sparql/node/sparql-002.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:5feb2fca-508a-44cd-b329-8b76c8ddbb39> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidCountry ;
+  sh:resultMessage "Values are literals with German language tag." ;
+  sh:resultPath ns1:germanLabel ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:SPARQLConstraintComponent ;
+  sh:sourceShape ns1:LanguageExampleShape ;
+  sh:value "Spain"@en .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:5feb2fca-508a-44cd-b329-8b76c8ddbb39> .
+

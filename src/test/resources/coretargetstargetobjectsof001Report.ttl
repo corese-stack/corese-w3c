@@ -1,0 +1,26 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:45861968-ecc1-46ee-bebf-1309233bce72> a sh:ValidationResult ;
+  sh:focusNode "String" ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#TestShape> a sh:NodeShape ;\n  rdfs:label \"Test shape\" ;\n  sh:datatype xsd:integer ;\n  sh:targetObjectsOf <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#testProperty>" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "String" .
+
+<urn:uuid:deb86c21-9c38-4ef0-b9d1-589f5c2a6e75> a sh:ValidationResult ;
+  sh:focusNode rdfs:Resource ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#TestShape> a sh:NodeShape ;\n  rdfs:label \"Test shape\" ;\n  sh:datatype xsd:integer ;\n  sh:targetObjectsOf <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#testProperty>" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value rdfs:Resource .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:45861968-ecc1-46ee-bebf-1309233bce72> ;
+  sh:result <urn:uuid:deb86c21-9c38-4ef0-b9d1-589f5c2a6e75> .
+

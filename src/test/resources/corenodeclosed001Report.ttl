@@ -1,0 +1,28 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/closed-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<urn:uuid:f71d2804-8199-4e4a-ab88-6660396a5e35> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/closed-001.test#MyShape> a sh:NodeShape ;\n  sh:closed true ;\n  sh:property [sh:path <http://datashapes.org/sh/tests/core/node/closed-001.test#someProperty>] ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/closed-001.test#InvalidInstance1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/closed-001.test#ValidInstance1>" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClosedConstraintComponent ;
+  sh:sourceShape ns1:MyShape ;
+  sh:value ns1:SomeClass .
+
+<urn:uuid:9267353f-b41c-4c3a-a9d8-ddc6412e4305> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/closed-001.test#MyShape> a sh:NodeShape ;\n  sh:closed true ;\n  sh:property [sh:path <http://datashapes.org/sh/tests/core/node/closed-001.test#someProperty>] ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/closed-001.test#InvalidInstance1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/closed-001.test#ValidInstance1>" ;
+  sh:resultPath ns1:otherProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClosedConstraintComponent ;
+  sh:sourceShape ns1:MyShape ;
+  sh:value 4 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:9267353f-b41c-4c3a-a9d8-ddc6412e4305> ;
+  sh:result <urn:uuid:f71d2804-8199-4e4a-ab88-6660396a5e35> .
+

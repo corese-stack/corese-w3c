@@ -207,10 +207,11 @@ public class JUnitTestFileGenerator {
         watcher.append("    private void writeTestReport(String testName, String success) {\n");
         watcher.append("        try {\n");
         watcher.append("            Path testReportPath = Paths.get(TEST_REPORT_FILE);\n");
+        watcher.append("            Files.createDirectories(testReportPath.getParent());\n");
         watcher.append(
                 "            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(\"yyyy-MM-dd'T'HH:mm:ssXXX\");\n");
         watcher.append(
-                "            Files.write(testReportPath, (MANIFEST_URI + \"#\" + testName + \",\" + dtf.format(ZonedDateTime.now()) + \",\" + EARL + success + \"\\n\").getBytes(), StandardOpenOption.APPEND);\n");
+                "            Files.write(testReportPath, (MANIFEST_URI + \"#\" + testName + \",\" + dtf.format(ZonedDateTime.now()) + \",\" + EARL + success + \"\\n\").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);\n");
         watcher.append("        } catch (IOException e) {\n");
         watcher.append("            e.printStackTrace();\n");
         watcher.append("        }\n");
@@ -241,6 +242,7 @@ public class JUnitTestFileGenerator {
         watcher.append("        public static void createTestReportFile() {\n");
         watcher.append("            try {\n");
         watcher.append("                Path testReportPath = Paths.get(TEST_REPORT_FILE);\n");
+        watcher.append("                Files.createDirectories(testReportPath.getParent());\n");
         watcher.append("                Files.write(testReportPath, \"\".getBytes());\n");
         watcher.append("            } catch (IOException e) {\n");
         watcher.append("                e.printStackTrace();\n");

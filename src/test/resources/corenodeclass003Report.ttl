@@ -1,0 +1,58 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/class-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<urn:uuid:7f9bf4b4-ca8e-4050-b9d2-d32f30e19463> a sh:ValidationResult ;
+  sh:focusNode ns1:Typeless ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-001.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Animal> ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Person> ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/class-001.test#MalePerson> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#John> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokki> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokkip> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Someone> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Typeless>" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:Typeless .
+
+<urn:uuid:a7112fa3-6a11-40b8-b79d-6d5c3a85e520> a sh:ValidationResult ;
+  sh:focusNode ns1:John ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-001.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Animal> ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Person> ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/class-001.test#MalePerson> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#John> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokki> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokkip> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Someone> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Typeless>" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:John .
+
+<urn:uuid:caff9318-aedb-4893-b0f7-56ceff2393ba> a sh:ValidationResult ;
+  sh:focusNode ns1:Quokkip ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-001.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Animal> ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Person> ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/class-001.test#MalePerson> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#John> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokki> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokkip> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Someone> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Typeless>" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:Quokkip .
+
+<urn:uuid:33aa8be0-0f0b-4e3a-b369-bb2625d319ee> a sh:ValidationResult ;
+  sh:focusNode ns1:Typeless ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-001.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Animal> ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Person> ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/class-001.test#MalePerson> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#John> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokki> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokkip> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Someone> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Typeless>" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:Typeless .
+
+<urn:uuid:3b5b91cd-1846-43d3-ba77-3ad3feb8d7fc> a sh:ValidationResult ;
+  sh:focusNode ns1:Quokki ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-001.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Animal> ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Person> ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/class-001.test#MalePerson> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#John> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokki> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokkip> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Someone> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Typeless>" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:Quokki .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:a7112fa3-6a11-40b8-b79d-6d5c3a85e520> ;
+  sh:result <urn:uuid:3b5b91cd-1846-43d3-ba77-3ad3feb8d7fc> ;
+  sh:result <urn:uuid:caff9318-aedb-4893-b0f7-56ceff2393ba> ;
+  sh:result <urn:uuid:7f9bf4b4-ca8e-4050-b9d2-d32f30e19463> ;
+  sh:result <urn:uuid:33aa8be0-0f0b-4e3a-b369-bb2625d319ee> .
+

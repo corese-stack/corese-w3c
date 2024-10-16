@@ -1,0 +1,37 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/uniqueLang-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:dfdfb8e7-45a7-42d6-b837-76cffc183d50> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/uniqueLang-001.test#TestShape-testProperty> rdfs:label \"test property\" ;\n  sh:path <http://datashapes.org/sh/tests/core/property/uniqueLang-001.test#testProperty> ;\n  sh:uniqueLang true" ;
+  sh:resultPath ns1:testProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:UniqueLangConstraintComponent ;
+  sh:sourceShape ns1:TestShape-testProperty ;
+  sh:value "de" .
+
+<urn:uuid:722dac5d-1516-404b-b0b3-eec9468f4d1c> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/uniqueLang-001.test#TestShape-testProperty> rdfs:label \"test property\" ;\n  sh:path <http://datashapes.org/sh/tests/core/property/uniqueLang-001.test#testProperty> ;\n  sh:uniqueLang true" ;
+  sh:resultPath ns1:testProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:UniqueLangConstraintComponent ;
+  sh:sourceShape ns1:TestShape-testProperty ;
+  sh:value "en" .
+
+<urn:uuid:3aafe3f4-8b5f-4809-8a3a-0ba220e693fc> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/uniqueLang-001.test#TestShape-testProperty> rdfs:label \"test property\" ;\n  sh:path <http://datashapes.org/sh/tests/core/property/uniqueLang-001.test#testProperty> ;\n  sh:uniqueLang true" ;
+  sh:resultPath ns1:testProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:UniqueLangConstraintComponent ;
+  sh:sourceShape ns1:TestShape-testProperty ;
+  sh:value "en" .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:3aafe3f4-8b5f-4809-8a3a-0ba220e693fc> ;
+  sh:result <urn:uuid:dfdfb8e7-45a7-42d6-b837-76cffc183d50> ;
+  sh:result <urn:uuid:722dac5d-1516-404b-b0b3-eec9468f4d1c> .
+

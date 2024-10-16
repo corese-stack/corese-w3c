@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/disjoint-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:e467116f-5d70-415a-a1c3-f42982104051> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/disjoint-001.test#TestShape-property1> sh:disjoint <http://datashapes.org/sh/tests/core/property/disjoint-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/disjoint-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DisjointConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value "A" .
+
+<urn:uuid:38d858bc-6325-4a2b-a2ff-8dc4ba10fb9b> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/disjoint-001.test#TestShape-property1> sh:disjoint <http://datashapes.org/sh/tests/core/property/disjoint-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/disjoint-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DisjointConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value "A" .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:e467116f-5d70-415a-a1c3-f42982104051> ;
+  sh:result <urn:uuid:38d858bc-6325-4a2b-a2ff-8dc4ba10fb9b> .
+

@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/path/path-complex-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:a25232c1-632b-49ef-9d64-8c3e51c3cfbc> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-complex-001.test#TestShape> a sh:PropertyShape ;\n  sh:hasValue <http://datashapes.org/sh/tests/core/path/path-complex-001.test#Person> ;\n  sh:path (rdf:type\n  [sh:zeroOrMorePath rdfs:subClassOf]) ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#ValidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#ValidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#ValidResource3>" ;
+  sh:resultPath "(rdf:type\n[sh:zeroOrMorePath rdfs:subClassOf])"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:HasValueConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:Person .
+
+<urn:uuid:3862fac1-cf9c-46aa-a3e5-160c49555e8d> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-complex-001.test#TestShape> a sh:PropertyShape ;\n  sh:hasValue <http://datashapes.org/sh/tests/core/path/path-complex-001.test#Person> ;\n  sh:path (rdf:type\n  [sh:zeroOrMorePath rdfs:subClassOf]) ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#ValidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#ValidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-complex-001.test#ValidResource3>" ;
+  sh:resultPath "(rdf:type\n[sh:zeroOrMorePath rdfs:subClassOf])"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:HasValueConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:Person .
+
+_:bb4 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:a25232c1-632b-49ef-9d64-8c3e51c3cfbc> ;
+  sh:result <urn:uuid:3862fac1-cf9c-46aa-a3e5-160c49555e8d> .
+

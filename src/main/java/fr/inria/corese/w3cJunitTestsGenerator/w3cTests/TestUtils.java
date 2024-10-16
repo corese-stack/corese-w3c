@@ -44,13 +44,20 @@ public class TestUtils {
      */
     public static String extractLongTestName(String testUri) {
         String[] decomposedTestUri = testUri.split("/");
-        String endName = testUri.split("#")[1];
-        if(decomposedTestUri.length > 2) {
-            String namePrefix = decomposedTestUri[decomposedTestUri.length -2];
-            return sanitizeTestName(namePrefix + endName);
+        String[] hashtagSplitUri = testUri.split("#");
+        String endName = hashtagSplitUri.length > 1 ? hashtagSplitUri[1] : "";
+        StringBuilder namePrefix = new StringBuilder();
+        int earliestSubstringIt = 0;
+        if(decomposedTestUri.length > 3) {
+            earliestSubstringIt = 3;
+        } else if(decomposedTestUri.length > 2) {
+            earliestSubstringIt = 2;
+        }
+        for(int endIt = earliestSubstringIt; endIt > 0; endIt--) {
+            namePrefix.append(decomposedTestUri[decomposedTestUri.length - endIt]);
         }
 
-        return sanitizeTestName(endName);
+        return sanitizeTestName(namePrefix + endName);
     }
 
     /**
@@ -155,5 +162,209 @@ public class TestUtils {
     // Method to compare two lists of results
     private static boolean compareXMLResults(List<String> results1, List<String> results2) {
         return results1.equals(results2);
+    }
+
+    public static String generateSHACLCheckIfRefAreInResultSPARQLQuery() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("PREFIX sh: <http://www.w3.org/ns/shacl#> \n");
+        sb.append("SELECT DISTINCT * {\n");
+        sb.append("    GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("        ?validationReportReference a sh:ValidationReport ;\n");
+        sb.append("            sh:conforms ?conformity ;\n");
+        sb.append("            sh:result ?validationResultReference .\n");
+        sb.append("        ?validationResultReference a sh:ValidationResult ;\n");
+        sb.append("            sh:focusNode ?focusNode ;\n");
+        sb.append("            sh:resultSeverity ?severity ;\n");
+        sb.append("            sh:sourceConstraintComponent ?constraintComponent .\n");
+        sb.append("    }\n");
+        sb.append("    FILTER(\n");
+        sb.append("        EXISTS {\n");
+        sb.append("            GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("                ?validationReportResult a sh:ValidationReport ;\n");
+        sb.append("                    sh:conforms ?conformity ;\n");
+        sb.append("                    sh:result ?validationResultResult .\n");
+        sb.append("                ?validationResultResult a sh:ValidationResult ;\n");
+        sb.append("                    sh:focusNode ?focusNode ;\n");
+        sb.append("                    sh:resultSeverity ?severity ;\n");
+        sb.append("                    sh:sourceConstraintComponent ?constraintComponent .\n");
+        sb.append("            }\n");
+        sb.append("        }\n");
+        sb.append("    )\n");
+        sb.append("    GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("        ?validationResultReference sh:sourceShape ?shape .\n");
+        sb.append("    }\n");
+        sb.append("    FILTER(IF(IsIRI(?shape), EXISTS { GRAPH <http://corese.inria.fr/result> { ?validationResultResult sh:sourceShape ?shape } }, true ) )\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("            ?validationResultReference sh:resultPath ?path .\n");
+        sb.append("        }\n");
+        sb.append("        FILTER( EXISTS { GRAPH <http://corese.inria.fr/result> { ?validationResultResult sh:resultPath ?path } } )\n");
+        sb.append("    }\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("            ?validationResultReference sh:value ?value .\n");
+        sb.append("        }\n");
+        sb.append("        FILTER( EXISTS { GRAPH <http://corese.inria.fr/result> { ?validationResultResult sh:value ?value } } )\n");
+        sb.append("    }\n");
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    public static String generateSHACLCheckIfResultsAreInRefSPARQLQuery() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("PREFIX sh: <http://www.w3.org/ns/shacl#> \n");
+        sb.append("SELECT DISTINCT * {\n");
+        sb.append("    GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("        ?validationReportResult a sh:ValidationReport ;\n");
+        sb.append("            sh:conforms ?conformity ;\n");
+        sb.append("            sh:result ?validationResultResult .\n");
+        sb.append("        ?validationResultResult a sh:ValidationResult ;\n");
+        sb.append("            sh:focusNode ?focusNode ;\n");
+        sb.append("            sh:resultSeverity ?severity ;\n");
+        sb.append("            sh:sourceConstraintComponent ?constraintComponent .\n");
+        sb.append("    }\n");
+        sb.append("    FILTER(\n");
+        sb.append("        EXISTS {\n");
+        sb.append("            GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("                ?validationReportReference a sh:ValidationReport ;\n");
+        sb.append("                    sh:conforms ?conformity ;\n");
+        sb.append("                    sh:result ?validationResultReference .\n");
+        sb.append("                ?validationResultReference a sh:ValidationResult ;\n");
+        sb.append("                    sh:focusNode ?focusNode ;\n");
+        sb.append("                    sh:resultSeverity ?severity ;\n");
+        sb.append("                    sh:sourceConstraintComponent ?constraintComponent .\n");
+        sb.append("            }\n");
+        sb.append("        }\n");
+        sb.append("    )\n");
+        sb.append("    GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("        ?validationResultResult sh:sourceShape ?shape .\n");
+        sb.append("    }\n");
+        sb.append("    FILTER( IF( IsIRI(?shape), EXISTS { GRAPH <http://corese.inria.fr/reference> { ?validationResultReference sh:sourceShape ?shape . } } , true ) )\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("            ?validationResultResult sh:value ?value .\n");
+        sb.append("        }\n");
+        sb.append("        FILTER( EXISTS { GRAPH <http://corese.inria.fr/reference> { ?validationResultReference sh:value ?value } } )\n");
+        sb.append("    }\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("            ?validationResultResult sh:resultPath ?path .\n");
+        sb.append("        }\n");
+        sb.append("        FILTER( EXISTS { GRAPH <http://corese.inria.fr/reference> { ?validationResultReference sh:resultPath ?path } } )\n");
+        sb.append("    }\n");
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    public static String generateSHACLCheckIfResultsAreNotInRefSPARQLQuery() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("PREFIX sh: <http://www.w3.org/ns/shacl#> \n");
+        sb.append("SELECT DISTINCT * {\n");
+        sb.append("    GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("        ?validationReportResult a sh:ValidationReport ;\n");
+        sb.append("            sh:conforms ?conformity ;\n");
+        sb.append("            sh:result ?validationResultResult .\n");
+        sb.append("        ?validationResultResult a sh:ValidationResult ;\n");
+        sb.append("            sh:focusNode ?focusNode ;\n");
+        sb.append("            sh:resultSeverity ?severity ;\n");
+        sb.append("            sh:sourceConstraintComponent ?constraintComponent .\n");
+        sb.append("    }\n");
+        sb.append("    FILTER(\n");
+        sb.append("        NOT EXISTS {");
+        sb.append("            GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("                ?validationReportReference a sh:ValidationReport ;\n");
+        sb.append("                    sh:conforms ?conformity ;\n");
+        sb.append("                    sh:result ?validationResultReference .\n");
+        sb.append("                ?validationResultReference a sh:ValidationResult ;\n");
+        sb.append("                    sh:focusNode ?focusNode ;\n");
+        sb.append("                    sh:resultSeverity ?severity ;\n");
+        sb.append("                    sh:sourceConstraintComponent ?constraintComponent .\n");
+        sb.append("            }\n");
+        sb.append("        }\n");
+        sb.append("    )\n");
+        sb.append("    GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("        ?validationResultResult sh:sourceShape ?shape .\n");
+        sb.append("    }\n");
+        sb.append("    FILTER( IF( IsIRI(?shape), NOT EXISTS { GRAPH <http://corese.inria.fr/reference> { ?validationResultReference sh:sourceShape ?shape . } }, true ) )\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("            ?validationResultResult sh:resultPath ?path .\n");
+        sb.append("        }\n");
+        sb.append("        FILTER(NOT EXISTS { GRAPH <http://corese.inria.fr/reference> { ?validationResultReference sh:resultPath ?path } } )\n");
+        sb.append("    }\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("            ?validationResultResult sh:value ?value .\n");
+        sb.append("        }\n");
+        sb.append("        FILTER( NOT EXISTS { GRAPH <http://corese.inria.fr/reference> { ?validationResultReference sh:value ?value } } )\n");
+        sb.append("    }\n");
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    public static String generateSHACLCheckIfRefAreNotInResultSPARQLQuery() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("PREFIX sh: <http://www.w3.org/ns/shacl#> \n");
+        sb.append("SELECT DISTINCT * {\n");
+        sb.append("    GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("        ?validationReportReference a sh:ValidationReport ;\n");
+        sb.append("            sh:conforms ?conformity ;\n");
+        sb.append("            sh:result ?validationResultReference .\n");
+        sb.append("        ?validationResultReference a sh:ValidationResult ;\n");
+        sb.append("            sh:focusNode ?focusNode ;\n");
+        sb.append("            sh:resultSeverity ?severity ;\n");
+        sb.append("            sh:sourceConstraintComponent ?constraintComponent ;\n");
+        sb.append("    }\n");
+        sb.append("    FILTER(\n");
+        sb.append("        NOT EXISTS {");
+        sb.append("            GRAPH <http://corese.inria.fr/result> {\n");
+        sb.append("                ?validationReportResult a sh:ValidationReport ;\n");
+        sb.append("                    sh:conforms ?conformity ;\n");
+        sb.append("                    sh:result ?validationResult .\n");
+        sb.append("                ?validationResultResult a sh:ValidationResult ;\n");
+        sb.append("                    sh:focusNode ?focusNode ;\n");
+        sb.append("                    sh:resultSeverity ?severity ;\n");
+        sb.append("                    sh:sourceConstraintComponent ?constraintComponent .\n");
+        sb.append("            }\n");
+        sb.append("        }\n");
+        sb.append("    )\n");
+        sb.append("    GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("        ?validationResultReference sh:sourceShape ?shape .\n");
+        sb.append("    }\n");
+        sb.append("    FILTER(IF(IsIRI(?shape), NOT EXISTS { GRAPH <http://corese.inria.fr/result> { ?validationResultResult sh:sourceShape ?shape } }, true ) )\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("            ?validationResultReference sh:value ?value .\n");
+        sb.append("        }\n");
+        sb.append("        FILTER( NOT EXISTS { GRAPH <http://corese.inria.fr/result> { ?validationResultResult sh:value ?value } } )\n");
+        sb.append("    }\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        GRAPH <http://corese.inria.fr/reference> {\n");
+        sb.append("            ?validationResultReference sh:resultPath ?path .\n");
+        sb.append("        }\n");
+        sb.append("        FILTER( NOT EXISTS { GRAPH <http://corese.inria.fr/result> { ?validationResultResult sh:resultPath ?path } } )\n");
+        sb.append("    }\n");
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    public static String generateSHACLSuccessfullValidationReport() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("PREFIX sh: <http://www.w3.org/ns/shacl#>\n");
+        sb.append("ASK {\n");
+        sb.append("    ?report a sh:ValidationReport ;\n");
+        sb.append("        sh:conforms true .\n");
+        sb.append("}");
+
+        return sb.toString();
     }
 }

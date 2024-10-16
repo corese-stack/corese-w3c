@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:e9857961-c57c-4c30-88ae-1dfc04771eb1> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#TestShape> a sh:PropertyShape ;\n  sh:minCount 2 ;\n  sh:path [sh:alternativePath (<http://datashapes.org/sh/tests/core/path/path-alternative-001.test#property1>\n    <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#property2>)] ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#ValidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#ValidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#ValidResource3>" ;
+  sh:resultPath "[sh:alternativePath (<http://datashapes.org/sh/tests/core/path/path-alternative-001.test#property1>\n  <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#property2>)]"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value 1 .
+
+<urn:uuid:775410c5-29a5-403c-a889-51f31fa3a4c8> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#TestShape> a sh:PropertyShape ;\n  sh:minCount 2 ;\n  sh:path [sh:alternativePath (<http://datashapes.org/sh/tests/core/path/path-alternative-001.test#property1>\n    <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#property2>)] ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#ValidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#ValidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#ValidResource3>" ;
+  sh:resultPath "[sh:alternativePath (<http://datashapes.org/sh/tests/core/path/path-alternative-001.test#property1>\n  <http://datashapes.org/sh/tests/core/path/path-alternative-001.test#property2>)]"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value 0 .
+
+_:bb4 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:e9857961-c57c-4c30-88ae-1dfc04771eb1> ;
+  sh:result <urn:uuid:775410c5-29a5-403c-a889-51f31fa3a4c8> .
+

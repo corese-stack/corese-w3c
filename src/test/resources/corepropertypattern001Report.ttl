@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/pattern-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:54f89573-604f-45b9-be4c-4ce87274e83c> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/pattern-001.test#TestShape-property> sh:datatype xsd:string ;\n  sh:path <http://datashapes.org/sh/tests/core/property/pattern-001.test#property> ;\n  sh:pattern \"Joh\"" ;
+  sh:resultPath ns1:property ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:PatternConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property ;
+  sh:value "john" .
+
+<urn:uuid:9c9e6ad2-fdf7-4c45-8579-00f15da88485> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/pattern-001.test#TestShape-property> sh:datatype xsd:string ;\n  sh:path <http://datashapes.org/sh/tests/core/property/pattern-001.test#property> ;\n  sh:pattern \"Joh\"" ;
+  sh:resultPath ns1:property ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:PatternConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property ;
+  sh:value "Maria" .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:9c9e6ad2-fdf7-4c45-8579-00f15da88485> ;
+  sh:result <urn:uuid:54f89573-604f-45b9-be4c-4ce87274e83c> .
+

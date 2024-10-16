@@ -1,0 +1,28 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/datatype-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:9afdfca7-7a8b-4d5e-a630-43eee578dacd> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/datatype-001.test#TestShape-dateProperty> rdfs:label \"date property\" ;\n  sh:datatype xsd:date ;\n  sh:path <http://datashapes.org/sh/tests/core/property/datatype-001.test#dateProperty>" ;
+  sh:resultPath ns1:dateProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape-dateProperty ;
+  sh:value "2011-01-01"^^xsd:dateTime .
+
+<urn:uuid:c3add3de-46dc-4809-823c-370b0619665b> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/datatype-001.test#TestShape-integerProperty> rdfs:label \"integer property\" ;\n  sh:datatype xsd:integer ;\n  sh:path <http://datashapes.org/sh/tests/core/property/datatype-001.test#integerProperty>" ;
+  sh:resultPath ns1:integerProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape-integerProperty ;
+  sh:value "11.1"^^xsd:decimal .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:9afdfca7-7a8b-4d5e-a630-43eee578dacd> ;
+  sh:result <urn:uuid:c3add3de-46dc-4809-823c-370b0619665b> .
+

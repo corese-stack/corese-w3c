@@ -1,0 +1,30 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/class-002.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<urn:uuid:b3d1761a-ae67-47ae-bb17-3c02d830b0e9> a sh:ValidationResult ;
+  sh:focusNode "String" ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-002.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-002.test#TestClass> ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/class-002.test#BNodeClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-002.test#NamedInstance> ;\n  sh:targetNode \"String\"" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "String" .
+
+<urn:uuid:d7dd7432-f67e-4dd4-b190-302de1cb2625> a sh:ValidationResult ;
+  sh:focusNode _:b5 ;
+  sh:focusNodeDetail "_:b5"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-002.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-002.test#TestClass> ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/class-002.test#BNodeClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-002.test#NamedInstance> ;\n  sh:targetNode \"String\"" ;
+  sh:resultPath rdf:type ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value _:b5 ;
+  sh:valueDetail "_:b5"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:d7dd7432-f67e-4dd4-b190-302de1cb2625> ;
+  sh:result <urn:uuid:b3d1761a-ae67-47ae-bb17-3c02d830b0e9> .
+

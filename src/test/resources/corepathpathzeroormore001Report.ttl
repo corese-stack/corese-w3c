@@ -1,0 +1,17 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/path/path-zeroOrMore-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:4aaf2415-34d6-4d99-9198-fa5000ab439e> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-zeroOrMore-001.test#TestShape> a sh:PropertyShape ;\n  sh:minCount 2 ;\n  sh:path [sh:zeroOrMorePath <http://datashapes.org/sh/tests/core/path/path-zeroOrMore-001.test#child>] ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-zeroOrMore-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-zeroOrMore-001.test#ValidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-zeroOrMore-001.test#ValidResource2>" ;
+  sh:resultPath "[sh:zeroOrMorePath <http://datashapes.org/sh/tests/core/path/path-zeroOrMore-001.test#child>]"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value 1 .
+
+_:bb4 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:4aaf2415-34d6-4d99-9198-fa5000ab439e> .
+

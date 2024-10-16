@@ -1,0 +1,64 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:e73dd16b-6094-4eda-b3e8-abe1b6e5ee3b> a sh:ValidationResult ;
+  sh:focusNode ns1:John ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxExclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:John .
+
+<urn:uuid:783c8e0f-28de-45b7-b4a3-a2416fc7988e> a sh:ValidationResult ;
+  sh:focusNode "4.1"^^xsd:decimal ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxExclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "4.1"^^xsd:decimal .
+
+<urn:uuid:b1f40eb5-568f-44ee-89f5-6891649a763a> a sh:ValidationResult ;
+  sh:focusNode "Hello" ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxExclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "Hello" .
+
+<urn:uuid:e4294086-ff83-41cc-93cd-f07f17ea1b18> a sh:ValidationResult ;
+  sh:focusNode 4 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxExclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value 4 .
+
+<urn:uuid:73eb79d0-755c-4352-9da1-804e95f18d86> a sh:ValidationResult ;
+  sh:focusNode "4.0"^^xsd:decimal ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxExclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "4.0"^^xsd:decimal .
+
+<urn:uuid:6e89f2e8-fabc-4500-a3eb-f7e8fcb8f2ee> a sh:ValidationResult ;
+  sh:focusNode _:b9 ;
+  sh:focusNodeDetail "_:b9"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxExclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxExclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value _:b9 ;
+  sh:valueDetail "_:b9"^^<http://ns.inria.fr/sparql-extension/graph> .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:6e89f2e8-fabc-4500-a3eb-f7e8fcb8f2ee> ;
+  sh:result <urn:uuid:e73dd16b-6094-4eda-b3e8-abe1b6e5ee3b> ;
+  sh:result <urn:uuid:73eb79d0-755c-4352-9da1-804e95f18d86> ;
+  sh:result <urn:uuid:e4294086-ff83-41cc-93cd-f07f17ea1b18> ;
+  sh:result <urn:uuid:783c8e0f-28de-45b7-b4a3-a2416fc7988e> ;
+  sh:result <urn:uuid:b1f40eb5-568f-44ee-89f5-6891649a763a> .
+

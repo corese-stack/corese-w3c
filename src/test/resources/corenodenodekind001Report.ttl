@@ -1,0 +1,16 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/nodeKind-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:bd56779e-3c7b-475f-9025-9edf253fb1e8> a sh:ValidationResult ;
+  sh:focusNode true ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/nodeKind-001.test#IRITestShape> a sh:NodeShape ;\n  sh:nodeKind sh:IRI ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/nodeKind-001.test#John> ;\n  sh:targetNode true" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:NodeKindConstraintComponent ;
+  sh:sourceShape ns1:IRITestShape ;
+  sh:value true .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:bd56779e-3c7b-475f-9025-9edf253fb1e8> .
+
