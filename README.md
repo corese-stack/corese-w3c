@@ -6,9 +6,8 @@ Tested files and manifests are in the `src/test/resources` directory.
 
 ## Implemented tests
 
-- [RDF Canonical](https://w3c.github.io/rdf-canon/tests/)
-
 - RDF tests
+  - [RDF Canonical](https://w3c.github.io/rdf-canon/tests/)
   - RDF 1.1 tests
     - [N-Quads tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)
     - [N-Triples tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/)
@@ -17,11 +16,10 @@ Tested files and manifests are in the `src/test/resources` directory.
     - [Turtle tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/)
 - SPARQL tests
   - [SPARQL 1.0 tests](https://w3c.github.io/rdf-tests/sparql/sparql10)
-
-## Ongoing implementation
-
 - SHACL tests
   - [SHACL 1.1 tests](https://w3c.github.io/data-shapes/data-shapes-test-suite/)
+
+## Ongoing implementation
   
 ## Planned implementation
 
