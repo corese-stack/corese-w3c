@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/property-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:8654bbdf-42c0-4f17-aa13-d1a72d3896a3> a sh:ValidationResult ;
+<urn:uuid:4ac2633f-9e19-4865-9e62-d6363342976e> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidAddress ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/property-001.test#PersonShape-address-city> sh:class <http://datashapes.org/sh/tests/core/property/property-001.test#City> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/property-001.test#city>" ;
   sh:resultPath ns1:city ;
@@ -11,7 +11,7 @@
   sh:sourceShape ns1:PersonShape-address-city ;
   sh:value ns1:InvalidCity .
 
-<urn:uuid:3bf4a593-8a81-4c12-bc33-4c5c8a946c8b> a sh:ValidationResult ;
+<urn:uuid:d588295e-0fac-47ae-8df7-5c5244175a30> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidAddress ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/property-001.test#PersonShape-address-city> sh:class <http://datashapes.org/sh/tests/core/property/property-001.test#City> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/property-001.test#city>" ;
   sh:resultPath ns1:city ;
@@ -22,6 +22,6 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:8654bbdf-42c0-4f17-aa13-d1a72d3896a3> ;
-  sh:result <urn:uuid:3bf4a593-8a81-4c12-bc33-4c5c8a946c8b> .
+  sh:result <urn:uuid:d588295e-0fac-47ae-8df7-5c5244175a30> ;
+  sh:result <urn:uuid:4ac2633f-9e19-4865-9e62-d6363342976e> .
 

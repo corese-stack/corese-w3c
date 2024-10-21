@@ -18,4 +18,4 @@ ex:TestShape2
   sh:datatype xsd:integer ;  
   sh:severity sh:Info ;
 ```
-As the SHACL standard [does not require RDFS entailments](https://www.w3.org/TR/shacl/#shacl-rdfs) to be applied to shape graphs, the type of shape in the test file is not detected.
+As the SHACL standard [does not require RDFS entailments](https://www.w3.org/TR/shacl/#shacl-rdfs) to be applied to shape graphs, the type of the shapes in the test file are not detected.

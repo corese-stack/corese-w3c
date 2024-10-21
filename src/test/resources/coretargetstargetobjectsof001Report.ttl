@@ -3,15 +3,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:45861968-ecc1-46ee-bebf-1309233bce72> a sh:ValidationResult ;
-  sh:focusNode "String" ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#TestShape> a sh:NodeShape ;\n  rdfs:label \"Test shape\" ;\n  sh:datatype xsd:integer ;\n  sh:targetObjectsOf <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#testProperty>" ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
-  sh:sourceShape ns1:TestShape ;
-  sh:value "String" .
-
-<urn:uuid:deb86c21-9c38-4ef0-b9d1-589f5c2a6e75> a sh:ValidationResult ;
+<urn:uuid:bc1791c7-d320-4c77-8674-a4cc1145f301> a sh:ValidationResult ;
   sh:focusNode rdfs:Resource ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#TestShape> a sh:NodeShape ;\n  rdfs:label \"Test shape\" ;\n  sh:datatype xsd:integer ;\n  sh:targetObjectsOf <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#testProperty>" ;
   sh:resultSeverity sh:Violation ;
@@ -19,8 +11,16 @@
   sh:sourceShape ns1:TestShape ;
   sh:value rdfs:Resource .
 
+<urn:uuid:9733860a-5e4c-420b-bcae-c12a1f65a82f> a sh:ValidationResult ;
+  sh:focusNode "String" ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#TestShape> a sh:NodeShape ;\n  rdfs:label \"Test shape\" ;\n  sh:datatype xsd:integer ;\n  sh:targetObjectsOf <http://datashapes.org/sh/tests/core/targets/targetObjectsOf-001.test#testProperty>" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "String" .
+
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:45861968-ecc1-46ee-bebf-1309233bce72> ;
-  sh:result <urn:uuid:deb86c21-9c38-4ef0-b9d1-589f5c2a6e75> .
+  sh:result <urn:uuid:9733860a-5e4c-420b-bcae-c12a1f65a82f> ;
+  sh:result <urn:uuid:bc1791c7-d320-4c77-8674-a4cc1145f301> .
 

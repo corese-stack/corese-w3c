@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/targets/targetClass-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:f30517d3-c917-48bc-8174-795de88d7279> a sh:ValidationResult ;
+<urn:uuid:70e5b10a-2bd1-4f91-8ae8-65ba057d0cfa> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetClass-001.test#MyShape-myProperty> sh:maxCount 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/targets/targetClass-001.test#myProperty>" ;
   sh:resultPath ns1:myProperty ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:f30517d3-c917-48bc-8174-795de88d7279> .
+  sh:result <urn:uuid:70e5b10a-2bd1-4f91-8ae8-65ba057d0cfa> .
 

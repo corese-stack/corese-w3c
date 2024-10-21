@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/hasValue-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:3b9d6315-df8b-4518-9274-fe34679446da> a sh:ValidationResult ;
+<urn:uuid:4839a6f0-24d1-46fc-99f0-9e09f156302f> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidMalePerson ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/hasValue-001.test#PersonShape-gender> rdfs:label \"gender\" ;\n  sh:datatype xsd:string ;\n  sh:hasValue \"male\" ;\n  sh:path <http://datashapes.org/sh/tests/core/property/hasValue-001.test#gender>" ;
   sh:resultPath ns1:gender ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:3b9d6315-df8b-4518-9274-fe34679446da> .
+  sh:result <urn:uuid:4839a6f0-24d1-46fc-99f0-9e09f156302f> .
 

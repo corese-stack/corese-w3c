@@ -3,7 +3,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/complex/personexample.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:66d315cd-a11a-4866-8ae8-3467954954b5> a sh:ValidationResult ;
+<urn:uuid:5d06044f-e6ca-4772-b60b-60c3e18221c6> a sh:ValidationResult ;
   sh:focusNode ns1:Calvin ;
   sh:resultMessage "Fail at: [sh:class <http://datashapes.org/sh/tests/core/complex/personexample.test#Company> ;\n  sh:nodeKind sh:IRI ;\n  sh:path <http://datashapes.org/sh/tests/core/complex/personexample.test#worksFor>]" ;
   sh:resultPath ns1:worksFor ;
@@ -12,25 +12,7 @@
   sh:sourceShape _:b14 ;
   sh:value ns1:UntypedCompany .
 
-<urn:uuid:f1a54e3e-08ed-4639-81eb-d9ed3ed457ef> a sh:ValidationResult ;
-  sh:focusNode ns1:Alice ;
-  sh:resultMessage "Fail at: [sh:datatype xsd:string ;\n  sh:maxCount 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/complex/personexample.test#ssn> ;\n  sh:pattern \"^\\\\d{3}-\\\\d{2}-\\\\d{4}$\"]" ;
-  sh:resultPath ns1:ssn ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:PatternConstraintComponent ;
-  sh:sourceShape _:b13 ;
-  sh:value "987-65-432A" .
-
-<urn:uuid:5a33c8e8-78d4-42f3-b721-9fa59a09f01f> a sh:ValidationResult ;
-  sh:focusNode ns1:Bob ;
-  sh:resultMessage "Fail at: [sh:datatype xsd:string ;\n  sh:maxCount 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/complex/personexample.test#ssn> ;\n  sh:pattern \"^\\\\d{3}-\\\\d{2}-\\\\d{4}$\"]" ;
-  sh:resultPath ns1:ssn ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:MaxCountConstraintComponent ;
-  sh:sourceShape _:b13 ;
-  sh:value 2 .
-
-<urn:uuid:5cf73d68-5e15-4361-80f2-23a626029a04> a sh:ValidationResult ;
+<urn:uuid:fee606e8-b815-44bc-9e9c-a5ec4b64f0a6> a sh:ValidationResult ;
   sh:focusNode ns1:Calvin ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/complex/personexample.test#PersonShape> a sh:NodeShape ;\n  sh:closed true ;\n  sh:ignoredProperties (rdf:type) ;\n  sh:property [sh:datatype xsd:string ;\n    sh:maxCount 1 ;\n    sh:path <http://datashapes.org/sh/tests/core/complex/personexample.test#ssn> ;\n    sh:pattern \"^\\\\d{3}-\\\\d{2}-\\\\d{4}$\"] ;\n  sh:property [sh:class <http://datashapes.org/sh/tests/core/complex/personexample.test#Company> ;\n    sh:nodeKind sh:IRI ;\n    sh:path <http://datashapes.org/sh/tests/core/complex/personexample.test#worksFor>] ;\n  sh:property [sh:name \"employee\" ;\n    sh:path [sh:inversePath <http://datashapes.org/sh/tests/core/complex/personexample.test#worksFor>]] ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/complex/personexample.test#Person>" ;
   sh:resultPath ns1:birthDate ;
@@ -39,10 +21,28 @@
   sh:sourceShape ns1:PersonShape ;
   sh:value "1999-09-09"^^xsd:date .
 
+<urn:uuid:40675754-ed43-4781-9091-3521d22f2a7b> a sh:ValidationResult ;
+  sh:focusNode ns1:Bob ;
+  sh:resultMessage "Fail at: [sh:datatype xsd:string ;\n  sh:maxCount 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/complex/personexample.test#ssn> ;\n  sh:pattern \"^\\\\d{3}-\\\\d{2}-\\\\d{4}$\"]" ;
+  sh:resultPath ns1:ssn ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxCountConstraintComponent ;
+  sh:sourceShape _:b13 ;
+  sh:value 2 .
+
+<urn:uuid:589fc262-c636-4651-82e2-92375653fdb8> a sh:ValidationResult ;
+  sh:focusNode ns1:Alice ;
+  sh:resultMessage "Fail at: [sh:datatype xsd:string ;\n  sh:maxCount 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/complex/personexample.test#ssn> ;\n  sh:pattern \"^\\\\d{3}-\\\\d{2}-\\\\d{4}$\"]" ;
+  sh:resultPath ns1:ssn ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:PatternConstraintComponent ;
+  sh:sourceShape _:b13 ;
+  sh:value "987-65-432A" .
+
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:66d315cd-a11a-4866-8ae8-3467954954b5> ;
-  sh:result <urn:uuid:5cf73d68-5e15-4361-80f2-23a626029a04> ;
-  sh:result <urn:uuid:f1a54e3e-08ed-4639-81eb-d9ed3ed457ef> ;
-  sh:result <urn:uuid:5a33c8e8-78d4-42f3-b721-9fa59a09f01f> .
+  sh:result <urn:uuid:5d06044f-e6ca-4772-b60b-60c3e18221c6> ;
+  sh:result <urn:uuid:fee606e8-b815-44bc-9e9c-a5ec4b64f0a6> ;
+  sh:result <urn:uuid:589fc262-c636-4651-82e2-92375653fdb8> ;
+  sh:result <urn:uuid:40675754-ed43-4781-9091-3521d22f2a7b> .
 

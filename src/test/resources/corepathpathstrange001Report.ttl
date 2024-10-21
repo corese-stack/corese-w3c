@@ -2,7 +2,7 @@
 @prefix ns1: <http://example.org/test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:33a33193-b19a-480e-8dfe-4d3fd32f8dc2> a sh:ValidationResult ;
+<urn:uuid:18f8d69a-1db6-4977-ae6c-8ff098073862> a sh:ValidationResult ;
   sh:focusNode ns1:j ;
   sh:resultMessage "Fail at: <http://example.org/test#s1> a sh:PropertyShape ;\n  sh:class <http://example.org/test#C> ;\n  sh:path (<http://example.org/test#p>\n  <http://example.org/test#q>) ;\n  sh:targetClass <http://example.org/test#C>" ;
   sh:resultPath "(<http://example.org/test#p>\n<http://example.org/test#q>)"^^<http://ns.inria.fr/sparql-extension/graph> ;
@@ -13,5 +13,5 @@
 
 _:bb4 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:33a33193-b19a-480e-8dfe-4d3fd32f8dc2> .
+  sh:result <urn:uuid:18f8d69a-1db6-4977-ae6c-8ff098073862> .
 

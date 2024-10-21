@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/minLength-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:1119db58-70cb-45ab-8f68-37302242ba57> a sh:ValidationResult ;
+<urn:uuid:064135ec-0949-4fb2-8242-a1d6c0eeb82f> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/minLength-001.test#TestShape-testProperty> sh:datatype xsd:string ;\n  sh:minLength 2 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/minLength-001.test#testProperty>" ;
   sh:resultPath ns1:testProperty ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:1119db58-70cb-45ab-8f68-37302242ba57> .
+  sh:result <urn:uuid:064135ec-0949-4fb2-8242-a1d6c0eeb82f> .
 

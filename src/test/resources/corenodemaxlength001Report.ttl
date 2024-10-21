@@ -3,31 +3,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:1af47ad3-0591-41b9-9f87-fee4e032f7f7> a sh:ValidationResult ;
-  sh:focusNode "2017-03-29"^^xsd:date ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestShape> a sh:NodeShape ;\n  sh:maxLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ;
-  sh:sourceShape ns1:TestShape ;
-  sh:value "2017-03-29"^^xsd:date .
-
-<urn:uuid:a69f8960-aca5-4f72-afd3-8d0879aa2480> a sh:ValidationResult ;
-  sh:focusNode 12345 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestShape> a sh:NodeShape ;\n  sh:maxLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ;
-  sh:sourceShape ns1:TestShape ;
-  sh:value 12345 .
-
-<urn:uuid:2fedff31-f9c8-403e-ad88-8b1dfdc2e534> a sh:ValidationResult ;
-  sh:focusNode ns1:John ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestShape> a sh:NodeShape ;\n  sh:maxLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ;
-  sh:sourceShape ns1:TestShape ;
-  sh:value ns1:John .
-
-<urn:uuid:a489b3b8-7188-458b-8dd0-7a98dfe44f86> a sh:ValidationResult ;
+<urn:uuid:df9474f7-c165-4236-820e-424cce44a7bf> a sh:ValidationResult ;
   sh:focusNode "Hello" ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestShape> a sh:NodeShape ;\n  sh:maxLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
   sh:resultSeverity sh:Violation ;
@@ -35,7 +11,31 @@
   sh:sourceShape ns1:TestShape ;
   sh:value "Hello" .
 
-<urn:uuid:b90663c0-5ef1-4363-98b0-36a07bb485d1> a sh:ValidationResult ;
+<urn:uuid:621b3fec-b399-4fbd-af25-1310b13f91c4> a sh:ValidationResult ;
+  sh:focusNode ns1:John ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestShape> a sh:NodeShape ;\n  sh:maxLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value ns1:John .
+
+<urn:uuid:a142d905-4570-482e-9d0b-879cd4892c32> a sh:ValidationResult ;
+  sh:focusNode "2017-03-29"^^xsd:date ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestShape> a sh:NodeShape ;\n  sh:maxLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "2017-03-29"^^xsd:date .
+
+<urn:uuid:898b265c-3cb9-4c18-b986-c6a08945c860> a sh:ValidationResult ;
+  sh:focusNode 12345 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestShape> a sh:NodeShape ;\n  sh:maxLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value 12345 .
+
+<urn:uuid:7d7549bc-eb11-42e4-bd5e-62463eef014c> a sh:ValidationResult ;
   sh:focusNode _:b8 ;
   sh:focusNodeDetail "_:b8"^^<http://ns.inria.fr/sparql-extension/graph> ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestShape> a sh:NodeShape ;\n  sh:maxLength 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxLength-001.test#TestClass> ;\n  sh:targetNode <a:b> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxLength-001.test#John> ;\n  sh:targetNode \"Hel\" ;\n  sh:targetNode \"Hell\" ;\n  sh:targetNode \"Hell\"@en ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"2017-03-29\"^^xsd:date ;\n  sh:targetNode 123 ;\n  sh:targetNode 1234 ;\n  sh:targetNode 12345" ;
@@ -47,9 +47,9 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:b90663c0-5ef1-4363-98b0-36a07bb485d1> ;
-  sh:result <urn:uuid:2fedff31-f9c8-403e-ad88-8b1dfdc2e534> ;
-  sh:result <urn:uuid:a69f8960-aca5-4f72-afd3-8d0879aa2480> ;
-  sh:result <urn:uuid:1af47ad3-0591-41b9-9f87-fee4e032f7f7> ;
-  sh:result <urn:uuid:a489b3b8-7188-458b-8dd0-7a98dfe44f86> .
+  sh:result <urn:uuid:7d7549bc-eb11-42e4-bd5e-62463eef014c> ;
+  sh:result <urn:uuid:621b3fec-b399-4fbd-af25-1310b13f91c4> ;
+  sh:result <urn:uuid:898b265c-3cb9-4c18-b986-c6a08945c860> ;
+  sh:result <urn:uuid:a142d905-4570-482e-9d0b-879cd4892c32> ;
+  sh:result <urn:uuid:df9474f7-c165-4236-820e-424cce44a7bf> .
 

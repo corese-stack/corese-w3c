@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/maxLength-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:c9a828dc-4d03-4405-a864-0d0c27d9d3cd> a sh:ValidationResult ;
+<urn:uuid:dadda6e9-8f60-4018-a4a2-6c1066fb0ac7> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/maxLength-001.test#TestShape-testProperty> sh:datatype xsd:string ;\n  sh:maxLength 2 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/maxLength-001.test#testProperty>" ;
   sh:resultPath ns1:testProperty ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:c9a828dc-4d03-4405-a864-0d0c27d9d3cd> .
+  sh:result <urn:uuid:dadda6e9-8f60-4018-a4a2-6c1066fb0ac7> .
 

@@ -3,7 +3,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/targets/targetNode-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:8bf9272c-93eb-4f5f-ae30-f35cd131e8ac> a sh:ValidationResult ;
+<urn:uuid:961638a2-b4eb-4734-bbd9-35eea034f0e3> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetNode-001.test#TestShape-label> rdfs:label \"label\" ;\n  sh:datatype xsd:string ;\n  sh:maxCount 0 ;\n  sh:path rdfs:label" ;
   sh:resultPath rdfs:label ;
@@ -14,5 +14,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:8bf9272c-93eb-4f5f-ae30-f35cd131e8ac> .
+  sh:result <urn:uuid:961638a2-b4eb-4734-bbd9-35eea034f0e3> .
 

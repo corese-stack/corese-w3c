@@ -2,34 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/equals-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:507921b1-4d9b-4cb9-a038-b0770e562f13> a sh:ValidationResult ;
-  sh:focusNode ns1:InvalidResource3 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/equals-001.test#TestShape-property1> sh:equals <http://datashapes.org/sh/tests/core/property/equals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/equals-001.test#property1>" ;
-  sh:resultPath ns1:property1 ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:EqualsConstraintComponent ;
-  sh:sourceShape ns1:TestShape-property1 ;
-  sh:value "A" .
-
-<urn:uuid:f1cfa51b-be2e-4ae8-ad50-933eb9fe6d9f> a sh:ValidationResult ;
-  sh:focusNode ns1:InvalidResource1 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/equals-001.test#TestShape-property1> sh:equals <http://datashapes.org/sh/tests/core/property/equals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/equals-001.test#property1>" ;
-  sh:resultPath ns1:property1 ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:EqualsConstraintComponent ;
-  sh:sourceShape ns1:TestShape-property1 ;
-  sh:value "A" .
-
-<urn:uuid:3caa147c-975e-42dd-9771-28fcf6e9b451> a sh:ValidationResult ;
-  sh:focusNode ns1:InvalidResource4 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/equals-001.test#TestShape-property1> sh:equals <http://datashapes.org/sh/tests/core/property/equals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/equals-001.test#property1>" ;
-  sh:resultPath ns1:property1 ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:EqualsConstraintComponent ;
-  sh:sourceShape ns1:TestShape-property1 ;
-  sh:value "B" .
-
-<urn:uuid:26fdd7fa-4b98-498f-8532-1702528b6416> a sh:ValidationResult ;
+<urn:uuid:57c4a15a-7cf9-4a4e-9766-e56f8d2523cf> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource2 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/equals-001.test#TestShape-property1> sh:equals <http://datashapes.org/sh/tests/core/property/equals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/equals-001.test#property1>" ;
   sh:resultPath ns1:property1 ;
@@ -38,8 +11,35 @@
   sh:sourceShape ns1:TestShape-property1 ;
   sh:value "A" .
 
-<urn:uuid:be67cc0c-c7cb-47ad-b626-ec12ad716bc8> a sh:ValidationResult ;
+<urn:uuid:522baf6a-698f-425c-8cea-9598c2fe90da> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/equals-001.test#TestShape-property1> sh:equals <http://datashapes.org/sh/tests/core/property/equals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/equals-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:EqualsConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value "A" .
+
+<urn:uuid:e968f6e1-a947-484e-8de5-b7c44bcc7a22> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource3 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/equals-001.test#TestShape-property1> sh:equals <http://datashapes.org/sh/tests/core/property/equals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/equals-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:EqualsConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value "A" .
+
+<urn:uuid:500c6f80-f85d-465c-80bf-0143c82e1640> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/equals-001.test#TestShape-property1> sh:equals <http://datashapes.org/sh/tests/core/property/equals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/equals-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:EqualsConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value "B" .
+
+<urn:uuid:b0709e95-2b3f-45bf-be00-510741f28c04> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource4 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/equals-001.test#TestShape-property1> sh:equals <http://datashapes.org/sh/tests/core/property/equals-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/equals-001.test#property1>" ;
   sh:resultPath ns1:property1 ;
   sh:resultSeverity sh:Violation ;
@@ -49,9 +49,9 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:f1cfa51b-be2e-4ae8-ad50-933eb9fe6d9f> ;
-  sh:result <urn:uuid:be67cc0c-c7cb-47ad-b626-ec12ad716bc8> ;
-  sh:result <urn:uuid:26fdd7fa-4b98-498f-8532-1702528b6416> ;
-  sh:result <urn:uuid:3caa147c-975e-42dd-9771-28fcf6e9b451> ;
-  sh:result <urn:uuid:507921b1-4d9b-4cb9-a038-b0770e562f13> .
+  sh:result <urn:uuid:522baf6a-698f-425c-8cea-9598c2fe90da> ;
+  sh:result <urn:uuid:500c6f80-f85d-465c-80bf-0143c82e1640> ;
+  sh:result <urn:uuid:57c4a15a-7cf9-4a4e-9766-e56f8d2523cf> ;
+  sh:result <urn:uuid:b0709e95-2b3f-45bf-be00-510741f28c04> ;
+  sh:result <urn:uuid:e968f6e1-a947-484e-8de5-b7c44bcc7a22> .
 

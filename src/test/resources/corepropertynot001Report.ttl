@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/not-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:a425fddc-176c-4955-909a-5760bac6c735> a sh:ValidationResult ;
+<urn:uuid:81929de8-22da-4bc6-b749-a81d8d3f6579> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/not-001.test#TestShape-property> sh:not [sh:datatype xsd:integer] ;\n  sh:path <http://datashapes.org/sh/tests/core/property/not-001.test#property>" ;
   sh:resultPath ns1:property ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:a425fddc-176c-4955-909a-5760bac6c735> .
+  sh:result <urn:uuid:81929de8-22da-4bc6-b749-a81d8d3f6579> .
 

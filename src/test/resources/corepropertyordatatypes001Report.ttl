@@ -5,16 +5,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/or-datatypes-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:a4819fe5-da54-4cae-b035-bb08bc45376e> a sh:ValidationResult ;
-  sh:focusNode ns1:InvalidResource1 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/or-datatypes-001.test#TestShape-comment> sh:or ([sh:datatype xsd:string]\n  [sh:datatype rdf:HTML]\n  [sh:datatype rdf:langString]\n  [sh:datatype xsd:boolean]) ;\n  sh:path rdfs:comment" ;
-  sh:resultPath rdfs:comment ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:OrConstraintComponent ;
-  sh:sourceShape ns1:TestShape-comment ;
-  sh:value 42 .
-
-<urn:uuid:da15c1c2-c73b-44f8-8c8a-89dea2ce2626> a sh:ValidationResult ;
+<urn:uuid:0c57845a-04ec-4ae6-a333-fab58ab6c057> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/or-datatypes-001.test#TestShape-comment> sh:or ([sh:datatype xsd:string]\n  [sh:datatype rdf:HTML]\n  [sh:datatype rdf:langString]\n  [sh:datatype xsd:boolean]) ;\n  sh:path rdfs:comment" ;
   sh:resultPath rdfs:comment ;
@@ -23,7 +14,16 @@
   sh:sourceShape ns1:TestShape-comment ;
   sh:value owl:Thing .
 
-<urn:uuid:e440a1e3-cde4-42fb-94b7-b3de874953a0> a sh:ValidationResult ;
+<urn:uuid:47934f2d-7da1-4f15-ab5c-d55539fec498> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/or-datatypes-001.test#TestShape-comment> sh:or ([sh:datatype xsd:string]\n  [sh:datatype rdf:HTML]\n  [sh:datatype rdf:langString]\n  [sh:datatype xsd:boolean]) ;\n  sh:path rdfs:comment" ;
+  sh:resultPath rdfs:comment ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:OrConstraintComponent ;
+  sh:sourceShape ns1:TestShape-comment ;
+  sh:value 42 .
+
+<urn:uuid:407c6671-6343-43f7-80c8-a3fa799a1dc6> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/or-datatypes-001.test#TestShape-comment> sh:or ([sh:datatype xsd:string]\n  [sh:datatype rdf:HTML]\n  [sh:datatype rdf:langString]\n  [sh:datatype xsd:boolean]) ;\n  sh:path rdfs:comment" ;
   sh:resultPath rdfs:comment ;
@@ -34,7 +34,7 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:da15c1c2-c73b-44f8-8c8a-89dea2ce2626> ;
-  sh:result <urn:uuid:a4819fe5-da54-4cae-b035-bb08bc45376e> ;
-  sh:result <urn:uuid:e440a1e3-cde4-42fb-94b7-b3de874953a0> .
+  sh:result <urn:uuid:0c57845a-04ec-4ae6-a333-fab58ab6c057> ;
+  sh:result <urn:uuid:47934f2d-7da1-4f15-ab5c-d55539fec498> ;
+  sh:result <urn:uuid:407c6671-6343-43f7-80c8-a3fa799a1dc6> .
 

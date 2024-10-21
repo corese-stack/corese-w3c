@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/node/equals-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:52000df5-300e-402d-be53-fcb560719ded> a sh:ValidationResult ;
+<urn:uuid:bf7e0e99-de23-4dde-b80e-c7afb4be4bd4> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource2 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/equals-001.test#TestShape> a sh:NodeShape ;\n  sh:equals <http://datashapes.org/sh/tests/core/node/equals-001.test#property> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/equals-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/equals-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/equals-001.test#ValidResource1>" ;
   sh:resultPath ns1:property ;
@@ -11,7 +11,7 @@
   sh:sourceShape ns1:TestShape ;
   sh:value ns1:InvalidResource2 .
 
-<urn:uuid:c642b31a-3b82-47fd-b2a7-1a8628ed4fd1> a sh:ValidationResult ;
+<urn:uuid:c4064593-6f8a-4ba0-87fc-b92bc4dba9a4> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/equals-001.test#TestShape> a sh:NodeShape ;\n  sh:equals <http://datashapes.org/sh/tests/core/node/equals-001.test#property> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/equals-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/equals-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/equals-001.test#ValidResource1>" ;
   sh:resultPath ns1:property ;
@@ -22,6 +22,6 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:c642b31a-3b82-47fd-b2a7-1a8628ed4fd1> ;
-  sh:result <urn:uuid:52000df5-300e-402d-be53-fcb560719ded> .
+  sh:result <urn:uuid:c4064593-6f8a-4ba0-87fc-b92bc4dba9a4> ;
+  sh:result <urn:uuid:bf7e0e99-de23-4dde-b80e-c7afb4be4bd4> .
 

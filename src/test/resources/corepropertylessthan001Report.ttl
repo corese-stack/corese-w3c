@@ -2,25 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/lessThan-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:60a5ea9c-3227-494e-9a0b-7dcfb08bebea> a sh:ValidationResult ;
-  sh:focusNode ns1:InvalidResource3 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/lessThan-001.test#TestShape-property1> sh:lessThan <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property1>" ;
-  sh:resultPath ns1:property1 ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:LessThanConstraintComponent ;
-  sh:sourceShape ns1:TestShape-property1 ;
-  sh:value 5 .
-
-<urn:uuid:f119d4a6-054f-4afb-9052-def1f672acd5> a sh:ValidationResult ;
-  sh:focusNode ns1:InvalidResource2 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/lessThan-001.test#TestShape-property1> sh:lessThan <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property1>" ;
-  sh:resultPath ns1:property1 ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:LessThanConstraintComponent ;
-  sh:sourceShape ns1:TestShape-property1 ;
-  sh:value 6 .
-
-<urn:uuid:94ea38be-f029-4e42-bb11-71b7ac1748d8> a sh:ValidationResult ;
+<urn:uuid:f9950d3e-f425-4f7e-a3cd-f393a9eddca8> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/lessThan-001.test#TestShape-property1> sh:lessThan <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property1>" ;
   sh:resultPath ns1:property1 ;
@@ -29,9 +11,27 @@
   sh:sourceShape ns1:TestShape-property1 ;
   sh:value 4 .
 
+<urn:uuid:124d8706-840e-43b3-bd5d-47d0125444ed> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource3 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/lessThan-001.test#TestShape-property1> sh:lessThan <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:LessThanConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value 5 .
+
+<urn:uuid:d2c38439-e73b-4726-b79b-3211e9485a58> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/lessThan-001.test#TestShape-property1> sh:lessThan <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property2> ;\n  sh:path <http://datashapes.org/sh/tests/core/property/lessThan-001.test#property1>" ;
+  sh:resultPath ns1:property1 ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:LessThanConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property1 ;
+  sh:value 6 .
+
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:94ea38be-f029-4e42-bb11-71b7ac1748d8> ;
-  sh:result <urn:uuid:f119d4a6-054f-4afb-9052-def1f672acd5> ;
-  sh:result <urn:uuid:60a5ea9c-3227-494e-9a0b-7dcfb08bebea> .
+  sh:result <urn:uuid:f9950d3e-f425-4f7e-a3cd-f393a9eddca8> ;
+  sh:result <urn:uuid:d2c38439-e73b-4726-b79b-3211e9485a58> ;
+  sh:result <urn:uuid:124d8706-840e-43b3-bd5d-47d0125444ed> .
 

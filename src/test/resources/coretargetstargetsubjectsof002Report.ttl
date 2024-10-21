@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/targets/targetSubjectsOf-002.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:724f383c-7b7c-453b-b0ec-55590af12c88> a sh:ValidationResult ;
+<urn:uuid:c3940f77-0bf7-42f5-9158-72cb0edaf257> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance2 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetSubjectsOf-002.test#TestShape-myProperty> sh:maxCount 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/targets/targetSubjectsOf-002.test#myProperty>" ;
   sh:resultPath ns1:myProperty ;
@@ -11,7 +11,7 @@
   sh:sourceShape ns1:TestShape-myProperty ;
   sh:value 2 .
 
-<urn:uuid:124b8888-df06-4564-8a6a-ed2373063349> a sh:ValidationResult ;
+<urn:uuid:9b4ce3cd-e546-4647-993d-9e6dc101fd72> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/targets/targetSubjectsOf-002.test#TestShape-myProperty> sh:maxCount 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/targets/targetSubjectsOf-002.test#myProperty>" ;
   sh:resultPath ns1:myProperty ;
@@ -22,6 +22,6 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:124b8888-df06-4564-8a6a-ed2373063349> ;
-  sh:result <urn:uuid:724f383c-7b7c-453b-b0ec-55590af12c88> .
+  sh:result <urn:uuid:9b4ce3cd-e546-4647-993d-9e6dc101fd72> ;
+  sh:result <urn:uuid:c3940f77-0bf7-42f5-9158-72cb0edaf257> .
 

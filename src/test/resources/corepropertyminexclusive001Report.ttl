@@ -2,16 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/minExclusive-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:a619b298-6c23-4705-9e52-44a2a2cd7762> a sh:ValidationResult ;
-  sh:focusNode ns1:InvalidInstance2 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/minExclusive-001.test#TestShape-testProperty> sh:minExclusive 40 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/minExclusive-001.test#testProperty>" ;
-  sh:resultPath ns1:testProperty ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:MinExclusiveConstraintComponent ;
-  sh:sourceShape ns1:TestShape-testProperty ;
-  sh:value 39 .
-
-<urn:uuid:38c9a9f3-7a2c-4d3a-b531-eb023b0d737b> a sh:ValidationResult ;
+<urn:uuid:a3d07c70-9155-488b-ac24-1c5eddbadc5d> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/minExclusive-001.test#TestShape-testProperty> sh:minExclusive 40 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/minExclusive-001.test#testProperty>" ;
   sh:resultPath ns1:testProperty ;
@@ -20,8 +11,17 @@
   sh:sourceShape ns1:TestShape-testProperty ;
   sh:value 40 .
 
+<urn:uuid:2063ce0e-ad2e-4339-a16d-9370982b86fe> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/minExclusive-001.test#TestShape-testProperty> sh:minExclusive 40 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/minExclusive-001.test#testProperty>" ;
+  sh:resultPath ns1:testProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape-testProperty ;
+  sh:value 39 .
+
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:38c9a9f3-7a2c-4d3a-b531-eb023b0d737b> ;
-  sh:result <urn:uuid:a619b298-6c23-4705-9e52-44a2a2cd7762> .
+  sh:result <urn:uuid:a3d07c70-9155-488b-ac24-1c5eddbadc5d> ;
+  sh:result <urn:uuid:2063ce0e-ad2e-4339-a16d-9370982b86fe> .
 

@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/or-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:67b21f8e-e416-4974-878e-d2e60e9c12b6> a sh:ValidationResult ;
+<urn:uuid:70bd430f-ec12-4188-bacb-d637bb7ec379> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidResource1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/or-001.test#AddressShape-address> sh:or ([sh:datatype xsd:string]\n  [sh:class <http://datashapes.org/sh/tests/core/property/or-001.test#Address>]) ;\n  sh:path <http://datashapes.org/sh/tests/core/property/or-001.test#address>" ;
   sh:resultPath ns1:address ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:67b21f8e-e416-4974-878e-d2e60e9c12b6> .
+  sh:result <urn:uuid:70bd430f-ec12-4188-bacb-d637bb7ec379> .
 

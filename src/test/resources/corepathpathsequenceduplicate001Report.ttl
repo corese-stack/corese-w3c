@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/path/path-sequence-duplicate-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:a4904c61-a884-4bbd-a7fd-b2b4cf6b067b> a sh:ValidationResult ;
+<urn:uuid:96db39de-0502-428f-ac8b-6d6774c11b48> a sh:ValidationResult ;
   sh:focusNode ns1:A ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-sequence-duplicate-001.test#SP> a sh:PropertyShape ;\n  sh:maxCount 1 ;\n  sh:nodeKind sh:IRI ;\n  sh:path (<http://datashapes.org/sh/tests/core/path/path-sequence-duplicate-001.test#p1>\n  <http://datashapes.org/sh/tests/core/path/path-sequence-duplicate-001.test#p2>)" ;
   sh:resultPath "(<http://datashapes.org/sh/tests/core/path/path-sequence-duplicate-001.test#p1>\n<http://datashapes.org/sh/tests/core/path/path-sequence-duplicate-001.test#p2>)"^^<http://ns.inria.fr/sparql-extension/graph> ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:a4904c61-a884-4bbd-a7fd-b2b4cf6b067b> .
+  sh:result <urn:uuid:96db39de-0502-428f-ac8b-6d6774c11b48> .
 

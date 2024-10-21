@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/misc/message-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:289777f9-fece-4be1-abca-233c57e10fb6> a sh:ValidationResult ;
+<urn:uuid:37fe677e-0c42-424d-a43b-62cc2a33e0d9> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidNode ;
   sh:resultMessage "Test message"@en ;
   sh:resultSeverity sh:Violation ;
@@ -12,5 +12,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:289777f9-fece-4be1-abca-233c57e10fb6> .
+  sh:result <urn:uuid:37fe677e-0c42-424d-a43b-62cc2a33e0d9> .
 

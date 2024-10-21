@@ -2,16 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/datatype-002.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:ccffcec9-7025-4e46-972c-c4152a56a72b> a sh:ValidationResult ;
-  sh:focusNode ns1:InvalidInstance2 ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/datatype-002.test#TestShape-value> sh:datatype xsd:string ;\n  sh:path <http://datashapes.org/sh/tests/core/property/datatype-002.test#value>" ;
-  sh:resultPath ns1:value ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
-  sh:sourceShape ns1:TestShape-value ;
-  sh:value 42 .
-
-<urn:uuid:13cf9480-ea7a-4ef4-a388-ddc9e955584d> a sh:ValidationResult ;
+<urn:uuid:a5c424d5-a6fe-4557-af16-2c9131a04bee> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/datatype-002.test#TestShape-value> sh:datatype xsd:string ;\n  sh:path <http://datashapes.org/sh/tests/core/property/datatype-002.test#value>" ;
   sh:resultPath ns1:value ;
@@ -20,8 +11,17 @@
   sh:sourceShape ns1:TestShape-value ;
   sh:value "A"@en .
 
+<urn:uuid:c5de21f9-ec20-4e52-a4ec-4b0e37cc49fc> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/datatype-002.test#TestShape-value> sh:datatype xsd:string ;\n  sh:path <http://datashapes.org/sh/tests/core/property/datatype-002.test#value>" ;
+  sh:resultPath ns1:value ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:TestShape-value ;
+  sh:value 42 .
+
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:13cf9480-ea7a-4ef4-a388-ddc9e955584d> ;
-  sh:result <urn:uuid:ccffcec9-7025-4e46-972c-c4152a56a72b> .
+  sh:result <urn:uuid:a5c424d5-a6fe-4557-af16-2c9131a04bee> ;
+  sh:result <urn:uuid:c5de21f9-ec20-4e52-a4ec-4b0e37cc49fc> .
 

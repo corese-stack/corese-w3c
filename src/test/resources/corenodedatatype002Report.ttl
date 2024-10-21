@@ -3,7 +3,7 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-<urn:uuid:7ce1ff99-b63f-48b0-9d29-089185db6fe3> a sh:ValidationResult ;
+<urn:uuid:2a1fac54-8ccb-4d7b-a812-11a6d4c3d7c7> a sh:ValidationResult ;
   sh:focusNode "Hello" ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/datatype-002.test#TestShape> a sh:NodeShape ;\n  sh:datatype rdf:langString ;\n  sh:targetNode \"G'day\"@en-au ;\n  sh:targetNode \"Hallo\"@de ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"<span>Hello</span>\"^^rdf:HTML" ;
   sh:resultSeverity sh:Violation ;
@@ -11,7 +11,7 @@
   sh:sourceShape ns1:TestShape ;
   sh:value "Hello" .
 
-<urn:uuid:a6a21a86-0cdf-42ae-ad25-7ab3178830d8> a sh:ValidationResult ;
+<urn:uuid:dcf66650-1157-4c48-82bf-7d4ddf9bc8c3> a sh:ValidationResult ;
   sh:focusNode "<span>Hello</span>"^^rdf:HTML ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/datatype-002.test#TestShape> a sh:NodeShape ;\n  sh:datatype rdf:langString ;\n  sh:targetNode \"G'day\"@en-au ;\n  sh:targetNode \"Hallo\"@de ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"<span>Hello</span>\"^^rdf:HTML" ;
   sh:resultSeverity sh:Violation ;
@@ -21,6 +21,6 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:a6a21a86-0cdf-42ae-ad25-7ab3178830d8> ;
-  sh:result <urn:uuid:7ce1ff99-b63f-48b0-9d29-089185db6fe3> .
+  sh:result <urn:uuid:dcf66650-1157-4c48-82bf-7d4ddf9bc8c3> ;
+  sh:result <urn:uuid:2a1fac54-8ccb-4d7b-a812-11a6d4c3d7c7> .
 

@@ -3,15 +3,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:4ce2a567-683d-4ac5-ab19-87e4b55670c3> a sh:ValidationResult ;
-  sh:focusNode "Hello" ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxInclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
-  sh:sourceShape ns1:TestShape ;
-  sh:value "Hello" .
-
-<urn:uuid:5824d05c-f252-4ebe-99db-a028a2c696a7> a sh:ValidationResult ;
+<urn:uuid:df872ca6-08a5-4b56-807b-cd395ea24e04> a sh:ValidationResult ;
   sh:focusNode ns1:John ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxInclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
   sh:resultSeverity sh:Violation ;
@@ -19,7 +11,23 @@
   sh:sourceShape ns1:TestShape ;
   sh:value ns1:John .
 
-<urn:uuid:c45e8d50-2eed-42e5-a26a-7a5a832fb44f> a sh:ValidationResult ;
+<urn:uuid:cb22f6de-2518-4030-a506-062ed833e64e> a sh:ValidationResult ;
+  sh:focusNode "4.1"^^xsd:decimal ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxInclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "4.1"^^xsd:decimal .
+
+<urn:uuid:246986cd-83a4-4bd5-b89c-401b91bb412d> a sh:ValidationResult ;
+  sh:focusNode "Hello" ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxInclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value "Hello" .
+
+<urn:uuid:07f5c1b2-bc82-43f6-8dcb-6becd62cacbd> a sh:ValidationResult ;
   sh:focusNode _:b7 ;
   sh:focusNodeDetail "_:b7"^^<http://ns.inria.fr/sparql-extension/graph> ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxInclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
@@ -29,18 +37,10 @@
   sh:value _:b7 ;
   sh:valueDetail "_:b7"^^<http://ns.inria.fr/sparql-extension/graph> .
 
-<urn:uuid:6526dd64-d49e-4d7a-881e-ddeb8d3c165f> a sh:ValidationResult ;
-  sh:focusNode "4.1"^^xsd:decimal ;
-  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestShape> a sh:NodeShape ;\n  sh:maxInclusive 4 ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#TestClass> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/maxInclusive-001.test#John> ;\n  sh:targetNode \"Hello\" ;\n  sh:targetNode \"3.9\"^^xsd:decimal ;\n  sh:targetNode \"4.0\"^^xsd:decimal ;\n  sh:targetNode 4 ;\n  sh:targetNode \"4.1\"^^xsd:decimal" ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
-  sh:sourceShape ns1:TestShape ;
-  sh:value "4.1"^^xsd:decimal .
-
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:c45e8d50-2eed-42e5-a26a-7a5a832fb44f> ;
-  sh:result <urn:uuid:5824d05c-f252-4ebe-99db-a028a2c696a7> ;
-  sh:result <urn:uuid:6526dd64-d49e-4d7a-881e-ddeb8d3c165f> ;
-  sh:result <urn:uuid:4ce2a567-683d-4ac5-ab19-87e4b55670c3> .
+  sh:result <urn:uuid:07f5c1b2-bc82-43f6-8dcb-6becd62cacbd> ;
+  sh:result <urn:uuid:df872ca6-08a5-4b56-807b-cd395ea24e04> ;
+  sh:result <urn:uuid:cb22f6de-2518-4030-a506-062ed833e64e> ;
+  sh:result <urn:uuid:246986cd-83a4-4bd5-b89c-401b91bb412d> .
 

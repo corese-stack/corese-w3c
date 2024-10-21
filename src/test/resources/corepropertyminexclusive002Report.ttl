@@ -3,7 +3,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:15372a85-fd04-444e-9944-b95c5b23fd4a> a sh:ValidationResult ;
+<urn:uuid:625eead8-f445-40db-bfb4-c6002c12a4e7> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance2 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#TestShape-testProperty> sh:minExclusive 40 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#testProperty>" ;
   sh:resultPath ns1:testProperty ;
@@ -12,7 +12,7 @@
   sh:sourceShape ns1:TestShape-testProperty ;
   sh:value rdfs:Resource .
 
-<urn:uuid:a25f19ae-a095-4e0a-8328-fb5957a4d33f> a sh:ValidationResult ;
+<urn:uuid:66b8b439-75f4-4983-b596-65a0c4e42fd7> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidInstance1 ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#TestShape-testProperty> sh:minExclusive 40 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#testProperty>" ;
   sh:resultPath ns1:testProperty ;
@@ -23,6 +23,6 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:a25f19ae-a095-4e0a-8328-fb5957a4d33f> ;
-  sh:result <urn:uuid:15372a85-fd04-444e-9944-b95c5b23fd4a> .
+  sh:result <urn:uuid:66b8b439-75f4-4983-b596-65a0c4e42fd7> ;
+  sh:result <urn:uuid:625eead8-f445-40db-bfb4-c6002c12a4e7> .
 

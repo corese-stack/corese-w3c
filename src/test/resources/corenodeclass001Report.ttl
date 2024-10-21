@@ -3,7 +3,7 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-<urn:uuid:1ec4dbc6-5ef7-495c-af88-d217378d4406> a sh:ValidationResult ;
+<urn:uuid:3b945db3-3bcb-4d40-83d4-47182bf86158> a sh:ValidationResult ;
   sh:focusNode ns1:Quokki ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-001.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Person> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#John> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokki> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Someone> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Typeless>" ;
   sh:resultPath rdf:type ;
@@ -12,7 +12,7 @@
   sh:sourceShape ns1:TestShape ;
   sh:value ns1:Quokki .
 
-<urn:uuid:c442018a-e55c-4024-b0f7-7c7a973fc7e4> a sh:ValidationResult ;
+<urn:uuid:15073d4d-78ed-4ada-9e75-07eeb2392056> a sh:ValidationResult ;
   sh:focusNode ns1:Typeless ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/class-001.test#TestShape> a sh:NodeShape ;\n  sh:class <http://datashapes.org/sh/tests/core/node/class-001.test#Person> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#John> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Quokki> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Someone> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/class-001.test#Typeless>" ;
   sh:resultPath rdf:type ;
@@ -23,6 +23,6 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:1ec4dbc6-5ef7-495c-af88-d217378d4406> ;
-  sh:result <urn:uuid:c442018a-e55c-4024-b0f7-7c7a973fc7e4> .
+  sh:result <urn:uuid:3b945db3-3bcb-4d40-83d4-47182bf86158> ;
+  sh:result <urn:uuid:15073d4d-78ed-4ada-9e75-07eeb2392056> .
 

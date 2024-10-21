@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/node/pattern-002.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:59cb182d-7c04-425d-8c8b-12c1e64cfe4d> a sh:ValidationResult ;
+<urn:uuid:f818ea80-2b32-4336-8303-48ceddc1fe75> a sh:ValidationResult ;
   sh:focusNode "Alti" ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/pattern-002.test#TestShape> a sh:NodeShape ;\n  sh:flags \"i\" ;\n  sh:pattern \"Aldi\" ;\n  sh:targetNode \"Aldi\" ;\n  sh:targetNode \"Alti\" ;\n  sh:targetNode \"aLdI\"" ;
   sh:resultSeverity sh:Violation ;
@@ -12,5 +12,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:59cb182d-7c04-425d-8c8b-12c1e64cfe4d> .
+  sh:result <urn:uuid:f818ea80-2b32-4336-8303-48ceddc1fe75> .
 

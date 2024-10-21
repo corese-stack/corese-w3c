@@ -3,10 +3,9 @@ package fr.inria.corese.w3cJunitTestsGenerator;
 import fr.inria.corese.core.Graph;
 import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.load.Load;
 import fr.inria.corese.core.query.QueryProcess;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestUtils;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory.TestCreationException;
 import org.slf4j.Logger;
@@ -66,45 +65,7 @@ public class W3cTestsGenerator {
      * @return The graph containing the manifest file.
      */
     private Graph loadManifest() {
-        return loadManifest(this.rootManifestUri);
-    }
-
-    private Graph loadManifest(URI manifestUri) {
-        Graph graph = Graph.create();
-        graph.init();
-        Load loader = Load.create(graph);
-        loadManifest(manifestUri, graph, loader);
-        return graph;
-    }
-
-    /**
-     * Loads recursively the manifest and its included files in the given Graph using the given loader
-     * @param manifestUri
-     * @param graph
-     * @param loader
-     */
-    private void loadManifest(URI manifestUri, Graph graph, Load loader) {
-        logger.info("Loading manifest file: {}", manifestUri);
-
-        try {
-            TestFileManager.loadFile(manifestUri);
-            loader.parse(manifestUri.toString());
-        } catch (Exception e) {
-            logger.error("Error loading manifest file: {}", manifestUri, e);
-            System.exit(1);
-        }
-
-        QueryProcess inclusionQueryExec = QueryProcess.create(graph);
-        String inclusionQuery = buildInclusionQuery(manifestUri);
-        try {
-            Mappings inclusionMappings = inclusionQueryExec.query(inclusionQuery);
-            for (Mapping mapping : inclusionMappings) {
-                String inclusion = mapping.getValue("?inclusion").getLabel();
-                loadManifest(URI.create(inclusion), graph, loader);
-            }
-        } catch (Exception e) {
-            logger.error("Error executing inclusion query.", e);
-        }
+        return TestUtils.loadManifest(this.rootManifestUri);
     }
 
     ////////////////////////////
@@ -136,10 +97,11 @@ public class W3cTestsGenerator {
 
         List<IW3cTest> testCases = new ArrayList<>();
         for (Mapping mapping : mappings) {
+            String manifest = mapping.getValue("?manifest").getLabel();
             String test = mapping.getValue("?test").getLabel();
             String type = mapping.getValue("?type").getLabel();
             try {
-                testCases.add(W3cTestFactory.createW3cTest(test, type, exec, this.rootManifestUri));
+                testCases.add(W3cTestFactory.createW3cTest(test, type, exec, URI.create(manifest)));
             } catch (TestCreationException e) {
                 logger.error("Error creating test: " + test, e);
                 System.exit(1);
@@ -161,30 +123,11 @@ public class W3cTestsGenerator {
         sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
         sb.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n");
         sb.append("\n");
-        sb.append("SELECT DISTINCT ?type ?test WHERE {\n");
+        sb.append("SELECT DISTINCT ?manifest ?type ?test WHERE {\n");
         sb.append("  ?manifest a mf:Manifest .\n");
         sb.append("  ?manifest mf:entries/rdf:rest*/rdf:first ?test .\n");
         sb.append("  ?test rdf:type ?type .\n");
         sb.append("} ORDER BY ?test");
         return sb.toString();
-    }
-
-    private String buildInclusionQuery(URI manifestUri) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
-        sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
-        sb.append("SELECT DISTINCT ?inclusion WHERE {\n");
-        sb.append("    ?manifest a mf:Manifest .\n");
-        sb.append("    { ?manifest mf:include/rdf:rest*/rdf:first ?inclusion . }\n");
-        sb.append("    UNION { ?manifest mf:include ?inclusion . FILTER(isIRI(?inclusion)) }\n");
-        if(manifestUri != null) {
-            sb.append("    FILTER(?manifest = <").append(manifestUri.toString()).append(">)\n");
-        }
-        sb.append("}");
-        return sb.toString();
-    }
-
-    private  String buildInclusionQuery() {
-        return buildInclusionQuery(null);
     }
 }

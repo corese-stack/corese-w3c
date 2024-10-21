@@ -3,16 +3,7 @@
 @prefix ns1: <http://example.org/shacl-test/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:bc0b4280-7e5a-4bea-970f-ac4585802e50> a sh:ValidationResult ;
-  sh:focusNode ns1:i ;
-  sh:resultMessage "Fail at: <http://example.org/shacl-test/s> a sh:PropertyShape ;\n  sh:datatype xsd:byte ;\n  sh:path <http://example.org/shacl-test/p> ;\n  sh:targetNode <http://example.org/shacl-test/i>" ;
-  sh:resultPath ns1:p ;
-  sh:resultSeverity sh:Violation ;
-  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
-  sh:sourceShape ns1:s ;
-  sh:value "300"^^xsd:byte .
-
-<urn:uuid:c50825d2-ffff-43b7-b7df-84a07d1da6af> a sh:ValidationResult ;
+<urn:uuid:8d5f625e-bae8-4974-aeb4-a9f6dd9bdf31> a sh:ValidationResult ;
   sh:focusNode ns1:i ;
   sh:resultMessage "Fail at: <http://example.org/shacl-test/s> a sh:PropertyShape ;\n  sh:datatype xsd:byte ;\n  sh:path <http://example.org/shacl-test/p> ;\n  sh:targetNode <http://example.org/shacl-test/i>" ;
   sh:resultPath ns1:p ;
@@ -21,7 +12,7 @@
   sh:sourceShape ns1:s ;
   sh:value "c"^^xsd:byte .
 
-<urn:uuid:db08071a-6b57-4615-8ef4-f93c96754ea2> a sh:ValidationResult ;
+<urn:uuid:57f80813-f0c3-4069-9296-34341f26ba8d> a sh:ValidationResult ;
   sh:focusNode ns1:i ;
   sh:resultMessage "Fail at: <http://example.org/shacl-test/s> a sh:PropertyShape ;\n  sh:datatype xsd:byte ;\n  sh:path <http://example.org/shacl-test/p> ;\n  sh:targetNode <http://example.org/shacl-test/i>" ;
   sh:resultPath ns1:p ;
@@ -30,9 +21,18 @@
   sh:sourceShape ns1:s ;
   sh:value 55 .
 
+<urn:uuid:304b4dc7-83ad-4745-a707-c9dcd116d399> a sh:ValidationResult ;
+  sh:focusNode ns1:i ;
+  sh:resultMessage "Fail at: <http://example.org/shacl-test/s> a sh:PropertyShape ;\n  sh:datatype xsd:byte ;\n  sh:path <http://example.org/shacl-test/p> ;\n  sh:targetNode <http://example.org/shacl-test/i>" ;
+  sh:resultPath ns1:p ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
+  sh:sourceShape ns1:s ;
+  sh:value "300"^^xsd:byte .
+
 _:bb4 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:bc0b4280-7e5a-4bea-970f-ac4585802e50> ;
-  sh:result <urn:uuid:db08071a-6b57-4615-8ef4-f93c96754ea2> ;
-  sh:result <urn:uuid:c50825d2-ffff-43b7-b7df-84a07d1da6af> .
+  sh:result <urn:uuid:304b4dc7-83ad-4745-a707-c9dcd116d399> ;
+  sh:result <urn:uuid:57f80813-f0c3-4069-9296-34341f26ba8d> ;
+  sh:result <urn:uuid:8d5f625e-bae8-4974-aeb4-a9f6dd9bdf31> .
 

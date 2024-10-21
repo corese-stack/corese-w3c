@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/maxCount-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:1ea9890b-b693-483f-972d-3d40586122e2> a sh:ValidationResult ;
+<urn:uuid:b93c3a08-392f-4e96-9549-228bc927c9f4> a sh:ValidationResult ;
   sh:focusNode ns1:InvalidPerson ;
   sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/maxCount-001.test#PersonShape-firstName> sh:datatype xsd:string ;\n  sh:maxCount 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/maxCount-001.test#firstName>" ;
   sh:resultPath ns1:firstName ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:1ea9890b-b693-483f-972d-3d40586122e2> .
+  sh:result <urn:uuid:b93c3a08-392f-4e96-9549-228bc927c9f4> .
 

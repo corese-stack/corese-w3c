@@ -18,6 +18,7 @@ public class SHACLValidateTest implements IW3cTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SHACLValidateTest.class);
 
+    private URI manifestUri;
     private String testUri;
     private String test;
     private String name;
@@ -30,13 +31,15 @@ public class SHACLValidateTest implements IW3cTest {
 
     /**
      *
+     * @param manifestUri URI of the manifest file that declares the tests as a entry.
      * @param testUri Uri of the test resource from its manifest file
      * @param name Name of the test (typically the end of its URI)
      * @param comment Comment literal from the manifest
      * @param dataGraph URI object of mf:action in the manifest
      * @param shapeGraph URI object of mf:result in the manifest
      */
-    public SHACLValidateTest(String testUri, String name, String comment, URI dataGraph, URI shapeGraph) {
+    public SHACLValidateTest(URI manifestUri, String testUri, String name, String comment, URI dataGraph, URI shapeGraph) {
+        this.manifestUri = manifestUri;
         this.testUri = testUri;
         this.test = TestUtils.extractLongTestName(testUri);
         this.name = name;
@@ -56,8 +59,8 @@ public class SHACLValidateTest implements IW3cTest {
         }
     }
 
-    public SHACLValidateTest(String test, String name, String comment, URI dataGraph, URI shapeGraph, String conformity) {
-        this(test, name, comment, dataGraph, shapeGraph);
+    public SHACLValidateTest(URI manifestUri, String test, String name, String comment, URI dataGraph, URI shapeGraph, String conformity) {
+        this(manifestUri, test, name, comment, dataGraph, shapeGraph);
         this.conformity = conformity;
     }
 
@@ -124,11 +127,12 @@ public class SHACLValidateTest implements IW3cTest {
             sb.append("        assertTrue(checkIfValidationIsSuccessfull);\n");
         } else {
             sb.append("        GraphStore graphStore = GraphStore.create();\n");
-            sb.append("        Graph referenceGraph = Graph.create();\n");
+            sb.append("        Graph referenceGraph = new Graph();\n");
             sb.append("        referenceGraph.init();\n");
             sb.append("        Load referenceLoader = Load.create(referenceGraph);\n");
             sb.append("        referenceLoader.parse(localDataFile.toString());\n");
             sb.append("        referenceLoader.parse(localShapeFile.toString());\n");
+            sb.append("        referenceLoader.parse(\"").append(TestFileManager.getLocalFilePath(this.manifestUri)).append("\");\n");
             sb.append("\n");
             sb.append("        Graph resultGraph = Graph.create();\n");
             sb.append("        resultGraph.init();\n");

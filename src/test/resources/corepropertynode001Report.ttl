@@ -2,7 +2,7 @@
 @prefix ns1: <http://datashapes.org/sh/tests/core/property/node-001.test#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:7de92e16-80e5-43df-a451-f41412f67b84> a sh:ValidationResult ;
+<urn:uuid:4a5cc4ff-d72b-4d5f-9d26-d731b7b3a9fb> a sh:ValidationResult ;
   sh:focusNode ns1:Issue_1 ;
   sh:resultMessage "Fail at: [rdfs:comment \"All assignees must have an email and a last name.\" ;\n  sh:property [sh:maxCount 1 ;\n    sh:minCount 1 ;\n    sh:path <http://datashapes.org/sh/tests/core/property/node-001.test#email>] ;\n  sh:property [sh:maxCount 1 ;\n    sh:minCount 1 ;\n    sh:path <http://datashapes.org/sh/tests/core/property/node-001.test#lastName>]]" ;
   sh:resultPath ns1:assignedTo ;
@@ -13,5 +13,5 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:7de92e16-80e5-43df-a451-f41412f67b84> .
+  sh:result <urn:uuid:4a5cc4ff-d72b-4d5f-9d26-d731b7b3a9fb> .
 

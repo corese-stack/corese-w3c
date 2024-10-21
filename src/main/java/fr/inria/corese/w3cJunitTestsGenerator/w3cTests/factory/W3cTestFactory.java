@@ -299,6 +299,7 @@ public class W3cTestFactory {
                 if(mappings.getValue("?conformity") != null) {
                     String referenceConformity = mappings.getValue("?conformity").getLabel();
                     return new SHACLValidateTest(
+                            manifestUri,
                             test,
                             name,
                             comment,
@@ -308,6 +309,7 @@ public class W3cTestFactory {
                     );
                 } else {
                     return new SHACLValidateTest(
+                            manifestUri,
                             test,
                             name,
                             comment,

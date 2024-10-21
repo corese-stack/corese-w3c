@@ -2,7 +2,7 @@
 @prefix ns1: <http://example.org/shacl-test/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-<urn:uuid:aed18011-f637-4d62-80c5-af78f635785c> a sh:ValidationResult ;
+<urn:uuid:240f175d-f191-4861-bda1-33ae57ed00f0> a sh:ValidationResult ;
   sh:focusNode ns1:j ;
   sh:resultMessage "Fail at: <http://example.org/shacl-test/s4> sh:class <http://example.org/shacl-test/C> ;\n  sh:path <http://example.org/shacl-test/r>" ;
   sh:resultPath ns1:r ;
@@ -11,7 +11,7 @@
   sh:sourceShape ns1:s4 ;
   sh:value ns1:k .
 
-<urn:uuid:38b95629-b14c-4e59-95d9-baba070d563e> a sh:ValidationResult ;
+<urn:uuid:43fa2887-427d-418e-94fa-82ffdad3462b> a sh:ValidationResult ;
   sh:focusNode ns1:j ;
   sh:resultMessage "Fail at: <http://example.org/shacl-test/s4> sh:class <http://example.org/shacl-test/C> ;\n  sh:path <http://example.org/shacl-test/r>" ;
   sh:resultPath ns1:r ;
@@ -22,6 +22,6 @@
 
 _:bb2 a sh:ValidationReport ;
   sh:conforms false ;
-  sh:result <urn:uuid:aed18011-f637-4d62-80c5-af78f635785c> ;
-  sh:result <urn:uuid:38b95629-b14c-4e59-95d9-baba070d563e> .
+  sh:result <urn:uuid:43fa2887-427d-418e-94fa-82ffdad3462b> ;
+  sh:result <urn:uuid:240f175d-f191-4861-bda1-33ae57ed00f0> .
 

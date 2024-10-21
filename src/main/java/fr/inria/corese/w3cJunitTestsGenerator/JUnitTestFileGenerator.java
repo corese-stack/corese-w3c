@@ -255,6 +255,7 @@ public class JUnitTestFileGenerator {
 
     private Set<String> defineImports() {
         Set<String> imports = new HashSet<>();
+        imports.add("fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestUtils");
         imports.add("java.nio.file.Path");
         imports.add("java.nio.file.Paths");
         imports.add("java.nio.file.Files");
