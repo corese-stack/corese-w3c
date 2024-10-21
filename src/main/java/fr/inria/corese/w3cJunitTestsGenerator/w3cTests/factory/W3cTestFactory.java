@@ -1,15 +1,20 @@
 package fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory;
 
 import fr.inria.corese.core.kgram.core.Mappings;
+import fr.inria.corese.core.print.TripleFormat;
 import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
 import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.core.sparql.exceptions.EngineException;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestUtils;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.implementations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 
@@ -48,7 +53,8 @@ public class W3cTestFactory {
             Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#NegativeSyntaxTest11", TestType.SPARQL11NegativeSyntaxTest),
             Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#NegativeUpdateSyntaxTest11", TestType.SPARQL11UpdateNegativeSyntaxTest),
             Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#QueryEvaluationTest", TestType.SPARQLQueryEvaluationTest),
-            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#UpdateEvaluationTest", TestType.SPARQLUpdateEvaluationTest)
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#UpdateEvaluationTest", TestType.SPARQLUpdateEvaluationTest),
+            Map.entry("http://www.w3.org/ns/shacl-test#Validate", TestType.SHACLValidateTest)
     );
 
     /**
@@ -79,7 +85,8 @@ public class W3cTestFactory {
         SPARQL11NegativeSyntaxTest,
         SPARQL11UpdateNegativeSyntaxTest,
         SPARQLQueryEvaluationTest,
-        SPARQLUpdateEvaluationTest
+        SPARQLUpdateEvaluationTest,
+        SHACLValidateTest
     }
 
     /**
@@ -94,16 +101,29 @@ public class W3cTestFactory {
      */
     public static IW3cTest createW3cTest(String test, String typeUri, QueryProcess queryProcess, URI manifestUri)
             throws TestCreationException {
+        logger.info("createW3cTest {} {} {}", test, typeUri, manifestUri.toString());
         String query = buildTestDetailQuery(test);
         Mappings mappings = executeQuery(queryProcess, query)
                 .orElseThrow(() -> new TestCreationException("Failed to retrieve test details for: " + test));
+
+        if(mappings.size() == 0) {
+            logger.info(query);
+            String debugQuery = "CONSTRUCT WHERE { ?s ?p ?o }";
+            try {
+                TripleFormat.create(queryProcess.query(debugQuery)).write("src/main/resources/debug.ttl");
+
+            } catch (EngineException | IOException e) {
+                logger.error("Error during debug dump", e);
+            }
+            throw new TestCreationException("No test description found in "+  manifestUri.toString());
+        }
 
         TestType type = typeMap.get(typeUri);
         if (type == null) {
             throw new TestCreationException("Unsupported test type URI: " + typeUri);
         }
 
-        String name = mappings.getValue("?name").getLabel();
+        String name = mappings.getValue("?name") != null ? mappings.getValue("?name").getLabel() : TestUtils.extractLongTestName(test);
         String comment = mappings.getValue("?comment") != null ? mappings.getValue("?comment").getLabel() : "";
 
         HashAlgorithm hashAlgorithm = null;
@@ -273,6 +293,30 @@ public class W3cTestFactory {
                             resultPathSPARQLQueryEvaluationTest,
                             queryPathSPARQLQueryEvaluationTest);
                 }
+            case SHACLValidateTest:
+                URI dataGraphUri = URI.create(mappings.getValue("?dataGraph").getLabel());
+                URI shapeGraphUri = URI.create(mappings.getValue("?shapesGraph").getLabel());
+                if(mappings.getValue("?conformity") != null) {
+                    String referenceConformity = mappings.getValue("?conformity").getLabel();
+                    return new SHACLValidateTest(
+                            manifestUri,
+                            test,
+                            name,
+                            comment,
+                            dataGraphUri,
+                            shapeGraphUri,
+                            referenceConformity
+                    );
+                } else {
+                    return new SHACLValidateTest(
+                            manifestUri,
+                            test,
+                            name,
+                            comment,
+                            dataGraphUri,
+                            shapeGraphUri
+                    );
+                }
             case SPARQL11UpdateNegativeSyntaxTest:
             case SPARQL11UpdatePositiveSyntaxTest:
             case SPARQLUpdateEvaluationTest:
@@ -287,19 +331,28 @@ public class W3cTestFactory {
      * @return The query to retrieve the test details.
      */
     private static String buildTestDetailQuery(String test) {
+        Path localTestFilePath = TestFileManager.getLocalFilePath(URI.create(test));
         StringBuilder sb = new StringBuilder();
         sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
         sb.append("PREFIX rdfc: <https://w3c.github.io/rdf-canon/tests/vocab#>\n");
         sb.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n");
-        sb.append("PREFIX qt:     <http://www.w3.org/2001/sw/DataAccess/tests/test-query#>\n");
-        sb.append("SELECT ?name ?comment ?action ?result ?query ?data WHERE {\n");
-        sb.append("    <").append(test).append("> mf:name ?name ;\n");
-        sb.append("        mf:action ?action .\n");
+        sb.append("PREFIX qt: <http://www.w3.org/2001/sw/DataAccess/tests/test-query#>\n");
+        sb.append("PREFIX sht: <http://www.w3.org/ns/shacl-test#>\n");
+        sb.append("SELECT DISTINCT ?name ?comment ?action ?result ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm WHERE {\n");
+        sb.append("    ?test mf:action ?action .\n");
+        sb.append("    OPTIONAL { ?test mf:name ?name . }\n");
         sb.append("    OPTIONAL { ?action qt:query ?query . }\n");
         sb.append("    OPTIONAL { ?action qt:data ?data . }\n");
-        sb.append("    OPTIONAL { <").append(test).append("> mf:result ?result } .\n");
-        sb.append("    OPTIONAL { <").append(test).append("> rdfs:comment ?comment } .\n");
-        sb.append("    OPTIONAL { <").append(test).append("> rdfc:hashAlgorithm ?hashAlgorithm } .\n");
+        sb.append("    OPTIONAL { ?action sht:dataGraph ?dataGraph ; \n");
+        sb.append("                       sht:shapesGraph ?shapesGraph . }\n");
+        sb.append("    OPTIONAL { ?test mf:result ?result } .\n");
+        sb.append("    OPTIONAL { ?test mf:result ?result .");
+        sb.append("        ?result sh:conforms ?conformity .");
+        sb.append("        FILTER(isBlank(?result))");
+        sb.append("    } .\n");
+        sb.append("    OPTIONAL { ?test rdfs:comment ?comment } .\n");
+        sb.append("    OPTIONAL { ?test rdfc:hashAlgorithm ?hashAlgorithm } .\n");
+        sb.append("    VALUES ?test { <").append(test).append("> <").append(localTestFilePath).append("> }\n");
         sb.append("}");
         return sb.toString();
     }

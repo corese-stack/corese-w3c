@@ -1,0 +1,25 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/and-002.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:052c1c89-f6b6-49be-9dea-c607bc5221d2> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/and-002.test#AndShape> a sh:NodeShape ;\n  sh:and (<http://datashapes.org/sh/tests/core/node/and-002.test#SuperShape>\n  [sh:property [sh:maxCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/and-002.test#property>]]) ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/and-002.test#InvalidInstance1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/and-002.test#InvalidInstance2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/and-002.test#ValidInstance1>" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:AndConstraintComponent ;
+  sh:sourceShape ns1:AndShape ;
+  sh:value ns1:InvalidInstance2 .
+
+<urn:uuid:b661cae6-6f90-48a0-a7f0-63aad30ae890> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/and-002.test#AndShape> a sh:NodeShape ;\n  sh:and (<http://datashapes.org/sh/tests/core/node/and-002.test#SuperShape>\n  [sh:property [sh:maxCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/and-002.test#property>]]) ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/and-002.test#InvalidInstance1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/and-002.test#InvalidInstance2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/node/and-002.test#ValidInstance1>" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:AndConstraintComponent ;
+  sh:sourceShape ns1:AndShape ;
+  sh:value ns1:InvalidInstance1 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:052c1c89-f6b6-49be-9dea-c607bc5221d2> ;
+  sh:result <urn:uuid:b661cae6-6f90-48a0-a7f0-63aad30ae890> .
+

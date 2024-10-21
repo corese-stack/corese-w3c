@@ -3,10 +3,9 @@ package fr.inria.corese.w3cJunitTestsGenerator;
 import fr.inria.corese.core.Graph;
 import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.load.Load;
 import fr.inria.corese.core.query.QueryProcess;
-import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestFileManager;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.IW3cTest;
+import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.TestUtils;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory;
 import fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory.W3cTestFactory.TestCreationException;
 import org.slf4j.Logger;
@@ -23,7 +22,7 @@ import java.util.List;
 public class W3cTestsGenerator {
 
     private static Logger logger = LoggerFactory.getLogger(W3cTestsGenerator.class);
-    private final URI manifestUri;
+    private final URI rootManifestUri;
     private final Path testsPath;
     private final String testName;
 
@@ -37,7 +36,7 @@ public class W3cTestsGenerator {
      */
     public W3cTestsGenerator(String testName, URI manifestUri, Path testsPath) {
         this.testName = testName;
-        this.manifestUri = manifestUri;
+        this.rootManifestUri = manifestUri;
         this.testsPath = testsPath;
     }
 
@@ -52,7 +51,7 @@ public class W3cTestsGenerator {
         List<IW3cTest> testCases = getListOfTestCases(graph);
 
         // Generate JUnit test file
-        JUnitTestFileGenerator generator = new JUnitTestFileGenerator(testName, manifestUri, testsPath, testCases);
+        JUnitTestFileGenerator generator = new JUnitTestFileGenerator(testName, rootManifestUri, testsPath, testCases);
         generator.generate();
     }
 
@@ -66,39 +65,7 @@ public class W3cTestsGenerator {
      * @return The graph containing the manifest file.
      */
     private Graph loadManifest() {
-        logger.info("Loading manifest file: {}", manifestUri);
-        Graph graph = Graph.create();
-        graph.init();
-        Load loader = Load.create(graph);
-
-        try {
-            TestFileManager.loadFile(manifestUri);
-            loader.parse(manifestUri.toString());
-        } catch (Exception e) {
-            logger.error("Error loading manifest file: {}", manifestUri, e);
-            System.exit(1);
-        }
-        QueryProcess exec = QueryProcess.create(graph);
-        String query = buildInclusionQuery();
-        Mappings mappings;
-
-        try {
-            mappings = exec.query(query);
-            for (Mapping mapping : mappings) {
-                String inclusion = mapping.getValue("?inclusion").getLabel();
-                try {
-                    TestFileManager.loadFile(URI.create(inclusion));
-                    loader.parse(inclusion);
-                } catch (Exception e) {
-                    logger.error("Error loading inclusion {}", inclusion, e);
-                    System.exit(1);
-                }
-            }
-        } catch (Exception e) {
-            logger.error("Error executing inclusion query.", e);
-        }
-
-        return graph;
+        return TestUtils.loadManifest(this.rootManifestUri);
     }
 
     ////////////////////////////
@@ -130,10 +97,11 @@ public class W3cTestsGenerator {
 
         List<IW3cTest> testCases = new ArrayList<>();
         for (Mapping mapping : mappings) {
+            String manifest = mapping.getValue("?manifest").getLabel();
             String test = mapping.getValue("?test").getLabel();
             String type = mapping.getValue("?type").getLabel();
             try {
-                testCases.add(W3cTestFactory.createW3cTest(test, type, exec, this.manifestUri));
+                testCases.add(W3cTestFactory.createW3cTest(test, type, exec, URI.create(manifest)));
             } catch (TestCreationException e) {
                 logger.error("Error creating test: " + test, e);
                 System.exit(1);
@@ -155,22 +123,11 @@ public class W3cTestsGenerator {
         sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
         sb.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n");
         sb.append("\n");
-        sb.append("SELECT ?type ?test WHERE {\n");
+        sb.append("SELECT DISTINCT ?manifest ?type ?test WHERE {\n");
         sb.append("  ?manifest a mf:Manifest .\n");
         sb.append("  ?manifest mf:entries/rdf:rest*/rdf:first ?test .\n");
         sb.append("  ?test rdf:type ?type .\n");
         sb.append("} ORDER BY ?test");
-        return sb.toString();
-    }
-
-    private String buildInclusionQuery() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
-        sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
-        sb.append("SELECT DISTINCT ?inclusion WHERE {\n");
-        sb.append("    ?manifest a mf:Manifest ;\n");
-        sb.append("        mf:include/rdf:rest*/rdf:first ?inclusion .\n");
-        sb.append("}");
         return sb.toString();
     }
 }

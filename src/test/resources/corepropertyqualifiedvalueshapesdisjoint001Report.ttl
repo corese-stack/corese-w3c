@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/qualifiedValueShapesDisjoint-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:abb9cf30-a232-4d36-967a-1d8bd96be215> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidHand1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/qualifiedValueShapesDisjoint-001.test#HandShape-digit1> sh:path <http://datashapes.org/sh/tests/core/property/qualifiedValueShapesDisjoint-001.test#digit> ;\n  sh:qualifiedMaxCount 1 ;\n  sh:qualifiedMinCount 1 ;\n  sh:qualifiedValueShape [sh:class <http://datashapes.org/sh/tests/core/property/qualifiedValueShapesDisjoint-001.test#Thumb>] ;\n  sh:qualifiedValueShapesDisjoint true" ;
+  sh:resultPath ns1:digit ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:QualifiedMinCountConstraintComponent ;
+  sh:sourceShape ns1:HandShape-digit1 ;
+  sh:value ns1:InvalidHand1 .
+
+<urn:uuid:63fdfcce-4d4f-40e5-b656-172a4fbd63f6> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidHand1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/qualifiedValueShapesDisjoint-001.test#HandShape-digit4> sh:path <http://datashapes.org/sh/tests/core/property/qualifiedValueShapesDisjoint-001.test#digit> ;\n  sh:qualifiedMaxCount 4 ;\n  sh:qualifiedMinCount 4 ;\n  sh:qualifiedValueShape [sh:class <http://datashapes.org/sh/tests/core/property/qualifiedValueShapesDisjoint-001.test#Finger>] ;\n  sh:qualifiedValueShapesDisjoint true" ;
+  sh:resultPath ns1:digit ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:QualifiedMinCountConstraintComponent ;
+  sh:sourceShape ns1:HandShape-digit4 ;
+  sh:value ns1:InvalidHand1 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:abb9cf30-a232-4d36-967a-1d8bd96be215> ;
+  sh:result <urn:uuid:63fdfcce-4d4f-40e5-b656-172a4fbd63f6> .
+

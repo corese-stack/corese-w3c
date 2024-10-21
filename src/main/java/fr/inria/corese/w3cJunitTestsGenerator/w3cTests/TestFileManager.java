@@ -17,8 +17,17 @@ public class TestFileManager {
 
     private static final Logger logger = LoggerFactory.getLogger(TestFileManager.class);
     public static final String RESOURCE_PATH_STRING = "src/test/resources/";
+    private static boolean updateModeFlag = false; // Indicates if the FileManager will try to update outdated files by dowloading them and comparing them to the existing ones
 
     private TestFileManager() {
+    }
+
+    public static void setUpdateMode(boolean updateMode) {
+        updateModeFlag = updateMode;
+    }
+
+    public static boolean isInUpdateMode() {
+        return updateModeFlag;
     }
 
 
@@ -30,11 +39,13 @@ public class TestFileManager {
      * @throws IOException If an I/O error occurs
      */
     public static void loadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
-        String localFileFolder = RESOURCE_PATH_STRING + getPrefixedFilename(fileUri);
+        String localFileFolder = getLocalFilePath(fileUri).toString();
         Path localFilePath = Paths.get(localFileFolder);
 
-        if(! Files.exists(localFilePath) || (Files.exists(localFilePath) && isRemoteFileDifferent(fileUri, localFilePath))) {
+        if(! Files.exists(localFilePath)) {
             downloadFile(fileUri, localFilePath);
+        } else if( isInUpdateMode() && isRemoteFileDifferent(fileUri, localFilePath)) {
+                downloadFile(fileUri, localFilePath);
         }
     }
 

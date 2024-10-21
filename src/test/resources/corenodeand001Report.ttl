@@ -1,0 +1,25 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/and-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:84246ab3-4c1e-4146-87ae-93ea90d74ade> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidRectangle2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/and-001.test#Rectangle> a rdfs:Class ;\n  a sh:NodeShape ;\n  rdfs:subClassOf rdfs:Resource ;\n  sh:and ([sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/and-001.test#width>]]\n  [sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/and-001.test#height>]])" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:AndConstraintComponent ;
+  sh:sourceShape ns1:Rectangle ;
+  sh:value ns1:InvalidRectangle2 .
+
+<urn:uuid:0b55b05e-5359-422c-95bc-1ea7462ce5a8> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidRectangle1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/and-001.test#Rectangle> a rdfs:Class ;\n  a sh:NodeShape ;\n  rdfs:subClassOf rdfs:Resource ;\n  sh:and ([sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/and-001.test#width>]]\n  [sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/and-001.test#height>]])" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:AndConstraintComponent ;
+  sh:sourceShape ns1:Rectangle ;
+  sh:value ns1:InvalidRectangle1 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:0b55b05e-5359-422c-95bc-1ea7462ce5a8> ;
+  sh:result <urn:uuid:84246ab3-4c1e-4146-87ae-93ea90d74ade> .
+

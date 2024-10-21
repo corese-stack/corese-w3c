@@ -1,0 +1,37 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/maxExclusive-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:c6b2147e-5060-463c-82d2-f2b39e7df318> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource3 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/maxExclusive-001.test#TestShape-property> sh:maxExclusive 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/maxExclusive-001.test#property>" ;
+  sh:resultPath ns1:property ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property ;
+  sh:value "a" .
+
+<urn:uuid:d3b8599f-6f47-4e36-b265-9366dadf58b6> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/maxExclusive-001.test#TestShape-property> sh:maxExclusive 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/maxExclusive-001.test#property>" ;
+  sh:resultPath ns1:property ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property ;
+  sh:value 1 .
+
+<urn:uuid:611e43e9-4836-459b-8e2f-5b912bb0131d> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/maxExclusive-001.test#TestShape-property> sh:maxExclusive 1 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/maxExclusive-001.test#property>" ;
+  sh:resultPath ns1:property ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape-property ;
+  sh:value 2 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:d3b8599f-6f47-4e36-b265-9366dadf58b6> ;
+  sh:result <urn:uuid:611e43e9-4836-459b-8e2f-5b912bb0131d> ;
+  sh:result <urn:uuid:c6b2147e-5060-463c-82d2-f2b39e7df318> .
+

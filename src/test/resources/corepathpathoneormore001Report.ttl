@@ -1,0 +1,27 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:653b8995-7914-4abc-a065-8887a92f2522> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#TestShape> a sh:PropertyShape ;\n  sh:minCount 2 ;\n  sh:path [sh:oneOrMorePath <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#child>] ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#ValidResource1>" ;
+  sh:resultPath "[sh:oneOrMorePath <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#child>]"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value 0 .
+
+<urn:uuid:4a917530-d8fb-4456-9973-fb66a4cd90b4> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#TestShape> a sh:PropertyShape ;\n  sh:minCount 2 ;\n  sh:path [sh:oneOrMorePath <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#child>] ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#InvalidResource1> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#InvalidResource2> ;\n  sh:targetNode <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#ValidResource1>" ;
+  sh:resultPath "[sh:oneOrMorePath <http://datashapes.org/sh/tests/core/path/path-oneOrMore-001.test#child>]"^^<http://ns.inria.fr/sparql-extension/graph> ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+  sh:sourceShape ns1:TestShape ;
+  sh:value 1 .
+
+_:bb4 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:4a917530-d8fb-4456-9973-fb66a4cd90b4> ;
+  sh:result <urn:uuid:653b8995-7914-4abc-a065-8887a92f2522> .
+

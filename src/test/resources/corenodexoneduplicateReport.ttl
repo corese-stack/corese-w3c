@@ -1,0 +1,25 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://example.org/shacl-test/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:4c2c02a7-4d38-4832-8564-dc75e97519cf> a sh:ValidationResult ;
+  sh:focusNode ns1:i ;
+  sh:resultMessage "Fail at: <http://example.org/shacl-test/s1> a sh:NodeShape ;\n  sh:targetClass <http://example.org/shacl-test/C1> ;\n  sh:xone (<http://example.org/shacl-test/s2>\n  <http://example.org/shacl-test/s2>)" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:XoneConstraintComponent ;
+  sh:sourceShape ns1:s1 ;
+  sh:value ns1:i .
+
+<urn:uuid:e869d1bc-a0ca-45c2-95de-bd5979c0e414> a sh:ValidationResult ;
+  sh:focusNode ns1:j ;
+  sh:resultMessage "Fail at: <http://example.org/shacl-test/s1> a sh:NodeShape ;\n  sh:targetClass <http://example.org/shacl-test/C1> ;\n  sh:xone (<http://example.org/shacl-test/s2>\n  <http://example.org/shacl-test/s2>)" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:XoneConstraintComponent ;
+  sh:sourceShape ns1:s1 ;
+  sh:value ns1:j .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:4c2c02a7-4d38-4832-8564-dc75e97519cf> ;
+  sh:result <urn:uuid:e869d1bc-a0ca-45c2-95de-bd5979c0e414> .
+

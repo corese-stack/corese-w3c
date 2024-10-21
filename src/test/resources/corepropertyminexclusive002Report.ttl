@@ -1,0 +1,28 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:625eead8-f445-40db-bfb4-c6002c12a4e7> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance2 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#TestShape-testProperty> sh:minExclusive 40 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#testProperty>" ;
+  sh:resultPath ns1:testProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape-testProperty ;
+  sh:value rdfs:Resource .
+
+<urn:uuid:66b8b439-75f4-4983-b596-65a0c4e42fd7> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidInstance1 ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#TestShape-testProperty> sh:minExclusive 40 ;\n  sh:path <http://datashapes.org/sh/tests/core/property/minExclusive-002.test#testProperty>" ;
+  sh:resultPath ns1:testProperty ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MinExclusiveConstraintComponent ;
+  sh:sourceShape ns1:TestShape-testProperty ;
+  sh:value "A string" .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:66b8b439-75f4-4983-b596-65a0c4e42fd7> ;
+  sh:result <urn:uuid:625eead8-f445-40db-bfb4-c6002c12a4e7> .
+

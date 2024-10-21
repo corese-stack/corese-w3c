@@ -1,0 +1,18 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/property/maxCount-002.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:17887260-9d58-4542-96b9-fae41c42bc5b> a sh:ValidationResult ;
+  sh:focusNode ns1:InvalidResource ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/property/maxCount-002.test#TestShape-versionInfo> sh:maxCount 0 ;\n  sh:path owl:versionInfo" ;
+  sh:resultPath owl:versionInfo ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:MaxCountConstraintComponent ;
+  sh:sourceShape ns1:TestShape-versionInfo ;
+  sh:value 1 .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:17887260-9d58-4542-96b9-fae41c42bc5b> .
+

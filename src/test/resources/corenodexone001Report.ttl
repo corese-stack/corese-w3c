@@ -1,0 +1,16 @@
+@prefix xsh: <http://www.w3.org/ns/shacl#> .
+@prefix ns1: <http://datashapes.org/sh/tests/core/node/xone-001.test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:uuid:abfeddbb-11af-47ae-8df1-2b1a06bce3ef> a sh:ValidationResult ;
+  sh:focusNode ns1:Dory ;
+  sh:resultMessage "Fail at: <http://datashapes.org/sh/tests/core/node/xone-001.test#XoneConstraintExampleShape> a sh:NodeShape ;\n  sh:targetClass <http://datashapes.org/sh/tests/core/node/xone-001.test#Person> ;\n  sh:xone ([sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/xone-001.test#fullName>]]\n  [sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/xone-001.test#firstName>] ;\n    sh:property [sh:minCount 1 ;\n      sh:path <http://datashapes.org/sh/tests/core/node/xone-001.test#lastName>]])" ;
+  sh:resultSeverity sh:Violation ;
+  sh:sourceConstraintComponent sh:XoneConstraintComponent ;
+  sh:sourceShape ns1:XoneConstraintExampleShape ;
+  sh:value ns1:Dory .
+
+_:bb2 a sh:ValidationReport ;
+  sh:conforms false ;
+  sh:result <urn:uuid:abfeddbb-11af-47ae-8df1-2b1a06bce3ef> .
+
