@@ -1,5 +1,6 @@
 package fr.inria.corese.w3cJunitTestsGenerator.w3cTests.factory;
 
+import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
 import fr.inria.corese.core.print.TripleFormat;
 import fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm;
@@ -15,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,6 +56,7 @@ public class W3cTestFactory {
             Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#NegativeSyntaxTest11", TestType.SPARQL11NegativeSyntaxTest),
             Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#NegativeUpdateSyntaxTest11", TestType.SPARQL11UpdateNegativeSyntaxTest),
             Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#QueryEvaluationTest", TestType.SPARQLQueryEvaluationTest),
+            Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#CSVResultFormatTest", TestType.SPARQL11CSVResultFormatTest),
             Map.entry("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#UpdateEvaluationTest", TestType.SPARQLUpdateEvaluationTest),
             Map.entry("http://www.w3.org/ns/shacl-test#Validate", TestType.SHACLValidateTest)
     );
@@ -84,6 +88,7 @@ public class W3cTestFactory {
         SPARQL10NegativeSyntaxTest,
         SPARQL11NegativeSyntaxTest,
         SPARQL11UpdateNegativeSyntaxTest,
+        SPARQL11CSVResultFormatTest,
         SPARQLQueryEvaluationTest,
         SPARQLUpdateEvaluationTest,
         SHACLValidateTest
@@ -259,6 +264,7 @@ public class W3cTestFactory {
                         resultPathRDF11TurtleEvalTest);
             case SPARQL10NegativeSyntaxTest:
             case SPARQL11NegativeSyntaxTest:
+            case SPARQL11UpdateNegativeSyntaxTest:
                 URI actionPathSPARQLNegativeSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
                 return new SPARQLNegativeSyntaxTest(
                         test,
@@ -267,12 +273,14 @@ public class W3cTestFactory {
                         actionPathSPARQLNegativeSyntaxTest);
             case SPARQL10PositiveSyntaxTest:
             case SPARQL11PositiveSyntaxTest:
+            case SPARQL11UpdatePositiveSyntaxTest:
                 URI actionPathSPARQLPositiveSyntaxTest = URI.create(mappings.getValue("?action").getLabel());
                 return new SPARQLPositiveSyntaxTest(
                         test,
                         name,
                         comment,
                         actionPathSPARQLPositiveSyntaxTest);
+            case SPARQL11CSVResultFormatTest:
             case SPARQLQueryEvaluationTest:
                 URI resultPathSPARQLQueryEvaluationTest = URI.create(mappings.getValue("?result").getLabel());
                 URI queryPathSPARQLQueryEvaluationTest = URI.create(mappings.getValue("?query").getLabel());
@@ -317,9 +325,50 @@ public class W3cTestFactory {
                             shapeGraphUri
                     );
                 }
-            case SPARQL11UpdateNegativeSyntaxTest:
-            case SPARQL11UpdatePositiveSyntaxTest:
             case SPARQLUpdateEvaluationTest:
+                String updateQueryTestDetailString = buildUpdateTestDetailQuery(test);
+                Mappings updateQueryTestMappings = executeQuery(queryProcess, updateQueryTestDetailString).orElseThrow();
+
+                HashSet<String> actionDataFileList = new HashSet<>();
+                HashSet<String> requestFileList = new HashSet<>();
+                HashMap<String, String> actionDataGraphMap = new HashMap<>();
+                HashSet<String> resultDataFileList = new HashSet<>();
+                HashMap<String, String> resultDataGraphMap = new HashMap<>();
+                for(Mapping mapping : updateQueryTestMappings.getMappingList()) {
+                    String actionDataFile = mapping.getValue("?actionDataFile").getLabel();
+                    actionDataFileList.add(actionDataFile);
+                    String resultDataFile = mapping.getValue("?resultDataFile").getLabel();
+                    resultDataFileList.add(resultDataFile);
+                    String requestFile = mapping.getValue("?request").getLabel();
+                    requestFileList.add(requestFile);
+
+                    if((mapping.getValue("?actionGraphDataFile") != null)
+                            && (mapping.getValue("?actionGraphName") != null) ) {
+                        String actionGraphName = mapping.getValue("?actionGraphName").getLabel();
+                        String actionGraphDataFile = mapping.getValue("?actionGraphDataFile").getLabel();
+                        actionDataGraphMap.put(actionGraphName, actionGraphDataFile);
+                    }
+                    if((mapping.getValue("?resultGraphDataFile") != null) && (mapping.getValue("?resultGraphName") != null)) {
+                        String resultGraphDataFile = mapping.getValue("?resultGraphDataFile").getLabel();
+                        String resultGraphName = mapping.getValue("?resultGraphName").getLabel();
+                        resultDataGraphMap.put(resultGraphName, resultGraphDataFile);
+                    }
+                }
+                if(actionDataGraphMap.size() == 0 && resultDataGraphMap.size() == 0) {
+                    return new UpdateEvaluationTest(
+                            manifestUri,
+                            test,
+                            actionDataFileList,
+                            resultDataFileList);
+                } else {
+                    return new UpdateEvaluationTest(
+                            manifestUri,
+                            test,
+                            actionDataFileList,
+                            resultDataFileList,
+                            actionDataGraphMap,
+                            resultDataGraphMap);
+                }
             default:
                 throw new TestCreationException("Unsupported test type: " + type);
         }
@@ -354,6 +403,34 @@ public class W3cTestFactory {
         sb.append("    OPTIONAL { ?test rdfc:hashAlgorithm ?hashAlgorithm } .\n");
         sb.append("    VALUES ?test { <").append(test).append("> <").append(localTestFilePath).append("> }\n");
         sb.append("}");
+        return sb.toString();
+    }
+
+    private static String buildUpdateTestDetailQuery(String test) {
+        Path localTestFilePath = TestFileManager.getLocalFilePath(URI.create(test));
+        StringBuilder sb = new StringBuilder();
+        sb.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n");
+        sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
+        sb.append("PREFIX ut:    <http://www.w3.org/2009/sparql/tests/test-update#>\n");
+        sb.append("SELECT DISTINCT ?request ?actionDataFile ?resultDataFile ?actionGraphDataFile ?actionGraphName ?resultGraphDataFile ?resultGraphName {\n");
+        sb.append("    ?test a mf:UpdateEvaluationTest ;\n");
+        sb.append("            mf:action ?action ;\n");
+        sb.append("            mf:result ?result .\n");
+        sb.append("    ?action ut:data ?actionDataFile ;\n");
+        sb.append("            ut:request ?request .\n");
+        sb.append("    ?result ut:data ?resultDataFile .\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        ?action ut:graphData ?actionGraph .\n");
+        sb.append("        ?actionGraph ut:graph ?actionGraphDataFile ;\n");
+        sb.append("                rdfs:label ?actionGraphName .\n");
+        sb.append("    }\n");
+        sb.append("    OPTIONAL {\n");
+        sb.append("        ?result ut:graphData ?resultGraph .\n");
+        sb.append("        ?resultGraph ut:graph ?resultGraphDataFile ;\n");
+        sb.append("                rdfs:label ?resultGraphName .\n");
+        sb.append("    }\n");
+        sb.append("    VALUES ?test { <").append(test).append("> <").append(localTestFilePath).append("> }\n");
+        sb.append("}\n");
         return sb.toString();
     }
 

@@ -95,6 +95,10 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
         String localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".xml";
         if(this.resultFile.toString().endsWith("ttl")) {
             localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".ttl";
+        } else if(this.resultFile.toString().endsWith("tsv")) {
+            localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".tsv";
+        } else if(this.resultFile.toString().endsWith("csv")) {
+            localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".tsv";
         }
 
         // Header of the test
@@ -134,7 +138,7 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
         sb.append("                \"-q\", \"").append(TestFileManager.getLocalFilePath(this.queryFile)).append("\")\n");
         sb.append("            .start();\n");
         sb.append("        assertEquals(0, command.waitFor());\n");
-        if(this.resultFile.toString().endsWith("ttl")) {
+        if(this.resultFile.toString().endsWith("ttl") || this.resultFile.toString().endsWith("csv") || this.resultFile.toString().endsWith("tsv")) {
             sb.append("        boolean comparison = TestUtils.compareFilesLineByLine(Path.of(\"");
         } else {
             sb.append("        boolean comparison = TestUtils.compareXMLSparqlResultFiles(Path.of(\"");

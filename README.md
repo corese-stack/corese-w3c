@@ -20,14 +20,15 @@ Tested files and manifests are in the `src/test/resources` directory.
   - [SHACL 1.1 tests](https://w3c.github.io/data-shapes/data-shapes-test-suite/)
 
 ## Ongoing implementation
+
+- SPARQL tests
+  - [SPARQL 1.1 tests](https://w3c.github.io/rdf-tests/sparql/sparql11)
   
 ## Planned implementation
 
 - RDF tests
   - RDF 1.1 tests
     - [RDF Schema and Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-mt/)
-- SPARQL tests
-  - [SPARQL 1.1 tests](https://w3c.github.io/rdf-tests/sparql/sparql11)
 - JSON-LD tests
   - [JSON-LD 1.1 tests](https://json-ld.github.io/json-ld.org/test-suite/reports/)
 - LDP

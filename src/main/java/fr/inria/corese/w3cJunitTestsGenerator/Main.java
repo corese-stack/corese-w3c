@@ -45,7 +45,8 @@ public class Main {
 //                generateW3cTests("rdf11trig", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl"); // RDF 1.1 Trig
 //                generateW3cTests("rdf11turtle", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl"); // RDF 1.1 turtle
 //                generateW3cTests("sparql10", "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl"); // SPARQL 1.0
-                generateW3cTests("shacl", "https://raw.githubusercontent.com/w3c/data-shapes/refs/heads/gh-pages/data-shapes-test-suite/tests/manifest.ttl");
+//                generateW3cTests("shacl", "https://raw.githubusercontent.com/w3c/data-shapes/refs/heads/gh-pages/data-shapes-test-suite/tests/manifest.ttl");
+                generateW3cTests("sparql11", "https://w3c.github.io/rdf-tests/sparql/sparql11/manifest.ttl");
         }
 
         /**
