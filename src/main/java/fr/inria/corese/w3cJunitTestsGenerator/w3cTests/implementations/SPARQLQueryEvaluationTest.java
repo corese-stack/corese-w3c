@@ -102,7 +102,7 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
         }
 
         // Header of the test
-        sb.append("    // ").append(this.name).append(" SPARQL Evaluation Test\n");
+        sb.append("    // ").append(TestUtils.sanitizeComment(this.name)).append(" SPARQL Evaluation Test\n");
         sb.append("    // ").append(this.testUri).append("\n");
         if(this.resultFile.toString().endsWith("ttl")) {
             sb.append("    // FIXME Turtle SPARQL result format is non-standard. See http://www.w3.org/2001/sw/DataAccess/tests/result-set#\n");

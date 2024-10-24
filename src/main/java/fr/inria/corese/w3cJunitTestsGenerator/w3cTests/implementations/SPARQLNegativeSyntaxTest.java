@@ -61,7 +61,7 @@ public class SPARQLNegativeSyntaxTest implements IW3cTest {
         StringBuilder sb = new StringBuilder();
 
         // Header of the test
-        sb.append("    // ").append(this.name).append(" SPARQL Negative Syntax Test\n");
+        sb.append("    // ").append(TestUtils.sanitizeComment(this.name)).append(" SPARQL Negative Syntax Test\n");
         if (!this.comment.isEmpty()) {
             String sanitizedComment = TestUtils.sanitizeComment(this.comment);
             sb.append("    // ").append(sanitizedComment).append("\n");
