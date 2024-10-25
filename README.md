@@ -20,18 +20,17 @@ Tested files and manifests are in the `src/test/resources` directory.
   - [SHACL 1.1 tests](https://w3c.github.io/data-shapes/data-shapes-test-suite/)
 
 ## Ongoing implementation
+
+- SPARQL tests
+  - [SPARQL 1.1 tests](https://w3c.github.io/rdf-tests/sparql/sparql11)
   
 ## Planned implementation
 
 - RDF tests
   - RDF 1.1 tests
     - [RDF Schema and Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-mt/)
-- SPARQL tests
-  - [SPARQL 1.1 tests](https://w3c.github.io/rdf-tests/sparql/sparql11)
 - JSON-LD tests
   - [JSON-LD 1.1 tests](https://json-ld.github.io/json-ld.org/test-suite/reports/)
-- LDP
-  - [LDP Tests](https://w3c.github.io/ldp-testsuite/)
 
 ## Not implemented in corese
 
@@ -44,9 +43,12 @@ Tested files and manifests are in the `src/test/resources` directory.
     - [TriG tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-trig)
 - SPARQL tests
   - [SPARQL 1.2 tests](https://w3c.github.io/rdf-tests/sparql/sparql12)
+- LDP
+  - [LDP Tests](https://w3c.github.io/ldp-testsuite/)
   
 ## Issues
 
-- Some tests for SPARQL 1.0 use a turtle format for the results of SELECT queries. To our knowledge, this format is not part of the SPARQL 1.0 norm
-- The vocabulary used to define SHACL tests is an extension of the Manifest vocabulary used in all other tests. As of 04/10/2024, it is not dereferencable or available on Linked Open Vocabularies
-  - [issue](https://github.com/w3c/shacl/issues/86).
+- Some tests for SPARQL 1.0 use a turtle format for the results of SELECT queries. To our knowledge, this format is not part of the SPARQL 1.0 standard
+- The vocabulary used to define SHACL tests is an extension of the Manifest vocabulary used in all other tests. As of 04/10/2024, it is not dereferencable or available on Linked Open Vocabularies.
+  - [issue](https://github.com/w3c/shacl/issues/86)
+  - Specific problem of 

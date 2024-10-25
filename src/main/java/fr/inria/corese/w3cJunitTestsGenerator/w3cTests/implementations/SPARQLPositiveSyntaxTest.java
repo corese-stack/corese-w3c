@@ -61,7 +61,7 @@ public class SPARQLPositiveSyntaxTest implements IW3cTest {
         StringBuilder sb = new StringBuilder();
 
         // Header of the test
-        sb.append("    // ").append(this.name).append(" SPARQL Positive Syntax Test\n");
+        sb.append("    // ").append(TestUtils.sanitizeComment(this.name)).append(" SPARQL Positive Syntax Test\n");
         if (!this.comment.isEmpty()) {
             String sanitizedComment = TestUtils.sanitizeComment(this.comment);
             sb.append("    // ").append(sanitizedComment).append("\n");
@@ -77,7 +77,6 @@ public class SPARQLPositiveSyntaxTest implements IW3cTest {
         sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"sparql\",\n"); // FIXME To be replaced by the latest corese-command release
         sb.append("                \"-i\", \"src/test/resources/sampleData.ttl\",\n");
         sb.append("                \"-if\", \"turtle\",\n");
-        sb.append("                \"-of\", \"xml\",\n");
         sb.append("                \"-q\", localActionFile.toString())\n");
         sb.append("            .start();\n");
         sb.append("        assertEquals(0, command.waitFor());\n");

@@ -1,9 +1,14 @@
 package fr.inria.corese.w3cJunitTestsGenerator.w3cTests;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import fr.inria.corese.core.Graph;
+import fr.inria.corese.core.GraphStore;
 import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
 import fr.inria.corese.core.load.Load;
+import fr.inria.corese.core.print.CanonicalRdf10Format;
 import fr.inria.corese.core.query.QueryProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +29,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,13 +41,15 @@ public class TestUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(TestUtils.class);
 
+    private TestUtils() {}
+
     /**
      * Remove seen name structure that are incompatible with the format of a java function name.
      * @param originalTestName
      * @return sanitized test name
      */
     public static String sanitizeTestName(String originalTestName) {
-        return originalTestName.trim().toLowerCase(Locale.ROOT).replace("-","");
+        return originalTestName.trim().toLowerCase(Locale.ROOT).replace("-","").replace(" ", "_").replace("#", "");
     }
 
     /**
@@ -73,9 +82,9 @@ public class TestUtils {
      */
     public static String sanitizeComment(String comment) {
         return comment
-                .replaceAll("\\\\u([0-9A-Fa-f]*)", "")
+                .replaceAll("\\\\[uU]", "'slash'u")
                 .trim()
-                .replace('\n', ' ');
+                .replaceAll("\\\\n", " ");
     }
 
     /**
@@ -137,6 +146,15 @@ public class TestUtils {
             List<String> results2 = extractXMLResults(doc2);
 
             return compareXMLResults(results1, results2);
+    }
+
+    public static boolean jsonFilesAreEqual(Path filePath1, Path filePath2) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        JsonNode jsonFile1 = mapper.readTree(filePath1.toFile());
+        JsonNode jsonFile2 = mapper.readTree(filePath2.toFile());
+
+        return jsonFile1.equals(jsonFile2);
     }
 
     // Method to extract SPARQL query results from the XML Document
@@ -412,6 +430,11 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Generated the SPARQL query that retrieves the list of manifests files listed as inclusions.
+     * @param manifestUri If not null, only the inclusion linked to the provided URI will be listed
+     * @return SPARQL query string
+     */
     private static String buildInclusionQuery(URI manifestUri) {
         StringBuilder sb = new StringBuilder();
         sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
@@ -429,5 +452,26 @@ public class TestUtils {
 
     private static String buildInclusionQuery() {
         return buildInclusionQuery(null);
+    }
+
+    /**
+     * Compare the canonical representation of two knowledge bases
+     * @param kb1
+     * @param kb2
+     * @return the result of the string comparison of the conversion of kb1 against kb2
+     */
+    public static int graphStoreContentCompare(GraphStore kb1, GraphStore kb2) {
+        CanonicalRdf10Format kb1Printer = CanonicalRdf10Format.create(kb1);
+        CanonicalRdf10Format kb2Printer = CanonicalRdf10Format.create(kb2);
+
+        return kb1Printer.toString().compareTo(kb2Printer.toString());
+    }
+
+    public static String getFileTextContent(String filePathString) throws IOException {
+        Path filePath = Paths.get(filePathString);
+
+        byte[] fileBytes = Files.readAllBytes(filePath);
+        String content = new String(fileBytes);
+        return content;
     }
 }

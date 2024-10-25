@@ -11,4 +11,4 @@
 
 ## Best practices
 
-- Generated test should work as launches of the Corese application in their release version.
+- Generated test should work as launches of the Corese application in their release version when possible.

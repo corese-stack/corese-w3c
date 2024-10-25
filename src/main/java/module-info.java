@@ -3,4 +3,5 @@ module fr.inria.corese.corese_w3c {
     requires fr.inria.corese.corese_core;
     requires org.slf4j;
     requires java.xml;
+    requires com.fasterxml.jackson.databind;
 }

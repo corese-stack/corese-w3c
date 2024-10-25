@@ -41,6 +41,7 @@ dependencies {
     implementation("com.ibm.icu:icu4j:75.1")
 
     implementation("com.github.jsonld-java:jsonld-java:0.13.6")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.0")
 
     implementation("xerces:xercesImpl:2.12.2")
 
