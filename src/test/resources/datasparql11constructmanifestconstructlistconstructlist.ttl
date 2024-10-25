@@ -1,0 +1,31 @@
+@prefix : <http://example.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+_:b4 :prop :p ;
+  rdf:first :s2 ;
+  rdf:rest _:b5 .
+
+_:b3 rdf:first :o1 ;
+  rdf:rest rdf:nil .
+
+_:b2 :prop :p ;
+  rdf:first :s2 ;
+  rdf:rest _:b3 .
+
+_:b1 rdf:first :o1 ;
+  rdf:rest rdf:nil .
+
+_:b0 :prop :p ;
+  rdf:first :s1 ;
+  rdf:rest _:b1 .
+
+_:b7 rdf:first :o3 ;
+  rdf:rest rdf:nil .
+
+_:b6 :prop :p ;
+  rdf:first :s3 ;
+  rdf:rest _:b7 .
+
+_:b5 rdf:first :o2 ;
+  rdf:rest rdf:nil .
+

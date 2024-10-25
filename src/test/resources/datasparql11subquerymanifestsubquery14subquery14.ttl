@@ -1,0 +1,20 @@
+@prefix ns2: <http://example.com/> .
+@prefix ns1: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ex: <http://example.org/ns#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+ex:c a foaf:Person ;
+  foaf:homepage ns1:chris ;
+  foaf:name "Chris" .
+
+ex:b a foaf:Person ;
+  foaf:homepage ns1:ben ;
+  foaf:homepage ns2:ben ;
+  foaf:mbox <mailto:ben@example.org> ;
+  foaf:name "Ben" .
+
+ex:a a foaf:Person ;
+  foaf:homepage ns1:alan ;
+  foaf:name "Alan" .
+

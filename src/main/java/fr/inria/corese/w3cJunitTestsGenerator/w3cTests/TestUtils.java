@@ -464,9 +464,6 @@ public class TestUtils {
         CanonicalRdf10Format kb1Printer = CanonicalRdf10Format.create(kb1);
         CanonicalRdf10Format kb2Printer = CanonicalRdf10Format.create(kb2);
 
-        logger.info("kb1: {}", kb1Printer.toString());
-        logger.info("kb2: {}", kb2Printer.toString());
-
         return kb1Printer.toString().compareTo(kb2Printer.toString());
     }
 

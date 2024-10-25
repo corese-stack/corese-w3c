@@ -1,2 +1,2 @@
-https://w3c.github.io/rdf-tests/sparql/sparql11/manifest#datasparql11syntaxquerymanifesttest_10test_10,2024-10-24T16:10:19+02:00,http://www.w3.org/ns/earl#passed
-https://w3c.github.io/rdf-tests/sparql/sparql11/manifest#datasparql11syntaxupdate1manifesttest_10test_10,2024-10-24T16:10:20+02:00,http://www.w3.org/ns/earl#failed
+https://w3c.github.io/rdf-tests/sparql/sparql11/manifest#datasparql11csvtsvresmanifesttsv03tsv03,2024-10-25T16:15:12+02:00,http://www.w3.org/ns/earl#failed
+https://w3c.github.io/rdf-tests/sparql/sparql11/manifest#datasparql11deletedatamanifestdawgdeletedata03dawgdeletedata03,2024-10-25T16:15:12+02:00,http://www.w3.org/ns/earl#failed
