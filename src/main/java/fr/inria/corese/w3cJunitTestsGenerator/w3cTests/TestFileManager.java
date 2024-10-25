@@ -90,7 +90,6 @@ public class TestFileManager {
      * @throws IOException If an I/O error occurs
      */
     public static void downloadFile(URI fileUri, Path localFilePath) throws IOException {
-        logger.info("Downloading {} to {}", fileUri.toString(), localFilePath);
         Files.createDirectories(localFilePath.getParent());
         try (InputStream in = fileUri.toURL().openStream()) {
             Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
