@@ -102,7 +102,7 @@ public class SPARQLUpdateEvaluationTest implements IW3cTest {
         }
         sb.append("    @Test\n");
         sb.append("    public void ").append(testName);
-        sb.append("() throws LoadException, EngineException, FileNotFoundException {\n");
+        sb.append("() throws LoadException, EngineException, FileNotFoundException, IOException {\n");
 
         sb.append("\n");
         sb.append("\n");
@@ -141,11 +141,10 @@ public class SPARQLUpdateEvaluationTest implements IW3cTest {
             sb.append("\n");
             resultGraphnumber++;
         }
-        sb.append("        QueryProcess resultQueryProcess = QueryProcess.create(kbResult);\n");
+        sb.append("        QueryProcess resultQueryProcess = QueryProcess.create(kbRef);\n");
         int queryNumber = 0;
         for(String queryFilename : this.requestFileList) {
-            sb.append("        BufferedReader query").append(queryNumber).append("Reader = new BufferedReader(new FileReader(\"").append(TestFileManager.getLocalFilePath(URI.create(queryFilename))).append("\"));\n");
-            sb.append("        String query").append(queryNumber).append("String = query").append(queryNumber).append("Reader.toString();\n");
+            sb.append("        String query").append(queryNumber).append("String = TestUtils.getFileTextContent(\"").append(TestFileManager.getLocalFilePath(URI.create(queryFilename))).append("\");\n");
             sb.append("        resultQueryProcess.query(query").append(queryNumber).append("String);\n");
             queryNumber++;
         }

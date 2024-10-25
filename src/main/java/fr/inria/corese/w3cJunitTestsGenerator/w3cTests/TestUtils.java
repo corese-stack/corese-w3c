@@ -1,5 +1,8 @@
 package fr.inria.corese.w3cJunitTestsGenerator.w3cTests;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import fr.inria.corese.core.Graph;
 import fr.inria.corese.core.GraphStore;
 import fr.inria.corese.core.kgram.core.Mapping;
@@ -26,7 +29,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -141,6 +146,15 @@ public class TestUtils {
             List<String> results2 = extractXMLResults(doc2);
 
             return compareXMLResults(results1, results2);
+    }
+
+    public static boolean jsonFilesAreEqual(Path filePath1, Path filePath2) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        JsonNode jsonFile1 = mapper.readTree(filePath1.toFile());
+        JsonNode jsonFile2 = mapper.readTree(filePath2.toFile());
+
+        return jsonFile1.equals(jsonFile2);
     }
 
     // Method to extract SPARQL query results from the XML Document
@@ -450,6 +464,17 @@ public class TestUtils {
         CanonicalRdf10Format kb1Printer = CanonicalRdf10Format.create(kb1);
         CanonicalRdf10Format kb2Printer = CanonicalRdf10Format.create(kb2);
 
+        logger.info("kb1: {}", kb1Printer.toString());
+        logger.info("kb2: {}", kb2Printer.toString());
+
         return kb1Printer.toString().compareTo(kb2Printer.toString());
+    }
+
+    public static String getFileTextContent(String filePathString) throws IOException {
+        Path filePath = Paths.get(filePathString);
+
+        byte[] fileBytes = Files.readAllBytes(filePath);
+        String content = new String(fileBytes);
+        return content;
     }
 }

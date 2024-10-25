@@ -92,13 +92,20 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
     public String generate() {
         StringBuilder sb = new StringBuilder();
 
+        String formatArgumentString = "xml";
         String localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".xml";
         if(this.resultFile.toString().endsWith("ttl")) {
             localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".ttl";
+            formatArgumentString = "turtle";
         } else if(this.resultFile.toString().endsWith("tsv")) {
             localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".tsv";
+            formatArgumentString = "tsv";
         } else if(this.resultFile.toString().endsWith("csv")) {
-            localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".tsv";
+            localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".csv";
+            formatArgumentString = "csv";
+        } else if(this.resultFile.toString().endsWith("srj") || this.resultFile.toString().endsWith("json")) {
+            localResultFile = TestFileManager.RESOURCE_PATH_STRING + this.testName  + ".json";
+            formatArgumentString = "json";
         }
 
         // Header of the test
@@ -125,23 +132,18 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
             sb.append("                \"-i\", \"").append(SAMPLE_DATA_FILE_PATH_STRING).append("\",\n");
         }
         sb.append("                \"-if\", \"turtle\",\n");
-        if(this.resultFile.toString().endsWith("ttl")) {
-            sb.append("                \"-of\", \"").append("turtle").append("\",\n");
-        } else {
-            sb.append("                \"-of\", \"").append("xml").append("\",\n");
-        }
-        if(this.resultFile.toString().endsWith("ttl")) {
-            sb.append("                \"-o\", \"").append(TestFileManager.RESOURCE_PATH_STRING).append(this.testName).append(".ttl").append("\",\n");
-        } else {
-            sb.append("                \"-o\", \"").append(TestFileManager.RESOURCE_PATH_STRING).append(this.testName).append(".xml").append("\",\n");
-        }
+        sb.append("                \"-of\", \"").append(formatArgumentString).append("\",\n");
+        sb.append("                \"-o\", \"").append(localResultFile).append("\",\n");
+
         sb.append("                \"-q\", \"").append(TestFileManager.getLocalFilePath(this.queryFile)).append("\")\n");
         sb.append("            .start();\n");
         sb.append("        assertEquals(0, command.waitFor());\n");
-        if(this.resultFile.toString().endsWith("ttl") || this.resultFile.toString().endsWith("csv") || this.resultFile.toString().endsWith("tsv")) {
-            sb.append("        boolean comparison = TestUtils.compareFilesLineByLine(Path.of(\"");
-        } else {
+        if( this.resultFile.toString().endsWith("xml") || this.resultFile.toString().endsWith("rdf") || this.resultFile.toString().endsWith("srx")) {
             sb.append("        boolean comparison = TestUtils.compareXMLSparqlResultFiles(Path.of(\"");
+        } else if(this.resultFile.toString().endsWith("srj") || this.resultFile.toString().endsWith("json") || this.resultFile.toString().endsWith("jsonld")) {
+            sb.append("        boolean comparison = TestUtils.jsonFilesAreEqual(Path.of(\"");
+        } else {
+            sb.append("        boolean comparison = TestUtils.compareFilesLineByLine(Path.of(\"");
         }
         sb.append(TestFileManager.getLocalFilePath(this.resultFile)).append("\"), Path.of(\"");
         sb.append(localResultFile).append("\"));\n");
