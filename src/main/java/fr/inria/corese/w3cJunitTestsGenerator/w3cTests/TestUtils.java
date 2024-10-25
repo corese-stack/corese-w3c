@@ -49,7 +49,7 @@ public class TestUtils {
      * @return sanitized test name
      */
     public static String sanitizeTestName(String originalTestName) {
-        return originalTestName.trim().toLowerCase(Locale.ROOT).replace("-","").replace(" ", "_").replace("#", "");
+        return originalTestName.trim().toLowerCase(Locale.ROOT).replace("-","").replace(" ", "_").replace("#", "").replace(".", "");
     }
 
     /**
@@ -84,7 +84,7 @@ public class TestUtils {
         return comment
                 .replaceAll("\\\\[uU]", "'slash'u")
                 .trim()
-                .replaceAll("\\\\n", " ");
+                .replaceAll("\n", " ");
     }
 
     /**

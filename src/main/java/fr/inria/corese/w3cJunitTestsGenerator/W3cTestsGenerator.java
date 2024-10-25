@@ -127,6 +127,7 @@ public class W3cTestsGenerator {
         sb.append("  ?manifest a mf:Manifest .\n");
         sb.append("  ?manifest mf:entries/rdf:rest*/rdf:first ?test .\n");
         sb.append("  ?test rdf:type ?type .\n");
+        sb.append("  FILTER(isIri(?manifest))\n");
         sb.append("} ORDER BY ?test");
         return sb.toString();
     }

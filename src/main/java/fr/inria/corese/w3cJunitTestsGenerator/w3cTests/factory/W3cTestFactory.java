@@ -118,13 +118,13 @@ public class W3cTestFactory {
      */
     public static IW3cTest createW3cTest(String test, String typeUri, QueryProcess queryProcess, URI manifestUri)
             throws TestCreationException {
-        logger.info("createW3cTest {} {} {}", test, typeUri, manifestUri.toString());
+        logger.debug("createW3cTest {} {} {}", test, typeUri, manifestUri.toString());
         String query = buildTestDetailQuery(test);
         Mappings mappings = executeQuery(queryProcess, query)
                 .orElseThrow(() -> new TestCreationException("Failed to retrieve test details for: " + test));
 
         if (mappings.size() == 0) {
-            logger.info(query);
+            logger.debug(query);
             String debugQuery = "CONSTRUCT WHERE { ?s ?p ?o }";
             try {
                 TripleFormat.create(queryProcess.query(debugQuery)).write("src/main/resources/debug.ttl");
