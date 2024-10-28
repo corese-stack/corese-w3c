@@ -18,8 +18,6 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SPARQLQueryEvaluationTest.class);
 
-    private static final String SAMPLE_DATA_FILE_PATH_STRING = "src/test/resources/sampleData.ttl";
-
     private String testUri;
     private String testName;
     private String name;

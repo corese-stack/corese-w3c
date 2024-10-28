@@ -41,6 +41,9 @@ public class TestUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(TestUtils.class);
 
+    public static final String SAMPLE_DATA_FILE_PATH_STRING = "src/test/resources/meta/sampleData.ttl";
+    public static final String BASIC_SPARQL_SELECT_QUERY_PATH_STRING = "src/test/resources/meta/sparqlSelectBasic.rq";
+
     private TestUtils() {}
 
     /**

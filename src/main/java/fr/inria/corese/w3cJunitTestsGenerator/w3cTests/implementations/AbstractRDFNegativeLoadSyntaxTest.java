@@ -82,7 +82,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
         sb.append("                \"-i\", localActionFile.toString(),\n");
         sb.append("                \"-if\", \"").append(this.format).append("\",\n");
         sb.append("                \"-of\", \"csv\",\n");
-        sb.append("                \"-q\", \"src/test/resources/sparqlSelectBasic.rq\")\n");
+        sb.append("                \"-q\", \"").append(TestUtils.BASIC_SPARQL_SELECT_QUERY_PATH_STRING).append("\")\n");
         sb.append("            .start();\n");
         sb.append("        assertNotEquals(0, command.waitFor());\n");
 

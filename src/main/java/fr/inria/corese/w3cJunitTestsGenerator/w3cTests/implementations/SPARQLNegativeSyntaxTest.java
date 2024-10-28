@@ -75,7 +75,7 @@ public class SPARQLNegativeSyntaxTest implements IW3cTest {
         sb.append("        Path localActionFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
         sb.append("        Process command = new ProcessBuilder().inheritIO().command(\n");
         sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"sparql\",\n"); // FIXME To be replaced by the latest corese-command release
-        sb.append("                \"-i\", \"src/test/resources/sampleData.ttl\",\n");
+        sb.append("                \"-i\", \"").append(TestUtils.SAMPLE_DATA_FILE_PATH_STRING).append("\",\n");
         sb.append("                \"-if\", \"turtle\",\n");
         sb.append("                \"-q\", localActionFile.toString())\n");
         sb.append("            .start();\n");
