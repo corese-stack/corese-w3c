@@ -127,7 +127,7 @@ public class SPARQLQueryEvaluationTest implements IW3cTest {
         if(this.dataFile != null) {
             sb.append("                \"-i\", \"").append(TestFileManager.getLocalFilePath(this.dataFile)).append("\",\n");
         } else {
-            sb.append("                \"-i\", \"").append(SAMPLE_DATA_FILE_PATH_STRING).append("\",\n");
+            sb.append("                \"-i\", \"").append(TestUtils.SAMPLE_DATA_FILE_PATH_STRING).append("\",\n");
         }
         sb.append("                \"-if\", \"turtle\",\n");
         sb.append("                \"-of\", \"").append(formatArgumentString).append("\",\n");
