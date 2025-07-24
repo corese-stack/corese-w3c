@@ -7,8 +7,8 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
     mavenLocal()
+    mavenCentral()
 }
 
 configurations.all {
@@ -56,14 +56,14 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
 
-    implementation("fr.inria.corese:corese-core:5.0.0-SNAPSHOT") // To be changed for the release version
+    implementation("fr.inria.corese:corese-core:+") // To be changed for the release version
 }
 
 group = "fr.inria.corese"
 version = "5.0.0-SNAPSHOT"
 description = "corese-w3c"
 java.sourceCompatibility = JavaVersion.VERSION_11
-project.setProperty("mainClassName","fr.inria.corese.w3cJunitTestsGenerator.Main")
+project.setProperty("mainClassName","fr.inria.corese.w3c.junit.Main")
 
 
 tasks.withType<JavaCompile>() {
@@ -85,7 +85,7 @@ tasks {
     shadowJar {
         manifest {
             attributes(
-                "Main-Class" to "fr.inria.corese.w3cJunitTestsGenerator.Main"
+                "Main-Class" to "fr.inria.corese.w3c.junit.Main"
             )
         }
         this.archiveClassifier = "app"
