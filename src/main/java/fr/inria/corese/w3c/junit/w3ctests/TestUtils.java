@@ -85,14 +85,14 @@ public class TestUtils {
     }
 
     public static void parseFile(String rdfCommandFileFormat, String filePath) throws FileNotFoundException {
-        RDFParser parser = TestUtils.getRDFParser(rdfCommandFileFormat);
-        Reader reader = new FileReader(filePath);
-        parser.parse(reader);
+        Model model = new CoreseModel();
+        parseFile(rdfCommandFileFormat, filePath, model);
     }
 
     public static void parseFile(String rdfCommandFileFormat, String filePath, Model model) throws FileNotFoundException {
         RDFParser parser = TestUtils.getRDFParser(rdfCommandFileFormat, model);
-        Reader reader = new FileReader(filePath);
+        String localFilePath = TestFileManager.getLocalFilePath(URI.create(filePath)).toString();
+        Reader reader = new FileReader(localFilePath);
         parser.parse(reader);
     }
 

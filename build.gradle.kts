@@ -62,7 +62,7 @@ dependencies {
 group = "fr.inria.corese"
 version = "5.0.0-SNAPSHOT"
 description = "corese-w3c"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_21
 project.setProperty("mainClassName","fr.inria.corese.w3c.junit.Main")
 
 
@@ -92,10 +92,49 @@ tasks {
     }
 }
 
+tasks.register("getCoreseCore") {
+    group = "corese"
+    description = "Publish the latest corese-core version to local Maven repository"
+    doFirst {
+        // If the corese-core directory does not exist, clone the corese-core repository
+        if (!File("corese-core").exists()) {
+            exec {
+                commandLine("git", "clone", "https://github.com/corese-stack/corese-core.git")
+            }
+        }
+        // Checkout the latest commit of the feature/corese-next branch of corese-core
+        exec {
+            commandLine("git", "checkout", "feature/corese-next")
+            workingDir = File("corese-core")
+        }
+        // in the corese-core directory, run the command ./gradlew publishToMavenLocal
+        exec {
+            commandLine("./gradlew", "publishToMavenLocal")
+            workingDir = File("corese-core")
+        }
+    }
+}
+
+// getCoreseCore must be executed before compilation
+tasks.named("compileJava") {
+    dependsOn(tasks.named("getCoreseCore"))
+}
+
+tasks.register<Delete>("cleanCoreseCore") {
+    group = "corese"
+    description = "Delete the directory of the cloned corese-core repository"
+    delete(File("corese-core"))
+}
+
+// clean the corese-core directory after the build
+tasks.named("clean") {
+    dependsOn(tasks.named("cleanCoreseCore"))
+}
+
 java {
     withJavadocJar()
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 extraJavaModuleInfo {

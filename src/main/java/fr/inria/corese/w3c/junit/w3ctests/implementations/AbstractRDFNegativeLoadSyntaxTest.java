@@ -60,6 +60,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
                 "fr.inria.corese.core.next.impl.temp.CoreseAdaptedValueFactory",
                 "fr.inria.corese.core.next.impl.temp.CoreseModel",
                 "fr.inria.corese.core.next.impl.io.parser.ParserFactory",
+                "fr.inria.corese.core.next.impl.exception.ParsingErrorException",
                 "fr.inria.corese.core.load.LoadException",
                 "java.io.IOException",
                 "java.net.URISyntaxException",
@@ -85,7 +86,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
 
         // Test body
         sb.append("        // Load action file\n");
-        sb.append("        assertThrows(LoadException.class, () -> TestUtils.parseFile(\"").append(format).append("\", \"").append(actionFile).append("\"));\n");
+        sb.append("        assertThrows(ParsingErrorException.class, () -> TestUtils.parseFile(\"").append(format).append("\", \"").append(actionFile).append("\"));\n");
 
         // Footer of the test
         sb.append("    }\n");
