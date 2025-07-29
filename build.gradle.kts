@@ -51,12 +51,15 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:${lo4j_version}")
     implementation("org.apache.logging.log4j:log4j-core:${lo4j_version}")
     implementation("org.slf4j:slf4j-api:1.8.0-beta2")
+    testImplementation("org.apache.logging.log4j:log4j-api:${lo4j_version}")
+    testImplementation("org.apache.logging.log4j:log4j-core:${lo4j_version}")
+    testImplementation("org.slf4j:slf4j-api:1.8.0-beta2")
 
     implementation("jakarta.activation:jakarta.activation-api:2.1.3")
 
     testImplementation("junit:junit:4.13.2")
 
-    implementation("fr.inria.corese:corese-core:+") // To be changed for the release version
+    implementation("fr.inria.corese:corese-core:+") // Will look for the compiled version of corese-core added to the local maven repository by the getCoreseCore task.
 }
 
 group = "fr.inria.corese"
@@ -135,13 +138,4 @@ java {
     withJavadocJar()
     withSourcesJar()
     sourceCompatibility = JavaVersion.VERSION_21
-}
-
-extraJavaModuleInfo {
-    failOnMissingModuleInfo.set(false)
-    automaticModule("fr.com.hp.hpl.jena.rdf.arp:arp", "arp")
-    automaticModule("com.github.jsonld-java:jsonld-java", "jsonld.java")
-    automaticModule("commons-lang:commons-lang", "commons.lang")
-    automaticModule("fr.inria.lille.shexjava:shexjava-core", "shexjava.core")
-    automaticModule("org.eclipse.rdf4j:rdf4j-model", "rdf4j.model")
 }
