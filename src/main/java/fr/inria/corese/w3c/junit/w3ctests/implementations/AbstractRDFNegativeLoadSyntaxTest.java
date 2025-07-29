@@ -82,7 +82,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
         }
         sb.append("    @Test\n");
         sb.append("    public void ").append(TestUtils.sanitizeTestName(test));
-        sb.append("() throws IOException, NoSuchAlgorithmException, InterruptedException {\n");
+        sb.append("() {\n");
 
         // Test body
         sb.append("        // Load action file\n");

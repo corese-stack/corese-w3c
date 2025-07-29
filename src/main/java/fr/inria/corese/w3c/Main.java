@@ -1,8 +1,11 @@
-package fr.inria.corese.w3c.junit;
+package fr.inria.corese.w3c;
 
+import fr.inria.corese.w3c.junit.W3cTestsGenerator;
+import fr.inria.corese.w3c.junit.w3ctests.TestFileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,11 +36,11 @@ public class Main {
          */
         public static void main(String[] args) {
                 // Download the latest corese-command jar
-                /*try {
+                try {
                         TestFileManager.downloadFile(URI.create("https://github.com/corese-stack/corese-command/releases/latest/corese-command.jar"), Path.of("src/test/resources/corese-command.jar")); // FIXME replace me to automatically call corese-command in its latest version
                 } catch (IOException e) {
                         logger.error("Could not download corese-command", e);
-                }*/
+                }
 //                generateW3cTests("canonicalRdf", "https://w3c.github.io/rdf-canon/tests/manifest.ttl"); // Canonical RDF
                 generateW3cTests("rdf11nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");  // RDF 1.1 nquads
                 generateW3cTests("rdf11ntriples", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl"); // rdf 1.1 ntriples

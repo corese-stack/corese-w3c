@@ -58,14 +58,14 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
 
-    implementation(files("corese-core/build/libs/corese-core-jar-with-dependencies.jar")) // Will look for the compiled version of corese-core 
+    implementation(files("corese-core/build/libs/corese-core-jar-with-dependencies.jar")) // Will look for the compiled version of corese-core
 }
 
 group = "fr.inria.corese"
 version = "5.0.0-SNAPSHOT"
 description = "corese-w3c"
 java.sourceCompatibility = JavaVersion.VERSION_21
-project.setProperty("mainClassName","fr.inria.corese.w3c.junit.Main")
+project.setProperty("mainClassName","fr.inria.corese.w3c.Main")
 
 
 tasks.withType<JavaCompile>() {
@@ -87,7 +87,7 @@ tasks {
     shadowJar {
         manifest {
             attributes(
-                "Main-Class" to "fr.inria.corese.w3c.junit.Main"
+                "Main-Class" to "fr.inria.corese.w3c.Main"
             )
         }
         this.archiveClassifier = "app"
@@ -111,7 +111,7 @@ tasks.register("getCoreseCore") {
         }
         // in the corese-core directory, run the command ./gradlew clean, build
         exec {
-            commandLine("./gradlew", "clean", "build")
+            commandLine("./gradlew", "clean", "build", "-x", "test")
             workingDir = File("corese-core")
         }
     }
