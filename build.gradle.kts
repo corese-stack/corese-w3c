@@ -1,7 +1,6 @@
 plugins {
     `java-library`
     id("com.gradleup.shadow") version "8.3.1"
-    id("org.gradlex.extra-java-module-info") version "1.8"
     application
     signing
 }
@@ -59,7 +58,7 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
 
-    implementation("fr.inria.corese:corese-core:+") // Will look for the compiled version of corese-core added to the local maven repository by the getCoreseCore task.
+    implementation(files("corese-core/build/libs/corese-core-jar-with-dependencies.jar")) // Will look for the compiled version of corese-core 
 }
 
 group = "fr.inria.corese"
@@ -110,9 +109,9 @@ tasks.register("getCoreseCore") {
             commandLine("git", "checkout", "feature/corese-next")
             workingDir = File("corese-core")
         }
-        // in the corese-core directory, run the command ./gradlew publishToMavenLocal
+        // in the corese-core directory, run the command ./gradlew clean, build
         exec {
-            commandLine("./gradlew", "publishToMavenLocal")
+            commandLine("./gradlew", "clean", "build")
             workingDir = File("corese-core")
         }
     }
