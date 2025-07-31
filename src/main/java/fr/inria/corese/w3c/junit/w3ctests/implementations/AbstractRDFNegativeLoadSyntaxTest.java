@@ -1,5 +1,13 @@
 package fr.inria.corese.w3c.junit.w3ctests.implementations;
 
+import fr.inria.corese.core.next.api.Model;
+import fr.inria.corese.core.next.api.ValueFactory;
+import fr.inria.corese.core.next.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.api.io.parser.RDFParser;
+import fr.inria.corese.core.next.impl.exception.ParsingErrorException;
+import fr.inria.corese.core.next.impl.io.parser.ParserFactory;
+import fr.inria.corese.core.next.impl.temp.CoreseAdaptedValueFactory;
+import fr.inria.corese.core.next.impl.temp.CoreseModel;
 import fr.inria.corese.w3c.junit.w3ctests.IW3cTest;
 import fr.inria.corese.w3c.junit.w3ctests.TestFileManager;
 import fr.inria.corese.w3c.junit.w3ctests.TestUtils;
@@ -54,6 +62,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
     public Set<String> getImports() {
         return Set.of("fr.inria.corese.w3c.junit.w3ctests.TestFileManager",
                 "fr.inria.corese.w3c.junit.w3ctests.TestUtils",
+                "fr.inria.corese.core.next.api.base.io.RDFFormat",
                 "fr.inria.corese.core.next.api.ValueFactory",
                 "fr.inria.corese.core.next.api.Model",
                 "fr.inria.corese.core.next.api.io.parser.RDFParser",
@@ -63,6 +72,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
                 "fr.inria.corese.core.next.impl.exception.ParsingErrorException",
                 "fr.inria.corese.core.load.LoadException",
                 "java.io.IOException",
+                "java.io.FileReader",
                 "java.net.URISyntaxException",
                 "java.net.URI",
                 "java.nio.file.Path",
@@ -86,7 +96,23 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
 
         // Test body
         sb.append("        // Load action file\n");
-        sb.append("        assertThrows(ParsingErrorException.class, () -> TestUtils.parseFile(\"").append(format).append("\", \"").append(actionFile).append("\"));\n");
+
+        if (!this.comment.isEmpty()) {
+            String sanitizedComment = TestUtils.sanitizeComment(this.comment);
+            sb.append("        assertThrows(\"").append(sanitizedComment).append(". Test file: ").append(actionFile).append("\", ParsingErrorException.class, () -> { \n" );
+        } else {
+            sb.append("        assertThrows(ParsingErrorException.class, () -> { \n" );
+        }
+        sb.append("                    RDFFormat format = TestUtils.commandStringFormatToRDFFormat(\"").append(format).append("\");\n");
+        sb.append("                    ParserFactory parserFactory = new ParserFactory();\n");
+        sb.append("                    ValueFactory valueFactory = new CoreseAdaptedValueFactory();\n");
+        sb.append("                    Model model = new CoreseModel();\n");
+        sb.append("                    String localFilePath = TestFileManager.getLocalFilePath(URI.create(\"").append(actionFile).append("\")).toString();\n");
+        sb.append("                    RDFParser parser = parserFactory.createRDFParser(format, model, valueFactory);\n");
+        sb.append("                    FileReader reader = new FileReader(localFilePath);\n");
+        sb.append("                    parser.parse(reader);\n");
+            sb.append("                }\n");
+        sb.append("        );\n");
 
         // Footer of the test
         sb.append("    }\n");

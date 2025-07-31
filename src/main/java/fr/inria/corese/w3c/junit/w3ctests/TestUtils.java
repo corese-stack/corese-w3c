@@ -12,6 +12,7 @@ import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.ValueFactory;
 import fr.inria.corese.core.next.api.io.parser.RDFParser ;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.api.io.serialization.RDFSerializer;
 import fr.inria.corese.core.next.impl.io.parser.ParserFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseAdaptedValueFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseModel;
@@ -72,16 +73,47 @@ public class TestUtils {
         }
     }
 
+    /**
+     * Create an RDFParser using the given model and converting the string format into the corresponding RDFFormat if it exists
+     * @param rdfCommandFileFormat RDF format name as used in corese-command
+     * @param model The model that will contain the parsed statements
+     * @return a parser of the expected format
+     */
     public static RDFParser getRDFParser(String rdfCommandFileFormat, Model model) {
+        RDFFormat format = TestUtils.commandStringFormatToRDFFormat(rdfCommandFileFormat);
+        return getRDFParser(format, model);
+    }
+
+    /**
+     * Create an RDFParser using the given model
+     * @param format RDFFormat
+     * @param model The model that will contain the parsed statements
+     * @return a parser of the expected format
+     */
+    public static RDFParser getRDFParser(RDFFormat format, Model model) {
         ParserFactory parserFactory = new ParserFactory();
         ValueFactory valueFactory = new CoreseAdaptedValueFactory();
-        RDFFormat format = TestUtils.commandStringFormatToRDFFormat(rdfCommandFileFormat);
         return parserFactory.createRDFParser(format, model, valueFactory);
     }
 
+    /**
+     * Create an RDFParser converting the string format into the corresponding RDFFormat if it exists
+     * @param rdfCommandFileFormat RDF format name as used in corese-command
+     * @return a parser of the expected format
+     */
     public static RDFParser getRDFParser(String rdfCommandFileFormat) {
         Model model = new CoreseModel();
         return getRDFParser(rdfCommandFileFormat, model);
+    }
+
+    /**
+     * Create an RDFParser for the given format
+     * @param format RDFFormat
+     * @return a parser of the expected format
+     */
+    public static RDFParser getRDFParser(RDFFormat format) {
+        Model model = new CoreseModel();
+        return getRDFParser(format, model);
     }
 
     public static void parseFile(String rdfCommandFileFormat, String filePath) throws FileNotFoundException {
@@ -135,7 +167,9 @@ public class TestUtils {
      */
     public static String sanitizeComment(String comment) {
         return comment
+                .replaceAll("\"", "'quote'")
                 .replaceAll("\\\\[uU]", "'slash'u")
+                .replaceAll("\\\\[xX]", "'slash'x")
                 .trim()
                 .replaceAll("\n", " ");
     }

@@ -83,8 +83,20 @@ public abstract class AbstractRDFPositiveLoadSyntaxTest implements IW3cTest {
 
         // Test body
         sb.append("        // Load action file\n");
-        sb.append("        TestUtils.parseFile(\"").append(format).append("\", \"").append(actionFile).append("\");\n");
-        sb.append("        assertTrue(true);\n");
+        sb.append("        RDFFormat format = TestUtils.commandStringFormatToRDFFormat(\"").append(format).append("\");\n");
+        sb.append("        ParserFactory parserFactory = new ParserFactory();\n");
+        sb.append("        ValueFactory valueFactory = new CoreseAdaptedValueFactory();\n");
+        sb.append("        Model model = new CoreseModel();\n");
+        sb.append("        String localFilePath = TestFileManager.getLocalFilePath(URI.create(\"").append(actionFile).append("\")).toString();\n");
+        sb.append("        RDFParser parser = parserFactory.createRDFParser(format, model, valueFactory);\n");
+        sb.append("        FileReader reader = new FileReader(localFilePath);\n");
+        sb.append("        parser.parse(reader);\n");
+        if (!this.comment.isEmpty()) {
+            String sanitizedComment = TestUtils.sanitizeComment(this.comment);
+            sb.append("        assertTrue(\"").append(sanitizedComment).append(". Test file: ").append(actionFile).append("\", true);\n");
+        } else {
+            sb.append("        assertTrue(true);\n");
+        }
 
         // Footer of the test
         sb.append("    }\n");

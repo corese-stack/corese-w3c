@@ -62,12 +62,19 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
                 "fr.inria.corese.w3c.junit.w3ctests.TestUtils",
                 "fr.inria.corese.core.next.api.ValueFactory",
                 "fr.inria.corese.core.next.api.Model",
+                "fr.inria.corese.core.next.api.base.io.RDFFormat",
                 "fr.inria.corese.core.next.api.io.parser.RDFParser",
+                "fr.inria.corese.core.next.api.io.serialization.SerializerFactory",
+                "fr.inria.corese.core.next.api.io.serialization.RDFSerializer",
                 "fr.inria.corese.core.next.impl.temp.CoreseAdaptedValueFactory",
                 "fr.inria.corese.core.next.impl.temp.CoreseModel",
                 "fr.inria.corese.core.next.impl.io.parser.ParserFactory",
+                "fr.inria.corese.core.next.impl.io.serialization.DefaultSerializerFactory",
+                "fr.inria.corese.core.next.impl.io.serialization.turtle.TurtleOption",
                 "fr.inria.corese.core.load.LoadException",
                 "java.io.IOException",
+                "java.io.FileWriter",
+                "java.io.FileReader",
                 "java.net.URISyntaxException",
                 "java.net.URI",
                 "java.nio.file.Path",
@@ -94,22 +101,24 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         sb.append("        Path localActionFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
         sb.append("        Path localResultFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.resultFile.toString()).append("\"));\n");
         sb.append("        \n");
-        sb.append("        Path convertedActionFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
-        sb.append("        Path canonConvertedActionFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
-        sb.append("        Path canonConvertedResultFilePath = Path.of(\"").append(Paths.get(TestFileManager.getFileName(this.resultFile))).append("\");\n");
+        sb.append("        Path convertedActionFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
+        sb.append("        Path canonConvertedActionFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
+        sb.append("        Path canonConvertedResultFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.resultFile))).append("\");\n");
         sb.append("\n");
         sb.append("        // Converting the action file\n");
-        sb.append("        RDFParser parser = TestUtils.getRDFParser(\"").append(actionFormat).append("\");\n");
-        sb.append("        \n");
-        sb.append("        \n");
-        sb.append("        \n");
-        sb.append("        \n");
-        sb.append("        \n");
+        sb.append("        Model model = new CoreseModel();\n");
+        sb.append("        RDFParser parser = TestUtils.getRDFParser(\"").append(actionFormat).append("\", model);\n");
+        sb.append("        parser.parse(new FileReader(localActionFile.toFile()));\n");
+        sb.append("        SerializerFactory factory = new DefaultSerializerFactory();\n");
+        sb.append("        RDFFormat format = TestUtils.commandStringFormatToRDFFormat(\"").append(actionFormat).append("\");\n");
+        sb.append("        RDFSerializer serializer = factory.createSerializer(format, model, TurtleOption.defaultConfig());\n");
+        sb.append("        FileWriter writer = new FileWriter(convertedActionFilePath.toString());\n");
+        sb.append("        serializer.write(writer);\n");
         sb.append("\n");
         sb.append("        // Canonicalization of the given result file\n");
         sb.append("        Process resultCanonicalizationCommand = new ProcessBuilder().inheritIO().command(\n");
         sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n"); // FIXME To be replaced by the latest corese-command release
-        sb.append("                \"-i\", \"").append(this.resultFile).append("\",\n");
+        sb.append("                \"-i\", localResultFile.toString(),\n");
         sb.append("                \"-if\", \"").append(this.resultFormat).append("\",\n");
         sb.append("                \"-o\", canonConvertedResultFilePath.toString())\n");
         sb.append("            .start();\n");
@@ -129,7 +138,12 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         sb.append("\n");
         sb.append("        assertEquals(0, resultCanonicalizationExitCode);\n");
         sb.append("        assertEquals(0, convertedActionCanonicalizationExitCode);\n");
-        sb.append("        assertTrue(comparisonResult);\n");
+        if (!this.comment.isEmpty()) {
+            String sanitizedComment = TestUtils.sanitizeComment(this.comment);
+            sb.append("        assertTrue(\"").append(sanitizedComment).append(". Test files: action:").append(this.actionFile.toString()).append(", result: ").append(this.resultFile.toString()).append("\", comparisonResult);\n");
+        } else {
+            sb.append("        assertTrue(comparisonResult);\n");
+        }
 
         // Footer of the test
         sb.append("    }\n");
