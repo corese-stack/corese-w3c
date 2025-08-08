@@ -28,6 +28,13 @@ public class Main {
                         .resolve("src/test/java/fr/inria/corese/w3c");
 
         /**
+         * Private constructor to prevent instantiation of this utility class.
+         */
+        private Main() {
+                // This class is not meant to be instantiated.
+        }
+
+        /**
          * Main method to execute the application.
          * It creates and runs a W3cTestsGenerator with specified directories and
          * manifest file.
@@ -44,7 +51,7 @@ public class Main {
 //                generateW3cTests("canonicalRdf", "https://w3c.github.io/rdf-canon/tests/manifest.ttl"); // Canonical RDF
                 generateW3cTests("rdf11nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");  // RDF 1.1 nquads
                 generateW3cTests("rdf11ntriples", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl"); // rdf 1.1 ntriples
-//                generateW3cTests("rdf11xml", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl"); // RDF 1.1 XML
+                generateW3cTests("rdf11xml", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl"); // RDF 1.1 XML
                 generateW3cTests("rdf11trig", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl"); // RDF 1.1 Trig
                 generateW3cTests("rdf11turtle", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl"); // RDF 1.1 turtle
 //                generateW3cTests("sparql10", "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl"); // SPARQL 1.0

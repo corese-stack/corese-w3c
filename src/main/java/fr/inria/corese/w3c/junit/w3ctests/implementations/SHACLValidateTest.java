@@ -30,6 +30,7 @@ public class SHACLValidateTest implements IW3cTest {
     private String conformity = null;
 
     /**
+     * Constructs.
      *
      * @param manifestUri URI of the manifest file that declares the tests as a entry.
      * @param testUri Uri of the test resource from its manifest file
@@ -59,6 +60,19 @@ public class SHACLValidateTest implements IW3cTest {
         }
     }
 
+    /**
+     * Constructs a new SHACLValidateTest with an explicit conformity expectation.
+     * This constructor is used when the test manifest explicitly specifies whether
+     * the data graph is expected to conform to the shapes graph.
+     *
+     * @param manifestUri URI of the manifest file that declares the tests as an entry.
+     * @param test URI of the test resource from its manifest file.
+     * @param name Name of the test (typically extracted from its URI).
+     * @param comment Comment literal from the manifest, providing additional test description.
+     * @param dataGraph URI of the data graph file to be validated.
+     * @param shapeGraph URI of the SHACL shapes graph file to validate against.
+     * @param conformity A string indicating the expected conformity result ("true" for conforms, "false" for does not conform).
+     */
     public SHACLValidateTest(URI manifestUri, String test, String name, String comment, URI dataGraph, URI shapeGraph, String conformity) {
         this(manifestUri, test, name, comment, dataGraph, shapeGraph);
         this.conformity = conformity;
@@ -80,8 +94,8 @@ public class SHACLValidateTest implements IW3cTest {
                 "java.net.URI",
                 "java.nio.file.Path",
                 "java.security.NoSuchAlgorithmException",
-                "static org.junit.Assert.assertEquals",
-                "static org.junit.Assert.assertTrue");
+                "static org.junit.jupiter.api.Assertions.assertEquals",
+                "static org.junit.jupiter.api.Assertions.assertTrue");
     }
 
     @Override

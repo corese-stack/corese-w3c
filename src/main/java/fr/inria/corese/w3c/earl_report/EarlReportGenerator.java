@@ -255,6 +255,12 @@ public class EarlReportGenerator {
         return sb.toString();
     }
 
+    /**
+     * Main method to run the EARL report generation.
+     * Creates an instance of {@link EarlReportGenerator} and calls its {@code generate()} method.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         EarlReportGenerator earlRepportGenerator = new EarlReportGenerator();
         earlRepportGenerator.generate();

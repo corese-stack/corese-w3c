@@ -21,8 +21,18 @@ public class RDFC10EvalTest implements IW3cTest {
 
     private HashAlgorithm hashAlgorithm;
 
+    /**
+     * Constructs.
+     *
+     * @param testUri The URI of the test, used to extract a sanitized test name.
+     * @param name The name of the test.
+     * @param comment A descriptive comment for the test.
+     * @param actionUri The URI of the action RDF file to be canonicalized.
+     * @param resultUri The URI of the expected canonical RDF result file.
+     * @param hashAlgorithm The hashing algorithm to use for canonicalization (e.g., SHA-256, SHA-384).
+     */
     public RDFC10EvalTest(String testUri, String name, String comment, URI actionUri, URI resultUri,
-            HashAlgorithm hashAlgorithm) {
+                          HashAlgorithm hashAlgorithm) {
         this.test = testUri.split("#")[1];
         this.name = name;
         this.comment = comment;
@@ -37,10 +47,10 @@ public class RDFC10EvalTest implements IW3cTest {
                 "fr.inria.corese.core.load.Load",
                 "fr.inria.corese.core.print.rdfc10.HashingUtility.HashAlgorithm",
                 "fr.inria.corese.core.print.CanonicalRdf10Format",
-                "static org.junit.Assert.assertEquals",
+                "static org.junit.jupiter.api.Assertions.assertEquals",
                 "java.io.IOException",
                 "java.net.URISyntaxException",
-                "org.junit.Test",
+                "org.junit.jupiter.api.Test",
                 "fr.inria.corese.core.load.LoadException",
                 "java.net.URL",
                 "java.util.Scanner");

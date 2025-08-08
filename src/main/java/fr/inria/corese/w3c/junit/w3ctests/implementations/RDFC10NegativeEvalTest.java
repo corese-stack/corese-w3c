@@ -16,6 +16,14 @@ public class RDFC10NegativeEvalTest implements IW3cTest {
 
     private URI actionFile;
 
+    /**
+     * Constructs.
+     *
+     * @param testUri The URI of the test, used to extract a sanitized test name.
+     * @param name The name of the test.
+     * @param comment A descriptive comment for the test.
+     * @param actionUri The URI of the action RDF file to be canonicalized.
+     */
     public RDFC10NegativeEvalTest(String testUri, String name, String comment, URI actionUri) {
         this.test = testUri.split("#")[1];
         this.name = name;
@@ -32,7 +40,7 @@ public class RDFC10NegativeEvalTest implements IW3cTest {
                 "fr.inria.corese.core.Graph",
                 "fr.inria.corese.core.load.Load",
                 "fr.inria.corese.core.print.CanonicalRdf10Format",
-                "org.junit.Test");
+                "org.junit.jupiter.api.Test");
     }
 
     @Override

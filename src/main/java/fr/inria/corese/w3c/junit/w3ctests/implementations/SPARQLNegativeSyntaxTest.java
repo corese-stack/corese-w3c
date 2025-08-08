@@ -24,7 +24,20 @@ public class SPARQLNegativeSyntaxTest implements IW3cTest {
 
     private URI actionFile;
 
+    @Override
+    public Set<String> getImports() {
+        return Set.of("fr.inria.corese.w3c.w3cTests.w3cJunitTestsGenerator.TestFileManager",
+                "fr.inria.corese.core.load.LoadException",
+                "java.io.IOException",
+                "java.net.URISyntaxException",
+                "java.net.URI",
+                "java.nio.file.Path",
+                "java.security.NoSuchAlgorithmException",
+                "static org.junit.jupiter.api.Assertions.assertNotEquals");
+    }
+
     /**
+     * Constructs.
      *
      * @param testUri Uri of the test resource from its manifest file
      * @param name Name of the test (typically the end of its URI)
@@ -42,18 +55,6 @@ public class SPARQLNegativeSyntaxTest implements IW3cTest {
         } catch (IOException | NoSuchAlgorithmException e) {
             logger.error("Error during test file loading", e);
         }
-    }
-
-    @Override
-    public Set<String> getImports() {
-        return Set.of("fr.inria.corese.w3c.w3cTests.w3cJunitTestsGenerator.TestFileManager",
-                "fr.inria.corese.core.load.LoadException",
-                "java.io.IOException",
-                "java.net.URISyntaxException",
-                "java.net.URI",
-                "java.nio.file.Path",
-                "java.security.NoSuchAlgorithmException",
-                "static org.junit.Assert.assertNotEquals");
     }
 
     @Override
