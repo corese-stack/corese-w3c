@@ -4,6 +4,53 @@ Test of W3C standards tests suites against Corese. Contains a generation applica
 
 Tested files and manifests are in the `src/test/resources` directory.
 
+
+## 1. Generating W3C tests
+
+You can select which W3C tests to generate using the `w3cStandards` property.
+
+**Generate all tests**:
+
+```bash
+./gradlew run
+```
+
+**Generate a specific suite** (example: N-Quads tests):
+
+```bash
+./gradlew run -Dw3cStandards=nquads
+```
+
+**Generate multiple suites**:
+
+```bash
+./gradlew run -Dw3cStandards=nquads,xml
+```
+
+> **Note:** If no `w3cStandards` is specified, all tests will be generated.
+
+---
+
+## 2. Choosing the corese-core branch
+
+Use the `coreseCoreBranch` property to specify the Corese engine branch.
+
+**Default branch (feature/corese-next)**:
+
+```bash
+./gradlew run
+```
+
+**Other branch (example: develop)**:
+
+```bash
+./gradlew run -DcoreseCoreBranch=develop
+```
+
+> If not specified, `feature/corese-next` is used.
+
+---
+
 ## Implemented tests
 
 - RDF tests
