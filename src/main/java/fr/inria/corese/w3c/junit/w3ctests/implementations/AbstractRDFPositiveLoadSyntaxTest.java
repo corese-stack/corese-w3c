@@ -27,6 +27,8 @@ public abstract class AbstractRDFPositiveLoadSyntaxTest implements IW3cTest {
     private String format;
 
     /**
+     * Constructs.
+     * Initializes the test parameters and attempts to load the action and result files.*
      *
      * @param testUri Uri of the test resource from its manifest file
      * @param name Name of the test (typically the end of its URI)
@@ -64,7 +66,7 @@ public abstract class AbstractRDFPositiveLoadSyntaxTest implements IW3cTest {
                 "java.net.URI",
                 "java.nio.file.Path",
                 "java.security.NoSuchAlgorithmException",
-                "static org.junit.Assert.*");
+                "static org.junit.jupiter.api.Assertions.*");
     }
 
     @Override
@@ -93,7 +95,7 @@ public abstract class AbstractRDFPositiveLoadSyntaxTest implements IW3cTest {
         sb.append("        parser.parse(reader);\n");
         if (!this.comment.isEmpty()) {
             String sanitizedComment = TestUtils.sanitizeComment(this.comment);
-            sb.append("        assertTrue(\"").append(sanitizedComment).append(". Test file: ").append(actionFile).append("\", true);\n");
+            sb.append("        assertTrue(true, \"").append(sanitizedComment).append(". Test file: ").append(actionFile).append("\");\n");
         } else {
             sb.append("        assertTrue(true);\n");
         }

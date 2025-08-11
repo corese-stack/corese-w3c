@@ -25,6 +25,7 @@ public class SPARQLPositiveSyntaxTest implements IW3cTest {
     private URI actionFile;
 
     /**
+     * Constructs.
      *
      * @param testUri Uri of the test resource from its manifest file
      * @param name Name of the test (typically the end of its URI)
@@ -53,7 +54,7 @@ public class SPARQLPositiveSyntaxTest implements IW3cTest {
                 "java.net.URI",
                 "java.nio.file.Path",
                 "java.security.NoSuchAlgorithmException",
-                "static org.junit.Assert.assertEquals");
+                "static org.junit.jupiter.api.Assertions.assertEquals");
     }
 
     @Override

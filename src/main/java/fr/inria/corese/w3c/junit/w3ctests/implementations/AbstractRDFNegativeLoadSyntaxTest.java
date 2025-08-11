@@ -37,6 +37,8 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
     private String format;
 
     /**
+     * Constructs.
+     * Initializes the test parameters and attempts to load the action and result files.
      *
      * @param testUri Uri of the test resource from its manifest file
      * @param name Name of the test (typically the end of its URI)
@@ -77,7 +79,7 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
                 "java.net.URI",
                 "java.nio.file.Path",
                 "java.security.NoSuchAlgorithmException",
-                "static org.junit.Assert.*");
+                "static org.junit.jupiter.api.Assertions.*");
     }
 
     @Override
@@ -96,25 +98,17 @@ public abstract class AbstractRDFNegativeLoadSyntaxTest implements IW3cTest {
 
         // Test body
         sb.append("        // Load action file\n");
-
-        if (!this.comment.isEmpty()) {
-            String sanitizedComment = TestUtils.sanitizeComment(this.comment);
-            sb.append("        assertThrows(\"").append(sanitizedComment).append(". Test file: ").append(actionFile).append("\", ParsingErrorException.class, () -> { \n" );
-        } else {
-            sb.append("        assertThrows(ParsingErrorException.class, () -> { \n" );
-        }
+        sb.append("        assertThrows(ParsingErrorException.class, () -> {\n");
         sb.append("                    RDFFormat format = TestUtils.commandStringFormatToRDFFormat(\"").append(format).append("\");\n");
         sb.append("                    ParserFactory parserFactory = new ParserFactory();\n");
         sb.append("                    ValueFactory valueFactory = new CoreseAdaptedValueFactory();\n");
         sb.append("                    Model model = new CoreseModel();\n");
         sb.append("                    String localFilePath = TestFileManager.getLocalFilePath(URI.create(\"").append(actionFile).append("\")).toString();\n");
-        sb.append("                    RDFParser parser = parserFactory.createRDFParser(format, model, valueFactory);\n");
         sb.append("                    FileReader reader = new FileReader(localFilePath);\n");
+        sb.append("                    RDFParser parser = parserFactory.createRDFParser(format, model, valueFactory);\n");
         sb.append("                    parser.parse(reader);\n");
-            sb.append("                }\n");
+        sb.append("                }, \"").append(TestUtils.sanitizeComment(this.comment)).append(". Test file: ").append(actionFile).append("\"\n");
         sb.append("        );\n");
-
-        // Footer of the test
         sb.append("    }\n");
 
         return sb.toString();

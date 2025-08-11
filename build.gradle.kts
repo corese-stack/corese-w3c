@@ -56,7 +56,8 @@ dependencies {
 
     implementation("jakarta.activation:jakarta.activation-api:2.1.3")
 
-    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
     implementation(files("corese-core/build/libs/corese-core-jar-with-dependencies.jar")) // Will look for the compiled version of corese-core
 }
@@ -82,7 +83,7 @@ tasks {
         description = "Runs this project as a JVM application"
     }
     test {
-        useJUnit()
+        useJUnitPlatform()
     }
     shadowJar {
         manifest {
@@ -110,9 +111,17 @@ tasks.register("getCoreseCore") {
             workingDir = File("corese-core")
         }
         // in the corese-core directory, run the command ./gradlew clean, build
-        exec {
-            commandLine("./gradlew", "clean", "build", "-x", "test")
-            workingDir = File("corese-core")
+        val osName = System.getProperty("os.name").lowercase()
+        if (osName.contains("win")) {
+            exec {
+                commandLine("gradlew.bat", "clean", "build", "-x", "test")
+                workingDir = File("corese-core")
+            }
+        } else {
+            exec {
+                commandLine("./gradlew", "clean", "build", "-x", "test")
+                workingDir = File("corese-core")
+            }
         }
     }
 }

@@ -21,6 +21,16 @@ public class RDFC10MapTest implements IW3cTest {
 
     private HashAlgorithm hashAlgorithm;
 
+    /**
+     * Constructs.
+     *
+     * @param testUri The URI of the test, used to extract a sanitized test name.
+     * @param name The name of the test.
+     * @param comment A descriptive comment for the test.
+     * @param actionUri The URI of the action RDF file to be canonicalized.
+     * @param resultUri The URI of the expected canonical RDF result file.
+     * @param hashAlgorithm The hashing algorithm to use for canonicalization (e.g., SHA-256, SHA-384).
+     */
     public RDFC10MapTest(String testUri, String name, String comment, URI actionUri, URI resultUri,
             HashAlgorithm hashAlgorithm) {
         this.test = testUri.split("#")[1];
@@ -42,8 +52,8 @@ public class RDFC10MapTest implements IW3cTest {
                 "com.fasterxml.jackson.databind.ObjectMapper",
                 "fr.inria.corese.core.load.LoadException",
                 "java.io.IOException",
-                "org.junit.Test",
-                "static org.junit.Assert.assertEquals",
+                "org.junit.jupiter.api.Test",
+                "static org.junit.jupiter.api.Assertions.assertEquals",
                 "java.util.Map");
 
     }

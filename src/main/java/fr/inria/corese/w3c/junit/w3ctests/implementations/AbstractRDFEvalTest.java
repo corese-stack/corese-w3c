@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 
 /**
- * Abstract class for the tests that chack that the conversion of an RDF file from one format to another are identical (using RDF canonical)
+ * Abstract class for the tests that check that the conversion of an RDF file from one format to another are identical (using RDF canonical)
  */
 public abstract class AbstractRDFEvalTest implements IW3cTest {
 
@@ -30,6 +30,8 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
     private String resultFormat;
 
     /**
+     * Constructs a new AbstractRDFEvalTest.
+     * Initializes the test parameters and attempts to load the action and result files.
      *
      * @param testUri Uri of the test resource from its manifest file
      * @param name Name of the test (typically the end of its URI)
@@ -79,14 +81,13 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
                 "java.net.URI",
                 "java.nio.file.Path",
                 "java.security.NoSuchAlgorithmException",
-                "static org.junit.Assert.*");
+                "static org.junit.jupiter.api.Assertions.*");
     }
 
     @Override
     public String generate() {
         StringBuilder sb = new StringBuilder();
 
-        // Header of the test
         sb.append("    // ").append(TestUtils.sanitizeComment(this.name)).append("\n");
         if (!this.comment.isEmpty()) {
             String sanitizedComment = TestUtils.sanitizeComment(this.comment);
@@ -117,16 +118,15 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         sb.append("\n");
         sb.append("        // Canonicalization of the given result file\n");
         sb.append("        Process resultCanonicalizationCommand = new ProcessBuilder().inheritIO().command(\n");
-        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n"); // FIXME To be replaced by the latest corese-command release
+        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n");
         sb.append("                \"-i\", localResultFile.toString(),\n");
         sb.append("                \"-if\", \"").append(this.resultFormat).append("\",\n");
         sb.append("                \"-o\", canonConvertedResultFilePath.toString())\n");
         sb.append("            .start();\n");
         sb.append("        int resultCanonicalizationExitCode = resultCanonicalizationCommand.waitFor();\n");
-        sb.append("\n");
-        sb.append("        // Canonicalization of the conversion result file\n");
+
         sb.append("        Process convertedActionCanonicalizationCommand = new ProcessBuilder().inheritIO().command(\n");
-        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n"); // FIXME To be replaced by the latest corese-command release
+        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n");
         sb.append("                \"-i\", convertedActionFilePath.toString(),\n");
         sb.append("                \"-if\", \"").append(this.resultFormat).append("\",\n");
         sb.append("                \"-o\", canonConvertedActionFilePath.toString())\n");
@@ -140,7 +140,9 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         sb.append("        assertEquals(0, convertedActionCanonicalizationExitCode);\n");
         if (!this.comment.isEmpty()) {
             String sanitizedComment = TestUtils.sanitizeComment(this.comment);
-            sb.append("        assertTrue(\"").append(sanitizedComment).append(". Test files: action:").append(this.actionFile.toString()).append(", result: ").append(this.resultFile.toString()).append("\", comparisonResult);\n");
+            sb.append("        assertTrue(comparisonResult, \"").append(sanitizedComment)
+                    .append(". Test files: action:").append(this.actionFile.toString())
+                    .append(", result: ").append(this.resultFile.toString()).append("\");\n");
         } else {
             sb.append("        assertTrue(comparisonResult);\n");
         }

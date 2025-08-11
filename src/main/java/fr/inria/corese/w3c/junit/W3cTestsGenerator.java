@@ -80,11 +80,10 @@ public class W3cTestsGenerator {
      */
     private List<IW3cTest> getListOfTestCases(Graph graph) {
         QueryProcess exec = QueryProcess.create(graph);
-        String query = buildTestCasesQuery();
         Mappings mappings;
 
         try {
-            mappings = exec.query(query);
+            mappings = exec.query(buildTestCasesQuery());
         } catch (Exception e) {
             logger.error("Error executing query.", e);
             return new ArrayList<>();
@@ -112,23 +111,18 @@ public class W3cTestsGenerator {
         return testCases;
     }
 
-    /**
-     * Builds a query to retrieve the test cases from the manifest file.
-     *
-     * @return The query to retrieve the test cases.
-     */
     private String buildTestCasesQuery() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
-        sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
-        sb.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n");
-        sb.append("\n");
-        sb.append("SELECT DISTINCT ?manifest ?type ?test WHERE {\n");
-        sb.append("  ?manifest a mf:Manifest .\n");
-        sb.append("  ?manifest mf:entries/rdf:rest*/rdf:first ?test .\n");
-        sb.append("  ?test rdf:type ?type .\n");
-        sb.append("  FILTER(isIri(?manifest))\n");
-        sb.append("} ORDER BY ?test");
-        return sb.toString();
+        return """
+            PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+            SELECT DISTINCT ?manifest ?type ?test WHERE {
+              ?manifest a mf:Manifest .
+              ?manifest mf:entries/rdf:rest*/rdf:first ?test .
+              ?test rdf:type ?type .
+              FILTER(isIri(?manifest))
+            } ORDER BY ?test
+        """;
     }
 }

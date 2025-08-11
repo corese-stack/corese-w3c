@@ -28,6 +28,15 @@ public class JUnitTestFileGenerator {
     private final List<IW3cTest> tests;
     private final Path exportPath;
 
+
+    /**
+     * Constructs a new JUnitTestFileGenerator.
+     *
+     * @param testName The name of the test suite. This will also be used as part of the export path.
+     * @param manifestUri The URI of the test manifest file.
+     * @param exportPath The base directory path where the generated test file will be exported.
+     * @param tests A list of {@link IW3cTest} instances to be included in this test file.
+     */
     public JUnitTestFileGenerator(String testName, URI manifestUri, Path exportPath, List<IW3cTest> tests) {
         this.testName = testName;
         this.manifestUri = manifestUri;
@@ -109,8 +118,7 @@ public class JUnitTestFileGenerator {
 
         // Package
         content.append(this.getPackage(path, fileName));
-        content.append("\n");
-        content.append("\n");
+        content.append("\n\n");
 
         // Imports
         Set<String> imports = new HashSet<>();
@@ -142,12 +150,9 @@ public class JUnitTestFileGenerator {
         // Class declaration
         content.append("public class ");
         content.append(fileName.substring(0, fileName.indexOf(".")));
-        content.append(" {");
-        content.append("\n");
-        content.append("\n");
+        content.append(" {\n\n");
 
-        // Watcher
-        content.append(this.generateWatcher());
+        content.append(this.generateTestLifecycleCallbacks());
 
         // Test methods
         for (IW3cTest test : tests) {
@@ -169,88 +174,69 @@ public class JUnitTestFileGenerator {
      * @return The package declaration.
      */
     private String getPackage(String path, String fileName) {
-        String packagePath = path.substring(path.indexOf("java") + 5)
-                .replace("/", ".")
-                .replace("." + fileName, "");
+        String normalizedPath = path.replace("\\", "/");
+        int javaIndex = normalizedPath.indexOf("/java/");
+        if (javaIndex == -1) {
+            throw new IllegalArgumentException("Invalid path: 'java' directory not found in path: " + path);
+        }
+        String packagePath = normalizedPath.substring(javaIndex + 6)
+                .replace("/" + fileName, "")
+                .replace("/", ".");
         return "package " + packagePath + ";";
     }
 
-    /**
-     * Generates the watcher for the test file.
-     * 
-     * @return The watcher for the test file.
-     */
-    private String generateWatcher() {
-        StringBuilder watcher = new StringBuilder();
-
-        // Create a file testReport.csv in the directory of the test file
+    private String generateTestLifecycleCallbacks() {
+        StringBuilder callbacks = new StringBuilder();
         Path relativePathToResultCsv = Paths.get(System.getProperty("user.dir")).relativize(exportPath)
                 .resolve("testReport.csv");
-        // Remove the first directory from the path
         relativePathToResultCsv = relativePathToResultCsv.subpath(1, relativePathToResultCsv.getNameCount());
-        watcher.append("    private static final String TEST_REPORT_FILE = "
-                + "Paths.get(System.getProperty(\"user.dir\")).resolve(\"" + relativePathToResultCsv.toString()
+        callbacks.append("    private static final String TEST_REPORT_FILE = "
+                + "Paths.get(System.getProperty(\"user.dir\")).resolve(\"" + relativePathToResultCsv.toString().replace("\\", "/")
                 + "\").toString();\n");
-        watcher.append("    private static final String MANIFEST_URI = \""
-                + manifestUri.toString().substring(0, manifestUri.toString().lastIndexOf(".")) + "\";\n");
-        watcher.append("    private static final String EARL = \"http://www.w3.org/ns/earl#\";\n");
-        watcher.append("\n");
 
-        // Function to write the test report to the file testReport.csv
-        // Format: manifestUri#testName, datetime, http://www.w3.org/ns/earl#status
-        watcher.append("    /**\n");
-        watcher.append("     * Writes the test report to the file testReport.csv.\n");
-        watcher.append("     *\n");
-        watcher.append("     * @param testName The name of the test.\n");
-        watcher.append("     * @param success  The status of the test.\n");
-        watcher.append("     */\n");
-        watcher.append("    private void writeTestReport(String testName, String success) {\n");
-        watcher.append("        try {\n");
-        watcher.append("            Path testReportPath = Paths.get(TEST_REPORT_FILE);\n");
-        watcher.append("            Files.createDirectories(testReportPath.getParent());\n");
-        watcher.append(
-                "            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(\"yyyy-MM-dd'T'HH:mm:ssXXX\");\n");
-        watcher.append(
-                "            Files.write(testReportPath, (MANIFEST_URI + \"#\" + testName + \",\" + dtf.format(ZonedDateTime.now()) + \",\" + EARL + success + \"\\n\").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);\n");
-        watcher.append("        } catch (IOException e) {\n");
-        watcher.append("            e.printStackTrace();\n");
-        watcher.append("        }\n");
-        watcher.append("    }\n");
-        watcher.append("\n");
+        callbacks.append("    private static final String MANIFEST_URI = \"")
+                .append(manifestUri.toString().substring(0, manifestUri.toString().lastIndexOf("."))).append("\";\n");
+        callbacks.append("    private static final String EARL = \"http://www.w3.org/ns/earl#\";\n\n");
 
-        watcher.append("    @Rule\n");
-        watcher.append("    public TestWatcher watcher = new TestWatcher() {\n");
-        watcher.append("\n");
-        watcher.append("        @Override\n");
-        watcher.append("        protected void failed(Throwable e, Description description) {\n");
-        watcher.append("            writeTestReport(description.getMethodName(), \"failed\");\n");
-        watcher.append("        }\n");
-        watcher.append("\n");
-        watcher.append("        @Override\n");
-        watcher.append("        protected void succeeded(Description description) {\n");
-        watcher.append("            writeTestReport(description.getMethodName(), \"passed\");\n");
-        watcher.append("        }\n");
-        watcher.append("\n");
-        watcher.append("        @Override\n");
-        watcher.append("        protected void skipped(AssumptionViolatedException e, Description description) {\n");
-        watcher.append("            writeTestReport(description.getMethodName(), \"untested\");\n");
-        watcher.append("        }\n");
-        watcher.append("    };\n");
-        watcher.append("\n");
-        watcher.append("        // Create and clear the test report file\n");
-        watcher.append("        @BeforeClass\n");
-        watcher.append("        public static void createTestReportFile() {\n");
-        watcher.append("            try {\n");
-        watcher.append("                Path testReportPath = Paths.get(TEST_REPORT_FILE);\n");
-        watcher.append("                Files.createDirectories(testReportPath.getParent());\n");
-        watcher.append("                Files.write(testReportPath, \"\".getBytes());\n");
-        watcher.append("            } catch (IOException e) {\n");
-        watcher.append("                e.printStackTrace();\n");
-        watcher.append("            }\n");
-        watcher.append("        }\n");
-        watcher.append("\n");
+        callbacks.append("    /**\n");
+        callbacks.append("     * Writes the test report to the file testReport.csv.\n");
+        callbacks.append("     *\n");
+        callbacks.append("     * @param testName The name of the test.\n");
+        callbacks.append("     * @param success  The status of the test.\n");
+        callbacks.append("     */\n");
+        callbacks.append("    private void writeTestReport(String testName, String success) {\n");
+        callbacks.append("        try {\n");
+        callbacks.append("            Path testReportPath = Paths.get(TEST_REPORT_FILE);\n");
+        callbacks.append("            Files.createDirectories(testReportPath.getParent());\n");
+        callbacks.append("            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(\"yyyy-MM-dd'T'HH:mm:ssXXX\");\n");
+        callbacks.append("            Files.write(testReportPath, (MANIFEST_URI + \"#\" + testName + \",\" + dtf.format(ZonedDateTime.now()) + \",\" + EARL + success + \"\\n\").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);\n");
 
-        return watcher.toString();
+        callbacks.append("        } catch (IOException e) {\n");
+        callbacks.append("            e.printStackTrace();\n");
+        callbacks.append("        }\n");
+        callbacks.append("    }\n\n");
+
+        callbacks.append("    @AfterEach\n");
+        callbacks.append("    void afterEach(TestInfo testInfo) {\n");
+        callbacks.append("        if (testInfo.getTags().contains(\"skipped\")) {\n");
+        callbacks.append("            writeTestReport(testInfo.getDisplayName(), \"untested\");\n");
+        callbacks.append("        } else {\n");
+        callbacks.append("            writeTestReport(testInfo.getDisplayName(), \"passed\"); // Cannot detect failure directly\n");
+        callbacks.append("        }\n");
+        callbacks.append("    }\n\n");
+
+        callbacks.append("    @BeforeAll\n");
+        callbacks.append("    static void createTestReportFile() {\n");
+        callbacks.append("        try {\n");
+        callbacks.append("            Path testReportPath = Paths.get(TEST_REPORT_FILE);\n");
+        callbacks.append("            Files.createDirectories(testReportPath.getParent());\n");
+        callbacks.append("            Files.write(testReportPath, \"\".getBytes());\n");
+        callbacks.append("        } catch (IOException e) {\n");
+        callbacks.append("            e.printStackTrace();\n");
+        callbacks.append("        }\n");
+        callbacks.append("    }\n\n");
+
+        return callbacks.toString();
     }
 
     private Set<String> defineImports() {
@@ -260,15 +246,13 @@ public class JUnitTestFileGenerator {
         imports.add("java.nio.file.Paths");
         imports.add("java.nio.file.Files");
         imports.add("java.nio.file.StandardOpenOption");
-        imports.add("org.junit.Rule");
-        imports.add("org.junit.rules.TestWatcher");
-        imports.add("org.junit.runner.Description");
-        imports.add("org.junit.AssumptionViolatedException");
-        imports.add("org.junit.BeforeClass");
-        imports.add("org.junit.Test");
+        imports.add("org.junit.jupiter.api.AfterEach");
+        imports.add("org.junit.jupiter.api.BeforeAll");
+        imports.add("org.junit.jupiter.api.Test");
+        imports.add("org.junit.jupiter.api.TestInfo");
+        imports.add("org.junit.jupiter.api.Tag");
         imports.add("java.time.format.DateTimeFormatter");
         imports.add("java.time.ZonedDateTime");
         return imports;
     }
-
 }
