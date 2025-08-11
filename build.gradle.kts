@@ -111,7 +111,7 @@ tasks.register("getCoreseCore") {
             workingDir = File("corese-core")
         }
         // in the corese-core directory, run the command ./gradlew clean, build
-        val osName = System.getProperty("os.name").toLowerCase()
+        val osName = System.getProperty("os.name").lowercase()
         if (osName.contains("win")) {
             exec {
                 commandLine("gradlew.bat", "clean", "build", "-x", "test")
