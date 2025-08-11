@@ -111,9 +111,17 @@ tasks.register("getCoreseCore") {
             workingDir = File("corese-core")
         }
         // in the corese-core directory, run the command ./gradlew clean, build
-        exec {
-            commandLine("gradlew.bat", "clean", "build", "-x", "test")
-            workingDir = File("corese-core")
+        val osName = System.getProperty("os.name").toLowerCase()
+        if (osName.contains("win")) {
+            exec {
+                commandLine("gradlew.bat", "clean", "build", "-x", "test")
+                workingDir = File("corese-core")
+            }
+        } else {
+            exec {
+                commandLine("./gradlew", "clean", "build", "-x", "test")
+                workingDir = File("corese-core")
+            }
         }
     }
 }
