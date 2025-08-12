@@ -1,14 +1,13 @@
-# comment test
-@prefix : <http://example.org/#> .
-:a :b :c . # end of line comment
-:d # ignore me
-  :e # and me
-      :f # and me
-        .
-:g :h #ignore me
-     :i,  # and me
-     :j . # and me
+@prefix exampleorg: <http://example.org/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:k :l :m ; #ignore me
-   :n :o ; # and me
-   :p :q . # and me
+  exampleorg:a exampleorg:b exampleorg:c .
+  exampleorg:d exampleorg:e exampleorg:f .
+  exampleorg:g exampleorg:h exampleorg:i,
+      exampleorg:j .
+  exampleorg:k exampleorg:l exampleorg:m;
+    exampleorg:n exampleorg:o;
+    exampleorg:p exampleorg:q .

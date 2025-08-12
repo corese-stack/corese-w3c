@@ -232,8 +232,8 @@ public class TestUtils {
      */
     public static boolean compareFilesLineByLine(Path filePath1, Path filePath2) throws IOException {
         try (
-                BufferedReader reader1 = new BufferedReader(new FileReader(filePath1.toString()));
-                BufferedReader reader2 = new BufferedReader(new FileReader(filePath2.toString()))
+                BufferedReader reader1 = new BufferedReader(new FileReader(filePath1.toAbsolutePath().toString()));
+                BufferedReader reader2 = new BufferedReader(new FileReader(filePath2.toAbsolutePath().toString()));
         ) {
             String line1;
             String line2;

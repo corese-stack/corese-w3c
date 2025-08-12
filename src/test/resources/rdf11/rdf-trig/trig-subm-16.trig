@@ -1,43 +1,13 @@
-@prefix : <http://example.org/foo#> .
+@prefix foo: <http://example.org/foo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-{
-## \U00015678 is a not a legal codepoint
-## :a :b """\nthis \ris a \U00015678long\t
-## literal\uABCD
-## """ .
-## 
-## :d :e """\tThis \uABCDis\r \U00015678another\n
-## one
-## """ .
-
-# \U00015678 is a not a legal codepoint
-# \U00012451 in Cuneiform numeric ban 3
-:a :b """\nthis \ris a \U00012451long\t
+foo:a foo:b """\"\"\""\"\"\""\"\"\""\"\"\""\nthis \ris a \U00012451long\t
 literal\uABCD
-""" .
-
-:d :e """\tThis \uABCDis\r \U00012451another\n
+""""" .
+foo:d foo:e """\"\"\""\"\"\""\"\"\""\"\"\""\tThis \uABCDis\r \U00012451another\n
 one
-""" .
-}
+""""" .
 
-<http://example/graph> {
-## \U00015678 is a not a legal codepoint
-## :a :b """\nthis \ris a \U00015678long\t
-## literal\uABCD
-## """ .
-## 
-## :d :e """\tThis \uABCDis\r \U00015678another\n
-## one
-## """ .
-
-# \U00015678 is a not a legal codepoint
-# \U00012451 in Cuneiform numeric ban 3
-:a :b """\nthis \ris a \U00012451long\t
-literal\uABCD
-""" .
-
-:d :e """\tThis \uABCDis\r \U00012451another\n
-one
-""" .
-}

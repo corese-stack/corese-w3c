@@ -80,7 +80,6 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
                 "java.net.URISyntaxException",
                 "java.net.URI",
                 "java.nio.file.Path",
-                "java.security.NoSuchAlgorithmException",
                 "static org.junit.jupiter.api.Assertions.*");
     }
 
@@ -95,16 +94,16 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         }
         sb.append("    @Test\n");
         sb.append("    public void ").append(TestUtils.sanitizeTestName(test));
-        sb.append("() throws IOException, NoSuchAlgorithmException, InterruptedException {\n");
+        sb.append("() throws IOException, InterruptedException {\n");
 
         // Test body
         sb.append("        // Load action file\n");
         sb.append("        Path localActionFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
         sb.append("        Path localResultFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.resultFile.toString()).append("\"));\n");
         sb.append("        \n");
-        sb.append("        Path convertedActionFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
-        sb.append("        Path canonConvertedActionFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
-        sb.append("        Path canonConvertedResultFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.resultFile))).append("\");\n");
+        sb.append("        Path convertedActionFilePath = TestFileManager.getLocalFilePath(URI.create(\"").append(this.actionFile).append("\"));\n");
+        sb.append("        Path canonConvertedActionFilePath = TestFileManager.getLocalFilePath(URI.create(\"").append(this.actionFile).append(".crd\"));\n");
+        sb.append("        Path canonConvertedResultFilePath = TestFileManager.getLocalFilePath(URI.create(\"").append(this.resultFile).append(".crd\"));\n");
         sb.append("\n");
         sb.append("        // Converting the action file\n");
         sb.append("        Model model = new CoreseModel();\n");
@@ -118,7 +117,7 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         sb.append("\n");
         sb.append("        // Canonicalization of the given result file\n");
         sb.append("        Process resultCanonicalizationCommand = new ProcessBuilder().inheritIO().command(\n");
-        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n");
+        sb.append("                \"java\", \"-jar\", TestFileManager.CORESE_COMMAND_PATH_STRING, \"canonicalize\",\n");
         sb.append("                \"-i\", localResultFile.toString(),\n");
         sb.append("                \"-if\", \"").append(this.resultFormat).append("\",\n");
         sb.append("                \"-o\", canonConvertedResultFilePath.toString())\n");
@@ -126,7 +125,7 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         sb.append("        int resultCanonicalizationExitCode = resultCanonicalizationCommand.waitFor();\n");
 
         sb.append("        Process convertedActionCanonicalizationCommand = new ProcessBuilder().inheritIO().command(\n");
-        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n");
+        sb.append("                \"java\", \"-jar\", TestFileManager.CORESE_COMMAND_PATH_STRING, \"canonicalize\",\n");
         sb.append("                \"-i\", convertedActionFilePath.toString(),\n");
         sb.append("                \"-if\", \"").append(this.resultFormat).append("\",\n");
         sb.append("                \"-o\", canonConvertedActionFilePath.toString())\n");

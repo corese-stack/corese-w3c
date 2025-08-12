@@ -1,12 +1,11 @@
-# Test empty [] operator; not allowed as predicate
-@prefix : <http://example.org/base#> .
+@prefix base: <http://example.org/base#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-{
-[] :a :b .
-:c :d [] .
-}
+_:_:bb729cd21458323 base:a base:b .
+_:_:bb729cd21458321 base:a base:b .
+base:c base:d _:_:bb729cd21458322,
+    _:_:bb729cd21458320 .
 
-<http://example/graph> {
-[] :a :b .
-:c :d [] .
-}
