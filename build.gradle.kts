@@ -1,3 +1,6 @@
+import java.io.ByteArrayOutputStream
+import org.gradle.api.tasks.JavaExec
+
 plugins {
     `java-library`
     id("com.gradleup.shadow") version "8.3.1"
@@ -78,9 +81,22 @@ tasks.withType<Javadoc>() {
 }
 
 tasks {
-    run {
+    named<JavaExec>("run") {
         group = "application"
         description = "Runs this project as a JVM application"
+
+        doFirst {
+            val w3cStandardsFromGradleJVM = System.getProperty("w3cStandards")
+            val w3cStandardsFromGradle = project.findProperty("w3cStandards") as String?
+
+            if (w3cStandardsFromGradleJVM != null) {
+                systemProperties["w3cStandards"] = w3cStandardsFromGradleJVM
+            } else if (w3cStandardsFromGradle != null) {
+                systemProperties["w3cStandards"] = w3cStandardsFromGradle
+            } else {
+                systemProperties["w3cStandards"] = "all"
+            }
+        }
     }
     test {
         useJUnitPlatform()
@@ -100,6 +116,8 @@ tasks.register("getCoreseCore") {
     description = "Publish the latest corese-core version to local Maven repository"
     doFirst {
         // If the corese-core directory does not exist, clone the corese-core repository
+        val coreseCoreBranch = project.findProperty("coreseCoreBranch") as String? ?: "feature/corese-next"
+
         if (!File("corese-core").exists()) {
             exec {
                 commandLine("git", "clone", "https://github.com/corese-stack/corese-core.git")
@@ -107,10 +125,9 @@ tasks.register("getCoreseCore") {
         }
         // Checkout the latest commit of the feature/corese-next branch of corese-core
         exec {
-            commandLine("git", "checkout", "feature/corese-next")
+            commandLine("git", "checkout", coreseCoreBranch)
             workingDir = File("corese-core")
         }
-        // in the corese-core directory, run the command ./gradlew clean, build
         val osName = System.getProperty("os.name").lowercase()
         if (osName.contains("win")) {
             exec {

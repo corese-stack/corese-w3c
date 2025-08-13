@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The Main class serves as the entry point for the application.
@@ -48,15 +50,51 @@ public class Main {
                 } catch (IOException e) {
                         logger.error("Could not download corese-command", e);
                 }
-//                generateW3cTests("canonicalRdf", "https://w3c.github.io/rdf-canon/tests/manifest.ttl"); // Canonical RDF
-                generateW3cTests("rdf11nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");  // RDF 1.1 nquads
-                generateW3cTests("rdf11ntriples", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl"); // rdf 1.1 ntriples
-                generateW3cTests("rdf11xml", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl"); // RDF 1.1 XML
-                generateW3cTests("rdf11trig", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl"); // RDF 1.1 Trig
-                generateW3cTests("rdf11turtle", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl"); // RDF 1.1 turtle
-//                generateW3cTests("sparql10", "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl"); // SPARQL 1.0
-//                generateW3cTests("shacl", "https://raw.githubusercontent.com/w3c/data-shapes/refs/heads/gh-pages/data-shapes-test-suite/tests/manifest.ttl"); // SHACL
-//                generateW3cTests("sparql11", "https://w3c.github.io/rdf-tests/sparql/sparql11/manifest.ttl");
+
+                // Retrieve the list of standards to test from system properties (passed by Gradle)
+                // Defaults to "all" if the property is not defined
+                String standardsToTestProp = System.getProperty("w3cStandards", "all");
+                List<String> standards = Arrays.asList(standardsToTestProp.split(","));
+
+                // Log the received w3cStandards property and the parsed list
+                logger.info("Received w3cStandards property: '{}'", standardsToTestProp);
+                logger.info("Parsed standards list: {}", standards);
+
+                // Conditionally generates tests based on the 'w3cStandards' property
+                if (standards.contains("all") || standards.contains("nquads")) {
+                        logger.info("Generating tests for rdf11nquads...");
+                        generateW3cTests("rdf11nquads", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl");
+                }
+                if (standards.contains("all") || standards.contains("ntriples")) {
+                        logger.info("Generating tests for rdf11ntriples...");
+                        generateW3cTests("rdf11ntriples", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl");
+                }
+                if (standards.contains("all") || standards.contains("xml")) {
+                        logger.info("Generating tests for rdf11xml...");
+                        generateW3cTests("rdf11xml", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl");
+                }
+                if (standards.contains("all") || standards.contains("trig")) {
+                        logger.info("Generating tests for rdf11trig...");
+                        generateW3cTests("rdf11trig", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl");
+                }
+                if (standards.contains("all") || standards.contains("turtle")) {
+                        logger.info("Generating tests for rdf11turtle...");
+                        generateW3cTests("rdf11turtle", "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl");
+                }
+                // Uncomment and add 'if' conditions for other standards if necessary:
+                // if (standards.contains("all") || standards.contains("canonicalRdf")) {
+                // generateW3cTests("canonicalRdf", "https://w3c.github.io/rdf-canon/tests/manifest.ttl");
+                // }
+                // if (standards.contains("all") || standards.contains("sparql10")) {
+                // generateW3cTests("sparql10", "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl");
+                // }
+                // if (standards.contains("all") || standards.contains("shacl")) {
+                // generateW3cTests("shacl", "https://raw.githubusercontent.com/w3c/data-shapes/refs/heads/gh-pages/data-shapes-test-suite/tests/manifest.ttl");
+                // }
+                // if (standards.contains("all") || standards.contains("sparql11")) {
+                // generateW3cTests("sparql11", "https://w3c.github.io/rdf-tests/sparql/sparql11/manifest.ttl");
+                // }
+                logger.info("W3C test generation process completed.");
         }
 
         /**
