@@ -39,3 +39,4 @@ bin/**/*.ttl
 bin/**/*.rdf
 
 src/test/resources/*.xml
+src/test/java/fr/inria/corese/w3c/
