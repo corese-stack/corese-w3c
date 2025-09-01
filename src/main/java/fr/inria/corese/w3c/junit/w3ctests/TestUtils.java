@@ -76,14 +76,19 @@ public class TestUtils {
     public static RDFFormat commandStringFormatToRDFFormat(String rdfCommandFileFormat) {
         switch (rdfCommandFileFormat) {
             case "ntriples":
+            case "nt":
                 return RDFFormat.NTRIPLES;
             case "nquads":
+            case "nq":
                 return RDFFormat.NQUADS;
             case "turtle":
+            case "ttl":
                 return RDFFormat.TURTLE;
             case "trig":
                 return RDFFormat.TRIG;
             case "rdfxml":
+            case "rdf":
+            case "xml":
                 return  RDFFormat.RDFXML;
             default:
                 throw new IllegalArgumentException("Format " + rdfCommandFileFormat + " has no know equivalent in corese-core");

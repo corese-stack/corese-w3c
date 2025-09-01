@@ -1,4 +1,0 @@
-<http://example.org/ron> <http://example.org/ron> <http://example.org/ron> .
-<http://example.org/ron> <http://example.org/ron> <http://example.org/ron> <http://example/graph> .
-_:c14n2 <http://example.org/ron> _:c14n0 <http://example/graph> .
-_:c14n3 <http://example.org/ron> _:c14n1 .
