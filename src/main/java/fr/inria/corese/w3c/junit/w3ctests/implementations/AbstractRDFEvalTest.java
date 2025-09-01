@@ -80,7 +80,6 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
                 "java.net.URISyntaxException",
                 "java.net.URI",
                 "java.nio.file.Path",
-                "java.security.NoSuchAlgorithmException",
                 "static org.junit.jupiter.api.Assertions.*");
     }
 
@@ -95,56 +94,37 @@ public abstract class AbstractRDFEvalTest implements IW3cTest {
         }
         sb.append("    @Test\n");
         sb.append("    public void ").append(TestUtils.sanitizeTestName(test));
-        sb.append("() throws IOException, NoSuchAlgorithmException, InterruptedException {\n");
+        sb.append("() throws IOException, InterruptedException {\n");
 
         // Test body
         sb.append("        // Load action file\n");
         sb.append("        Path localActionFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.actionFile.toString()).append("\"));\n");
         sb.append("        Path localResultFile = TestFileManager.getLocalFilePath(URI.create(\"").append(this.resultFile.toString()).append("\"));\n");
         sb.append("        \n");
-        sb.append("        Path convertedActionFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
-        sb.append("        Path canonConvertedActionFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.actionFile))).append("\");\n");
-        sb.append("        Path canonConvertedResultFilePath = Path.of(\"tmp/").append(Paths.get(TestFileManager.getFileName(this.resultFile))).append("\");\n");
-        sb.append("\n");
         sb.append("        // Converting the action file\n");
-        sb.append("        Model model = new CoreseModel();\n");
-        sb.append("        RDFParser parser = TestUtils.getRDFParser(\"").append(actionFormat).append("\", model);\n");
-        sb.append("        parser.parse(new FileReader(localActionFile.toFile()));\n");
-        sb.append("        SerializerFactory factory = new DefaultSerializerFactory();\n");
-        sb.append("        RDFFormat format = TestUtils.commandStringFormatToRDFFormat(\"").append(actionFormat).append("\");\n");
-        sb.append("        RDFSerializer serializer = factory.createSerializer(format, model, TurtleOption.defaultConfig());\n");
-        sb.append("        FileWriter writer = new FileWriter(convertedActionFilePath.toString());\n");
-        sb.append("        serializer.write(writer);\n");
+        sb.append("        Model actionParsedModel = new CoreseModel();\n");
+        sb.append("        Model resultModel = new CoreseModel();\n");
+        sb.append("        RDFParser actionParser = TestUtils.getRDFParser(\"").append(actionFormat).append("\", actionParsedModel);\n");
+        sb.append("        RDFParser resultParser = TestUtils.getRDFParser(\"nq\", resultModel);\n");
+        sb.append("        actionParser.parse(new FileReader(localActionFile.toFile()));\n");
+        sb.append("        resultParser.parse(new FileReader(localResultFile.toFile()));\n");
         sb.append("\n");
-        sb.append("        // Canonicalization of the given result file\n");
-        sb.append("        Process resultCanonicalizationCommand = new ProcessBuilder().inheritIO().command(\n");
-        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n");
-        sb.append("                \"-i\", localResultFile.toString(),\n");
-        sb.append("                \"-if\", \"").append(this.resultFormat).append("\",\n");
-        sb.append("                \"-o\", canonConvertedResultFilePath.toString())\n");
-        sb.append("            .start();\n");
-        sb.append("        int resultCanonicalizationExitCode = resultCanonicalizationCommand.waitFor();\n");
-
-        sb.append("        Process convertedActionCanonicalizationCommand = new ProcessBuilder().inheritIO().command(\n");
-        sb.append("                \"java\", \"-jar\", \"src/test/resources/corese-command.jar\", \"canonicalize\",\n");
-        sb.append("                \"-i\", convertedActionFilePath.toString(),\n");
-        sb.append("                \"-if\", \"").append(this.resultFormat).append("\",\n");
-        sb.append("                \"-o\", canonConvertedActionFilePath.toString())\n");
-        sb.append("            .start();\n");
-        sb.append("        int convertedActionCanonicalizationExitCode = convertedActionCanonicalizationCommand.waitFor();\n");
+        sb.append("        // Comparison of the content of the models\n");
+        sb.append("        final boolean[] comparisonResult = {true};\n");
+        sb.append("        actionParsedModel.forEach( statement -> {\n");
+        sb.append("            comparisonResult[0] = comparisonResult[0] && resultModel.contains(statement);\n");
+        sb.append("        });\n");
+        sb.append("        resultModel.forEach( statement -> {\n");
+        sb.append("            comparisonResult[0] = comparisonResult[0] && actionParsedModel.contains(statement);\n");
+        sb.append("        });\n");
         sb.append("\n");
-        sb.append("        // Comparison of the content of the file\n");
-        sb.append("        boolean comparisonResult = TestUtils.compareFilesLineByLine(canonConvertedActionFilePath, canonConvertedResultFilePath);\n");
-        sb.append("\n");
-        sb.append("        assertEquals(0, resultCanonicalizationExitCode);\n");
-        sb.append("        assertEquals(0, convertedActionCanonicalizationExitCode);\n");
         if (!this.comment.isEmpty()) {
             String sanitizedComment = TestUtils.sanitizeComment(this.comment);
-            sb.append("        assertTrue(comparisonResult, \"").append(sanitizedComment)
+            sb.append("        assertTrue(comparisonResult[0], \"").append(sanitizedComment)
                     .append(". Test files: action:").append(this.actionFile.toString())
                     .append(", result: ").append(this.resultFile.toString()).append("\");\n");
         } else {
-            sb.append("        assertTrue(comparisonResult);\n");
+            sb.append("        assertTrue(comparisonResult[0]);\n");
         }
 
         // Footer of the test

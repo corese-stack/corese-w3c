@@ -26,6 +26,7 @@ public class TestFileManager {
      * will typically reside in this directory.
      */
     public static final String RESOURCE_PATH_STRING = "src/test/resources/";
+    public static final String CORESE_COMMAND_PATH_STRING = RESOURCE_PATH_STRING + "corese-command.jar";
     private static boolean updateModeFlag = false; // Indicates if the FileManager will try to update outdated files by dowloading them and comparing them to the existing ones
 
     /**
@@ -69,9 +70,7 @@ public class TestFileManager {
         String localFileFolder = getPrefixedFilename(fileUri); // Use getPrefixedFilename for consistency
         Path localFilePath = Paths.get(RESOURCE_PATH_STRING, localFileFolder); // Combine RESOURCE_PATH_STRING and prefixed filename
 
-        if(! Files.exists(localFilePath)) {
-            downloadFile(fileUri, localFilePath);
-        } else if( isInUpdateMode() && isRemoteFileDifferent(fileUri, localFilePath)) {
+        if((! Files.exists(localFilePath)) || ( isInUpdateMode() && isRemoteFileDifferent(fileUri, localFilePath))) {
             downloadFile(fileUri, localFilePath);
         }
     }

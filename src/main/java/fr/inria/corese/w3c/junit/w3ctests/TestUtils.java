@@ -76,14 +76,19 @@ public class TestUtils {
     public static RDFFormat commandStringFormatToRDFFormat(String rdfCommandFileFormat) {
         switch (rdfCommandFileFormat) {
             case "ntriples":
+            case "nt":
                 return RDFFormat.NTRIPLES;
             case "nquads":
+            case "nq":
                 return RDFFormat.NQUADS;
             case "turtle":
+            case "ttl":
                 return RDFFormat.TURTLE;
             case "trig":
                 return RDFFormat.TRIG;
             case "rdfxml":
+            case "rdf":
+            case "xml":
                 return  RDFFormat.RDFXML;
             default:
                 throw new IllegalArgumentException("Format " + rdfCommandFileFormat + " has no know equivalent in corese-core");
@@ -232,8 +237,8 @@ public class TestUtils {
      */
     public static boolean compareFilesLineByLine(Path filePath1, Path filePath2) throws IOException {
         try (
-                BufferedReader reader1 = new BufferedReader(new FileReader(filePath1.toString()));
-                BufferedReader reader2 = new BufferedReader(new FileReader(filePath2.toString()))
+                BufferedReader reader1 = new BufferedReader(new FileReader(filePath1.toAbsolutePath().toString()));
+                BufferedReader reader2 = new BufferedReader(new FileReader(filePath2.toAbsolutePath().toString()));
         ) {
             String line1;
             String line2;

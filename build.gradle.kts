@@ -62,7 +62,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
-    implementation(files("corese-core/build/libs/corese-core-jar-with-dependencies.jar")) // Will look for the compiled version of corese-core
+    implementation(files(project.findProperty("coreseCorePath")?.let { "$it/build/libs/corese-core-jar-with-dependencies.jar" } ?: "corese-core/build/libs/corese-core-jar-with-dependencies.jar"))
 }
 
 group = "fr.inria.corese"
@@ -111,34 +111,207 @@ tasks {
     }
 }
 
+// Helper function to get current commit hash from a git repository (local only)
+fun getLocalCommitHash(repoDir: File): String? {
+    return try {
+        val output = ByteArrayOutputStream()
+        exec {
+            commandLine("git", "rev-parse", "HEAD")
+            workingDir = repoDir
+            standardOutput = output
+        }
+        output.toString().trim()
+    } catch (e: Exception) {
+        null
+    }
+}
+
+// Helper function to check if there are uncommitted changes
+fun hasUncommittedChanges(repoDir: File): Boolean {
+    return try {
+        val output = ByteArrayOutputStream()
+        exec {
+            commandLine("git", "status", "--porcelain")
+            workingDir = repoDir
+            standardOutput = output
+        }
+        output.toString().trim().isNotEmpty()
+    } catch (e: Exception) {
+        false
+    }
+}
+
 tasks.register("getCoreseCore") {
     group = "corese"
-    description = "Publish the latest corese-core version to local Maven repository"
-    doFirst {
-        // If the corese-core directory does not exist, clone the corese-core repository
-        val coreseCoreBranch = project.findProperty("coreseCoreBranch") as String? ?: "feature/corese-next"
+    description = "Build corese-core only if local commits have changed (no remote interaction)"
 
-        if (!File("corese-core").exists()) {
+    // Using layout.buildDirectory for the lastCommitHashFile path
+    val lastCommitHashFile = layout.buildDirectory.file("corese-core-last-commit-hash.txt").get().asFile
+
+    // Allow custom corese-core path via project property, otherwise use local directory
+    val coreseCorePath = project.findProperty("coreseCorePath") as String? ?: "corese-core"
+    val coreseCoreDir = File(coreseCorePath)
+    val coreseCoreJar = File(coreseCoreDir, "build/libs/corese-core-jar-with-dependencies.jar")
+
+    doFirst {
+        var needsBuild = false
+        var buildReason = ""
+
+        if (!coreseCoreDir.exists()) {
+            logger.lifecycle("Corese-core directory missing. Initial cloning...")
+            val coreseCoreBranch = project.findProperty("coreseCoreBranch") as String? ?: "feature/corese-next"
+
             exec {
                 commandLine("git", "clone", "https://github.com/corese-stack/corese-core.git")
             }
+
+            // Checkout the specified branch
+            exec {
+                commandLine("git", "checkout", coreseCoreBranch)
+                workingDir = coreseCoreDir
+            }
+
+            needsBuild = true
+            buildReason = "Initial cloning"
         }
-        // Checkout the latest commit of the feature/corese-next branch of corese-core
-        exec {
-            commandLine("git", "checkout", coreseCoreBranch)
-            workingDir = File("corese-core")
+
+        val gitDir = File(coreseCoreDir, ".git")
+        if (!gitDir.exists()) {
+            logger.lifecycle("WARNING: corese-core is not a git repository. Building anyway...")
+            needsBuild = true
+            buildReason = "Not a git repository"
+        } else {
+            logger.lifecycle("Checking local commits in corese-core...")
+
+            // Get current local commit hash
+            val currentCommitHash = getLocalCommitHash(coreseCoreDir)
+
+            if (currentCommitHash == null) {
+                logger.lifecycle("WARNING: Could not get commit hash. Building anyway...")
+                needsBuild = true
+                buildReason = "Could not get commit hash"
+            } else {
+                // Read last built commit hash if exists
+                val lastCommitHash = if (lastCommitHashFile.exists()) {
+                    lastCommitHashFile.readText().trim()
+                } else {
+                    null
+                }
+
+                logger.lifecycle("Current local commit: $currentCommitHash")
+                logger.lifecycle("Last compiled commit: $lastCommitHash")
+
+                // Check for uncommitted changes
+                val hasChanges = hasUncommittedChanges(coreseCoreDir)
+                if (hasChanges) {
+                    logger.lifecycle("Uncommitted changes detected in corese-core")
+                }
+
+                // Determine if we need to build
+                when {
+                    lastCommitHash == null -> {
+                        needsBuild = true
+                        buildReason = "First compilation"
+                    }
+                    currentCommitHash != lastCommitHash -> {
+                        needsBuild = true
+                        buildReason = "New local commit detected"
+                    }
+                    hasChanges -> {
+                        needsBuild = true
+                        buildReason = "Uncommitted changes detected"
+                    }
+                    !coreseCoreJar.exists() -> {
+                        needsBuild = true
+                        buildReason = "JAR missing"
+                    }
+                    else -> {
+                        logger.lifecycle("No changes detected. Compilation skipped.")
+                    }
+                }
+            }
         }
+
+        if (needsBuild) {
+            logger.lifecycle("Corese-core compilation needed: $buildReason")
+
+            // Build corese-core
+            val osName = System.getProperty("os.name").lowercase()
+            if (osName.contains("win")) {
+                exec {
+                    commandLine("gradlew.bat", "clean", "build", "-x", "test")
+                    workingDir = coreseCoreDir
+                }
+            } else {
+                exec {
+                    commandLine("./gradlew", "clean", "build", "-x", "test")
+                    workingDir = coreseCoreDir
+                }
+            }
+
+            // Save the commit hash we just built (if available)
+            val currentCommitHash = getLocalCommitHash(coreseCoreDir)
+            if (currentCommitHash != null) {
+                layout.buildDirectory.get().asFile.mkdirs()
+                lastCommitHashFile.writeText(currentCommitHash)
+                logger.lifecycle("Compilation finished. Commit hash saved: $currentCommitHash")
+            } else {
+                logger.lifecycle("Compilation finished. (Commit hash not available)")
+            }
+        }
+    }
+}
+
+// Force rebuild task for development
+tasks.register("forceBuildCoreseCore") {
+    group = "corese"
+    description = "Force rebuild of corese-core (ignoring commit checks)"
+
+    val lastCommitHashFile = layout.buildDirectory.file("corese-core-last-commit-hash.txt").get().asFile
+
+    val coreseCorePath = project.findProperty("coreseCorePath") as String? ?: "corese-core"
+    val coreseCoreDir = File(coreseCorePath)
+
+    doFirst {
+        if (!coreseCoreDir.exists()) {
+            logger.lifecycle("Corese-core directory missing. Initial cloning...")
+            val coreseCoreBranch = project.findProperty("coreseCoreBranch") as String? ?: "feature/corese-next"
+
+            exec {
+                commandLine("git", "clone", "https://github.com/corese-stack/corese-core.git")
+            }
+
+            // Checkout the specified branch
+            exec {
+                commandLine("git", "checkout", coreseCoreBranch)
+                workingDir = coreseCoreDir
+            }
+        }
+
+        logger.lifecycle("Forcing corese-core compilation...")
+
+        // Build corese-core
         val osName = System.getProperty("os.name").lowercase()
         if (osName.contains("win")) {
             exec {
                 commandLine("gradlew.bat", "clean", "build", "-x", "test")
-                workingDir = File("corese-core")
+                workingDir = coreseCoreDir
             }
         } else {
             exec {
                 commandLine("./gradlew", "clean", "build", "-x", "test")
-                workingDir = File("corese-core")
+                workingDir = coreseCoreDir
             }
+        }
+
+        // Update the commit hash
+        val currentCommitHash = getLocalCommitHash(coreseCoreDir)
+        if (currentCommitHash != null) {
+            layout.buildDirectory.get().asFile.mkdirs()
+            lastCommitHashFile.writeText(currentCommitHash)
+            logger.lifecycle("Forced compilation finished. Commit hash saved: $currentCommitHash")
+        } else {
+            logger.lifecycle("Forced compilation finished. (Commit hash not available)")
         }
     }
 }
@@ -154,9 +327,15 @@ tasks.register<Delete>("cleanCoreseCore") {
     delete(File("corese-core"))
 }
 
-// clean the corese-core directory after the build
+tasks.register<Delete>("cleanCoreseCoreCommitHash") {
+    group = "corese"
+    description = "Delete the stored commit hash file"
+    delete(layout.buildDirectory.file("corese-core-last-commit-hash.txt").get().asFile)
+}
+
 tasks.named("clean") {
     dependsOn(tasks.named("cleanCoreseCore"))
+    dependsOn(tasks.named("cleanCoreseCoreCommitHash"))
 }
 
 java {

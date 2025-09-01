@@ -46,7 +46,7 @@ public class Main {
         public static void main(String[] args) {
                 // Download the latest corese-command jar
                 try {
-                        TestFileManager.downloadFile(URI.create("https://github.com/corese-stack/corese-command/releases/latest/corese-command.jar"), Path.of("src/test/resources/corese-command.jar")); // FIXME replace me to automatically call corese-command in its latest version
+                        TestFileManager.downloadFile(URI.create("https://github.com/corese-stack/corese-command/releases/latest/download/corese-command-standalone.jar"), Path.of(TestFileManager.CORESE_COMMAND_PATH_STRING)); // FIXME replace me to automatically call corese-command in its latest version
                 } catch (IOException e) {
                         logger.error("Could not download corese-command", e);
                 }

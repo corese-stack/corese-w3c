@@ -51,6 +51,42 @@ Use the `coreseCoreBranch` property to specify the Corese engine branch.
 
 ---
 
+## 3. Choosing the corese-core path
+   Use the coreseCorePath property to specify a custom local path for the corese-core repository. This is useful if you have a local clone in a non-default location.
+
+Default path (corese-core/):
+
+```bash
+./gradlew run
+```
+Custom path (example: /Users/youruser/dev/my-corese-core):
+
+```bash
+./gradlew run -PcoreseCorePath=/Users/youruser/dev/my-corese-core
+```
+If not specified, corese-core is used as the directory name in the current project root.
+
+
+## 4. Force Rebuilding corese-core
+   The getCoreseCore task automatically checks for changes before rebuilding.
+   If you need to force a rebuild of the corese-core module, ignoring these checks,
+   you can use the forceBuildCoreseCore task. This is particularly useful during development or for troubleshooting.
+
+Force rebuild corese-core:
+
+```bash
+./gradlew forceBuildCoreseCore
+```
+Force rebuild with a specific branch:
+
+```bash
+./gradlew forceBuildCoreseCore -DcoreseCoreBranch=develop
+```
+Force rebuild from a custom path:
+
+```bash
+./gradlew forceBuildCoreseCore -PcoreseCorePath=/Users/youruser/dev/my-corese-core
+```
 ## Implemented tests
 
 - RDF tests
