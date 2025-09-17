@@ -7,12 +7,10 @@ import java.util.*;
 
 /**
  * Utility class to check for RDF model isomorphism.
- * <p>
  * This class provides methods to determine if two RDF models are isomorphic,
  * meaning they have the same structure and content, even if their blank node
  * identifiers are different. It works by canonicalizing the models into a
  * comparable string representation.
- * </p>
  */
 public class ModelIsomorphism {
 
@@ -59,7 +57,6 @@ public class ModelIsomorphism {
                 canonicalStatements.add(canonicalStmt);
             }
         } catch (Exception e) {
-
             try {
                 return canonicalizeModelAlternative(model, bnodeMap, bnodeCounter);
             } catch (Exception e2) {
@@ -178,12 +175,16 @@ public class ModelIsomorphism {
      * @return A canonical string representation of the value.
      */
     private static String canonicalizeValue(Value value, Map<BNode, String> bnodeMap, int[] bnodeCounter) {
+
         if (value instanceof BNode) {
             BNode bnode = (BNode) value;
-            return bnodeMap.computeIfAbsent(bnode, k -> "_:b" + (bnodeCounter[0]++));
+            String result = bnodeMap.computeIfAbsent(bnode, k -> "_:b" + (bnodeCounter[0]++));
+            return result;
         }
         if (value instanceof IRI) {
-            return "<" + ((IRI) value).stringValue() + ">";
+            String stringValue = ((IRI) value).stringValue();
+            String result = "<" + stringValue + ">";
+            return result;
         }
         if (value instanceof Literal) {
             Literal literal = (Literal) value;
@@ -192,12 +193,15 @@ public class ModelIsomorphism {
             String languageTag = literal.getLanguage() != null ? "@" + literal.getLanguage() : "";
 
             if (isNumericDatatype(datatypeUri)) {
-                return "\"" + canonicalLabel + "\"^^<" + getCanonicalNumericDatatype(datatypeUri) + ">";
+                String result = "\"" + canonicalLabel + "\"^^<" + getCanonicalNumericDatatype() + ">";
+                return result;
             } else {
-                return "\"" + canonicalLabel + "\"^^<" + datatypeUri + ">" + languageTag;
+                String result = "\"" + canonicalLabel + "\"^^<" + datatypeUri + ">" + languageTag;
+                return result;
             }
         }
-        return value.stringValue();
+        String result = value.stringValue();
+        return result;
     }
 
     /**
@@ -259,10 +263,9 @@ public class ModelIsomorphism {
      * Returns a canonical datatype URI for numeric types to ensure
      * consistent comparison.
      *
-     * @param originalDatatype The original datatype URI.
      * @return The canonical datatype URI, currently always xsd:decimal.
      */
-    private static String getCanonicalNumericDatatype(String originalDatatype) {
+    private static String getCanonicalNumericDatatype() {
         return "http://www.w3.org/2001/XMLSchema#decimal";
     }
 }
