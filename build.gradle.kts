@@ -1,10 +1,7 @@
 import java.io.ByteArrayOutputStream
-import org.gradle.api.tasks.JavaExec
 
 plugins {
     `java-library`
-    id("com.gradleup.shadow") version "8.3.1"
-    application
     signing
 }
 
@@ -69,7 +66,7 @@ group = "fr.inria.corese"
 version = "5.0.0-SNAPSHOT"
 description = "corese-w3c"
 java.sourceCompatibility = JavaVersion.VERSION_21
-project.setProperty("mainClassName","fr.inria.corese.w3c.Main")
+// No main class needed - this is a test-only project
 
 
 tasks.withType<JavaCompile>() {
@@ -81,33 +78,91 @@ tasks.withType<Javadoc>() {
 }
 
 tasks {
-    named<JavaExec>("run") {
-        group = "application"
-        description = "Runs this project as a JVM application"
-
-        doFirst {
-            val w3cStandardsFromGradleJVM = System.getProperty("w3cStandards")
-            val w3cStandardsFromGradle = project.findProperty("w3cStandards") as String?
-
-            if (w3cStandardsFromGradleJVM != null) {
-                systemProperties["w3cStandards"] = w3cStandardsFromGradleJVM
-            } else if (w3cStandardsFromGradle != null) {
-                systemProperties["w3cStandards"] = w3cStandardsFromGradle
-            } else {
-                systemProperties["w3cStandards"] = "all"
-            }
-        }
-    }
     test {
         useJUnitPlatform()
-    }
-    shadowJar {
-        manifest {
-            attributes(
-                "Main-Class" to "fr.inria.corese.w3c.Main"
-            )
+        
+        // Configuration d'affichage détaillé des tests 
+        testLogging {
+            events("started", "passed", "skipped", "failed")
+            showExceptions = true
+            showCauses = true
+            showStackTraces = false
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
+            displayGranularity = 2
+            showStandardStreams = false
         }
-        this.archiveClassifier = "app"
+        
+        // Force l'affichage des statistiques de test
+        finalizedBy("displayTestResults")
+    }
+}
+
+// Task personnalisé pour afficher un résumé propre des tests
+tasks.register("displayTestResults") {
+    doLast {
+        val testTask = tasks.getByName("test") as Test
+        val testResults = testTask.reports.junitXml.outputLocation.get().asFile
+        
+        if (testResults.exists()) {
+            val xmlFiles = testResults.listFiles()?.filter { it.name.startsWith("TEST-") && it.name.endsWith(".xml") }
+            
+            var totalTests = 0
+            var passedTests = 0
+            var failedTests = 0
+            var skippedTests = 0
+            
+            xmlFiles?.forEach { xmlFile ->
+                val content = xmlFile.readText()
+                val testsMatch = "tests=\"(\\d+)\"".toRegex().find(content)
+                val failuresMatch = "failures=\"(\\d+)\"".toRegex().find(content)
+                val errorsMatch = "errors=\"(\\d+)\"".toRegex().find(content)
+                val skippedMatch = "skipped=\"(\\d+)\"".toRegex().find(content)
+                
+                val tests = testsMatch?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                val failures = failuresMatch?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                val errors = errorsMatch?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                val skipped = skippedMatch?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                
+                totalTests += tests
+                failedTests += failures + errors
+                skippedTests += skipped
+                passedTests += (tests - failures - errors - skipped)
+            }
+            
+            val percentage = if (totalTests > 0) {
+                String.format("%.1f", (passedTests.toDouble() / totalTests.toDouble()) * 100)
+            } else "0.0"
+            
+            println()
+            println("╔═══════════════════════════════════════════════════════════════╗")
+            println("║                       TEST RESULTS                            ║")
+            println("╠═══════════════════════════════════════════════════════════════╣")
+            
+            // Format with precise alignment
+            val totalLine = String.format("║ Total Tests     : %4d                                        ║", totalTests)
+            val passedLine = String.format("║ ✅ Passed       : %4d (%5s%%)                               ║", passedTests, percentage)
+            val failedLine = String.format("║ ❌ Failed       : %4d                                        ║", failedTests)
+            val skippedLine = String.format("║ ⏭️  Skipped      : %4d                                        ║", skippedTests)
+            
+            println(totalLine)
+            println(passedLine)
+            println(failedLine)
+            println(skippedLine)
+            
+            println("╠═══════════════════════════════════════════════════════════════╣")
+            val statusIcon = if (failedTests > 0) "❌" else "✅"
+            val statusText = if (failedTests > 0) "FAILURE" else "SUCCESS"
+            val statusLine = String.format("║ FINAL STATUS    : %s %-8s                                 ║", statusIcon, statusText)
+            println(statusLine)
+            println("╚═══════════════════════════════════════════════════════════════╝")
+            println()
+        } else {
+            println()
+            println("═══════════════════════════════════════════════════════════════")
+            println("                   NO TEST RESULTS FOUND")
+            println("═══════════════════════════════════════════════════════════════")
+            println()
+        }
     }
 }
 
@@ -152,6 +207,16 @@ tasks.register("getCoreseCore") {
     val coreseCorePath = project.findProperty("coreseCorePath") as String? ?: "corese-core"
     val coreseCoreDir = File(coreseCorePath)
     val coreseCoreJar = File(coreseCoreDir, "build/libs/corese-core-jar-with-dependencies.jar")
+    
+    // Validate custom corese-core path if provided by user
+    if (project.hasProperty("coreseCorePath")) {
+        val customPath = project.findProperty("coreseCorePath") as String
+        if (!File(customPath).exists()) {
+            throw GradleException("ERROR: Custom corese-core path '$customPath' does not exist!")
+        } else if (!File(customPath, ".git").exists()) {
+            throw GradleException("ERROR: Custom corese-core path '$customPath' is not a git repository!")
+        }
+    }
 
     doFirst {
         var needsBuild = false
@@ -159,7 +224,9 @@ tasks.register("getCoreseCore") {
 
         if (!coreseCoreDir.exists()) {
             logger.lifecycle("Corese-core directory missing. Initial cloning...")
-            val coreseCoreBranch = project.findProperty("coreseCoreBranch") as String? ?: "feature/corese-next"
+            val coreseCoreBranch = System.getProperty("coreseCoreBranch") 
+                ?: project.findProperty("coreseCoreBranch") as String? 
+                ?: "feature/corese-next"
 
             exec {
                 commandLine("git", "clone", "https://github.com/corese-stack/corese-core.git")
@@ -181,6 +248,84 @@ tasks.register("getCoreseCore") {
             needsBuild = true
             buildReason = "Not a git repository"
         } else {
+            // Always ensure we're on the correct branch
+            val requestedBranch = System.getProperty("coreseCoreBranch") 
+                ?: project.findProperty("coreseCoreBranch") as String? 
+                ?: "feature/corese-next" // Default branch
+            
+            // Get current branch
+            val currentBranch = try {
+                val output = ByteArrayOutputStream()
+                exec {
+                    commandLine("git", "branch", "--show-current")
+                    workingDir = coreseCoreDir
+                    standardOutput = output
+                }
+                output.toString().trim()
+            } catch (e: Exception) {
+                null
+            }
+            
+            // Switch branch if needed
+            if (currentBranch != requestedBranch) {
+                // Validate that the requested branch/commit exists
+                try {
+                    exec {
+                        commandLine("git", "fetch", "origin")
+                        workingDir = coreseCoreDir
+                    }
+                    
+                    // Check if it's a valid branch or commit
+                    val checkOutput = ByteArrayOutputStream()
+                    val checkResult = exec {
+                        commandLine("git", "rev-parse", "--verify", requestedBranch)
+                        workingDir = coreseCoreDir
+                        standardOutput = checkOutput
+                        isIgnoreExitValue = true
+                    }
+                    
+                    if (checkResult.exitValue != 0) {
+                        // Try with origin/ prefix for remote branches
+                        val remoteCheckOutput = ByteArrayOutputStream()
+                        val remoteCheckResult = exec {
+                            commandLine("git", "rev-parse", "--verify", "origin/$requestedBranch")
+                            workingDir = coreseCoreDir
+                            standardOutput = remoteCheckOutput
+                            isIgnoreExitValue = true
+                        }
+                        
+                        if (remoteCheckResult.exitValue != 0) {
+                            throw GradleException("ERROR: Branch/commit '$requestedBranch' does not exist in corese-core repository!")
+                        }
+                    }
+                } catch (e: GradleException) {
+                    throw e // Re-throw our validation errors
+                } catch (e: Exception) {
+                    throw GradleException("ERROR: Failed to validate branch/commit '$requestedBranch': ${e.message}")
+                }
+                
+                try {
+                    logger.lifecycle("Switching to branch/commit: $requestedBranch (currently on: $currentBranch)")
+                    exec {
+                        commandLine("git", "fetch", "origin")
+                        workingDir = coreseCoreDir
+                    }
+                    exec {
+                        commandLine("git", "checkout", requestedBranch)
+                        workingDir = coreseCoreDir
+                    }
+                    exec {
+                        commandLine("git", "pull", "origin", requestedBranch)
+                        workingDir = coreseCoreDir
+                        isIgnoreExitValue = true // Ignore failure for commits/detached HEAD
+                    }
+                    needsBuild = true
+                    buildReason = "Branch/commit switched to $requestedBranch"
+                } catch (e: Exception) {
+                    throw GradleException("ERROR: Failed to switch to branch/commit '$requestedBranch': ${e.message}")
+                }
+            }
+            
             logger.lifecycle("Checking local commits in corese-core...")
 
             // Get current local commit hash
@@ -271,20 +416,72 @@ tasks.register("forceBuildCoreseCore") {
 
     val coreseCorePath = project.findProperty("coreseCorePath") as String? ?: "corese-core"
     val coreseCoreDir = File(coreseCorePath)
+    
+    // Validate custom corese-core path if provided by user
+    if (project.hasProperty("coreseCorePath")) {
+        val customPath = project.findProperty("coreseCorePath") as String
+        if (!File(customPath).exists()) {
+            throw GradleException("ERROR: Custom corese-core path '$customPath' does not exist!")
+        } else if (!File(customPath, ".git").exists()) {
+            throw GradleException("ERROR: Custom corese-core path '$customPath' is not a git repository!")
+        }
+    }
 
     doFirst {
         if (!coreseCoreDir.exists()) {
             logger.lifecycle("Corese-core directory missing. Initial cloning...")
-            val coreseCoreBranch = project.findProperty("coreseCoreBranch") as String? ?: "feature/corese-next"
+            val coreseCoreBranch = System.getProperty("coreseCoreBranch") 
+                ?: project.findProperty("coreseCoreBranch") as String? 
+                ?: "feature/corese-next"
 
             exec {
                 commandLine("git", "clone", "https://github.com/corese-stack/corese-core.git")
             }
 
+            // Validate that the requested branch/commit exists before checkout
+            try {
+                exec {
+                    commandLine("git", "fetch", "origin")
+                    workingDir = coreseCoreDir
+                }
+                
+                // Check if it's a valid branch or commit
+                val checkOutput = ByteArrayOutputStream()
+                val checkResult = exec {
+                    commandLine("git", "rev-parse", "--verify", coreseCoreBranch)
+                    workingDir = coreseCoreDir
+                    standardOutput = checkOutput
+                    isIgnoreExitValue = true
+                }
+                
+                if (checkResult.exitValue != 0) {
+                    // Try with origin/ prefix for remote branches
+                    val remoteCheckOutput = ByteArrayOutputStream()
+                    val remoteCheckResult = exec {
+                        commandLine("git", "rev-parse", "--verify", "origin/$coreseCoreBranch")
+                        workingDir = coreseCoreDir
+                        standardOutput = remoteCheckOutput
+                        isIgnoreExitValue = true
+                    }
+                    
+                    if (remoteCheckResult.exitValue != 0) {
+                        throw GradleException("ERROR: Branch/commit '$coreseCoreBranch' does not exist in corese-core repository!")
+                    }
+                }
+            } catch (e: GradleException) {
+                throw e // Re-throw our validation errors
+            } catch (e: Exception) {
+                throw GradleException("ERROR: Failed to validate branch/commit '$coreseCoreBranch': ${e.message}")
+            }
+
             // Checkout the specified branch
-            exec {
-                commandLine("git", "checkout", coreseCoreBranch)
-                workingDir = coreseCoreDir
+            try {
+                exec {
+                    commandLine("git", "checkout", coreseCoreBranch)
+                    workingDir = coreseCoreDir
+                }
+            } catch (e: Exception) {
+                throw GradleException("ERROR: Failed to checkout branch/commit '$coreseCoreBranch': ${e.message}")
             }
         }
 
