@@ -4,7 +4,7 @@ W3C standards test execution against Corese using a modern dynamic JUnit test sy
 
 Test files and manifests are in the `src/test/resources` directory.
 
-## 1. Running 4. Known Issues and Limitations
+## 1. Running
 
 **Execute all W3C tests**:
 
@@ -31,7 +31,7 @@ Test files and manifests are in the `src/test/resources` directory.
 ./gradlew test --tests "*Rdf11XmlDynamicTest*"
 ```
 
-## 2. Managing corese-4. Known Issues and Limitations
+## 2. Managing corese
 
 **Use default corese-core** (feature/corese-next branch):
 
@@ -81,7 +81,7 @@ Test files and manifests are in the `src/test/resources` directory.
 ./gradlew forceBuildCoreseCore -PcoreseCorePath=/Users/youruser/dev/my-corese-core
 ```
 
-## 3. W3C Test Suites 4. Known Issues and Limitations
+## 3. W3C Test Suites
 
 ### Implemented in corese-w3c
 
