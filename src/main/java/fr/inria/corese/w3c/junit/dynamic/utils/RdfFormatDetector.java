@@ -11,6 +11,11 @@ import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 public class RdfFormatDetector {
 
     /**
+     * constructor
+     */
+    private RdfFormatDetector() {
+    }
+    /**
      * Gets the RDF format associated with a given test type.
      * 
      * @param testType The test type

@@ -27,7 +27,12 @@ import fr.inria.corese.w3c.junit.dynamic.utils.TestFileManager;
 public class W3cTestLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(W3cTestLoader.class);
+    /**
+     * constructor
+     */
+    public W3cTestLoader() {
 
+    }
     /**
      * Loads W3C test cases from the given manifest URI.
      * 

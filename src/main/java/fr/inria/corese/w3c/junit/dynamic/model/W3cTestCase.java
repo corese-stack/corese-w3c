@@ -21,8 +21,18 @@ public class W3cTestCase {
     private final URI manifestUri;
     private final Map<String, Object> properties;
 
+    /**
+     * Constructs a new W3cTestCase.
+     * @param testUri The URI identifying the test case
+     * @param name The short name of the test
+     * @param displayName The user-friendly display name (or name if null)
+     * @param comment The comment/description associated with the test (or empty string if null)
+     * @param type The type of the test (e.g., TURTLE_POSITIVE_SYNTAX)
+     * @param manifestUri The URI of the manifest file that defined this test
+     * @param properties The map of additional test properties (e.g., action, result)
+     */
     public W3cTestCase(String testUri, String name, String displayName, String comment,
-            TestType type, URI manifestUri, Map<String, Object> properties) {
+                       TestType type, URI manifestUri, Map<String, Object> properties) {
         this.testUri = Objects.requireNonNull(testUri, "Test URI cannot be null");
         this.name = Objects.requireNonNull(name, "Name cannot be null");
         this.displayName = displayName != null ? displayName : name;
@@ -35,42 +45,77 @@ public class W3cTestCase {
     /**
      * Executes this test case using the appropriate executor.
      * This method replaces the generated test methods.
+     * @throws Exception if the test execution fails
      */
     public void execute() throws Exception {
         TestExecutorFactory.createExecutor(type).execute(this);
     }
 
     // Getters
+    /**
+     * Gets the unique URI identifying the test case.
+     * @return The URI identifying the test case.
+     */
     public String getTestUri() {
         return testUri;
     }
 
+    /**
+     * Gets the short name of the test case.
+     * @return The short name of the test.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the user-friendly display name for the test.
+     * @return The user-friendly display name for the test.
+     */
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * Gets the comment/description associated with the test.
+     * @return The comment/description associated with the test.
+     */
     public String getComment() {
         return comment;
     }
 
+    /**
+     * Gets the type of the test.
+     * @return The type of the test (e.g., TURTLE_POSITIVE_SYNTAX).
+     */
     public TestType getType() {
         return type;
     }
 
+    /**
+     * Gets the URI of the manifest file that defined this test.
+     * @return The URI of the manifest file that defined this test.
+     */
     public URI getManifestUri() {
         return manifestUri;
     }
 
+    /**
+     * Gets the immutable map of additional test properties.
+     * @return The immutable map of additional test properties.
+     */
     public Map<String, Object> getProperties() {
         return properties;
     }
 
     /**
      * Gets a property value with type safety.
+     *
+     * @param <T> The expected type of the property value.
+     * @param key The key of the property.
+     * @param type The class object representing the expected type.
+     * @return The property value, cast to the expected type, or null if not found.
+     * @throws IllegalArgumentException if the property exists but is not of the expected type.
      */
     @SuppressWarnings("unchecked")
     public <T> T getProperty(String key, Class<T> type) {
@@ -87,6 +132,9 @@ public class W3cTestCase {
 
     /**
      * Gets a property value as URI.
+     *
+     * @param key The key of the property, expected to hold a String URI.
+     * @return The URI object created from the property value, or null if the property is not present.
      */
     public URI getUriProperty(String key) {
         String value = getProperty(key, String.class);
@@ -96,7 +144,7 @@ public class W3cTestCase {
     /**
      * Gets the action file URI for this test case.
      * This is a convenience method for getUriProperty("action").
-     * 
+     *
      * @return The URI of the action file, or null if not present
      */
     public URI getActionFileUri() {
@@ -106,7 +154,7 @@ public class W3cTestCase {
     /**
      * Gets the result file URI for this test case.
      * This is a convenience method for getUriProperty("result").
-     * 
+     *
      * @return The URI of the result file, or null if not present
      */
     public URI getResultFileUri() {
@@ -117,7 +165,7 @@ public class W3cTestCase {
      * Generates a comprehensive test display name including comment and type.
      * This centralizes the display name generation logic for consistency across all
      * test suites.
-     * 
+     *
      * @param formatName Optional format name to include (e.g., "Turtle", "XML")
      * @return A formatted display name for the test
      */
@@ -159,6 +207,9 @@ public class W3cTestCase {
 
     /**
      * Extracts the format name from the manifest path.
+     *
+     * @param manifestPath The path string of the manifest URI.
+     * @return The detected format name (e.g., "Turtle", "Xml"), or "RDF" if unknown.
      */
     private String extractFormatFromManifestPath(String manifestPath) {
         if (manifestPath.contains("rdf-turtle"))

@@ -31,7 +31,12 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfPositiveEvaluationTestExecutor.class);
+    /**
+     * constructor
+     */
+    public RdfPositiveEvaluationTestExecutor() {
 
+    }
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract needed information from test case

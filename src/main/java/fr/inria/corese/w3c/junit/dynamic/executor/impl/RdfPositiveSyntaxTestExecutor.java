@@ -29,7 +29,12 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfPositiveSyntaxTestExecutor.class);
+    /**
+     * constructor
+     */
+    public RdfPositiveSyntaxTestExecutor() {
 
+    }
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract all needed information from test case

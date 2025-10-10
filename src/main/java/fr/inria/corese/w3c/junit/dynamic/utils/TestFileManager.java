@@ -25,6 +25,9 @@ public class TestFileManager {
      * will typically reside in this directory.
      */
     public static final String RESOURCE_PATH_STRING = "src/test/resources/";
+    /**
+     * Path string for the corse command line executable JAR.
+     */
     public static final String CORESE_COMMAND_PATH_STRING = RESOURCE_PATH_STRING + "corese-command.jar";
     private static boolean updateModeFlag = false; // Indicates if the FileManager will try to update outdated files by
                                                    // dowloading them and comparing them to the existing ones
@@ -160,9 +163,14 @@ public class TestFileManager {
      * @return The file name as a {@code String}.
      */
     private static String getFileName(URI fileUri) {
-        return Paths.get(fileUri.getPath()).getFileName().toString();
+        try {
+            return Paths.get(fileUri).getFileName().toString();
+        } catch (Exception e) {
+            String path = fileUri.getPath();
+            int lastSlash = path.lastIndexOf('/');
+            return lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
+        }
     }
-
     /**
      * Extracts the relevant segments from the URI path to create local folder
      * structure.

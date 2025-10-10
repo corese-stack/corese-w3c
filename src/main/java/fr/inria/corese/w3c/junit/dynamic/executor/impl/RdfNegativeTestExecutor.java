@@ -29,6 +29,12 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 public class RdfNegativeTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfNegativeTestExecutor.class);
+    /**
+     * constructor
+     */
+    public RdfNegativeTestExecutor() {
+
+    }
 
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract needed information from test case

@@ -16,7 +16,13 @@ public class TestExecutorFactory {
     private static final RdfPositiveEvaluationTestExecutor POSITIVE_EVALUATION_EXECUTOR = new RdfPositiveEvaluationTestExecutor();
     private static final RdfPositiveSyntaxTestExecutor POSITIVE_SYNTAX_EXECUTOR = new RdfPositiveSyntaxTestExecutor();
     private static final RdfNegativeTestExecutor NEGATIVE_TEST_EXECUTOR = new RdfNegativeTestExecutor();
-    
+
+    /**
+     * constructor
+     */
+    public TestExecutorFactory() {
+
+    }
     /**
      * Creates the appropriate test executor for the given test type.
      * 
