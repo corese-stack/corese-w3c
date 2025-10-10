@@ -1,4 +1,4 @@
-package fr.inria.corese.w3c.junit.w3ctests.util;
+package fr.inria.corese.w3c.junit.dynamic.utils;
 
 import fr.inria.corese.core.next.api.*;
 

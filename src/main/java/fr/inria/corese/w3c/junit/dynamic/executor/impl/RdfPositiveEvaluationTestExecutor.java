@@ -3,6 +3,7 @@ package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 import java.io.FileReader;
 import java.net.URI;
 
+import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,7 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 /**
  * Specialized executor for positive RDF evaluation tests.
  * These tests should parse successfully and match the expected semantic result.
- * 
+ *
  * Process:
  * 1. Extract needed information from test case
  * 2. Parse the input action file
@@ -31,12 +32,10 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfPositiveEvaluationTestExecutor.class);
-    /**
-     * constructor
-     */
-    public RdfPositiveEvaluationTestExecutor() {
 
+    public RdfPositiveEvaluationTestExecutor() {
     }
+
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract needed information from test case
@@ -77,11 +76,16 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             }
 
             // Test //
+            logger.debug("Comparing models for test: {}", testName);
 
-            // Compare the models semantically
-            if (!actionModel.equals(resultModel)) {
+            // Compare the models using isomorphism check
+            // This handles blank nodes with different identifiers
+            if (!ModelIsomorphism.areModelsIsomorphic(actionModel, resultModel)) {
+                // Log model details for debugging
+
+
                 String msg = RDFTestUtils.formatErrorMessage(
-                        "Positive evaluation test failed - models are not equivalent",
+                        "Positive evaluation test failed - models are not isomorphic",
                         testName, actionFileUri, resultFileUri, null);
                 logger.error(msg);
                 throw new AssertionError(msg);
