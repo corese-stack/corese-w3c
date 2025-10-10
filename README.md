@@ -1,135 +1,129 @@
 # corese-w3c
 
-Test of W3C standards tests suites against Corese. Contains a generation application to generate JUnit tests from W3C tests suites manifest and a report generator from the JUnit test results.
+W3C standards test execution against Corese using a modern dynamic JUnit test system. Tests are loaded at runtime from W3C test manifests.
 
-Tested files and manifests are in the `src/test/resources` directory.
+Test files and manifests are in the `src/test/resources` directory.
 
+## 1. Running
 
-## 1. Generating W3C tests
-
-You can select which W3C tests to generate using the `w3cStandards` property.
-
-**Generate all tests**:
+**Execute all W3C tests**:
 
 ```bash
-./gradlew run
+./gradlew test
 ```
 
-**Generate a specific suite** (example: N-Quads tests):
+**Execute specific test suite**:
 
 ```bash
-./gradlew run -Dw3cStandards=nquads
+# RDF 1.1 Turtle tests
+./gradlew test --tests "*Rdf11TurtleDynamicTest*"
+
+# RDF 1.1 N-Triples tests  
+./gradlew test --tests "*Rdf11NTriplesDynamicTest*"
+
+# RDF 1.1 N-Quads tests
+./gradlew test --tests "*Rdf11NQuadsDynamicTest*"
+
+# RDF 1.1 TriG tests
+./gradlew test --tests "*Rdf11TrigDynamicTest*"
+
+# RDF 1.1 XML tests
+./gradlew test --tests "*Rdf11XmlDynamicTest*"
 ```
 
-**Generate multiple suites**:
+## 2. Managing corese
+
+**Use default corese-core** (feature/corese-next branch):
 
 ```bash
-./gradlew run -Dw3cStandards=nquads,xml
+./gradlew test
 ```
 
-> **Note:** If no `w3cStandards` is specified, all tests will be generated.
-
----
-
-## 2. Choosing the corese-core branch
-
-Use the `coreseCoreBranch` property to specify the Corese engine branch.
-
-**Default branch (feature/corese-next)**:
+**Use specific branch** (automatically switches branches and rebuilds):
 
 ```bash
-./gradlew run
+./gradlew test -DcoreseCoreBranch=develop
 ```
 
-**Other branch (example: develop)**:
+**Use specific commit**:
 
 ```bash
-./gradlew run -DcoreseCoreBranch=develop
+./gradlew test -DcoreseCoreBranch=abc123456
 ```
 
-> If not specified, `feature/corese-next` is used.
-
----
-
-## 3. Choosing the corese-core path
-   Use the coreseCorePath property to specify a custom local path for the corese-core repository. This is useful if you have a local clone in a non-default location.
-
-Default path (corese-core/):
+**Use local corese-core path**:
 
 ```bash
-./gradlew run
+./gradlew test -PcoreseCorePath=/path/to/your/corese-core
 ```
-Custom path (example: /Users/youruser/dev/my-corese-core):
 
-```bash
-./gradlew run -PcoreseCorePath=/Users/youruser/dev/my-corese-core
-```
-If not specified, corese-core is used as the directory name in the current project root.
-
-
-## 4. Force Rebuilding corese-core
-   The getCoreseCore task automatically checks for changes before rebuilding.
-   If you need to force a rebuild of the corese-core module, ignoring these checks,
-   you can use the forceBuildCoreseCore task. This is particularly useful during development or for troubleshooting.
-
-Force rebuild corese-core:
+**Force rebuild corese-core** (ignores change detection):
 
 ```bash
 ./gradlew forceBuildCoreseCore
 ```
-Force rebuild with a specific branch:
+
+**Force rebuild with specific branch**:
 
 ```bash
 ./gradlew forceBuildCoreseCore -DcoreseCoreBranch=develop
 ```
-Force rebuild from a custom path:
+
+**Force rebuild with specific commit**:
+
+```bash
+./gradlew forceBuildCoreseCore -DcoreseCoreBranch=abc123456
+```
+
+**Force rebuild with specific path**:
 
 ```bash
 ./gradlew forceBuildCoreseCore -PcoreseCorePath=/Users/youruser/dev/my-corese-core
 ```
-## Implemented tests
 
-- RDF tests
+## 3. W3C Test Suites
+
+### Implemented in corese-w3c
+
+This dynamic test system currently supports the following W3C test suites:
+
+- **RDF 1.1 tests**
+  - [N-Triples tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/) - Positive/negative syntax and evaluation
+  - [N-Quads tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/) - Positive/negative syntax and evaluation  
+  - [Turtle tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/) - Positive/negative syntax and evaluation
+  - [TriG tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/) - Positive/negative syntax and evaluation
+  - [RDF/XML tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/) - Positive/negative syntax and evaluation
+
+### Planned implementation in corese-w3c
+
+- **RDF tests**
   - [RDF Canonical](https://w3c.github.io/rdf-canon/tests/)
   - RDF 1.1 tests
-    - [N-Quads tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)
-    - [N-Triples tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/)
-    - [RDF/XML Syntax tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/)
-    - [TriG Syntax tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/)
-    - [Turtle tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/)
-- SPARQL tests
+    - [RDF Schema and Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-mt/)
+- **SPARQL tests**
   - [SPARQL 1.0 tests](https://w3c.github.io/rdf-tests/sparql/sparql10)
   - [SPARQL 1.1 tests](https://w3c.github.io/rdf-tests/sparql/sparql11)
-- SHACL tests
-  - [SHACL 1.1 tests](https://w3c.github.io/data-shapes/data-shapes-test-suite/)
-
-## Ongoing implementation
-  
-## Planned implementation
-
-- RDF tests
-  - RDF 1.1 tests
-    - [RDF Schema and Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-mt/)
-- JSON-LD tests
+- **SHACL tests**
+  - [SHACL tests](https://w3c.github.io/data-shapes/data-shapes-test-suite/)
+- **JSON-LD tests**  
   - [JSON-LD 1.1 tests](https://json-ld.github.io/json-ld.org/test-suite/reports/)
 
-## Not implemented in corese
+### Not supported in corese-core
 
-- RDF tests
+- **RDF tests**
   - RDF 1.2
     - [N-Triples tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples)
     - [N-Quads tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-quads)
     - [Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-semantics)
     - [Turtle tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-turtle)
     - [TriG tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-trig)
-- SPARQL tests
+- **SPARQL tests**
   - [SPARQL 1.2 tests](https://w3c.github.io/rdf-tests/sparql/sparql12)
-- LDP
+- **LDP tests**
   - [LDP Tests](https://w3c.github.io/ldp-testsuite/)
-  
-## Issues
+
+## 4. Known Issues and Limitations
 
 - Some tests for SPARQL 1.0 use a turtle format for the results of SELECT queries. To our knowledge, this format is not part of the SPARQL 1.0 standard
 - The vocabulary used to define SHACL tests is an extension of the Manifest vocabulary used in all other tests. As of 04/10/2024, it is not dereferencable or available on Linked Open Vocabularies.
-  - [issue](https://github.com/w3c/shacl/issues/86)
-  - Specific problem of 
+  - issue [w3c/shacl#86](https://github.com/w3c/shacl/issues/86)
