@@ -17,7 +17,12 @@ public class ModelIsomorphism {
     private static final String XSD_DECIMAL = "http://www.w3.org/2001/XMLSchema#decimal";
     private static final String XSD_DOUBLE = "http://www.w3.org/2001/XMLSchema#double";
     private static final String XSD_FLOAT = "http://www.w3.org/2001/XMLSchema#float";
+    /**
+     * Default constructor
+     */
+    public ModelIsomorphism() {
 
+    }
     /**
      * Checks if two RDF models are isomorphic.
      *
