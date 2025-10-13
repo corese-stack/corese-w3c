@@ -32,6 +32,9 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfPositiveEvaluationTestExecutor.class);
 
+    private static final String RDF11 = "rdf11/";
+    private static final String URL_RDF11 = "https://w3c.github.io/rdf-tests/rdf/";
+
     /**
      * Default constructor
      */
@@ -63,8 +66,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
                 actionParser.parse(reader, baseUriForAction);
             }
 
-            // Result Model //
-
+            // Result Model
             // Load the result file
             String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
 
@@ -106,11 +108,11 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
     private String convertToW3cUri(URI localFileUri) {
         String path = localFileUri.toString();
 
-        int rdf11Index = path.indexOf("rdf11/");
+        int rdf11Index = path.indexOf(RDF11);
 
         if (rdf11Index != -1) {
             String relativePath = path.substring(rdf11Index);
-            return "https://w3c.github.io/rdf-tests/rdf/" + relativePath;
+            return URL_RDF11 + relativePath;
         }
 
         logger.warn("Could not convert local URI to W3C URI: {}", path);
