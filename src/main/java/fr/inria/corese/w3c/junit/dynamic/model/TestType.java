@@ -45,6 +45,12 @@ public enum TestType {
     /** JSON-LD Negative Evaluation test (expects evaluation to fail) */
     JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test");
 
+    RDFC10_EVAL_TEST("Rdfc10EvalTest"),
+
+    RDFC10_MAP_TEST("Rdfc10MapTest"),
+
+    RDFC10_NEGATIVE_EVAL_TEST("Rdfc10NegativeEvalTest");
+
     private final String description;
 
     /**
@@ -101,4 +107,5 @@ public enum TestType {
     public String toString() {
         return description;
     }
+
 }

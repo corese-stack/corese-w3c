@@ -26,7 +26,7 @@ public class TestFileManager {
      */
     public static final String RESOURCE_PATH_STRING = "src/test/resources/";
     /**
-     * Path string for the corse command line executable JAR.
+     * Path string for the corese command line executable JAR.
      */
     public static final String CORESE_COMMAND_PATH_STRING = RESOURCE_PATH_STRING + "corese-command.jar";
     private static boolean updateModeFlag = false; // Indicates if the FileManager will try to update outdated files by
@@ -120,8 +120,7 @@ public class TestFileManager {
      *
      * @param fileUri       The URI of the file to download.
      * @param localFilePath The {@link Path} where the file should be saved locally.
-     * @throws IOException If an I/O error occurs during the download or file
-     *                     writing.
+     * @throws IOException If an I/O error occurs during the download or file writing.
      */
     private static void downloadFile(URI fileUri, Path localFilePath) throws IOException {
         Files.createDirectories(localFilePath.getParent());
@@ -171,10 +170,10 @@ public class TestFileManager {
             return lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
         }
     }
+
     /**
      * Extracts the relevant segments from the URI path to create local folder
-     * structure.
-     * This is used to create a prefixed folder structure for local caching.
+     * structure. This is used to create a prefixed folder structure for local caching.
      * For rdf11 tests:
      * "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/xmlbase/test.rdf"
      * returns "rdf11/rdf-xml/xmlbase".
@@ -213,7 +212,6 @@ public class TestFileManager {
         } else if (segments.length >= 2) {
             return segments[segments.length - 2];
         } else {
-            // If not enough segments, return the empty string
             return "";
         }
     }
@@ -226,13 +224,11 @@ public class TestFileManager {
      * to create a unique and organized local file path.
      *
      * @param fileUri The URI of the remote file.
-     * @return A {@code String} representing the prefixed filename for local
-     *         storage.
+     * @return A {@code String} representing the prefixed filename for local storage.
      */
     private static String getPrefixedFilename(URI fileUri) {
         String lastSegments = extractLastURISegments(fileUri);
         String filename = getFileName(fileUri);
         return lastSegments + "/" + filename;
     }
-
 }

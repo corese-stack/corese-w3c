@@ -225,21 +225,50 @@ public class W3cTestLoader {
      * @throws IllegalArgumentException if the test type URI not recognised
      */
     private static TestType mapTestType(String typeUri) {
+        logger.debug("Mapping test type URI: {}", typeUri);
+
+        // Convert to lowercase for case-insensitive matching
+        String lowerUri = typeUri.toLowerCase();
+
         return switch (typeUri) {
-            case String s when s.contains("TestTurtleNegativeSyntax") -> TestType.TURTLE_NEGATIVE_SYNTAX;
-            case String s when s.contains("TestTurtlePositiveSyntax") -> TestType.TURTLE_POSITIVE_SYNTAX;
-            case String s when s.contains("TestTurtleEval") -> TestType.TURTLE_POSITIVE_EVAL;
-            case String s when s.contains("TestTurtleNegativeEval") -> TestType.TURTLE_NEGATIVE_EVAL;
-            case String s when s.contains("TestNTriplesNegativeSyntax") -> TestType.NTRIPLES_NEGATIVE_SYNTAX;
-            case String s when s.contains("TestNTriplesPositiveSyntax") -> TestType.NTRIPLES_POSITIVE_SYNTAX;
-            case String s when s.contains("TestTrigNegativeSyntax") -> TestType.TRIG_NEGATIVE_SYNTAX;
-            case String s when s.contains("TestTrigPositiveSyntax") -> TestType.TRIG_POSITIVE_SYNTAX;
-            case String s when s.contains("TestTrigEval") -> TestType.TRIG_POSITIVE_EVAL;
-            case String s when s.contains("TestTrigNegativeEval") -> TestType.TRIG_NEGATIVE_EVAL;
-            case String s when s.contains("TestNQuadsNegativeSyntax") -> TestType.NQUADS_NEGATIVE_SYNTAX;
-            case String s when s.contains("TestNQuadsPositiveSyntax") -> TestType.NQUADS_POSITIVE_SYNTAX;
-            case String s when s.contains("TestXMLNegativeSyntax") -> TestType.RDF_XML_NEGATIVE_SYNTAX;
-            case String s when s.contains("TestXMLEval") -> TestType.RDF_XML_POSITIVE_EVAL;
+            // RDF 1.1 Turtle tests
+            case String s when lowerUri.contains("testturtlenegativesyntax") -> TestType.TURTLE_NEGATIVE_SYNTAX;
+            case String s when lowerUri.contains("testturtlepositivesyntax") -> TestType.TURTLE_POSITIVE_SYNTAX;
+            case String s when lowerUri.contains("testturtleeval") && !lowerUri.contains("negative") -> TestType.TURTLE_POSITIVE_EVAL;
+            case String s when lowerUri.contains("testturtlenegativeeval") -> TestType.TURTLE_NEGATIVE_EVAL;
+
+            // RDF 1.1 N-Triples tests
+            case String s when lowerUri.contains("testntriplesegativesyntax") -> TestType.NTRIPLES_NEGATIVE_SYNTAX;
+            case String s when lowerUri.contains("testntriplespositivesyntax") -> TestType.NTRIPLES_POSITIVE_SYNTAX;
+
+            // RDF 1.1 TriG tests
+            case String s when lowerUri.contains("testtriglnegativesyntax") -> TestType.TRIG_NEGATIVE_SYNTAX;
+            case String s when lowerUri.contains("testtrigpositivesyntax") -> TestType.TRIG_POSITIVE_SYNTAX;
+            case String s when lowerUri.contains("testtrigeval") && !lowerUri.contains("negative") -> TestType.TRIG_POSITIVE_EVAL;
+            case String s when lowerUri.contains("testtrigegativeeval") -> TestType.TRIG_NEGATIVE_EVAL;
+
+            // RDF 1.1 N-Quads tests
+            case String s when lowerUri.contains("testnquadsegativesyntax") -> TestType.NQUADS_NEGATIVE_SYNTAX;
+            case String s when lowerUri.contains("testnquadspositivesyntax") -> TestType.NQUADS_POSITIVE_SYNTAX;
+
+            // RDF 1.1 RDF/XML tests
+            case String s when lowerUri.contains("testxmlnegativesyntax") -> TestType.RDF_XML_NEGATIVE_SYNTAX;
+            case String s when lowerUri.contains("testxmleval") -> TestType.RDF_XML_POSITIVE_EVAL;
+
+            // RDF Canonicalization (RDFC-1.0)
+            case String s when lowerUri.contains("rdfc10negativeevaltest") -> {
+                logger.debug("Mapped to RDFC10_NEGATIVE_EVAL_TEST");
+                yield TestType.RDFC10_NEGATIVE_EVAL_TEST;
+            }
+            case String s when lowerUri.contains("rdfc10maptest") -> {
+                logger.debug("Mapped to RDFC10_MAP_TEST");
+                yield TestType.RDFC10_MAP_TEST;
+            }
+            case String s when lowerUri.contains("rdfc10evaltest") -> {
+                logger.debug("Mapped to RDFC10_EVAL_TEST");
+                yield TestType.RDFC10_EVAL_TEST;
+            }
+
             case String s when s.contains("json-ld-api/tests/vocab#PositiveEvaluationTest") ->
                     TestType.JSON_LD_POSITIVE_EVAL;
             case String s when s.contains("json-ld-api/tests/vocab#NegativeEvaluationTest") ->
