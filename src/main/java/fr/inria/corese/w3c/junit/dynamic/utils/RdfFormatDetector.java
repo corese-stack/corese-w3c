@@ -32,6 +32,7 @@ public class RdfFormatDetector {
             case String s when s.contains("TURTLE") -> RDFFormat.TURTLE;
             case String s when s.contains("RDF_XML") -> RDFFormat.RDFXML;
             case String s when s.contains("TRIG") -> RDFFormat.TRIG;
+            case String s when s.contains("JSON") -> RDFFormat.JSONLD;
             default -> throw new IllegalArgumentException("Cannot determine RDF format from test type: " + testType);
         };
     }
@@ -52,6 +53,7 @@ public class RdfFormatDetector {
             case "ttl" -> RDFFormat.TURTLE;
             case "rdf", "xml" -> RDFFormat.RDFXML;
             case "trig" -> RDFFormat.TRIG;
+            case "jsonld" -> RDFFormat.JSONLD;
             default -> throw new IllegalArgumentException("Unknown RDF file extension: " + extension);
         };
     }

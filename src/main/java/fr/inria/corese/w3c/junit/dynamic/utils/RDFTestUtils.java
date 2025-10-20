@@ -1,5 +1,7 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
+import java.net.URI;
+
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.ValueFactory;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
@@ -87,6 +89,7 @@ public class RDFTestUtils {
         return sb.toString();
     }
 
+
     /**
      * Attempt to retrieve the base URI of a given URI object such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
      *
@@ -114,4 +117,49 @@ public class RDFTestUtils {
         sb.append(path);
         return URI.create(sb.toString());
     }
+    /**
+     * @param filePath A URL or local path to an RDF file
+     * @return the RDFFormat of the file
+     */
+    public static RDFFormat guessFileFormat(String filePath) {
+        try {
+            return guessFileFormat(new URI(filePath));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @param filePath A URL or local path to an RDF file
+     * @return the RDFFormat of the file
+     */
+    public static RDFFormat guessFileFormat(URI filePath) {
+        String extension = getFileExtension(filePath.toString());
+        Optional<RDFFormat> result = RDFFormat.byExtension(extension);
+        if(result.isEmpty()) {
+            throw new RuntimeException("Could not guess the format of " + filePath);
+        }
+        return result.get();
+    }
+
+    /**
+     * Copied an expanded from https://www.baeldung.com/java-file-extension
+     * @param filename a file path
+     * @return the extension of the file
+     */
+    private static String getFileExtension(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        int dotIndex = filename.lastIndexOf(".");
+        int queryStartIndex = filename.lastIndexOf("?");
+        if (dotIndex >= 0) {
+            if(queryStartIndex >= 0 && queryStartIndex > dotIndex) {
+                return filename.substring(dotIndex + 1, queryStartIndex);
+            }
+            return filename.substring(dotIndex + 1);
+        }
+        return "";
+    }
+
 }

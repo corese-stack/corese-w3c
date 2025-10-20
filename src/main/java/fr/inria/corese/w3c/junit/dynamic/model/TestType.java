@@ -24,6 +24,10 @@ public enum TestType {
     TRIG_POSITIVE_SYNTAX("TriG Positive Syntax Test"),
     /** TriG Negative Syntax Test (expects parsing to fail) */
     TRIG_NEGATIVE_SYNTAX("TriG Negative Syntax Test"),
+    /** JSON-LD Positive Syntax test (expects evaluation to succeed) */
+    JSON_LD_POSITIVE_SYNTAX("JSON-LD Positive Syntax Test"),
+    /** JSON-LD Negative Syntax test (expects evaluation to succeed) */
+    JSON_LD_NEGATIVE_SYNTAX("JSON-LD Negative Syntax Test"),
 
     // RDF Evaluation Tests (used in manifests)
     /** Turtle Positive Evaluation Test (expects evaluation to succeed) */
@@ -35,7 +39,11 @@ public enum TestType {
     /** TriG Negative Evaluation Test (expects evaluation to fail) */
     TRIG_NEGATIVE_EVAL("TriG Negative Evaluation Test"),
     /** RDF/XML Positive Evaluation Test (expects evaluation to succeed) */
-    RDF_XML_POSITIVE_EVAL("RDF/XML Positive Evaluation Test");
+    RDF_XML_POSITIVE_EVAL("RDF/XML Positive Evaluation Test"),
+    /** JSON-LD Positive Evaluation test (expects evaluation to succeed) */
+    JSON_LD_POSITIVE_EVAL("JSON-LD Positive Evaluation Test"),
+    /** JSON-LD Negative Evaluation test (expects evaluation to fail) */
+    JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test");
 
     private final String description;
 

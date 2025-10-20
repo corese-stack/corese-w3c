@@ -1,5 +1,6 @@
 package fr.inria.corese.w3c.junit.dynamic.loader;
 
+import java.io.FileInputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,6 +10,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.apicatalog.jsonld.JsonLdVersion;
+import fr.inria.corese.core.next.api.Model;
+import fr.inria.corese.core.next.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.api.io.IOOptions;
+import fr.inria.corese.core.next.api.io.parser.RDFParser;
+import fr.inria.corese.core.next.impl.io.option.TitaniumJSONLDProcessorOption;
+import fr.inria.corese.core.next.impl.io.parser.ParserFactory;
+import fr.inria.corese.core.next.impl.temp.CoreseModel;
+import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,20 +37,22 @@ import fr.inria.corese.w3c.junit.dynamic.utils.TestFileManager;
 public class W3cTestLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(W3cTestLoader.class);
+
     /**
      * constructor
      */
     public W3cTestLoader() {
 
     }
+
     /**
      * Loads W3C test cases from the given manifest URI.
-     * 
+     *
      * @param manifestUri The URI of the manifest file
      * @return A list of W3cTestCase objects loaded from the manifest
      */
     public static List<W3cTestCase> loadTestsFromManifest(URI manifestUri) {
-        logger.info("Loading W3C tests from manifest: {}", manifestUri);
+        logger.debug("Loading W3C tests from manifest: {}", manifestUri);
 
         // Resolve manifest URI: prefer cached file, then remote URL
         try {
@@ -50,8 +62,8 @@ public class W3cTestLoader {
         }
 
         // Load the manifest into a graph
-        Graph graph = loadManifest(manifestUri);
-        QueryProcess queryProcess = QueryProcess.create(graph);
+        CoreseModel model = (CoreseModel) loadManifest(manifestUri);
+        QueryProcess queryProcess = QueryProcess.create(model.getCoreseGraph());
 
         List<W3cTestCase> testCases = new ArrayList<>();
 
@@ -113,7 +125,7 @@ public class W3cTestLoader {
 
     /**
      * Creates a W3cTestCase from the given test URI and type URI.
-     * 
+     *
      * @param testUri      The test URI
      * @param typeUri      The test type URI
      * @param queryProcess The QueryProcess for querying test details
@@ -122,7 +134,7 @@ public class W3cTestLoader {
      * @throws Exception If an error occurs during test case creation
      */
     private static W3cTestCase createTestCase(String testUri, String typeUri,
-            QueryProcess queryProcess, URI manifestUri) throws Exception {
+                                              QueryProcess queryProcess, URI manifestUri) throws Exception {
 
         // Get test details
         String detailQuery = buildTestDetailQuery(testUri);
@@ -153,7 +165,7 @@ public class W3cTestLoader {
 
     /**
      * Extracts test properties from the mapping.
-     * 
+     *
      * @param details The mapping containing test details
      * @return A map of extracted properties
      */
@@ -168,7 +180,7 @@ public class W3cTestLoader {
 
     /**
      * Adds a property to the map if present in the mapping.
-     * 
+     *
      * @param properties The properties map to add to
      * @param mapping    The mapping to extract from
      * @param variable   The variable name (without '?')
@@ -182,7 +194,7 @@ public class W3cTestLoader {
 
     /**
      * Gets a string value from a mapping, handling null values.
-     * 
+     *
      * @param mapping  The mapping to extract from
      * @param variable The variable name (without '?')
      * @return The string value, or null if not present
@@ -214,83 +226,99 @@ public class W3cTestLoader {
             case String s when s.contains("TestNQuadsPositiveSyntax") -> TestType.NQUADS_POSITIVE_SYNTAX;
             case String s when s.contains("TestXMLNegativeSyntax") -> TestType.RDF_XML_NEGATIVE_SYNTAX;
             case String s when s.contains("TestXMLEval") -> TestType.RDF_XML_POSITIVE_EVAL;
+            case String s when s.contains("json-ld-api/tests/vocab#PositiveEvaluationTest") ->
+                    TestType.JSON_LD_POSITIVE_EVAL;
+            case String s when s.contains("json-ld-api/tests/vocab#NegativeEvaluationTest") ->
+                    TestType.JSON_LD_NEGATIVE_EVAL;
+            case String s when s.contains("json-ld-api/tests/vocab#PositiveSyntaxTest") ->
+                    TestType.JSON_LD_POSITIVE_SYNTAX;
+            case String s when s.contains("json-ld-api/tests/vocab#NegativeSyntaxTest") ->
+                    TestType.JSON_LD_NEGATIVE_SYNTAX;
             default -> throw new IllegalArgumentException(
                     "Unsupported or unknown test type URI: " + typeUri);
         };
     }
 
     /**
-     * Loads a manifest file into a new Corese {@link Graph}.
+     * Loads a manifest file into a new {@link Model}.
      * This method recursively loads the main manifest and any included
      * sub-manifests.
      *
      * @param manifestUri The URI of the manifest file to load.
-     * @return A {@link Graph} containing the loaded manifest data.
+     * @return A {@link Model} containing the loaded manifest data.
      */
-    public static Graph loadManifest(URI manifestUri) {
-        Graph graph = Graph.create();
-        graph.init();
-        Load loader = Load.create(graph);
-        loadManifest(manifestUri, graph, loader);
-        return graph;
+    public static Model loadManifest(URI manifestUri) {
+        CoreseModel manifestModel = new CoreseModel();
+        return loadManifest(manifestUri, manifestModel);
     }
 
     /**
-     * Loads recursively the manifest and its included files into the given
-     * {@link Graph} using the given {@link Load}er.
-     * This method handles the parsing of RDF data from the manifest URI and any
-     * manifests included via `mf:include`.
+     * Loads amanifest file into the given Model.
+     * This method recursively loads the main manifest and any included
+     * sub-manifests.
      *
-     * @param manifestUri The URI of the manifest file to load.
-     * @param graph       The {@link Graph} into which the manifest data will be
-     *                    loaded.
-     * @param loader      The {@link Load}er instance to use for parsing the
-     *                    manifest files.
+     * @param manifestUri The uri of the manifest file to load. If it is remote, the file will be downloaded to the local resource folder.
+     * @param model       /!\ Expected to be an instance of CoreseModel until implementation of the SPARQL API
+     * @return The given model with the content of the manifest added to it.
      */
-    private static void loadManifest(URI manifestUri, Graph graph, Load loader) {
-        logger.info("Loading manifest file: {}", manifestUri);
-
+    public static Model loadManifest(URI manifestUri, Model model) {
+        RDFFormat format = RDFTestUtils.guessFileFormat(manifestUri);
         try {
-            // Only attempt to download/update manifests if the URI is remote (http/https).
-            if (manifestUri != null) {
-                String scheme = manifestUri.getScheme();
-                if (scheme != null && (scheme.equals("http") || scheme.equals("https"))) {
-                    // This will create a local cached copy under src/test/resources if missing
-                    TestFileManager.loadFile(manifestUri);
+            RDFParser parser = RDFTestUtils.createParser(format, model);
+
+            try {
+                // Only attempt to download/update manifests if the URI is remote (http/https).
+                if (manifestUri != null) {
+                    String scheme = manifestUri.getScheme();
+                    if (scheme != null && (scheme.equals("http") || scheme.equals("https"))) {
+                        // This will create a local cached copy under src/test/resources if missing
+                        TestFileManager.loadFile(manifestUri);
+                    }
                 }
+                Path localManifestPath = TestFileManager.getLocalFilePath(manifestUri);
+                FileInputStream fileInputStream = new FileInputStream(localManifestPath.toFile());
+                String baseUri = RDFTestUtils.getBaseUri(manifestUri);
+                IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri).build();
+                parser.setConfig(option);
+                parser.parse(fileInputStream);
+            } catch (Exception e) {
+                logger.error("Error loading manifest file: {}", manifestUri, e);
+                System.exit(1);
             }
-            loader.parse(manifestUri.toString());
+
+            Graph manifestGraph = ((CoreseModel) model).getCoreseGraph();
+            QueryProcess inclusionQueryExec = QueryProcess.create(manifestGraph);
+            String inclusionQuery = buildInclusionQuery(manifestUri);
+            try {
+                Mappings inclusionMappings = inclusionQueryExec.query(inclusionQuery);
+                for (Mapping mapping : inclusionMappings) {
+                    String inclusion = mapping.getValue("?inclusion").getLabel();
+                    loadManifest(URI.create(inclusion), model);
+                }
+            } catch (Exception e) {
+                logger.error("Error executing inclusion query.", e);
+            }
         } catch (Exception e) {
-            logger.error("Error loading manifest file: {}", manifestUri, e);
-            System.exit(1);
+            throw new RuntimeException(e);
         }
 
-        QueryProcess inclusionQueryExec = QueryProcess.create(graph);
-        String inclusionQuery = buildInclusionQuery(manifestUri);
-        try {
-            Mappings inclusionMappings = inclusionQueryExec.query(inclusionQuery);
-            for (Mapping mapping : inclusionMappings) {
-                String inclusion = mapping.getValue("?inclusion").getLabel();
-                loadManifest(URI.create(inclusion), graph, loader);
-            }
-        } catch (Exception e) {
-            logger.error("Error executing inclusion query.", e);
-        }
+        return model;
     }
 
     /**
      * Builds SPARQL query to get the list of tests from a manifest.
-     * 
+     *
      * @return the SPARQL query string
      */
     private static String buildTestListQuery() {
         return """
                 PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-
+                
                 SELECT DISTINCT ?test ?type WHERE {
-                    ?manifest a mf:Manifest ;
-                             mf:entries/rdf:rest*/rdf:first ?test .
+                    ?manifest a mf:Manifest .
+                    { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
+                    UNION { ?manifest mf:entries ?test .}
                     ?test a ?type .
                     FILTER(?type != mf:Manifest)
                 }
@@ -300,7 +328,7 @@ public class W3cTestLoader {
 
     /**
      * Builds SPARQL query to get detailed properties of a specific test.
-     * 
+     *
      * @param testUri the URI of the test to query details for
      * @return the SPARQL query string
      */
@@ -313,7 +341,7 @@ public class W3cTestLoader {
                         PREFIX sht: <http://www.w3.org/ns/shacl-test#>
                         PREFIX rdfc: <https://w3c.github.io/rdf-canon/tests/vocab#>
                         PREFIX sh: <http://www.w3.org/ns/shacl#>
-
+                        
                         SELECT DISTINCT ?name ?comment ?action ?result ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm WHERE {
                             OPTIONAL { <%s> mf:name ?name . }
                             OPTIONAL { <%s> rdfs:comment ?comment . }
