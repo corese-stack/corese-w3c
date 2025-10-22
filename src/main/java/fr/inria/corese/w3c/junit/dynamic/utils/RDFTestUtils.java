@@ -9,6 +9,8 @@ import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.io.parser.ParserFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseAdaptedValueFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
@@ -16,6 +18,8 @@ import java.net.URI;
  * Utility class providing simple, reusable helper methods for test executors.
  */
 public class RDFTestUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(RDFTestUtils.class);
 
     /**
      * Private constructor to prevent instantiation.
@@ -118,6 +122,7 @@ public class RDFTestUtils {
         return URI.create(sb.toString());
     }
     /**
+     * Try to guess the RDFFormat from a file name
      * @param filePath A URL or local path to an RDF file
      * @return the RDFFormat of the file
      */
@@ -130,6 +135,7 @@ public class RDFTestUtils {
     }
 
     /**
+     * Try to guess the RDFFormat from a file path URI
      * @param filePath A URL or local path to an RDF file
      * @return the RDFFormat of the file
      */
@@ -143,7 +149,8 @@ public class RDFTestUtils {
     }
 
     /**
-     * Copied an expanded from https://www.baeldung.com/java-file-extension
+     * Copied and expanded from https://www.baeldung.com/java-file-extension
+     * Tries to extract the extension of a file in a filepath.
      * @param filename a file path
      * @return the extension of the file
      */
@@ -162,4 +169,17 @@ public class RDFTestUtils {
         return "";
     }
 
+
+    public static String getBaseUri(String uriString) throws URISyntaxException {
+        return getBaseUri(new URI(uriString));
+    }
+
+    /**
+     * Attempt to retrieve the base URI of a given URI object such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
+     * @param uri
+     * @return
+     */
+    public static String getBaseUri(URI uri) {
+        return uri.getScheme() + "://" + uri.getHost() + uri.getPath();
+    }
 }
