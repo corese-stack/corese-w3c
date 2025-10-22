@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.apicatalog.jsonld.JsonLdVersion;
+import com.apicatalog.jsonld.document.JsonDocument;
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.IOOptions;
@@ -262,24 +263,39 @@ public class W3cTestLoader {
      * @return The given model with the content of the manifest added to it.
      */
     public static Model loadManifest(URI manifestUri, Model model) {
-        RDFFormat format = RDFTestUtils.guessFileFormat(manifestUri);
+        logger.debug("Loading manifest {}", manifestUri);
         try {
-            RDFParser parser = RDFTestUtils.createParser(format, model);
 
             try {
                 // Only attempt to download/update manifests if the URI is remote (http/https).
-                if (manifestUri != null) {
-                    String scheme = manifestUri.getScheme();
-                    if (scheme != null && (scheme.equals("http") || scheme.equals("https"))) {
-                        // This will create a local cached copy under src/test/resources if missing
-                        TestFileManager.loadFile(manifestUri);
+                manifestUri = resolveManifestUri(manifestUri);
+                RDFFormat format = RDFTestUtils.guessFileFormat(manifestUri);
+                logger.debug("Format {} detected for {}", format, manifestUri);
+                RDFParser parser = RDFTestUtils.createParser(format, model);
+                Path localManifestPath = TestFileManager.getLocalFilePath(manifestUri);
+
+                FileInputStream fileInputStream = new FileInputStream(localManifestPath.toFile());
+                if (format == RDFFormat.JSONLD) { // If it is JSON, we want to set up the baseURI and retrieve the context file
+                    String baseUri = RDFTestUtils.getBaseUri(manifestUri);
+                    logger.debug("Base URI detected: {}", baseUri);
+                    IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri).build();
+                    parser.setConfig(option);
+
+                    FileInputStream documentInputStream = new FileInputStream(localManifestPath.toFile());
+                    JsonDocument document = JsonDocument.of(documentInputStream);
+                    logger.debug("Context raw {}", document.getJsonContent().get().getValue("/@context").asJsonArray().get(0));
+                    Path contextPath = Path.of(document.getJsonContent().get().getValue("/@context").asJsonArray().get(0).toString().replaceAll("\"", ""));
+                    if (!contextPath.isAbsolute()) {
+                        contextPath = Path.of(baseUri).resolve(contextPath);
+                    }
+                    contextPath = TestFileManager.getLocalFilePath(contextPath.toUri()); // Checking if there is a local version
+                    logger.debug("Context is {}", contextPath);
+                    logger.debug("Loading context {}", contextPath.toUri());
+                    String contextScheme = contextPath.toUri().getScheme();
+                    if (contextScheme != null && (contextScheme.equals("http") || contextScheme.equals("https"))) {
+                        TestFileManager.loadFile(contextPath.toUri());
                     }
                 }
-                Path localManifestPath = TestFileManager.getLocalFilePath(manifestUri);
-                FileInputStream fileInputStream = new FileInputStream(localManifestPath.toFile());
-                String baseUri = RDFTestUtils.getBaseUri(manifestUri);
-                IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri).build();
-                parser.setConfig(option);
                 parser.parse(fileInputStream);
             } catch (Exception e) {
                 logger.error("Error loading manifest file: {}", manifestUri, e);
