@@ -6,9 +6,9 @@ import org.junit.jupiter.api.TestFactory;
 
 import java.util.stream.Stream;
 
-public class Rdf11JsonldFromRdfDynamicTest extends BaseRdf11DynamicTest {
+public class Rdf11JsonldDynamicTest extends BaseRdf11DynamicTest {
     private static final String MANIFEST_URL =
-            "https://w3c.github.io/json-ld-api/tests/fromRdf-manifest.jsonld";
+            "https://w3c.github.io/json-ld-api/tests/manifest.jsonld";
     @Override
     protected String getManifestUrl() {
         return MANIFEST_URL;
