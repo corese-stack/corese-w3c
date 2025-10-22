@@ -1,9 +1,11 @@
 package fr.inria.corese.w3c.junit.dynamic.loader;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,6 +119,12 @@ public class W3cTestLoader {
             Path cached = TestFileManager.getLocalFilePath(manifestUri);
             if (Files.exists(cached)) {
                 return cached.toUri();
+            } else {
+                try {
+                    TestFileManager.loadFile(manifestUri);
+                } catch (IOException | NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
@@ -264,37 +272,36 @@ public class W3cTestLoader {
      */
     public static Model loadManifest(URI manifestUri, Model model) {
         logger.debug("Loading manifest {}", manifestUri);
-        try {
 
             try {
                 // Only attempt to download/update manifests if the URI is remote (http/https).
-                manifestUri = resolveManifestUri(manifestUri);
-                RDFFormat format = RDFTestUtils.guessFileFormat(manifestUri);
-                logger.debug("Format {} detected for {}", format, manifestUri);
+                URI localManifestUri = resolveManifestUri(manifestUri);
+                RDFFormat format = RDFTestUtils.guessFileFormat(localManifestUri);
+                logger.debug("Format {} detected for {}", format, localManifestUri);
                 RDFParser parser = RDFTestUtils.createParser(format, model);
-                Path localManifestPath = TestFileManager.getLocalFilePath(manifestUri);
+                Path localManifestPath = Path.of(localManifestUri);
 
                 FileInputStream fileInputStream = new FileInputStream(localManifestPath.toFile());
                 if (format == RDFFormat.JSONLD) { // If it is JSON, we want to set up the baseURI and retrieve the context file
                     String baseUri = RDFTestUtils.getBaseUri(manifestUri);
                     logger.debug("Base URI detected: {}", baseUri);
-                    IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri).build();
-                    parser.setConfig(option);
 
                     FileInputStream documentInputStream = new FileInputStream(localManifestPath.toFile());
                     JsonDocument document = JsonDocument.of(documentInputStream);
-                    logger.debug("Context raw {}", document.getJsonContent().get().getValue("/@context").asJsonArray().get(0));
-                    Path contextPath = Path.of(document.getJsonContent().get().getValue("/@context").asJsonArray().get(0).toString().replaceAll("\"", ""));
-                    if (!contextPath.isAbsolute()) {
-                        contextPath = Path.of(baseUri).resolve(contextPath);
+                    String contextString = document.getJsonContent().get().getValue("/@context").asJsonArray().get(0).toString().replaceAll("\"", "");
+                    URI localContextUri = localManifestUri.resolve(contextString);
+
+                    logger.debug("Context raw {}", contextString);
+                    logger.debug("Looking for {}", localManifestPath.resolve(contextString));
+                    if (! localManifestPath.resolve("./" + contextString).toFile().exists()) {
+                        URI contextRemoteUri = URI.create(baseUri).resolve(contextString);
+                        logger.debug("Remote context is {}", contextRemoteUri);
+                        logger.debug("Loading context {}", contextRemoteUri);
+                        TestFileManager.loadFile(contextRemoteUri);
                     }
-                    contextPath = TestFileManager.getLocalFilePath(contextPath.toUri()); // Checking if there is a local version
-                    logger.debug("Context is {}", contextPath);
-                    logger.debug("Loading context {}", contextPath.toUri());
-                    String contextScheme = contextPath.toUri().getScheme();
-                    if (contextScheme != null && (contextScheme.equals("http") || contextScheme.equals("https"))) {
-                        TestFileManager.loadFile(contextPath.toUri());
-                    }
+
+                    IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri).build();
+                    parser.setConfig(option);
                 }
                 parser.parse(fileInputStream);
             } catch (Exception e) {
@@ -314,9 +321,6 @@ public class W3cTestLoader {
             } catch (Exception e) {
                 logger.error("Error executing inclusion query.", e);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
         return model;
     }
