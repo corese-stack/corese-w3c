@@ -12,14 +12,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.apicatalog.jsonld.JsonLdVersion;
 import com.apicatalog.jsonld.document.JsonDocument;
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.IOOptions;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.io.option.TitaniumJSONLDProcessorOption;
-import fr.inria.corese.core.next.impl.io.parser.ParserFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseModel;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import org.slf4j.Logger;
@@ -28,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import fr.inria.corese.core.Graph;
 import fr.inria.corese.core.kgram.core.Mapping;
 import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.load.Load;
 import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
@@ -56,13 +53,6 @@ public class W3cTestLoader {
      */
     public static List<W3cTestCase> loadTestsFromManifest(URI manifestUri) {
         logger.debug("Loading W3C tests from manifest: {}", manifestUri);
-
-        // Resolve manifest URI: prefer cached file, then remote URL
-        try {
-            manifestUri = resolveManifestUri(manifestUri);
-        } catch (Exception e) {
-            logger.warn("Failed to resolve manifest URI {}, will use given URI: {}", manifestUri, e.getMessage());
-        }
 
         // Load the manifest into a graph
         CoreseModel model = (CoreseModel) loadManifest(manifestUri);
@@ -113,19 +103,17 @@ public class W3cTestLoader {
         if (manifestUri == null)
             return manifestUri;
 
-        String scheme = manifestUri.getScheme();
         // Only attempt cache resolution for http(s) manifests
-        if (scheme != null && (scheme.equals("http") || scheme.equals("https"))) {
+        if (! RDFTestUtils.isUriLocal(manifestUri)) {
             Path cached = TestFileManager.getLocalFilePath(manifestUri);
-            if (Files.exists(cached)) {
-                return cached.toUri();
-            } else {
+            if (!Files.exists(cached)) {
                 try {
                     TestFileManager.loadFile(manifestUri);
                 } catch (IOException | NoSuchAlgorithmException e) {
                     throw new RuntimeException(e);
                 }
             }
+            return cached.toUri();
         }
 
         // fallback to original manifestUri
@@ -272,55 +260,58 @@ public class W3cTestLoader {
      */
     public static Model loadManifest(URI manifestUri, Model model) {
         logger.debug("Loading manifest {}", manifestUri);
+        URI baseUri = RDFTestUtils.getBaseUri(manifestUri);
 
-            try {
-                // Only attempt to download/update manifests if the URI is remote (http/https).
-                URI localManifestUri = resolveManifestUri(manifestUri);
-                RDFFormat format = RDFTestUtils.guessFileFormat(localManifestUri);
-                logger.debug("Format {} detected for {}", format, localManifestUri);
-                RDFParser parser = RDFTestUtils.createParser(format, model);
-                Path localManifestPath = Path.of(localManifestUri);
+        try {
+            // Only attempt to download/update manifests if the URI is remote (http/https).
+            URI localManifestUri = resolveManifestUri(manifestUri);
+            RDFFormat format = RDFTestUtils.guessFileFormat(localManifestUri);
+            RDFParser parser = RDFTestUtils.createParser(format, model);
+            Path localManifestPath = Path.of(localManifestUri);
 
-                FileInputStream fileInputStream = new FileInputStream(localManifestPath.toFile());
-                if (format == RDFFormat.JSONLD) { // If it is JSON, we want to set up the baseURI and retrieve the context file
-                    String baseUri = RDFTestUtils.getBaseUri(manifestUri);
-                    logger.debug("Base URI detected: {}", baseUri);
+            FileInputStream fileInputStream = new FileInputStream(localManifestPath.toFile());
+            if (format == RDFFormat.JSONLD) { // If it is JSON, we want to set up the baseURI and retrieve the context file
 
-                    FileInputStream documentInputStream = new FileInputStream(localManifestPath.toFile());
-                    JsonDocument document = JsonDocument.of(documentInputStream);
-                    String contextString = document.getJsonContent().get().getValue("/@context").asJsonArray().get(0).toString().replaceAll("\"", "");
-                    URI localContextUri = localManifestUri.resolve(contextString);
+                FileInputStream documentInputStream = new FileInputStream(localManifestPath.toFile());
+                JsonDocument document = JsonDocument.of(documentInputStream);
+                String contextString = document.getJsonContent().get().getValue("/@context").asJsonArray().get(0).toString().replaceAll("\"", "");
 
-                    logger.debug("Context raw {}", contextString);
-                    logger.debug("Looking for {}", localManifestPath.resolve(contextString));
-                    if (! localManifestPath.resolve("./" + contextString).toFile().exists()) {
-                        URI contextRemoteUri = URI.create(baseUri).resolve(contextString);
-                        logger.debug("Remote context is {}", contextRemoteUri);
-                        logger.debug("Loading context {}", contextRemoteUri);
-                        TestFileManager.loadFile(contextRemoteUri);
-                    }
-
-                    IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri).build();
-                    parser.setConfig(option);
+                if (!localManifestPath.resolve("./" + contextString).toFile().exists()) {
+                    logger.debug("Context is not present, downloading {}", baseUri.resolve(contextString));
+                    URI contextRemoteUri = baseUri.resolve(contextString);
+                    TestFileManager.loadFile(contextRemoteUri);
                 }
-                parser.parse(fileInputStream);
-            } catch (Exception e) {
-                logger.error("Error loading manifest file: {}", manifestUri, e);
-                System.exit(1);
+
+                IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri.toString()).build();
+                parser.setConfig(option);
             }
+            parser.parse(fileInputStream);
 
             Graph manifestGraph = ((CoreseModel) model).getCoreseGraph();
             QueryProcess inclusionQueryExec = QueryProcess.create(manifestGraph);
             String inclusionQuery = buildInclusionQuery(manifestUri);
+            logger.debug("Searching for inclusions: {}", inclusionQuery);
             try {
                 Mappings inclusionMappings = inclusionQueryExec.query(inclusionQuery);
                 for (Mapping mapping : inclusionMappings) {
                     String inclusion = mapping.getValue("?inclusion").getLabel();
-                    loadManifest(URI.create(inclusion), model);
+                    logger.debug("Found inclusion {}", inclusion);
+                    URI inclusionUri = URI.create(inclusion);
+                    // If the inclusion URI is local (because it is relative), the base uri is not and the local inclusion file does not exists, we should force the inclusion uri to be downloaded
+                    if (RDFTestUtils.isUriLocal(inclusionUri) && ! RDFTestUtils.isUriLocal(baseUri) && ! Path.of(inclusionUri).toFile().exists()) {
+                        inclusionUri = RDFTestUtils.swapBaseUri(inclusionUri, baseUri);
+                    }
+                    if(RDFTestUtils.isUriAFile(inclusionUri)) { // Inclusion should only be files
+                        loadManifest(inclusionUri, model);
+                    }
                 }
             } catch (Exception e) {
                 logger.error("Error executing inclusion query.", e);
             }
+        } catch (Exception e) {
+            logger.error("Error loading manifest file: {}", manifestUri, e);
+            System.exit(1);
+        }
 
         return model;
     }
@@ -394,9 +385,15 @@ public class W3cTestLoader {
         sb.append("SELECT DISTINCT ?inclusion WHERE {\n");
         sb.append("    ?manifest a mf:Manifest .\n");
         sb.append("    { ?manifest mf:include/rdf:rest*/rdf:first ?inclusion . }\n");
-        sb.append("    UNION { ?manifest mf:include ?inclusion . FILTER(isIRI(?inclusion)) }\n");
+        sb.append("    UNION { \n");
+        sb.append("        { ?manifest mf:entries/rdf:rest*/rdf:first ?inclusion . }\n");
+        sb.append("        UNION { ?manifest mf:include ?inclusion . }\n");
+        sb.append("        FILTER(isIRI(?inclusion)) \n");
+        sb.append("    } \n");
         if (manifestUri != null) {
-            sb.append("    FILTER(?manifest = <").append(manifestUri.toString()).append(">)\n");
+            String extension = RDFTestUtils.guessFileFormat(manifestUri).getDefaultExtension();
+            String uriWithoutExtension = manifestUri.toString().replace("." + extension, "");
+            sb.append("    FILTER(?manifest = <").append(manifestUri.toString()).append("> || ?manifest = <").append(uriWithoutExtension).append(">)\n");
         }
         sb.append("}");
         return sb.toString();

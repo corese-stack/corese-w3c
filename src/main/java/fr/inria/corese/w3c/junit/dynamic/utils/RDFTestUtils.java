@@ -159,17 +159,29 @@ public class RDFTestUtils {
             return null;
         }
         int dotIndex = filename.lastIndexOf(".");
-        int queryStartIndex = filename.lastIndexOf("?");
-        if (dotIndex >= 0) {
+        int slashIndex = filename.lastIndexOf('/');
+        if (dotIndex >= 0 && dotIndex > slashIndex) {
+            String result = filename.substring(dotIndex + 1);
+            int queryStartIndex = result.lastIndexOf("?");
             if(queryStartIndex >= 0 && queryStartIndex > dotIndex) {
-                return filename.substring(dotIndex + 1, queryStartIndex);
+                result = filename.substring(0, queryStartIndex);
             }
-            return filename.substring(dotIndex + 1);
+            int anchorStartIndex = result.lastIndexOf("#");
+            if(anchorStartIndex >= 0 && queryStartIndex > dotIndex) {
+                result = filename.substring(0, queryStartIndex);
+            }
+            return result;
         }
         return "";
     }
 
 
+    /**
+     * Attempt to retrieve the base URI of a given URI string such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
+     * @param uriString Full uri string
+     * @return The truncated uri as string
+     * @throws URISyntaxException if the string is not a standard URI
+     */
     public static String getBaseUri(String uriString) throws URISyntaxException {
         return getBaseUri(new URI(uriString));
     }
@@ -179,7 +191,41 @@ public class RDFTestUtils {
      * @param uri
      * @return
      */
-    public static String getBaseUri(URI uri) {
-        return uri.getScheme() + "://" + uri.getHost() + uri.getPath();
+    public static URI getBaseUri(URI uri) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(uri.getScheme());
+        sb.append("://");
+        if(uri.getHost() != null) {
+            sb.append(uri.getHost());
+        }
+        // Get path up to the last '/'
+        String path = uri.getPath();
+        if (path != null && !path.endsWith("/")) {
+            int lastSlash = path.lastIndexOf('/');
+            if (lastSlash >= 0) {
+                path = path.substring(0, lastSlash + 1);
+            } else {
+                path = "/";
+            }
+        }
+        sb.append(path);
+        return URI.create(sb.toString());
+    }
+
+    public static URI swapBaseUri(URI uri, URI otherBaseUri) {
+        URI uriBaseString = getBaseUri(uri);
+        String uriString = uri.toString();
+        uriString = uriString.replace(uriBaseString.toString(), otherBaseUri.toString());
+        return URI.create(uriString);
+    }
+
+    public static boolean isUriLocal(URI uri) {
+        return uri.getScheme() != null && uri.getScheme().equals("file");
+    }
+
+    public static boolean isUriAFile(URI uri) {
+        logger.debug("{} has extension {}", uri, getFileExtension(uri.toString()));
+        return ! getFileExtension(uri.toString()).isEmpty();
     }
 }
