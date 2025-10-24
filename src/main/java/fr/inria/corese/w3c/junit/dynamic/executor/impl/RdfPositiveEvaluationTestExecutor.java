@@ -1,5 +1,11 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
+import java.io.FileReader;
+import java.net.URI;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
@@ -50,8 +56,6 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
         URI resultFileUri = testCase.getResultFileUri();
 
         try {
-            // Action Model //
-
             // Load the action file
             String actionFilePath = RDFTestUtils.loadFile(actionFileUri);
 
@@ -60,13 +64,6 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             RDFFormat actionFormat = RdfFormatDetector.getRdfFormatFromTestType(testType);
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 
-            String baseUriForAction = RDFTestUtils.getBaseUri(actionFileUri).toString();
-
-            try (FileReader reader = new FileReader(actionFilePath)) {
-                actionParser.parse(reader, baseUriForAction);
-            }
-
-            // Result Model
             // Load the result file
             String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
 
@@ -75,8 +72,45 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             RDFFormat resultFormat = RdfFormatDetector.detectFromFileExtension(resultFileUri);
             RDFParser resultParser = RDFTestUtils.createParser(resultFormat, resultModel);
 
-            String baseUriForResult = convertToW3cUri(resultFileUri);
+            // Parser config for JSON-LD format
+            if(actionFormat == RDFFormat.JSONLD || resultFormat == RDFFormat.JSONLD) {
+                TitaniumJSONLDProcessorOption.Builder optionBuilder = new TitaniumJSONLDProcessorOption.Builder();
+                if(testCase.getProperty("baseUri", String.class) != null) {
+                    String baseUri = testCase.getProperty("baseUri", String.class);
+                    optionBuilder.base(baseUri);
+                }
+                if(testCase.getProperty("specVersion", String.class) != null) {
+                    String specVersion = testCase.getProperty("specVersion", String.class);
+                    if(specVersion.equals("json-ld-1.0")) {
+                        optionBuilder.processingMode(JsonLdVersion.V1_0);
+                    }
+                    if(specVersion.equals("json-ld-1.1")) {
+                        optionBuilder.processingMode(JsonLdVersion.V1_1);
+                    }
+                }
+                if(testCase.getProperty("useNativeTypes", Boolean.class) != null) {
+                    boolean usesNativeTypes = testCase.getProperty("useNativeTypes", Boolean.class);
+                    optionBuilder.useNativeTypes(usesNativeTypes);
+                }
+                if(testCase.getProperty("useRdfType", Boolean.class) != null) {
+                    boolean useRdfType = testCase.getProperty("useRdfType", Boolean.class);
+                    optionBuilder.useRdfType(useRdfType);
+                }
 
+                if(actionFormat == RDFFormat.JSONLD) {
+                    actionParser.setConfig(optionBuilder.build());
+                }
+                if (resultFormat == RDFFormat.JSONLD) {
+                    resultParser.setConfig(optionBuilder.build());
+                }
+            }
+
+            // Parse the input file
+            try (FileReader reader = new FileReader(actionFilePath)) {
+                actionParser.parse(reader);
+            }
+
+            // Parse the result file
             try (FileReader reader = new FileReader(resultFilePath)) {
                 resultParser.parse(reader, baseUriForResult);
             }

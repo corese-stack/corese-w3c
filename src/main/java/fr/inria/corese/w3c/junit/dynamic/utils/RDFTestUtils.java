@@ -19,8 +19,6 @@ import java.net.URI;
  */
 public class RDFTestUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(RDFTestUtils.class);
-
     /**
      * Private constructor to prevent instantiation.
      */

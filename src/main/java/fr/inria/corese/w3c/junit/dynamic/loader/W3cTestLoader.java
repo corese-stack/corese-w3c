@@ -64,7 +64,7 @@ public class W3cTestLoader {
             // Query for all tests in the manifest
             String testQuery = buildTestListQuery();
             Mappings testMappings = queryProcess.query(testQuery);
-            logger.info("Found {} test mappings in manifest {}", testMappings.size(), manifestUri);
+            logger.debug("Found {} test mappings in manifest {}", testMappings.size(), manifestUri);
 
             for (Mapping mapping : testMappings) {
                 String testUri = mapping.getValue("?test").getLabel();
@@ -87,7 +87,7 @@ public class W3cTestLoader {
             logger.error("Failed to load tests from manifest {}: {}", manifestUri, e.getMessage(), e);
         }
 
-        logger.info("Loaded {} test cases from manifest {}", testCases.size(), manifestUri);
+        logger.debug("Loaded {} test cases from manifest {}", testCases.size(), manifestUri);
         return testCases;
     }
 
