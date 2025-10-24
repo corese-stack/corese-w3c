@@ -154,7 +154,7 @@ public class RDFTestUtils {
      * @param filename a file path
      * @return the extension of the file
      */
-    private static String getFileExtension(String filename) {
+    public static String getFileExtension(String filename) {
         if (filename == null) {
             return null;
         }
@@ -225,7 +225,6 @@ public class RDFTestUtils {
     }
 
     public static boolean isUriAFile(URI uri) {
-        logger.debug("{} has extension {}", uri, getFileExtension(uri.toString()));
         return ! getFileExtension(uri.toString()).isEmpty();
     }
 }

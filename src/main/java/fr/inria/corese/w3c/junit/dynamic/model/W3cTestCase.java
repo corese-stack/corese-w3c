@@ -222,6 +222,8 @@ public class W3cTestCase {
             return "N-Triples";
         if (manifestPath.contains("rdf-n-quads"))
             return "N-Quads";
+        if (manifestPath.contains("json-ld"))
+            return "JSON-LD";
         return "RDF"; // Default fallback
     }
 

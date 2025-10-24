@@ -45,7 +45,7 @@ public class RdfFormatDetector {
      * @throws IllegalArgumentException if the file extension is unknown
      */
     public static RDFFormat detectFromFileExtension(URI fileUri) {
-        String extension = getFileExtension(fileUri.toString().toLowerCase());
+        String extension = RDFTestUtils.getFileExtension(fileUri.toString().toLowerCase());
 
         return switch (extension) {
             case "nq" -> RDFFormat.NQUADS;
@@ -53,21 +53,8 @@ public class RdfFormatDetector {
             case "ttl" -> RDFFormat.TURTLE;
             case "rdf", "xml" -> RDFFormat.RDFXML;
             case "trig" -> RDFFormat.TRIG;
-            case "jsonld" -> RDFFormat.JSONLD;
+            case "jsonld", "json" -> RDFFormat.JSONLD;
             default -> throw new IllegalArgumentException("Unknown RDF file extension: " + extension);
         };
-    }
-
-    /**
-     * Extracts the file extension from a filename.
-     * 
-     * @param fileName The filename
-     * @return The file extension without the dot, or empty string if no extension
-     */
-    private static String getFileExtension(String fileName) {
-        int lastDotIndex = fileName.lastIndexOf('.');
-        return lastDotIndex != -1 && lastDotIndex < fileName.length() - 1
-                ? fileName.substring(lastDotIndex + 1)
-                : "";
     }
 }

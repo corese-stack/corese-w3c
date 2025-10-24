@@ -3,6 +3,8 @@ package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 import java.io.FileReader;
 import java.net.URI;
 
+import com.apicatalog.jsonld.JsonLdVersion;
+import fr.inria.corese.core.next.impl.io.option.TitaniumJSONLDProcessorOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +52,33 @@ public class RdfNegativeTestExecutor implements TestExecutor {
             Model actionModel = RDFTestUtils.createModel();
             RDFFormat actionFormat = RdfFormatDetector.getRdfFormatFromTestType(testType);
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
+
+            // Parser config for JSON-LD format
+            if(actionFormat == RDFFormat.JSONLD) {
+                TitaniumJSONLDProcessorOption.Builder optionBuilder = new TitaniumJSONLDProcessorOption.Builder();
+                if(testCase.getProperty("baseUri", String.class) != null) {
+                    String baseUri = testCase.getProperty("baseUri", String.class);
+                    optionBuilder.base(baseUri);
+                }
+                if(testCase.getProperty("specVersion", String.class) != null) {
+                    String specVersion = testCase.getProperty("specVersion", String.class);
+                    if(specVersion.equals("json-ld-1.0")) {
+                        optionBuilder.processingMode(JsonLdVersion.V1_0);
+                    }
+                    if(specVersion.equals("json-ld-1.1")) {
+                        optionBuilder.processingMode(JsonLdVersion.V1_1);
+                    }
+                }
+                if(testCase.getProperty("useNativeTypes", Boolean.class) != null) {
+                    boolean usesNativeTypes = testCase.getProperty("useNativeTypes", Boolean.class);
+                    optionBuilder.useNativeTypes(usesNativeTypes);
+                }
+                if(testCase.getProperty("useRdfType", Boolean.class) != null) {
+                    boolean useRdfType = testCase.getProperty("useRdfType", Boolean.class);
+                    optionBuilder.useRdfType(useRdfType);
+                }
+                actionParser.setConfig(optionBuilder.build());
+            }
 
             // Attempt to parse the input file
             try (FileReader reader = new FileReader(actionFilePath)) {

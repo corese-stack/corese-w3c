@@ -172,6 +172,12 @@ public class W3cTestLoader {
         // Common properties
         addIfPresent(properties, details, "action");
         addIfPresent(properties, details, "result");
+
+        // JSONLD properties
+        addIfPresent(properties, details, "baseUri");
+        addIfPresent(properties, details, "specVersion");
+        addIfPresent(properties, details, "useNativeTypes");
+        addIfPresent(properties, details, "useRdfType");
         return properties;
     }
 
@@ -290,12 +296,10 @@ public class W3cTestLoader {
             Graph manifestGraph = ((CoreseModel) model).getCoreseGraph();
             QueryProcess inclusionQueryExec = QueryProcess.create(manifestGraph);
             String inclusionQuery = buildInclusionQuery(manifestUri);
-            logger.debug("Searching for inclusions: {}", inclusionQuery);
             try {
                 Mappings inclusionMappings = inclusionQueryExec.query(inclusionQuery);
                 for (Mapping mapping : inclusionMappings) {
                     String inclusion = mapping.getValue("?inclusion").getLabel();
-                    logger.debug("Found inclusion {}", inclusion);
                     URI inclusionUri = URI.create(inclusion);
                     // If the inclusion URI is local (because it is relative), the base uri is not and the local inclusion file does not exists, we should force the inclusion uri to be downloaded
                     if (RDFTestUtils.isUriLocal(inclusionUri) && ! RDFTestUtils.isUriLocal(baseUri) && ! Path.of(inclusionUri).toFile().exists()) {
@@ -352,8 +356,9 @@ public class W3cTestLoader {
                         PREFIX sht: <http://www.w3.org/ns/shacl-test#>
                         PREFIX rdfc: <https://w3c.github.io/rdf-canon/tests/vocab#>
                         PREFIX sh: <http://www.w3.org/ns/shacl#>
+                        PREFIX jld: <https://w3c.github.io/json-ld-api/tests/vocab#>
                         
-                        SELECT DISTINCT ?name ?comment ?action ?result ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm WHERE {
+                        SELECT DISTINCT ?name ?comment ?action ?result ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm ?baseUri ?specVersion ?useNativeTypes ?useRdfType WHERE {
                             OPTIONAL { <%s> mf:name ?name . }
                             OPTIONAL { <%s> rdfs:comment ?comment . }
                             OPTIONAL { <%s> mf:action ?action . }
@@ -364,9 +369,13 @@ public class W3cTestLoader {
                             OPTIONAL { <%s> mf:action/sht:shapesGraph ?shapesGraph . }
                             OPTIONAL { <%s> mf:result/sh:conforms ?conformity . }
                             OPTIONAL { <%s> rdfc:hashAlgorithm ?hashAlgorithm . }
+                            OPTIONAL { <%s> jld:option ?option . ?option jld:base ?baseUri }
+                            OPTIONAL { <%s> jld:option ?option . ?option jld:specVersion ?specVersion }
+                            OPTIONAL { <%s> jld:option ?option . ?option jld:useNativeTypes ?useNativeTypes }
+                            OPTIONAL { <%s> jld:option ?option . ?option jld:useRdfType ?useRdfType }
                         }
                         """,
-                testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri);
+                testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri);
     }
 
     /**
