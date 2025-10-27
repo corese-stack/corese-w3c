@@ -26,7 +26,12 @@ import java.util.*;
 public class RdfCanonicalMapTestExecutor implements TestExecutor {
 
     private static final String W3C_BASE_URL = "https://w3c.github.io/rdf-canon/tests/";
+    /**
+     * constructor
+     */
+    public RdfCanonicalMapTestExecutor() {
 
+    }
     /**
      * Executes a single RDF Canonicalization blank node mapping test.
      *

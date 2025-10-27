@@ -24,7 +24,12 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfCanonicalNegativeTestExecutor.class);
     private static final String W3C_BASE_URL = "https://w3c.github.io/rdf-canon/tests/";
+    /**
+     * constructor
+     */
+    public RdfCanonicalNegativeTestExecutor() {
 
+    }
     /**
      * Maximum number of Hash N-Degree Quads calls allowed.
      * When exceeded on a poison graph, a SerializationException is thrown.

@@ -29,7 +29,12 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfCanonicalEvaluationTestExecutor.class);
     private static final String W3C_BASE_URL = "https://w3c.github.io/rdf-canon/tests/";
+    /**
+     * constructor
+     */
+    public RdfCanonicalEvaluationTestExecutor() {
 
+    }
     /**
      * Executes a single **RDF Canonicalization evaluation test**.
      *
