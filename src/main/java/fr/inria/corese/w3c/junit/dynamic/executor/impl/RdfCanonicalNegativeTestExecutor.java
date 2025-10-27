@@ -203,33 +203,6 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
             return true;
         }
 
-        // Check exception type name
-        if (exception != null) {
-            String exceptionClassName = exception.getClass().getSimpleName().toLowerCase();
-            if (exceptionClassName.contains("serialization") ||
-                    exceptionClassName.contains("maxhash") ||
-                    exceptionClassName.contains("hashcalls") ||
-                    exceptionClassName.contains("limit") ||
-                    exceptionClassName.contains("exceeded")) {
-                return true;
-            }
-        }
-
-        // Check error message for keywords indicating excessive hash calls
-        if (errorMessage != null) {
-            String lower = errorMessage.toLowerCase();
-            return lower.contains("maximum calls") ||
-                    lower.contains("hash") ||
-                    lower.contains("degree") ||
-                    lower.contains("maximum") ||
-                    lower.contains("limit") ||
-                    lower.contains("exceeded") ||
-                    lower.contains("poison") ||
-                    lower.contains("complexity") ||
-                    lower.contains("too many") ||
-                    lower.contains("calls");
-        }
-
         return false;
     }
 

@@ -49,7 +49,6 @@ public class RdfCanonicalDynamicTest extends BaseRdf11DynamicTest {
         String testType = testCase.getType().toString();
 
         if (testType == null || testType.isEmpty()) {
-            ;
             return new RdfCanonicalEvaluationTestExecutor();
         }
 
