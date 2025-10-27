@@ -15,7 +15,6 @@ import fr.inria.corese.core.next.impl.exception.ParsingErrorException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
-import fr.inria.corese.w3c.junit.dynamic.utils.RdfFormatDetector;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 
 /**
@@ -50,7 +49,7 @@ public class RdfNegativeTestExecutor implements TestExecutor {
 
             // Get format and create parser
             Model actionModel = RDFTestUtils.createModel();
-            RDFFormat actionFormat = RdfFormatDetector.detectFromFileExtension(actionFileUri);
+            RDFFormat actionFormat = RDFTestUtils.guessFileFormat(actionFileUri);
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 
             // Parser config for JSON-LD format

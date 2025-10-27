@@ -61,7 +61,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
             // Get format and create parser
             Model actionModel = RDFTestUtils.createModel();
-            RDFFormat actionFormat = RdfFormatDetector.detectFromFileExtension(actionFileUri);
+            RDFFormat actionFormat = RDFTestUtils.guessFileFormat(actionFileUri);
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 
             // Load the result file
@@ -69,7 +69,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
             // Detect format of result file and create parser
             Model resultModel = RDFTestUtils.createModel();
-            RDFFormat resultFormat = RdfFormatDetector.detectFromFileExtension(resultFileUri);
+            RDFFormat resultFormat = RDFTestUtils.guessFileFormat(resultFileUri);
             RDFParser resultParser = RDFTestUtils.createParser(resultFormat, resultModel);
 
             // Parser config for JSON-LD format

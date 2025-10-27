@@ -15,7 +15,6 @@ import fr.inria.corese.core.next.impl.exception.ParsingErrorException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
-import fr.inria.corese.w3c.junit.dynamic.utils.RdfFormatDetector;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 
 /**
@@ -49,7 +48,7 @@ public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
             String actionFilePath = RDFTestUtils.loadFile(actionFileUri);
 
             // Detect format and create parser
-            RDFFormat actionFormat = RdfFormatDetector.detectFromFileExtension(actionFileUri);
+            RDFFormat actionFormat = RDFTestUtils.guessFileFormat(actionFileUri);
             Model actionModel = RDFTestUtils.createModel();
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 

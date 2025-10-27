@@ -136,6 +136,7 @@ public class RDFTestUtils {
      * Try to guess the RDFFormat from a file path URI
      * @param filePath A URL or local path to an RDF file
      * @return the RDFFormat of the file
+     * @see RDFFormat
      */
     public static RDFFormat guessFileFormat(URI filePath) {
         String extension = getFileExtension(filePath.toString());
