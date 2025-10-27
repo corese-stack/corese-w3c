@@ -49,7 +49,7 @@ public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
             String actionFilePath = RDFTestUtils.loadFile(actionFileUri);
 
             // Detect format and create parser
-            RDFFormat actionFormat = RdfFormatDetector.getRdfFormatFromTestType(testType);
+            RDFFormat actionFormat = RdfFormatDetector.detectFromFileExtension(actionFileUri);
             Model actionModel = RDFTestUtils.createModel();
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 

@@ -61,7 +61,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
             // Get format and create parser
             Model actionModel = RDFTestUtils.createModel();
-            RDFFormat actionFormat = RdfFormatDetector.getRdfFormatFromTestType(testType);
+            RDFFormat actionFormat = RdfFormatDetector.detectFromFileExtension(actionFileUri);
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 
             // Load the result file
