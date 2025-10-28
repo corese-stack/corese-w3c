@@ -1,6 +1,8 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
 
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.ValueFactory;
@@ -91,34 +93,6 @@ public class RDFTestUtils {
         return sb.toString();
     }
 
-
-    /**
-     * Attempt to retrieve the base URI of a given URI object such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
-     *
-     * @param uri Full uri
-     * @return The truncated URI
-     */
-    public static URI getBaseUri(URI uri) {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(uri.getScheme());
-        sb.append("://");
-        if (uri.getHost() != null) {
-            sb.append(uri.getHost());
-        }
-        // Get path up to the last '/'
-        String path = uri.getPath();
-        if (path != null && !path.endsWith("/")) {
-            int lastSlash = path.lastIndexOf('/');
-            if (lastSlash >= 0) {
-                path = path.substring(0, lastSlash + 1);
-            } else {
-                path = "/";
-            }
-        }
-        sb.append(path);
-        return URI.create(sb.toString());
-    }
     /**
      * Try to guess the RDFFormat from a file name
      * @param filePath A URL or local path to an RDF file
@@ -182,7 +156,7 @@ public class RDFTestUtils {
      * @throws URISyntaxException if the string is not a standard URI
      */
     public static String getBaseUri(String uriString) throws URISyntaxException {
-        return getBaseUri(new URI(uriString));
+        return getBaseUri(new URI(uriString)).toString();
     }
 
     /**

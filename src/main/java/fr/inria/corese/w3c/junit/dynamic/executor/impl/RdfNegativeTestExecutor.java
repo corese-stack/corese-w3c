@@ -41,6 +41,7 @@ public class RdfNegativeTestExecutor implements TestExecutor {
         // Extract needed information from test case
         String testName = testCase.getName();
         URI actionFileUri = testCase.getActionFileUri();
+        String actionBaseUriString = RDFTestUtils.getBaseUri(actionFileUri).toString();
 
         try {
             // Load the action file
@@ -57,6 +58,7 @@ public class RdfNegativeTestExecutor implements TestExecutor {
                 if(testCase.getProperty("baseUri", String.class) != null) {
                     String baseUri = testCase.getProperty("baseUri", String.class);
                     optionBuilder.base(baseUri);
+                    actionBaseUriString = baseUri;
                 }
                 if(testCase.getProperty("specVersion", String.class) != null) {
                     String specVersion = testCase.getProperty("specVersion", String.class);
@@ -81,7 +83,7 @@ public class RdfNegativeTestExecutor implements TestExecutor {
 
             // Attempt to parse the input file
             try (FileReader reader = new FileReader(actionFilePath)) {
-                actionParser.parse(reader);
+                actionParser.parse(reader, actionBaseUriString);
             }
 
             // If we reach here, parsing succeeded when it should have failed
