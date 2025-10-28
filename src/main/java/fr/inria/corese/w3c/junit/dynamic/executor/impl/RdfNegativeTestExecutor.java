@@ -40,7 +40,6 @@ public class RdfNegativeTestExecutor implements TestExecutor {
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract needed information from test case
         String testName = testCase.getName();
-        TestType testType = testCase.getType();
         URI actionFileUri = testCase.getActionFileUri();
 
         try {
@@ -68,12 +67,13 @@ public class RdfNegativeTestExecutor implements TestExecutor {
                         optionBuilder.processingMode(JsonLdVersion.V1_1);
                     }
                 }
-                if(testCase.getProperty("useNativeTypes", Boolean.class) != null) {
-                    boolean usesNativeTypes = testCase.getProperty("useNativeTypes", Boolean.class);
+
+                if(testCase.getProperty("useNativeTypes", String.class) != null) {
+                    boolean usesNativeTypes = testCase.getProperty("useNativeTypes", String.class).equals("true");
                     optionBuilder.useNativeTypes(usesNativeTypes);
                 }
-                if(testCase.getProperty("useRdfType", Boolean.class) != null) {
-                    boolean useRdfType = testCase.getProperty("useRdfType", Boolean.class);
+                if(testCase.getProperty("useRdfType", String.class) != null) {
+                    boolean useRdfType = testCase.getProperty("useRdfType", String.class).equals("true");
                     optionBuilder.useRdfType(useRdfType);
                 }
                 actionParser.setConfig(optionBuilder.build());
