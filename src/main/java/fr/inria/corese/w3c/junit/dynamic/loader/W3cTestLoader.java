@@ -52,7 +52,6 @@ public class W3cTestLoader {
      * @return A list of W3cTestCase objects loaded from the manifest
      */
     public static List<W3cTestCase> loadTestsFromManifest(URI manifestUri) {
-        logger.debug("Loading W3C tests from manifest: {}", manifestUri);
 
         // Load the manifest into a graph
         CoreseModel model = (CoreseModel) loadManifest(manifestUri);
@@ -64,7 +63,6 @@ public class W3cTestLoader {
             // Query for all tests in the manifest
             String testQuery = buildTestListQuery();
             Mappings testMappings = queryProcess.query(testQuery);
-            logger.debug("Found {} test mappings in manifest {}", testMappings.size(), manifestUri);
 
             for (Mapping mapping : testMappings) {
                 String testUri = mapping.getValue("?test").getLabel();
@@ -74,7 +72,6 @@ public class W3cTestLoader {
                     W3cTestCase testCase = createTestCase(testUri, typeUri, queryProcess, manifestUri);
                     if (testCase != null) {
                         testCases.add(testCase);
-                        logger.debug("Created test case: {} with type: {}", testUri, typeUri);
                     } else {
                         logger.warn("Skipped test case: {} with unsupported type: {}", testUri, typeUri);
                     }
@@ -265,7 +262,6 @@ public class W3cTestLoader {
      * @return The given model with the content of the manifest added to it.
      */
     public static Model loadManifest(URI manifestUri, Model model) {
-        logger.debug("Loading manifest {}", manifestUri);
         URI baseUri = RDFTestUtils.getBaseUri(manifestUri);
 
         try {
@@ -283,15 +279,18 @@ public class W3cTestLoader {
                 String contextString = document.getJsonContent().get().getValue("/@context").asJsonArray().get(0).toString().replaceAll("\"", "");
 
                 if (!localManifestPath.resolve("./" + contextString).toFile().exists()) {
-                    logger.debug("Context is not present, downloading {}", baseUri.resolve(contextString));
                     URI contextRemoteUri = baseUri.resolve(contextString);
                     TestFileManager.loadFile(contextRemoteUri);
                 }
 
                 IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri.toString()).build();
                 parser.setConfig(option);
+
+                documentInputStream.close();
             }
-            parser.parse(fileInputStream);
+            parser.parse(fileInputStream, manifestUri.toString());
+
+            fileInputStream.close();
 
             Graph manifestGraph = ((CoreseModel) model).getCoreseGraph();
             QueryProcess inclusionQueryExec = QueryProcess.create(manifestGraph);
@@ -393,6 +392,7 @@ public class W3cTestLoader {
         sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
         sb.append("SELECT DISTINCT ?inclusion WHERE {\n");
         sb.append("    ?manifest a mf:Manifest .\n");
+        sb.append("    ?inclusion a mf:Manifest .\n");
         sb.append("    { ?manifest mf:include/rdf:rest*/rdf:first ?inclusion . }\n");
         sb.append("    UNION { \n");
         sb.append("        { ?manifest mf:entries/rdf:rest*/rdf:first ?inclusion . }\n");

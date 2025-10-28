@@ -187,8 +187,8 @@ public class RDFTestUtils {
 
     /**
      * Attempt to retrieve the base URI of a given URI object such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
-     * @param uri
-     * @return
+     * @param uri Full uri
+     * @return The truncated URI
      */
     public static URI getBaseUri(URI uri) {
 
