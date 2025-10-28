@@ -1,7 +1,5 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
-import java.net.URI;
-
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.ValueFactory;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
@@ -9,6 +7,8 @@ import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.io.parser.ParserFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseAdaptedValueFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseModel;
+
+import java.net.URI;
 
 /**
  * Utility class providing simple, reusable helper methods for test executors.
@@ -85,5 +85,33 @@ public class RDFTestUtils {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Attempt to retrieve the base URI of a given URI object such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
+     *
+     * @param uri Full uri
+     * @return The truncated URI
+     */
+    public static URI getBaseUri(URI uri) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(uri.getScheme());
+        sb.append("://");
+        if (uri.getHost() != null) {
+            sb.append(uri.getHost());
+        }
+        // Get path up to the last '/'
+        String path = uri.getPath();
+        if (path != null && !path.endsWith("/")) {
+            int lastSlash = path.lastIndexOf('/');
+            if (lastSlash >= 0) {
+                path = path.substring(0, lastSlash + 1);
+            } else {
+                path = "/";
+            }
+        }
+        sb.append(path);
+        return URI.create(sb.toString());
     }
 }

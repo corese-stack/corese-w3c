@@ -60,7 +60,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             RDFFormat actionFormat = RdfFormatDetector.getRdfFormatFromTestType(testType);
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 
-            String baseUriForAction = convertToW3cUri(actionFileUri);
+            String baseUriForAction = RDFTestUtils.getBaseUri(actionFileUri).toString();
 
             try (FileReader reader = new FileReader(actionFilePath)) {
                 actionParser.parse(reader, baseUriForAction);
