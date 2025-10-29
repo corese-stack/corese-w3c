@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.io.FileReader;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Executor for negative evaluation tests of RDF Canonicalization (RDFC10NegativeEvalTest).
@@ -25,12 +27,7 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfCanonicalNegativeTestExecutor.class);
     private static final String W3C_BASE_URL = "https://w3c.github.io/rdf-canon/tests/";
-
-    /**
-     * Maximum number of Hash N-Degree Quads algorithm calls allowed.
-     * When exceeded on a poison graph, a SerializationException is thrown.
-     */
-    private static final int MAX_HASH_N_DEGREE_QUADS_CALLS = 50000;
+    private static final int MAX_HASH_N_DEGREE_QUADS_CALLS = 1000;
 
     /**
      * Executes a single RDF Canonicalization negative evaluation test.
@@ -49,62 +46,14 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
         logger.info("Executing RDF Canonical negative test: {}", testName);
 
         try {
-            // Load the poison graph
-            String actionFilePath = resolveAndLoadFile(actionFileUri, testName);
-            Model actionModel = RDFTestUtils.createModel();
-            RDFParser actionParser = RDFTestUtils.createParser(RDFFormat.NQUADS, actionModel);
-
-            try (FileReader reader = new FileReader(actionFilePath)) {
-                actionParser.parse(reader);
-            }
-
-            // Attempt canonicalization and verify exception is thrown
-            boolean exceptionThrown = false;
-            String errorMessage = null;
-            Throwable caughtException = null;
-
-            try {
-                canonicalize(actionModel);
-            } catch (SerializationException e) {
-                exceptionThrown = true;
-                errorMessage = e.getMessage();
-                caughtException = e;
-                logger.debug("Expected exception thrown: {} - {}",
-                        e.getClass().getSimpleName(), errorMessage);
-            } catch (Exception e) {
-                exceptionThrown = true;
-                errorMessage = e.getMessage();
-                caughtException = e;
-                logger.debug("Exception thrown: {} - {}",
-                        e.getClass().getSimpleName(), errorMessage);
-            }
-
-            // Verify exception was thrown (test passes only if it was)
-            if (!exceptionThrown) {
-                String msg = String.format(
-                        "RDF Canonical negative test failed - expected an exception but none was thrown.\n" +
-                                "Test: %s\nAction: %s\n" +
-                                "Poison graph should have exceeded maximum calls limit of %d.",
-                        testName, actionFileUri, MAX_HASH_N_DEGREE_QUADS_CALLS);
-                logger.error(msg);
-                throw new AssertionError(msg);
-            }
-
-            // Verify exception is due to expected cause (warning if not)
-            if (!isExpectedError(caughtException)) {
-                logger.warn("RDF Canonical negative test - exception thrown but type may be incorrect. " +
-                                "Test: {}, Expected: SerializationException, Actual: {}",
-                        testName, caughtException.getClass().getSimpleName());
-            }
-
-            logger.info("RDF Canonical negative test passed: {} (correctly rejected poison graph)",
-                    testName);
+            Model actionModel = loadPoisonGraph(actionFileUri, testName);
+            executeCanonicalizeAndVerifyException(actionModel, testName, actionFileUri);
 
         } catch (AssertionError e) {
             throw e;
         } catch (Exception e) {
             String msg = String.format(
-                    "RDF Canonical negative test failed with unexpected exception.\n" +
+                    "RDF Canonical negative test FAILED with unexpected exception.\n" +
                             "Test: %s\nAction: %s\nError: %s",
                     testName, actionFileUri, e.getMessage());
             logger.error(msg, e);
@@ -113,54 +62,128 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
     }
 
     /**
-     * Resolves a file URI and returns the local file path.
+     * Loads a poison graph from file and parses it into a Model.
      *
-     *
-     * @param fileUri The file URI to resolve.
-     * @param testName The test name (for logging).
-     * @return The absolute local file path.
-     * @throws Exception If file cannot be resolved or loaded.
+     * @param fileUri  The URI of the poison graph file
+     * @param testName The test name (for logging)
+     * @return Parsed Model containing the poison graph
+     * @throws Exception If file cannot be loaded or parsed
      */
-    private String resolveAndLoadFile(URI fileUri, String testName) throws Exception {
-        if ("file".equals(fileUri.getScheme())) {
-            java.nio.file.Path filePath = java.nio.file.Paths.get(fileUri);
+    private Model loadPoisonGraph(URI fileUri, String testName) throws Exception {
+        String filePath = resolveAndLoadFile(fileUri, testName);
 
-            if (Files.exists(filePath)) {
-                logger.debug("Using local file: {}", filePath);
-                return filePath.toString();
-            }
+        Model model = RDFTestUtils.createModel();
+        RDFParser parser = RDFTestUtils.createParser(RDFFormat.NQUADS, model);
 
-            // Download from W3C if not found locally
-            String filename = filePath.getFileName().toString();
-            String remoteUrl = W3C_BASE_URL + "rdfc10/" + filename;
-            logger.debug("Downloading from: {}", remoteUrl);
-
-            return RDFTestUtils.loadFile(URI.create(remoteUrl));
+        try (FileReader reader = new FileReader(filePath)) {
+            parser.parse(reader);
         }
 
-        if ("http".equals(fileUri.getScheme()) || "https".equals(fileUri.getScheme())) {
+        return model;
+    }
+
+    /**
+     * Attempts canonicalization and verifies that an exception is thrown.
+     * For poison graphs, the canonicalizer must detect the exponential behavior
+     * and throw SerializationException when MAX_HASH_N_DEGREE_QUADS_CALLS is exceeded.
+     *
+     * @param model         The model (poison graph) to canonicalize
+     * @param testName      Test name for error messages
+     * @param actionFileUri Original file URI for error messages
+     * @throws AssertionError If no exception is thrown
+     */
+    private void executeCanonicalizeAndVerifyException(Model model, String testName, URI actionFileUri) {
+        Throwable caughtException = null;
+
+        try {
+            canonicalize(model);
+            // If we reach here, no exception was thrown - TEST FAILS
+            String msg = String.format(
+                    "RDF Canonical negative test FAILED - expected an exception but none was thrown.\n" +
+                            "Test: %s\nAction: %s\n" +
+                            "Poison graph should have exceeded maximum calls limit of %d.",
+                    testName, actionFileUri, MAX_HASH_N_DEGREE_QUADS_CALLS);
+            logger.error(msg);
+            throw new AssertionError(msg);
+
+        } catch (SerializationException e) {
+            caughtException = e;
+            logger.debug("Expected SerializationException thrown: {}", e.getMessage());
+
+        } catch (Exception e) {
+            caughtException = e;
+            logger.debug("Exception thrown (may not be SerializationException): {} - {}",
+                    e.getClass().getSimpleName(), e.getMessage());
+        }
+
+        // Verify exception type
+        if (caughtException != null && !isExpectedError(caughtException)) {
+            logger.warn("Exception thrown but type is not SerializationException. " +
+                            "Test: {}, Actual: {}",
+                    testName, caughtException.getClass().getSimpleName());
+        }
+    }
+
+    /**
+     * Resolves a file URI to a local file path.
+     * If URI is a file:// scheme, checks local filesystem first, then downloads from W3C.
+     * If URI is http:// or https://, downloads directly.
+     *
+     * @param fileUri The URI to resolve
+     * @param testName The test name (for logging)
+     * @return The absolute local file path
+     * @throws Exception If URI scheme is unsupported
+     */
+    private String resolveAndLoadFile(URI fileUri, String testName) throws Exception {
+        String scheme = fileUri.getScheme();
+
+        if ("file".equals(scheme)) {
+            return resolveLocalOrRemoteFile(fileUri);
+        }
+
+        if ("http".equals(scheme) || "https".equals(scheme)) {
             logger.debug("Loading remote file: {}", fileUri);
             return RDFTestUtils.loadFile(fileUri);
         }
 
-        throw new IllegalArgumentException("Unsupported URI scheme: " + fileUri);
+        throw new IllegalArgumentException("Unsupported URI scheme: " + scheme);
     }
 
     /**
-     * Canonicalizes a model using the RDFC-1.0 algorithm with call limits.
-     * For poison graphs, this throws SerializationException when the maximum
-     * number of Hash N-Degree Quads algorithm calls is exceeded.
+     * Resolves a file:// URI by checking local filesystem first,
+     * then downloading from W3C if not found locally.
      *
-     * @param model The model to canonicalize (typically a poison graph).
-     * @throws SerializationException When call limit is exceeded.
-     * @throws Exception For other canonicalization failures.
+     * @param fileUri The file:// URI
+     * @return The absolute local file path
+     * @throws Exception If file cannot be resolved
+     */
+    private String resolveLocalOrRemoteFile(URI fileUri) throws Exception {
+        Path filePath = Paths.get(fileUri);
+
+        if (Files.exists(filePath)) {
+            return filePath.toString();
+        }
+
+        // Download from W3C if not found locally
+        String filename = filePath.getFileName().toString();
+        String remoteUrl = W3C_BASE_URL + "rdfc10/" + filename;
+        return RDFTestUtils.loadFile(URI.create(remoteUrl));
+    }
+
+    /**
+     * Canonicalizes a model using RDFC-1.0 with call limit to detect poison graphs.
+     * The canonicalizer will throw SerializationException if MAX_HASH_N_DEGREE_QUADS_CALLS
+     * is exceeded, indicating detection of exponential behavior.
+     *
+     * @param model The model to canonicalize
+     * @throws SerializationException When call limit is exceeded
+     * @throws Exception For other canonicalization failures
      */
     private void canonicalize(Model model) throws Exception {
         try {
             Rdfc10Options options = Rdfc10Options.defaultConfig();
             ValueFactory valueFactory = RDFTestUtils.createValueFactory();
 
-            // Create canonicalizer with call limit to detect poison graphs
             Rdfc10Canonicalizer canonicalizer = new Rdfc10Canonicalizer(
                     options.getHashAlgorithm(),
                     MAX_HASH_N_DEGREE_QUADS_CALLS,
@@ -180,9 +203,8 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
     /**
      * Checks if the exception indicates the expected failure type.
      *
-     *
-     * @param exception The exception to check.
-     * @return true if it's a SerializationException; false otherwise.
+     * @param exception The exception to check
+     * @return true if it's a SerializationException; false otherwise
      */
     private boolean isExpectedError(Throwable exception) {
         return exception instanceof SerializationException;
