@@ -5,8 +5,8 @@ import fr.inria.corese.core.next.api.ValueFactory;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.exception.SerializationException;
-import fr.inria.corese.core.next.impl.io.serialization.canonical.Rdfc10Canonicalizer;
-import fr.inria.corese.core.next.impl.io.serialization.canonical.Rdfc10Options;
+import fr.inria.corese.core.next.impl.io.serialization.canonical.RDFC10Canonicalizer;
+import fr.inria.corese.core.next.impl.io.serialization.canonical.RDFC10Options;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -181,10 +181,10 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      */
     private void canonicalize(Model model) throws Exception {
         try {
-            Rdfc10Options options = Rdfc10Options.defaultConfig();
+            RDFC10Options options = RDFC10Options.defaultConfig();
             ValueFactory valueFactory = RDFTestUtils.createValueFactory();
 
-            Rdfc10Canonicalizer canonicalizer = new Rdfc10Canonicalizer(
+            RDFC10Canonicalizer canonicalizer = new RDFC10Canonicalizer(
                     options.getHashAlgorithm(),
                     MAX_HASH_N_DEGREE_QUADS_CALLS,
                     valueFactory
