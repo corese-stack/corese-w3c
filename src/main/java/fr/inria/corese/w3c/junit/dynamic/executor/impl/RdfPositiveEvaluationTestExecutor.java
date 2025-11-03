@@ -20,7 +20,6 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 /**
  * Specialized executor for positive RDF evaluation tests.
  * These tests should parse successfully and match the expected semantic result.
- *
  * Process:
  * 1. Extract needed information from test case
  * 2. Parse the input action file
