@@ -28,7 +28,12 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
     private static final Logger logger = LoggerFactory.getLogger(RdfCanonicalNegativeTestExecutor.class);
     private static final String W3C_BASE_URL = "https://w3c.github.io/rdf-canon/tests/";
     private static final int MAX_HASH_N_DEGREE_QUADS_CALLS = 1000;
-
+    /**
+     * Constructs a new RdfCanonicalNegativeTestExecutor.
+     */
+    public RdfCanonicalNegativeTestExecutor() {
+        // No initialization required
+    }
     /**
      * Executes a single RDF Canonicalization negative evaluation test.
      * The test passes if an exception is thrown during canonicalization,
