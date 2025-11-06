@@ -43,7 +43,6 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
     @Override
     @SuppressWarnings("java:S3776") // Cognitive complexity acceptable for test executor logic
     public void execute(W3cTestCase testCase) throws Exception {
-        // Extract needed information from test case
         String testName = testCase.getName();
         URI actionFileUri = testCase.getActionFileUri();
         URI resultFileUri = testCase.getResultFileUri();
@@ -113,20 +112,56 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
                 resultParser.parse(reader, resultBaseUriString);
             }
 
-            // Test //
-            if (!ModelIsomorphism.areModelsIsomorphic(actionModel, resultModel)) {
-                String msg = RDFTestUtils.formatErrorMessage(
-                        "Positive evaluation test failed - models are not isomorphic",
-                        testName, actionFileUri, resultFileUri, null);
-                logger.error(msg);
-                throw new AssertionError(msg);
-            }
+        logger.debug("Parsing action file: {} with base URI: {}", actionFileUri, baseUri);
 
-        } catch (ParsingErrorException e) {
+        try (FileReader reader = new FileReader(actionFilePath)) {
+            actionParser.parse(reader, baseUri);
+        }
+
+        return actionModel;
+    }
+
+    /**
+     * Parses the result file (expected output) into an RDF model.
+     *
+     * @param resultFileUri the URI of the result file
+     * @param baseUri       the base URI for resolving relative references (must match action file)
+     * @return the parsed RDF model
+     * @throws Exception if parsing fails or I/O error occurs
+     */
+    private Model parseResultFile(URI resultFileUri, String baseUri) throws Exception {
+        String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
+        Model resultModel = RDFTestUtils.createModel();
+        RDFFormat resultFormat = RdfFormatDetector.detectFromFileExtension(resultFileUri);
+        RDFParser resultParser = RDFTestUtils.createParser(resultFormat, resultModel);
+
+        logger.debug("Parsing result file: {} with base URI: {}", resultFileUri, baseUri);
+
+        try (FileReader reader = new FileReader(resultFilePath)) {
+            resultParser.parse(reader, baseUri);
+        }
+
+        return resultModel;
+    }
+
+    /**
+     * Validates that two RDF models are isomorphic (semantically equivalent).
+     * Throws an {@link AssertionError} if the models differ.
+     *
+     * @param actionModel   the model parsed from the action file
+     * @param resultModel   the model parsed from the result file
+     * @param testName      the name of the test (for error reporting)
+     * @param actionFileUri the action file URI (for error reporting)
+     * @param resultFileUri the result file URI (for error reporting)
+     * @throws AssertionError if models are not isomorphic
+     */
+    private void validateModelsAreIsomorphic(Model actionModel, Model resultModel,
+                                             String testName, URI actionFileUri, URI resultFileUri) {
+        if (!ModelIsomorphism.areModelsIsomorphic(actionModel, resultModel)) {
             String msg = RDFTestUtils.formatErrorMessage(
-                    "Positive evaluation test failed - parsing error",
-                    testName, actionFileUri, resultFileUri, e);
-            logger.error(msg, e);
+                    "Positive evaluation test failed - models are not isomorphic",
+                    testName, actionFileUri, resultFileUri, null);
+            logger.error(msg);
             throw new AssertionError(msg);
         }
     }
