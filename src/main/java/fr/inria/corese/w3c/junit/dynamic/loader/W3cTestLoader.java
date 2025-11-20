@@ -38,11 +38,26 @@ public class W3cTestLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(W3cTestLoader.class);
 
-    /**
-     * constructor
-     */
-    public W3cTestLoader() {
+    private static final String TEST_LIST_QUERY = """
+                PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                
+                SELECT DISTINCT ?test ?type WHERE {
+                    ?manifest a mf:Manifest .
+                    { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
+                    UNION { ?manifest mf:entries ?test .}
+                    ?test a ?type .
+                    FILTER(?type != mf:Manifest)
+                }
+                ORDER BY ?test
+                """;
 
+    /**
+     * Default constructor.
+     * This constructor is intentionally empty as the class contains only static methods.
+     */
+    private W3cTestLoader() {
+        // Utility class - private constructor to prevent instantiation
     }
 
     /**
@@ -325,19 +340,7 @@ public class W3cTestLoader {
      * @return the SPARQL query string
      */
     private static String buildTestListQuery() {
-        return """
-                PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                
-                SELECT DISTINCT ?test ?type WHERE {
-                    ?manifest a mf:Manifest .
-                    { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
-                    UNION { ?manifest mf:entries ?test .}
-                    ?test a ?type .
-                    FILTER(?type != mf:Manifest)
-                }
-                ORDER BY ?test
-                """;
+        return TEST_LIST_QUERY;
     }
 
     /**
