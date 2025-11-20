@@ -17,7 +17,7 @@ import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.IOOptions;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
-import fr.inria.corese.core.next.impl.io.option.TitaniumJSONLDProcessorOption;
+import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
 import fr.inria.corese.core.next.impl.temp.CoreseModel;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import org.slf4j.Logger;
@@ -283,7 +283,7 @@ public class W3cTestLoader {
                     TestFileManager.loadFile(contextRemoteUri);
                 }
 
-                IOOptions option = new TitaniumJSONLDProcessorOption.Builder().base(baseUri.toString()).build();
+                IOOptions option = new JSONLDOptions.Builder().base(baseUri.toString()).build();
                 parser.setConfig(option);
 
                 documentInputStream.close();

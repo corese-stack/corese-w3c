@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.net.URI;
 
 import com.apicatalog.jsonld.JsonLdVersion;
-import fr.inria.corese.core.next.impl.io.option.TitaniumJSONLDProcessorOption;
+import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +67,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
             // Parser config for JSON-LD format
             if(actionFormat == RDFFormat.JSONLD || resultFormat == RDFFormat.JSONLD) {
-                TitaniumJSONLDProcessorOption.Builder optionBuilder = new TitaniumJSONLDProcessorOption.Builder();
+                JSONLDOptions.Builder optionBuilder = new JSONLDOptions.Builder();
                 if(testCase.getProperty("baseUri", String.class) != null) {
                     String baseUri = testCase.getProperty("baseUri", String.class);
                     optionBuilder.base(baseUri);
