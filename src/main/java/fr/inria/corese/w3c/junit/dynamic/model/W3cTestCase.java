@@ -174,21 +174,21 @@ public class W3cTestCase {
         // Capitalize first letter of test type
         String capitalizedType = Character.toUpperCase(testType.charAt(0)) + testType.substring(1);
 
-        StringBuilder displayName = new StringBuilder(this.displayName);
+        StringBuilder formattedName = new StringBuilder(this.displayName);
 
         // Add comment if present
         if (comment != null && !comment.trim().isEmpty()) {
-            displayName.append(" - ").append(comment);
+            formattedName.append(" - ").append(comment);
         }
 
         // Add format and type info
         if (formatName != null && !formatName.trim().isEmpty()) {
-            displayName.append(" [").append(formatName).append(" ").append(capitalizedType).append("]");
+            formattedName.append(" [").append(formatName).append(" ").append(capitalizedType).append("]");
         } else {
-            displayName.append(" [").append(capitalizedType).append("]");
+            formattedName.append(" [").append(capitalizedType).append("]");
         }
 
-        return displayName.toString();
+        return formattedName.toString();
     }
 
     /**
