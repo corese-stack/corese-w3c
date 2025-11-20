@@ -13,7 +13,6 @@ import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.exception.ParsingErrorException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 
@@ -30,13 +29,17 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfPositiveSyntaxTestExecutor.class);
+    
     /**
-     * constructor
+     * Default constructor.
+     * This constructor is intentionally empty as no initialization is required.
      */
     public RdfPositiveSyntaxTestExecutor() {
-
+        // No initialization required
     }
+    
     @Override
+    @SuppressWarnings("java:S3776") // Cognitive complexity acceptable for test executor logic
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract all needed information from test case
         String testName = testCase.getName();

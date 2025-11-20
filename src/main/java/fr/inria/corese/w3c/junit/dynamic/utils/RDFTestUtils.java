@@ -1,7 +1,9 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import fr.inria.corese.core.next.api.Model;
@@ -11,10 +13,6 @@ import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.io.parser.ParserFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseAdaptedValueFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.net.URI;
 
 /**
  * Utility class providing simple, reusable helper methods for test executors.
@@ -45,7 +43,7 @@ public class RDFTestUtils {
      * @return A configured RDFParser
      * @throws Exception If parser creation fails
      */
-    public static RDFParser createParser(RDFFormat format, Model model) throws Exception {
+    public static RDFParser createParser(RDFFormat format, Model model) {
         ParserFactory parserFactory = new ParserFactory();
         ValueFactory valueFactory = new CoreseAdaptedValueFactory();
         return parserFactory.createRDFParser(format, model, valueFactory);
@@ -56,9 +54,10 @@ public class RDFTestUtils {
      * 
      * @param fileUri The file URI to load
      * @return The local file path
+     * @throws IOException 
      * @throws Exception If loading fails
      */
-    public static String loadFile(URI fileUri) throws Exception {
+    public static String loadFile(URI fileUri) throws NoSuchAlgorithmException, IOException {
         TestFileManager.loadFile(fileUri);
         return TestFileManager.getLocalFilePath(fileUri).toString();
     }
@@ -98,6 +97,7 @@ public class RDFTestUtils {
      * @param filePath A URL or local path to an RDF file
      * @return the RDFFormat of the file
      */
+    @SuppressWarnings("java:S112") 
     public static RDFFormat guessFileFormat(String filePath) {
         try {
             return guessFileFormat(new URI(filePath));
@@ -112,6 +112,7 @@ public class RDFTestUtils {
      * @return the RDFFormat of the file
      * @see RDFFormat
      */
+    @SuppressWarnings("java:S112")
     public static RDFFormat guessFileFormat(URI filePath) {
         String extension = getFileExtension(filePath.toString());
         Optional<RDFFormat> result = RDFFormat.byExtension(extension);
@@ -198,6 +199,7 @@ public class RDFTestUtils {
     }
 
     public static boolean isUriAFile(URI uri) {
-        return ! getFileExtension(uri.toString()).isEmpty();
+        String extension = getFileExtension(uri.toString());
+        return extension != null && !extension.isEmpty();
     }
 }

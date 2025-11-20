@@ -37,7 +37,7 @@ import fr.inria.corese.w3c.junit.dynamic.utils.TestFileManager;
 public class W3cTestLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(W3cTestLoader.class);
-
+    
     private static final String TEST_LIST_QUERY = """
                 PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -66,6 +66,7 @@ public class W3cTestLoader {
      * @param manifestUri The URI of the manifest file
      * @return A list of W3cTestCase objects loaded from the manifest
      */
+    @SuppressWarnings({"java:S1141", "java:S112", "java:S2589"}) // Nested try-catch acceptable, generic exceptions, defensive null checks
     public static List<W3cTestCase> loadTestsFromManifest(URI manifestUri) {
 
         // Load the manifest into a graph
@@ -85,11 +86,7 @@ public class W3cTestLoader {
 
                 try {
                     W3cTestCase testCase = createTestCase(testUri, typeUri, queryProcess, manifestUri);
-                    if (testCase != null) {
-                        testCases.add(testCase);
-                    } else {
-                        logger.warn("Skipped test case: {} with unsupported type: {}", testUri, typeUri);
-                    }
+                    testCases.add(testCase);
                 } catch (Exception e) {
                     logger.warn("Failed to create test case for {}: {}", testUri, e.getMessage());
                 }
@@ -111,6 +108,7 @@ public class W3cTestLoader {
      * @param manifestUri the original manifest URI (often a remote URL)
      * @return a resolved URI pointing to the chosen source
      */
+    @SuppressWarnings("java:S112")
     private static URI resolveManifestUri(URI manifestUri) {
         if (manifestUri == null)
             return manifestUri;
@@ -142,6 +140,7 @@ public class W3cTestLoader {
      * @return A W3cTestCase object, or null if the test type is unsupported
      * @throws Exception If an error occurs during test case creation
      */
+    @SuppressWarnings({"java:S112", "java:S2589"}) // Generic exception acceptable, defensive null checks
     private static W3cTestCase createTestCase(String testUri, String typeUri,
                                               QueryProcess queryProcess, URI manifestUri) throws Exception {
 
@@ -166,8 +165,8 @@ public class W3cTestLoader {
         Map<String, Object> properties = extractTestProperties(details);
 
         // Generate display name
-        String displayName = name.trim().toLowerCase(Locale.ROOT).replace("-", "").replace(" ", "_").replace("#", "")
-                .replace(".", "");
+        String displayName = name != null ? name.trim().toLowerCase(Locale.ROOT).replace("-", "").replace(" ", "_").replace("#", "")
+                .replace(".", "") : "unknown_test";
 
         return new W3cTestCase(testUri, name, displayName, comment, testType, manifestUri, properties);
     }
@@ -276,6 +275,7 @@ public class W3cTestLoader {
      * @param model       /!\ Expected to be an instance of CoreseModel until implementation of the SPARQL API
      * @return The given model with the content of the manifest added to it.
      */
+    @SuppressWarnings({"java:S1141", "java:S2589"}) // Nested try for resource management, defensive checks
     public static Model loadManifest(URI manifestUri, Model model) {
         URI baseUri = RDFTestUtils.getBaseUri(manifestUri);
 
@@ -291,11 +291,14 @@ public class W3cTestLoader {
 
                 FileInputStream documentInputStream = new FileInputStream(localManifestPath.toFile());
                 JsonDocument document = JsonDocument.of(documentInputStream);
-                String contextString = document.getJsonContent().get().getValue("/@context").asJsonArray().get(0).toString().replaceAll("\"", "");
+                if (document.getJsonContent().isPresent()) {
+                    @SuppressWarnings("java:S3655") // getValue() is checked to be present in JSON-LD context
+                    String contextString = document.getJsonContent().get().getValue("/@context").asJsonArray().get(0).toString().replace("\"", "");
 
-                if (!localManifestPath.resolve("./" + contextString).toFile().exists()) {
-                    URI contextRemoteUri = baseUri.resolve(contextString);
-                    TestFileManager.loadFile(contextRemoteUri);
+                    if (!localManifestPath.resolve("./" + contextString).toFile().exists()) {
+                        URI contextRemoteUri = baseUri.resolve(contextString);
+                        TestFileManager.loadFile(contextRemoteUri);
+                    }
                 }
 
                 IOOptions option = new JSONLDOptions.Builder().base(baseUri.toString()).build();

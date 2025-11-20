@@ -34,12 +34,15 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
     private static final Logger logger = LoggerFactory.getLogger(RdfPositiveEvaluationTestExecutor.class);
 
     /**
-     * Default constructor
+     * Default constructor.
+     * This constructor is intentionally empty as no initialization is required.
      */
     public RdfPositiveEvaluationTestExecutor() {
+        // No initialization required
     }
 
     @Override
+    @SuppressWarnings("java:S3776") // Cognitive complexity acceptable for test executor logic
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract needed information from test case
         String testName = testCase.getName();
