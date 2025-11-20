@@ -5,11 +5,11 @@ import fr.inria.corese.core.next.impl.common.BasicIRI;
 import fr.inria.corese.core.next.impl.common.vocabulary.Vocabulary;
 
 public enum JLD implements Vocabulary {
-    option("option"),
-    base("base"),
-    specVersion("specVersion"),
-    useNativeTypes("useNativeTypes"),
-    useRdfType("useRdfType");
+    OPTION("option"),
+    BASE("base"),
+    SPECVERSION("specVersion"),
+    USENATIVETYPES("useNativeTypes"),
+    USERDFTYPE("useRdfType");
 
     private final IRI iri;
 
