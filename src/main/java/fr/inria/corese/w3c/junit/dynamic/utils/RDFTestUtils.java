@@ -1,5 +1,11 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
+
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.ValueFactory;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
@@ -7,8 +13,6 @@ import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.io.parser.ParserFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseAdaptedValueFactory;
 import fr.inria.corese.core.next.impl.temp.CoreseModel;
-
-import java.net.URI;
 
 /**
  * Utility class providing simple, reusable helper methods for test executors.
@@ -39,7 +43,7 @@ public class RDFTestUtils {
      * @return A configured RDFParser
      * @throws Exception If parser creation fails
      */
-    public static RDFParser createParser(RDFFormat format, Model model) throws Exception {
+    public static RDFParser createParser(RDFFormat format, Model model) {
         ParserFactory parserFactory = new ParserFactory();
         ValueFactory valueFactory = new CoreseAdaptedValueFactory();
         return parserFactory.createRDFParser(format, model, valueFactory);
@@ -50,9 +54,10 @@ public class RDFTestUtils {
      * 
      * @param fileUri The file URI to load
      * @return The local file path
+     * @throws IOException 
      * @throws Exception If loading fails
      */
-    public static String loadFile(URI fileUri) throws Exception {
+    public static String loadFile(URI fileUri) throws NoSuchAlgorithmException, IOException {
         TestFileManager.loadFile(fileUri);
         return TestFileManager.getLocalFilePath(fileUri).toString();
     }
@@ -88,8 +93,75 @@ public class RDFTestUtils {
     }
 
     /**
+     * Try to guess the RDFFormat from a file name
+     * @param filePath A URL or local path to an RDF file
+     * @return the RDFFormat of the file
+     */
+    @SuppressWarnings("java:S112") 
+    public static RDFFormat guessFileFormat(String filePath) {
+        try {
+            return guessFileFormat(new URI(filePath));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Try to guess the RDFFormat from a file path URI
+     * @param filePath A URL or local path to an RDF file
+     * @return the RDFFormat of the file
+     * @see RDFFormat
+     */
+    @SuppressWarnings("java:S112")
+    public static RDFFormat guessFileFormat(URI filePath) {
+        String extension = getFileExtension(filePath.toString());
+        Optional<RDFFormat> result = RDFFormat.byExtension(extension);
+        if(result.isEmpty()) {
+            throw new RuntimeException("Could not guess the format of " + filePath);
+        }
+        return result.get();
+    }
+
+    /**
+     * Copied and expanded from https://www.baeldung.com/java-file-extension
+     * Tries to extract the extension of a file in a filepath.
+     * @param filename a file path
+     * @return the extension of the file
+     */
+    public static String getFileExtension(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        int dotIndex = filename.lastIndexOf(".");
+        int slashIndex = filename.lastIndexOf('/');
+        if (dotIndex >= 0 && dotIndex > slashIndex) {
+            String result = filename.substring(dotIndex + 1);
+            int queryStartIndex = result.lastIndexOf("?");
+            if(queryStartIndex >= 0 && queryStartIndex > dotIndex) {
+                result = filename.substring(0, queryStartIndex);
+            }
+            int anchorStartIndex = result.lastIndexOf("#");
+            if(anchorStartIndex >= 0 && queryStartIndex > dotIndex) {
+                result = filename.substring(0, queryStartIndex);
+            }
+            return result;
+        }
+        return "";
+    }
+
+
+    /**
+     * Attempt to retrieve the base URI of a given URI string such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
+     * @param uriString Full uri string
+     * @return The truncated uri as string
+     * @throws URISyntaxException if the string is not a standard URI
+     */
+    public static String getBaseUri(String uriString) throws URISyntaxException {
+        return getBaseUri(new URI(uriString)).toString();
+    }
+
+    /**
      * Attempt to retrieve the base URI of a given URI object such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
-     *
      * @param uri Full uri
      * @return The truncated URI
      */
@@ -98,7 +170,7 @@ public class RDFTestUtils {
         StringBuilder sb = new StringBuilder();
         sb.append(uri.getScheme());
         sb.append("://");
-        if (uri.getHost() != null) {
+        if(uri.getHost() != null) {
             sb.append(uri.getHost());
         }
         // Get path up to the last '/'
@@ -113,5 +185,21 @@ public class RDFTestUtils {
         }
         sb.append(path);
         return URI.create(sb.toString());
+    }
+
+    public static URI swapBaseUri(URI uri, URI otherBaseUri) {
+        URI uriBaseString = getBaseUri(uri);
+        String uriString = uri.toString();
+        uriString = uriString.replace(uriBaseString.toString(), otherBaseUri.toString());
+        return URI.create(uriString);
+    }
+
+    public static boolean isUriLocal(URI uri) {
+        return uri.getScheme() != null && uri.getScheme().equals("file");
+    }
+
+    public static boolean isUriAFile(URI uri) {
+        String extension = getFileExtension(uri.toString());
+        return extension != null && !extension.isEmpty();
     }
 }

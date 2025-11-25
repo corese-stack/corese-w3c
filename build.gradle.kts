@@ -80,8 +80,8 @@ tasks.withType<Javadoc>() {
 tasks {
     test {
         useJUnitPlatform()
-        
-        // Configuration d'affichage détaillé des tests 
+
+        // Set up the detailed display of test results
         testLogging {
             events("started", "passed", "skipped", "failed")
             showExceptions = true
@@ -89,15 +89,15 @@ tasks {
             showStackTraces = false
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
             displayGranularity = 2
-            showStandardStreams = false
+            showStandardStreams = true
         }
-        
-        // Force l'affichage des statistiques de test
+
+        // Force the display of test statistics
         finalizedBy("displayTestResults")
     }
 }
 
-// Task personnalisé pour afficher un résumé propre des tests
+// Personalized task to display a clean summary of test results
 tasks.register("displayTestResults") {
     doLast {
         val testTask = tasks.getByName("test") as Test

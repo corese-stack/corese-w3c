@@ -1,20 +1,21 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
+import java.io.FileReader;
+import java.net.URI;
+
+import com.apicatalog.jsonld.JsonLdVersion;
+import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.exception.ParsingErrorException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
-import fr.inria.corese.w3c.junit.dynamic.utils.RdfFormatDetector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.FileReader;
-import java.net.URI;
 
 /**
  * Specialized executor for positive RDF evaluation tests.
@@ -32,53 +33,85 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfPositiveEvaluationTestExecutor.class);
 
-    private static final String RDF11 = "rdf11/";
-    private static final String URL_RDF11 = "https://w3c.github.io/rdf-tests/rdf/";
-
     /**
-     * Default constructor
+     * Default constructor.
+     * This constructor is intentionally empty as no initialization is required.
      */
     public RdfPositiveEvaluationTestExecutor() {
+        // No initialization required
     }
 
     @Override
+    @SuppressWarnings("java:S3776") // Cognitive complexity acceptable for test executor logic
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract needed information from test case
         String testName = testCase.getName();
-        TestType testType = testCase.getType();
         URI actionFileUri = testCase.getActionFileUri();
         URI resultFileUri = testCase.getResultFileUri();
 
         try {
-            // Action Model //
-
             // Load the action file
             String actionFilePath = RDFTestUtils.loadFile(actionFileUri);
+            String actionBaseUriString = RDFTestUtils.getBaseUri(actionFileUri).toString();
 
             // Get format and create parser
             Model actionModel = RDFTestUtils.createModel();
-            RDFFormat actionFormat = RdfFormatDetector.getRdfFormatFromTestType(testType);
+            RDFFormat actionFormat = RDFTestUtils.guessFileFormat(actionFileUri);
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 
-            String baseUriForAction = RDFTestUtils.getBaseUri(actionFileUri).toString();
-
-            try (FileReader reader = new FileReader(actionFilePath)) {
-                actionParser.parse(reader, baseUriForAction);
-            }
-
-            // Result Model
             // Load the result file
             String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
+            String resultBaseUriString = RDFTestUtils.getBaseUri(resultFileUri).toString();
 
             // Detect format of result file and create parser
             Model resultModel = RDFTestUtils.createModel();
-            RDFFormat resultFormat = RdfFormatDetector.detectFromFileExtension(resultFileUri);
+            RDFFormat resultFormat = RDFTestUtils.guessFileFormat(resultFileUri);
             RDFParser resultParser = RDFTestUtils.createParser(resultFormat, resultModel);
 
-            String baseUriForResult = convertToW3cUri(resultFileUri);
+            // Parser config for JSON-LD format
+            if(actionFormat == RDFFormat.JSONLD || resultFormat == RDFFormat.JSONLD) {
+                JSONLDOptions.Builder optionBuilder = new JSONLDOptions.Builder();
+                if(testCase.getProperty("baseUri", String.class) != null) {
+                    String baseUri = testCase.getProperty("baseUri", String.class);
+                    optionBuilder.base(baseUri);
+                    actionBaseUriString = baseUri;
+                    resultBaseUriString = baseUri;
+                }
+                if(testCase.getProperty("specVersion", String.class) != null) {
+                    String specVersion = testCase.getProperty("specVersion", String.class);
+                    if(specVersion.equals("json-ld-1.0")) {
+                        optionBuilder.processingMode(JsonLdVersion.V1_0);
+                    }
+                    if(specVersion.equals("json-ld-1.1")) {
+                        optionBuilder.processingMode(JsonLdVersion.V1_1);
+                    }
+                }
 
+                if(testCase.getProperty("useNativeTypes", String.class) != null) {
+                    boolean usesNativeTypes = testCase.getProperty("useNativeTypes", String.class).equals("true");
+                    optionBuilder.useNativeTypes(usesNativeTypes);
+                }
+                if(testCase.getProperty("useRdfType", String.class) != null) {
+                    boolean useRdfType = testCase.getProperty("useRdfType", String.class).equals("true");
+                    optionBuilder.useRdfType(useRdfType);
+                }
+
+                if(actionFormat == RDFFormat.JSONLD) {
+                    actionParser.setConfig(optionBuilder.build());
+                }
+                if (resultFormat == RDFFormat.JSONLD) {
+                    resultParser.setConfig(optionBuilder.build());
+                }
+            }
+
+            // Parse the input file
+            try (FileReader reader = new FileReader(actionFilePath)) {
+                actionParser.parse(reader, actionBaseUriString);
+            }
+
+            // Parse the result file
             try (FileReader reader = new FileReader(resultFilePath)) {
-                resultParser.parse(reader, baseUriForResult);
+                resultParser.parse(reader, resultBaseUriString);
             }
 
             // Test //
@@ -97,25 +130,5 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             logger.error(msg, e);
             throw new AssertionError(msg);
         }
-    }
-
-    /**
-     * Converts a local file URI to the corresponding W3C test URI.
-     *
-     * @param localFileUri local file URI
-     * @return W3C canonical URI
-     */
-    private String convertToW3cUri(URI localFileUri) {
-        String path = localFileUri.toString();
-
-        int rdf11Index = path.indexOf(RDF11);
-
-        if (rdf11Index != -1) {
-            String relativePath = path.substring(rdf11Index);
-            return URL_RDF11 + relativePath;
-        }
-
-        logger.warn("Could not convert local URI to W3C URI: {}", path);
-        return path;
     }
 }

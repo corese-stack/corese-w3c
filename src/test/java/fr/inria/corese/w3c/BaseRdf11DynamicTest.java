@@ -45,7 +45,7 @@ public abstract class BaseRdf11DynamicTest {
                     URI.create(getManifestUrl())
             );
 
-            logger.info("Loaded {} {} test cases from manifest",
+            logger.debug("Loaded {} {} test cases from manifest",
                     testCases.size(), getFormatName());
 
             return testCases.stream()
