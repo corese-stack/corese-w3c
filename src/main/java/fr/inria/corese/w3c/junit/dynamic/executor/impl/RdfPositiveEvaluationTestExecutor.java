@@ -41,13 +41,10 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
     }
 
     @Override
-    @SuppressWarnings("java:S3776") // Cognitive complexity acceptable for test executor logic
     public void execute(W3cTestCase testCase) throws Exception {
-        String testName = testCase.getName();
         URI actionFileUri = testCase.getActionFileUri();
         URI resultFileUri = testCase.getResultFileUri();
 
-        try {
             // Load the action file
             String actionFilePath = RDFTestUtils.loadFile(actionFileUri);
             String actionBaseUriString = RDFTestUtils.getBaseUri(actionFileUri).toString();
@@ -111,14 +108,6 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             try (FileReader reader = new FileReader(resultFilePath)) {
                 resultParser.parse(reader, resultBaseUriString);
             }
-
-        logger.debug("Parsing action file: {} with base URI: {}", actionFileUri, baseUri);
-
-        try (FileReader reader = new FileReader(actionFilePath)) {
-            actionParser.parse(reader, baseUri);
-        }
-
-        return actionModel;
     }
 
     /**
@@ -132,7 +121,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
     private Model parseResultFile(URI resultFileUri, String baseUri) throws Exception {
         String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
         Model resultModel = RDFTestUtils.createModel();
-        RDFFormat resultFormat = RdfFormatDetector.detectFromFileExtension(resultFileUri);
+        RDFFormat resultFormat = RDFTestUtils.guessFileFormat(resultFileUri);
         RDFParser resultParser = RDFTestUtils.createParser(resultFormat, resultModel);
 
         logger.debug("Parsing result file: {} with base URI: {}", resultFileUri, baseUri);

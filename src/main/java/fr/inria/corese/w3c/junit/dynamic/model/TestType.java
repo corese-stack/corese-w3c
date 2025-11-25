@@ -43,7 +43,7 @@ public enum TestType {
     /** JSON-LD Positive Evaluation test (expects evaluation to succeed) */
     JSON_LD_POSITIVE_EVAL("JSON-LD Positive Evaluation Test"),
     /** JSON-LD Negative Evaluation test (expects evaluation to fail) */
-    JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test");
+    JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test"),
 
     /**
      * RDF Canonicalization

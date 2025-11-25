@@ -31,41 +31,6 @@ public class RdfCanonicalDynamicTest extends BaseRdf11DynamicTest {
         return "RDF-Canonical";
     }
 
-    /**
-     * Chemins locaux pour le fallback (optionnel).
-     * Si ces fichiers existent, ils sont utilisés.
-     * Sinon, le manifest est téléchargé depuis {@link #MANIFEST_URL}
-     */
-    @Override
-    protected String[] getLocalManifestPaths() {
-        return new String[]{
-                "src/test/resources/rdf-canon/manifest.ttl",
-                "src/test/resources/rdf-canon/tests/manifest.ttl"
-        };
-    }
-
-    @Override
-    protected TestExecutor selectExecutor(W3cTestCase testCase) {
-        String testType = testCase.getType().toString();
-
-        if (testType == null || testType.isEmpty()) {
-            return new RdfCanonicalEvaluationTestExecutor();
-        }
-
-        String type = testType.toLowerCase();
-
-        if (type.contains("negative")) {
-
-            return new RdfCanonicalNegativeTestExecutor();
-        } else if (type.contains("maptest")) {
-
-            return new RdfCanonicalMapTestExecutor();
-        } else {
-
-            return new RdfCanonicalEvaluationTestExecutor();
-        }
-    }
-
     @TestFactory
     Stream<DynamicTest> rdfCanonicalTests() {
         return createDynamicTests();

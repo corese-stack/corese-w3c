@@ -67,8 +67,6 @@ public class TestFileManager {
         if ((!Files.exists(localFilePath)) || (isInUpdateMode() && isRemoteFileDifferent(fileUri, localFilePath))) {
             downloadFile(fileUri, localFilePath);
         }
-
-        return null;
     }
 
     /**

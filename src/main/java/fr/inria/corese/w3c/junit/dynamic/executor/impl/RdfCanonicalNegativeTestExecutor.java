@@ -6,7 +6,7 @@ import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.impl.exception.SerializationException;
 import fr.inria.corese.core.next.impl.io.serialization.canonical.RDFC10Canonicalizer;
-import fr.inria.corese.core.next.impl.io.serialization.canonical.RDFC10Options;
+import fr.inria.corese.core.next.impl.io.serialization.canonical.RDFC10SerializerOptions;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -186,7 +186,7 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      */
     private void canonicalize(Model model) throws Exception {
         try {
-            RDFC10Options options = RDFC10Options.defaultConfig();
+            RDFC10SerializerOptions options = RDFC10SerializerOptions.defaultConfig();
             ValueFactory valueFactory = RDFTestUtils.createValueFactory();
 
             RDFC10Canonicalizer canonicalizer = new RDFC10Canonicalizer(
