@@ -41,11 +41,15 @@ public class W3cTestLoader {
     private static final String TEST_LIST_QUERY = """
                 PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX td: <http://www.w3.org/2006/03/test-description#>
                 
                 SELECT DISTINCT ?test ?type WHERE {
-                    ?manifest a mf:Manifest .
-                    { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
-                    UNION { ?manifest mf:entries ?test .}
+                    {
+                        ?manifest a mf:Manifest .
+                        { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
+                        UNION { ?manifest mf:entries ?test .}
+                    }
+                    UNION { ?test a td:TestCase }
                     ?test a ?type .
                     FILTER(?type != mf:Manifest)
                 }
@@ -146,6 +150,7 @@ public class W3cTestLoader {
 
         // Get test details
         String detailQuery = buildTestDetailQuery(testUri);
+        logger.info(detailQuery);
         Mappings detailMappings = queryProcess.query(detailQuery);
 
         if (detailMappings.isEmpty()) {
@@ -180,15 +185,10 @@ public class W3cTestLoader {
     private static Map<String, Object> extractTestProperties(Mapping details) {
         Map<String, Object> properties = new HashMap<>();
 
-        // Common properties
-        addIfPresent(properties, details, "action");
-        addIfPresent(properties, details, "result");
+        for(W3cTestCase.Property property : W3cTestCase.Property.values()) {
+            addIfPresent(properties, details, property.getKey());
+        }
 
-        // JSONLD properties
-        addIfPresent(properties, details, "baseUri");
-        addIfPresent(properties, details, "specVersion");
-        addIfPresent(properties, details, "useNativeTypes");
-        addIfPresent(properties, details, "useRdfType");
         return properties;
     }
 
@@ -232,6 +232,7 @@ public class W3cTestLoader {
         String lowerUri = typeUri.toLowerCase();
 
         return switch (typeUri) {
+            case "http://www.w3.org/2006/03/test-description#TestCase" -> TestType.ASK_BASED_EVAL;
             // RDF 1.1 Turtle tests
             case String s when lowerUri.contains("testturtlenegativesyntax") -> TestType.TURTLE_NEGATIVE_SYNTAX;
             case String s when lowerUri.contains("testturtlepositivesyntax") -> TestType.TURTLE_POSITIVE_SYNTAX;
@@ -380,12 +381,17 @@ public class W3cTestLoader {
                         PREFIX rdfc: <https://w3c.github.io/rdf-canon/tests/vocab#>
                         PREFIX sh: <http://www.w3.org/ns/shacl#>
                         PREFIX jld: <https://w3c.github.io/json-ld-api/tests/vocab#>
+                        PREFIX testdesc: <http://www.w3.org/2006/03/test-description#>
                         
-                        SELECT DISTINCT ?name ?comment ?action ?result ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm ?baseUri ?specVersion ?useNativeTypes ?useRdfType WHERE {
+                        SELECT DISTINCT ?name ?comment ?action ?result ?expectedBoolean ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm ?baseUri ?specVersion ?useNativeTypes ?useRdfType WHERE {
                             OPTIONAL { <%s> mf:name ?name . }
-                            OPTIONAL { <%s> rdfs:comment ?comment . }
-                            OPTIONAL { <%s> mf:action ?action . }
-                            OPTIONAL { <%s> mf:result ?result . }
+                            OPTIONAL { { <%s> rdfs:comment ?comment . }
+                                UNION { <%s> testdesc:purpose ?comment . } }
+                            OPTIONAL { { <%s> mf:action ?action . }
+                                UNION { <%s> testdesc:informationResourceInput ?action . } }
+                            OPTIONAL { { <%s> mf:result ?result . }
+                                UNION { <%s> testdesc:informationResourceResults ?result . } }
+                            OPTIONAL { <%s> testdesc:expectedResults ?expectedBoolean . }
                             OPTIONAL { <%s> mf:action/qt:query ?query . }
                             OPTIONAL { <%s> mf:action/qt:data ?data . }
                             OPTIONAL { <%s> mf:action/sht:dataGraph ?dataGraph . }
@@ -398,7 +404,7 @@ public class W3cTestLoader {
                             OPTIONAL { <%s> jld:option ?option . ?option jld:useRdfType ?useRdfType }
                         }
                         """,
-                testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri);
+                testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri);
     }
 
     /**

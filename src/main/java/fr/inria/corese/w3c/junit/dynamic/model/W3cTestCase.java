@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
 
+import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.w3c.junit.dynamic.executor.factory.TestExecutorFactory;
 
 /**
@@ -12,6 +13,42 @@ import fr.inria.corese.w3c.junit.dynamic.executor.factory.TestExecutorFactory;
  * data-driven model.
  */
 public class W3cTestCase {
+
+    /**
+     * Property keys for tests
+     */
+    public enum Property {
+        // Common properties
+        NAME("name"),
+        COMMENT("comment"),
+        ACTION("action"),
+        RESULT("result"),
+        // ASK-based test properties
+        EXPECTED_BOOLEAN("expectedBoolean"),
+        // Shape test properties
+        QUERY("query"),
+        DATA("data"),
+        DATA_GRAPH("dataGraph"),
+        SHAPES_GRAPH("shapesGraph"),
+        CONFORMITY("conformity"),
+        HASH_ALGORITHM("hashAlgorithm"),
+        // JSON-LD test properties
+        BASE_URI("baseUri"),
+        SPEC_VERSION("specVersion"),
+        USE_NATIVE_TYPES("useNativeTypes"),
+        USE_RDF_TYPES("useRdfType"),
+        ;
+
+        private String key = null;
+
+        Property(String keyString) {
+            this.key = keyString;
+        }
+
+        public String getKey() {
+            return this.key;
+        }
+    }
 
     private final String testUri;
     private final String name;
@@ -148,7 +185,7 @@ public class W3cTestCase {
      * @return The URI of the action file, or null if not present
      */
     public URI getActionFileUri() {
-        return getUriProperty("action");
+        return getUriProperty(Property.ACTION.getKey());
     }
 
     /**
@@ -158,7 +195,7 @@ public class W3cTestCase {
      * @return The URI of the result file, or null if not present
      */
     public URI getResultFileUri() {
-        return getUriProperty("result");
+        return getUriProperty(Property.RESULT.getKey());
     }
 
     /**
@@ -213,17 +250,19 @@ public class W3cTestCase {
      */
     private String extractFormatFromManifestPath(String manifestPath) {
         if (manifestPath.contains("rdf-turtle"))
-            return "Turtle";
+            return RDFFormat.TURTLE.getName();
         if (manifestPath.contains("rdf-trig"))
-            return "Trig";
+            return RDFFormat.TRIG.getName();
         if (manifestPath.contains("rdf-xml"))
-            return "Xml";
+            return RDFFormat.RDFXML.getName();
         if (manifestPath.contains("rdf-n-triples"))
-            return "N-Triples";
+            return RDFFormat.NTRIPLES.getName();
         if (manifestPath.contains("rdf-n-quads"))
-            return "N-Quads";
+            return RDFFormat.NQUADS.getName();
         if (manifestPath.contains("json-ld"))
-            return "JSON-LD";
+            return RDFFormat.JSONLD.getName();
+        if (manifestPath.contains("RDFa"))
+            return RDFFormat.RDFa.getName();
         return "RDF"; // Default fallback
     }
 
@@ -237,9 +276,8 @@ public class W3cTestCase {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof W3cTestCase))
+        if (!(o instanceof W3cTestCase that))
             return false;
-        W3cTestCase that = (W3cTestCase) o;
         return Objects.equals(testUri, that.testUri);
     }
 
