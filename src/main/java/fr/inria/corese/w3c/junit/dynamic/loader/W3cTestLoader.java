@@ -2,6 +2,7 @@ package fr.inria.corese.w3c.junit.dynamic.loader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,7 +18,10 @@ import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.IOOptions;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
+import fr.inria.corese.core.next.api.io.serialization.RDFSerializer;
 import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
+import fr.inria.corese.core.next.impl.io.serialization.SerializerFactory;
+import fr.inria.corese.core.next.impl.io.serialization.turtle.TurtleSerializerOptions;
 import fr.inria.corese.core.next.impl.temp.CoreseModel;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import org.slf4j.Logger;
@@ -48,10 +52,12 @@ public class W3cTestLoader {
                         ?manifest a mf:Manifest .
                         { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
                         UNION { ?manifest mf:entries ?test .}
+                        ?test a ?type .
+                        FILTER(?type != mf:Manifest)
+                    } UNION {
+                        ?test a ?type .
+                        VALUES ?type { td:TestCase }
                     }
-                    UNION { ?test a td:TestCase }
-                    ?test a ?type .
-                    FILTER(?type != mf:Manifest)
                 }
                 ORDER BY ?test
                 """;
@@ -77,12 +83,21 @@ public class W3cTestLoader {
         CoreseModel model = (CoreseModel) loadManifest(manifestUri);
         QueryProcess queryProcess = QueryProcess.create(model.getCoreseGraph());
 
+        SerializerFactory debugSerialFactory = new SerializerFactory();
+        RDFSerializer debugSerializer = debugSerialFactory.createSerializer(RDFFormat.TURTLE, model, (new TurtleSerializerOptions.Builder()).build());
+        StringWriter debugWriter = new StringWriter();
+        debugSerializer.write(debugWriter);
+        logger.info(debugWriter.toString());
+
         List<W3cTestCase> testCases = new ArrayList<>();
 
         try {
             // Query for all tests in the manifest
             String testQuery = buildTestListQuery();
+            logger.info("Executing {}", testQuery);
             Mappings testMappings = queryProcess.query(testQuery);
+            logger.info("Found {} tests", testMappings.size());
+            logger.info("{}", testMappings);
 
             for (Mapping mapping : testMappings) {
                 String testUri = mapping.getValue("?test").getLabel();
@@ -150,7 +165,7 @@ public class W3cTestLoader {
 
         // Get test details
         String detailQuery = buildTestDetailQuery(testUri);
-        logger.info(detailQuery);
+        logger.info("Looking for details: {}", detailQuery);
         Mappings detailMappings = queryProcess.query(detailQuery);
 
         if (detailMappings.isEmpty()) {
@@ -381,17 +396,35 @@ public class W3cTestLoader {
                         PREFIX rdfc: <https://w3c.github.io/rdf-canon/tests/vocab#>
                         PREFIX sh: <http://www.w3.org/ns/shacl#>
                         PREFIX jld: <https://w3c.github.io/json-ld-api/tests/vocab#>
-                        PREFIX testdesc: <http://www.w3.org/2006/03/test-description#>
+                        PREFIX td: <http://www.w3.org/2006/03/test-description#>
+                        PREFIX dce: <http://purl.org/dc/elements/1.1/>
                         
                         SELECT DISTINCT ?name ?comment ?action ?result ?expectedBoolean ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm ?baseUri ?specVersion ?useNativeTypes ?useRdfType WHERE {
-                            OPTIONAL { <%s> mf:name ?name . }
-                            OPTIONAL { { <%s> rdfs:comment ?comment . }
-                                UNION { <%s> testdesc:purpose ?comment . } }
-                            OPTIONAL { { <%s> mf:action ?action . }
-                                UNION { <%s> testdesc:informationResourceInput ?action . } }
-                            OPTIONAL { { <%s> mf:result ?result . }
-                                UNION { <%s> testdesc:informationResourceResults ?result . } }
-                            OPTIONAL { <%s> testdesc:expectedResults ?expectedBoolean . }
+                            <%s> ?nameProp ?name .
+                            VALUES ?nameProp {
+                                mf:name
+                                dce:title
+                            }
+                            OPTIONAL {
+                                <%s> ?commentProp ?comment .
+                                VALUES ?commentProp {
+                                    rdfs:comment
+                                    td:purpose
+                                }
+                            }
+                            <%s> ?actionProp ?action .
+                            VALUES ?actionProp {
+                                mf:action
+                                td:informationResourceInput
+                            }
+                            OPTIONAL {
+                                <%s> ?resultProp ?result .
+                                VALUES ?resultProp {
+                                    mf:result
+                                    td:informationResourceResults
+                                }
+                            }
+                            OPTIONAL { <%s> td:expectedResults ?expectedBoolean . }
                             OPTIONAL { <%s> mf:action/qt:query ?query . }
                             OPTIONAL { <%s> mf:action/qt:data ?data . }
                             OPTIONAL { <%s> mf:action/sht:dataGraph ?dataGraph . }
@@ -404,7 +437,7 @@ public class W3cTestLoader {
                             OPTIONAL { <%s> jld:option ?option . ?option jld:useRdfType ?useRdfType }
                         }
                         """,
-                testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri);
+                testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri);
     }
 
     /**
