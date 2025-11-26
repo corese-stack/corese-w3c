@@ -58,13 +58,13 @@ public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
             // Parser config for JSON-LD format
             if(actionFormat == RDFFormat.JSONLD) {
                 JSONLDOptions.Builder optionBuilder = new JSONLDOptions.Builder();
-                if(testCase.getProperty(W3cTestCase.Property.BASE_URI.getKey(), String.class) != null) {
-                    String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI.getKey(), String.class);
+                if(testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class) != null) {
+                    String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class);
                     optionBuilder.base(baseUri);
                     actionBaseUriString = baseUri;
                 }
-                if(testCase.getProperty(W3cTestCase.Property.SPEC_VERSION.getKey(), String.class) != null) {
-                    String specVersion = testCase.getProperty(W3cTestCase.Property.SPEC_VERSION.getKey(), String.class);
+                if(testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class) != null) {
+                    String specVersion = testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class);
                     if(specVersion.equals("json-ld-1.0")) {
                         optionBuilder.processingMode(JsonLdVersion.V1_0);
                     }
@@ -73,12 +73,12 @@ public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
                     }
                 }
 
-                if(testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES.getKey(), String.class) != null) {
-                    boolean usesNativeTypes = testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES.getKey(), String.class).equals("true");
+                if(testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class) != null) {
+                    boolean usesNativeTypes = testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class).equals("true");
                     optionBuilder.useNativeTypes(usesNativeTypes);
                 }
-                if(testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES.getKey(), String.class) != null) {
-                    boolean useRdfType = testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES.getKey(), String.class).equals("true");
+                if(testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class) != null) {
+                    boolean useRdfType = testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class).equals("true");
                     optionBuilder.useRdfType(useRdfType);
                 }
                 actionParser.setConfig(optionBuilder.build());

@@ -31,6 +31,7 @@ public class W3cTestCase {
         DATA_GRAPH("dataGraph"),
         SHAPES_GRAPH("shapesGraph"),
         CONFORMITY("conformity"),
+        // Canonical test properties
         HASH_ALGORITHM("hashAlgorithm"),
         // JSON-LD test properties
         BASE_URI("baseUri"),
@@ -47,6 +48,11 @@ public class W3cTestCase {
 
         public String getKey() {
             return this.key;
+        }
+
+        @Override
+        public String toString() {
+            return this.getKey();
         }
     }
 
@@ -165,6 +171,19 @@ public class W3cTestCase {
                     "Property '" + key + "' is not of expected type " + type.getSimpleName());
         }
         return (T) value;
+    }
+
+    /**
+     * Gets a property value with type safety.
+     *
+     * @param <T> The expected type of the property value.
+     * @param property The Property enum item.
+     * @param type The class object representing the expected type.
+     * @return The property value, cast to the expected type, or null if not found.
+     * @throws IllegalArgumentException if the property exists but is not of the expected type.
+     */
+    public <T> T getProperty(Property property, Class<T> type) {
+        return getProperty(property.getKey(), type);
     }
 
     /**

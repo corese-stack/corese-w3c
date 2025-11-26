@@ -1,5 +1,6 @@
 package fr.inria.corese.w3c.rdf11rdfa;
 
+import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.w3c.BaseRdf11DynamicTest;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
@@ -18,7 +19,7 @@ public class Rdf11RdfaDynamicTest extends BaseRdf11DynamicTest {
 
     @Override
     protected String getFormatName() {
-        return "RDFa";
+        return RDFFormat.RDFa.getName();
     }
 
     @TestFactory

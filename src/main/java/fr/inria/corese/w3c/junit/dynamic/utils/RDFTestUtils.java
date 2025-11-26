@@ -175,7 +175,6 @@ public class RDFTestUtils {
      * @return The truncated URI
      */
     public static URI getBaseUri(URI uri) {
-
         StringBuilder sb = new StringBuilder();
         sb.append(uri.getScheme());
         sb.append("://");
