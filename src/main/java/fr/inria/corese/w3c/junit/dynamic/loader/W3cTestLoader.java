@@ -224,6 +224,7 @@ public class W3cTestLoader {
      * @return the corresponding TestType
      * @throws IllegalArgumentException if the test type URI not recognised
      */
+    @SuppressWarnings("unused")
     private static TestType mapTestType(String typeUri) {
         logger.debug("Mapping test type URI: {}", typeUri);
 
@@ -256,29 +257,17 @@ public class W3cTestLoader {
             case String s when lowerUri.contains("testxmleval") -> TestType.RDF_XML_POSITIVE_EVAL;
 
             // RDF Canonicalization (RDFC-1.0)
-            case String s when lowerUri.contains("rdfc10negativeevaltest") -> {
-                logger.debug("Mapped to RDFC10_NEGATIVE_EVAL_TEST");
-                yield TestType.RDFC10_NEGATIVE_EVAL_TEST;
-            }
-            case String s when lowerUri.contains("rdfc10maptest") -> {
-                logger.debug("Mapped to RDFC10_MAP_TEST");
-                yield TestType.RDFC10_MAP_TEST;
-            }
-            case String s when lowerUri.contains("rdfc10evaltest") -> {
-                logger.debug("Mapped to RDFC10_EVAL_TEST");
-                yield TestType.RDFC10_EVAL_TEST;
-            }
+            case String s when lowerUri.contains("rdfc10negativeevaltest") -> TestType.RDFC10_NEGATIVE_EVAL_TEST;
+            case String s when lowerUri.contains("rdfc10maptest") -> TestType.RDFC10_MAP_TEST;
+            case String s when lowerUri.contains("rdfc10evaltest") -> TestType.RDFC10_EVAL_TEST;
 
-            case String s when s.contains("json-ld-api/tests/vocab#PositiveEvaluationTest") ->
-                    TestType.JSON_LD_POSITIVE_EVAL;
-            case String s when s.contains("json-ld-api/tests/vocab#NegativeEvaluationTest") ->
-                    TestType.JSON_LD_NEGATIVE_EVAL;
-            case String s when s.contains("json-ld-api/tests/vocab#PositiveSyntaxTest") ->
-                    TestType.JSON_LD_POSITIVE_SYNTAX;
-            case String s when s.contains("json-ld-api/tests/vocab#NegativeSyntaxTest") ->
-                    TestType.JSON_LD_NEGATIVE_SYNTAX;
-            default -> throw new IllegalArgumentException(
-                    "Unsupported or unknown test type URI: " + typeUri);
+            // JSON-LD tests
+            case String s when s.contains("json-ld-api/tests/vocab#PositiveEvaluationTest") -> TestType.JSON_LD_POSITIVE_EVAL;
+            case String s when s.contains("json-ld-api/tests/vocab#NegativeEvaluationTest") -> TestType.JSON_LD_NEGATIVE_EVAL;
+            case String s when s.contains("json-ld-api/tests/vocab#PositiveSyntaxTest") -> TestType.JSON_LD_POSITIVE_SYNTAX;
+            case String s when s.contains("json-ld-api/tests/vocab#NegativeSyntaxTest") -> TestType.JSON_LD_NEGATIVE_SYNTAX;
+
+            default -> throw new IllegalArgumentException("Unsupported or unknown test type URI: " + typeUri);
         };
     }
 
@@ -437,7 +426,7 @@ public class W3cTestLoader {
         if (manifestUri != null) {
             String extension = RDFTestUtils.guessFileFormat(manifestUri).getDefaultExtension();
             String uriWithoutExtension = manifestUri.toString().replace("." + extension, "");
-            sb.append("    FILTER(?manifest = <").append(manifestUri.toString()).append("> || ?manifest = <").append(uriWithoutExtension).append(">)\n");
+            sb.append("    FILTER(?manifest = <").append(manifestUri).append("> || ?manifest = <").append(uriWithoutExtension).append(">)\n");
         }
         sb.append("}");
         return sb.toString();
