@@ -1,5 +1,6 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
@@ -35,8 +36,8 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
 
         try {
             // Resolve file paths for action and expected result
-            String actionFilePath = resolveFile(testCase.getActionFileUri(), testName);
-            String resultFilePath = resolveFile(testCase.getResultFileUri(), testName);
+            String actionFilePath = resolveFile(testCase.getActionFileUri());
+            String resultFilePath = resolveFile(testCase.getResultFileUri());
 
             // Load and extract mappings
             Map<String, String> expectedMapping = loadMappingFromFile(resultFilePath);
@@ -45,15 +46,13 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
             // Validate the extracted mapping against the expected one
             validateMappings(generatedMapping, expectedMapping, testName);
 
-        } catch (AssertionError e) {
-            throw e;
         } catch (Exception e) {
-            String errorMsg = String.format(
-                    "RDF Canonical map test FAILED.\n" +
-                            "Test: %s\n" +
-                            "Action: %s\n" +
-                            "Result: %s\n" +
-                            "Error: %s",
+            String errorMsg = String.format("""
+                            RDF Canonical map test FAILED.
+                             Test: %s
+                            Action: %s
+                            Result: %s
+                            Error: %s""",
                     testName,
                     testCase.getActionFileUri(),
                     testCase.getResultFileUri(),
@@ -166,8 +165,7 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
     private Map<String, String> tryParseJsonMapping(String content) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-
-            return mapper.readValue(content, Map.class);
+            return mapper.readValue(content, new TypeReference<>() {});
         } catch (Exception e) {
             logger.debug("JSON parsing failed, trying line format", e);
             return new HashMap<>();
@@ -264,7 +262,7 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
                                       String testName) {
         if (!generated.keySet().equals(expected.keySet())) {
             throw new AssertionError(String.format(
-                    "Blank node keys mismatch for test '%s'.\nExpected: %s\nGenerated: %s",
+                    "Blank node keys mismatch for test '%s'.%nExpected: %s%nGenerated: %s",
                     testName, expected.keySet(), generated.keySet()
             ));
         }
@@ -372,11 +370,10 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
      * Files with 'file' scheme are checked locally and downloaded from a remote W3C base URL if not found.
      *
      * @param fileUri  The URI of the action or result file.
-     * @param testName The name of the test (used for context, but not strictly required by the implementation).
      * @return The local path string to the resolved file.
      * @throws Exception If the file cannot be resolved or an unsupported URI scheme is encountered.
      */
-    private String resolveFile(URI fileUri, String testName) throws Exception {
+    private String resolveFile(URI fileUri) throws Exception {
         String scheme = fileUri.getScheme();
 
         return switch (scheme) {

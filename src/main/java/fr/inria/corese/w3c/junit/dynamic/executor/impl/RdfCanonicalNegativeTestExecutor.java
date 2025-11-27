@@ -51,15 +51,15 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
         logger.info("Executing RDF Canonical negative test: {}", testName);
 
         try {
-            Model actionModel = loadPoisonGraph(actionFileUri, testName);
+            Model actionModel = loadPoisonGraph(actionFileUri);
             executeCanonicalizeAndVerifyException(actionModel, testName, actionFileUri);
 
-        } catch (AssertionError e) {
-            throw e;
         } catch (Exception e) {
-            String msg = String.format(
-                    "RDF Canonical negative test FAILED with unexpected exception.\n" +
-                            "Test: %s\nAction: %s\nError: %s",
+            String msg = String.format("""
+                            RDF Canonical negative test FAILED with unexpected exception.
+                            Test: %s
+                            Action: %s
+                            Error: %s""",
                     testName, actionFileUri, e.getMessage());
             logger.error(msg, e);
             throw new AssertionError(msg, e);
@@ -70,12 +70,11 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      * Loads a poison graph from file and parses it into a Model.
      *
      * @param fileUri  The URI of the poison graph file
-     * @param testName The test name (for logging)
      * @return Parsed Model containing the poison graph
      * @throws Exception If file cannot be loaded or parsed
      */
-    private Model loadPoisonGraph(URI fileUri, String testName) throws Exception {
-        String filePath = resolveAndLoadFile(fileUri, testName);
+    private Model loadPoisonGraph(URI fileUri) throws Exception {
+        String filePath = resolveAndLoadFile(fileUri);
 
         Model model = RDFTestUtils.createModel();
         RDFParser parser = RDFTestUtils.createParser(RDFFormat.NQUADS, model);
@@ -98,15 +97,13 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      * @throws AssertionError If no exception is thrown
      */
     private void executeCanonicalizeAndVerifyException(Model model, String testName, URI actionFileUri) {
-        Throwable caughtException = null;
+        Throwable caughtException;
 
         try {
             canonicalize(model);
             // If we reach here, no exception was thrown - TEST FAILS
             String msg = String.format(
-                    "RDF Canonical negative test FAILED - expected an exception but none was thrown.\n" +
-                            "Test: %s\nAction: %s\n" +
-                            "Poison graph should have exceeded maximum calls limit of %d.",
+                    "RDF Canonical negative test FAILED - expected an exception but none was thrown. Test: %s\nAction: %s\n graph should have exceeded maximum calls limit of %d.",
                     testName, actionFileUri, MAX_HASH_N_DEGREE_QUADS_CALLS);
             logger.error(msg);
             throw new AssertionError(msg);
@@ -122,7 +119,7 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
         }
 
         // Verify exception type
-        if (caughtException != null && !isExpectedError(caughtException)) {
+        if (!isExpectedError(caughtException)) {
             logger.warn("Exception thrown but type is not SerializationException. " +
                             "Test: {}, Actual: {}",
                     testName, caughtException.getClass().getSimpleName());
@@ -135,11 +132,10 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      * If URI is http:// or https://, downloads directly.
      *
      * @param fileUri The URI to resolve
-     * @param testName The test name (for logging)
      * @return The absolute local file path
      * @throws Exception If URI scheme is unsupported
      */
-    private String resolveAndLoadFile(URI fileUri, String testName) throws Exception {
+    private String resolveAndLoadFile(URI fileUri) throws Exception {
         String scheme = fileUri.getScheme();
 
         if ("file".equals(scheme)) {

@@ -1,11 +1,6 @@
 package fr.inria.corese.w3c.rdfcanonical;
 
 import fr.inria.corese.w3c.BaseRdf11DynamicTest;
-import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.executor.impl.RdfCanonicalEvaluationTestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.executor.impl.RdfCanonicalMapTestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.executor.impl.RdfCanonicalNegativeTestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 

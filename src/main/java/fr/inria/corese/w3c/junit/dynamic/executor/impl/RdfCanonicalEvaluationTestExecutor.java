@@ -33,7 +33,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
 
     // Base URL for W3C RDF Canonicalization tests
     private static final String W3C_BASE_URL = "https://w3c.github.io/rdf-canon/tests/";
-
+    private static final String TEST_SUBDIR = "rdfc10";
     /**
      * Constructs a new RdfCanonicalEvaluationTestExecutor.
      */
@@ -60,43 +60,19 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
 
         try {
             // STEP 1: Resolve and load the action and result files
-            String actionFilePath = resolveAndLoadFile(actionFileUri, testName);
-            String resultFilePath = resolveAndLoadFile(resultFileUri, testName);
+            String actionFilePath = resolveAndLoadFile(actionFileUri);
+            String resultFilePath = resolveAndLoadFile(resultFileUri);
 
             // STEP 2: Create and populate the action model from the input file
-            Model actionModel = RDFTestUtils.createModel();
-            RDFFormat actionFormat = RDFFormat.NQUADS;
-            RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
+            Model actionModel = loadModelFromFile(actionFilePath);
 
-            try (FileReader reader = new FileReader(actionFilePath)) {
-                actionParser.parse(reader);
-            } catch (IOException e) {
-                logger.error("Failed to read or parse action file: {}", actionFilePath, e);
-                throw e;
-            }
-
-            // Log the input statements
-            logger.debug("Input statements for test {}:", testName);
-            List<Statement> inputStatements = actionModel.stream().toList();
-            for (int i = 0; i < inputStatements.size(); i++) {
-                Statement stmt = inputStatements.get(i);
-                logger.debug("  [{}] {}", i, StatementUtils.toNQuad(stmt));
-            }
 
             // STEP 3: Canonicalize the action model using RDFC-1.0
             Model canonicalizedModel = canonicalize(actionModel);
 
             // STEP 4: Load the expected canonical result into a model for comparison
-            Model expectedModel = RDFTestUtils.createModel();
-            // Expected results are typically also in N-Quads format
-            RDFParser resultParser = RDFTestUtils.createParser(RDFFormat.NQUADS, expectedModel);
+            Model expectedModel = loadModelFromFile(resultFilePath);
 
-            try (FileReader reader = new FileReader(resultFilePath)) {
-                resultParser.parse(reader);
-            } catch (IOException e) {
-                logger.error("Failed to read or parse result file: {}", resultFilePath, e);
-                throw e;
-            }
 
             // STEP 5: Compare models by CONTENT (Set of N-Quads strings)
             // Convert canonicalized statements to a Set of N-Quads strings
@@ -113,29 +89,24 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
 
         } catch (StackOverflowError e) {
             String msg = String.format(
-                    "Recursion with cyclic structures.",
+                    "Recursion with cyclic structures for test '%s'.",
                     testName);
             logger.error(msg, e);
 
             throw new AssertionError(msg, e);
 
-        } catch (Exception e) {
-            // Re-throw other exceptions
-            throw e;
         }
     }
-
     /**
      * Resolves a file URI and returns the path to the local file.
      * Supports 'file', 'http', and 'https' schemes. Downloads remote files if necessary.
      *
      * @param fileUri The URI of the action or result file.
-     * @param testName The name of the test case (for context/debugging).
      * @return The local file path string.
      * @throws Exception If the file cannot be resolved or loaded.
      * @throws IllegalArgumentException If the URI scheme is unsupported.
      */
-    private String resolveAndLoadFile(URI fileUri, String testName) throws Exception {
+    private String resolveAndLoadFile(URI fileUri) throws Exception {
         // Handle local file URIs
         if ("file".equals(fileUri.getScheme())) {
             java.nio.file.Path filePath = java.nio.file.Paths.get(fileUri);
@@ -147,8 +118,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
 
             // If local file not found, attempt to load from the remote W3C repository
             String filename = filePath.getFileName().toString();
-            String testSubdir = determineTestSubdir(filename);
-            String remoteUrl = W3C_BASE_URL + testSubdir + "/" + filename;
+            String remoteUrl = W3C_BASE_URL + TEST_SUBDIR + "/" + filename;
             URI remoteUri = URI.create(remoteUrl);
             logger.debug("Local file not found, loading from remote: {}", remoteUrl);
             return RDFTestUtils.loadFile(remoteUri);
@@ -163,20 +133,6 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
         throw new IllegalArgumentException("Unsupported URI scheme: " + fileUri);
     }
 
-    /**
-     * Determines the W3C test subdirectory for a given test file.
-     * Currently defaults to 'rdfc10'.
-     *
-     * @param filename The name of the file.
-     * @return The subdirectory name (e.g., "rdfc10").
-     */
-    private String determineTestSubdir(String filename) {
-        // This method provides a simple way to infer the subdirectory, currently hardcoded
-        if (filename.contains("test")) {
-            return "rdfc10";
-        }
-        return "rdfc10";
-    }
 
     /**
      * Canonicalizes the provided RDF model using the RDFC-1.0 algorithm implementation in Corese.
@@ -215,4 +171,24 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
         }
     }
 
+    /**
+     * Loads an RDF model from a file using the specified format.
+     *
+     * @param filePath The path to the file to load.
+     * @return The loaded Model.
+     * @throws IOException If an error occurs reading or parsing the file.
+     */
+    private Model loadModelFromFile(String filePath) throws IOException {
+        Model model = RDFTestUtils.createModel();
+        RDFParser parser = RDFTestUtils.createParser(RDFFormat.NQUADS, model);
+
+        try (FileReader reader = new FileReader(filePath)) {
+            parser.parse(reader);
+        } catch (IOException e) {
+            logger.error("Failed to read or parse file: {}", filePath, e);
+            throw e;
+        }
+
+        return model;
+    }
 }
