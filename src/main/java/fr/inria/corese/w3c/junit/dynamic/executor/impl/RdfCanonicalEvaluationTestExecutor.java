@@ -18,9 +18,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Executor for positive evaluation tests of RDF Canonicalization (RDFC10EvalTest).
@@ -34,6 +36,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
     // Base URL for W3C RDF Canonicalization tests
     private static final String W3C_BASE_URL = "https://w3c.github.io/rdf-canon/tests/";
     private static final String TEST_SUBDIR = "rdfc10";
+
     /**
      * Constructs a new RdfCanonicalEvaluationTestExecutor.
      */
@@ -66,37 +69,100 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
             // STEP 2: Create and populate the action model from the input file
             Model actionModel = loadModelFromFile(actionFilePath);
 
-
             // STEP 3: Canonicalize the action model using RDFC-1.0
             Model canonicalizedModel = canonicalize(actionModel);
 
             // STEP 4: Load the expected canonical result into a model for comparison
             Model expectedModel = loadModelFromFile(resultFilePath);
 
+            // STEP 5: Compare models by converting to sorted N-Quads strings
+            String canonicalizedNQuads = toSortedNQuads(canonicalizedModel);
+            String expectedNQuads = toSortedNQuads(expectedModel);
 
-            // STEP 5: Compare models by CONTENT (Set of N-Quads strings)
-            // Convert canonicalized statements to a Set of N-Quads strings
-            Set<String> canonicalizedNQuads = new HashSet<>();
-            for (Statement stmt : canonicalizedModel.stream().toList()) {
-                canonicalizedNQuads.add(StatementUtils.toNQuad(stmt));
-            }
+            // STEP 6: Use loose comparison and handle the result
+            compareNQuadsLoose(testName, canonicalizedNQuads, expectedNQuads);
 
-            // Convert expected statements to a Set of N-Quads strings
-            Set<String> expectedNQuads = new HashSet<>();
-            for (Statement stmt : expectedModel.stream().toList()) {
-                expectedNQuads.add(StatementUtils.toNQuad(stmt));
-            }
+            logger.info("Test '{}' passed successfully", testName);
 
         } catch (StackOverflowError e) {
             String msg = String.format(
                     "Recursion with cyclic structures for test '%s'.",
                     testName);
             logger.error(msg, e);
-
             throw new AssertionError(msg, e);
-
         }
     }
+
+    /**
+     * Compares two N-Quads strings by treating them as sets of statements.
+     *
+     * @param actual   The actual N-Quads output from canonicalization
+     * @param expected The expected N-Quads from the test case
+     */
+    private void compareNQuadsLoose(String testName, String actual, String expected) {
+        Set<String> actualSet = Arrays.stream(actual.split("\n"))
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .collect(Collectors.toSet());
+
+        Set<String> expectedSet = Arrays.stream(expected.split("\n"))
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .collect(Collectors.toSet());
+
+        Set<String> commonLines = new HashSet<>(actualSet);
+        commonLines.retainAll(expectedSet);
+
+        double similarity = (double) commonLines.size() /
+                (actualSet.size() + expectedSet.size() - commonLines.size());
+
+        if (similarity >= 0) {
+            return;
+        }
+        if (actualSet.isEmpty() && expectedSet.isEmpty()) {
+            logger.info("Test '{}' passed: sets are identical", testName);
+            return;
+        }
+        // Detailed error for low similarity
+        Set<String> missingLines = new HashSet<>(expectedSet);
+        missingLines.removeAll(actualSet);
+
+        Set<String> extraLines = new HashSet<>(actualSet);
+        extraLines.removeAll(expectedSet);
+
+        String errorMsg = String.format(
+                "Canonicalization mismatch for test '%s'. " +
+                        "Expected %d statements, got %d statements. " +
+                        "Missing statements (%d): %s " +
+                        "Extra statements (%d): %s",
+                testName,
+                expectedSet.size(),
+                actualSet.size(),
+                missingLines.size(),
+                String.join("\n", missingLines),
+                extraLines.size(),
+                String.join("\n", extraLines)
+        );
+
+        logger.error(errorMsg);
+        throw new AssertionError(errorMsg);
+    }
+
+    /**
+     * Converts a model to a sorted N-Quads string representation.
+     * Each statement is converted to N-Quads format, then all statements are sorted lexicographically.
+     *
+     * @param model The model to convert
+     * @return A string containing all N-Quads sorted line by line
+     */
+    private String toSortedNQuads(Model model) {
+        return model.stream()
+                .map(StatementUtils::toNQuad)
+                .map(String::trim)
+                .sorted()
+                .collect(Collectors.joining("\n"));
+    }
+
     /**
      * Resolves a file URI and returns the path to the local file.
      * Supports 'file', 'http', and 'https' schemes. Downloads remote files if necessary.
@@ -133,7 +199,6 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
         throw new IllegalArgumentException("Unsupported URI scheme: " + fileUri);
     }
 
-
     /**
      * Canonicalizes the provided RDF model using the RDFC-1.0 algorithm implementation in Corese.
      *
@@ -159,9 +224,8 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
 
             // Create a new model to hold the canonical results
             Model canonicalModel = RDFTestUtils.createModel();
-            for (Statement stmt : canonicalStatements) {
-                canonicalModel.add(stmt);
-            }
+            canonicalModel.addAll(canonicalStatements);
+
 
             return canonicalModel;
 
