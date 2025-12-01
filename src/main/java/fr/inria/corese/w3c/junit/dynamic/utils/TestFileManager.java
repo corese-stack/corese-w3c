@@ -26,11 +26,15 @@ public class TestFileManager {
      */
     public static final String RESOURCE_PATH_STRING = "src/test/resources/";
     /**
-     * Path string for the corse command line executable JAR.
+     * Path string for the corese command line executable JAR.
      */
     public static final String CORESE_COMMAND_PATH_STRING = RESOURCE_PATH_STRING + "corese-command.jar";
-    private static boolean updateModeFlag = false; // Indicates if the FileManager will try to update outdated files by
-                                                   // dowloading them and comparing them to the existing ones
+
+    /**
+     * Flag indicating whether to check and update outdated cached files.
+     * When enabled, the manager compares local and remote file hashes.
+     */
+    private static boolean updateModeFlag = false;
 
     /**
      * Private constructor to prevent instantiation of this utility class.
@@ -48,18 +52,12 @@ public class TestFileManager {
     }
 
     /**
-     * Downloads a file from a URI to a local path.
-     * If the file already exists locally, and the update mode is enabled,
-     * it checks if the local file is identical to the remote file based on their
-     * hash.
-     * If they are different (or the file doesn't exist locally), the local file is
-     * replaced.
+     * Loads a file from the given URI, downloading it from W3C if necessary.
      *
-     * @param fileUri The URI of the file to load.
-     * @throws IOException              If an I/O error occurs during file
-     *                                  operations (e.g., download, read, write).
-     * @throws NoSuchAlgorithmException If the SHA-256 hashing algorithm is not
-     *                                  available for file comparison.
+     *
+     * @param fileUri the URI of the file to load (can be a local file:// URI or remote http(s):// URI)
+     * @throws IOException if an I/O error occurs during file operations
+     * @throws NoSuchAlgorithmException if SHA-256 hashing algorithm is unavailable
      */
     public static void loadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
         String localFileFolder = getPrefixedFilename(fileUri); // Use getPrefixedFilename for consistency
@@ -72,9 +70,8 @@ public class TestFileManager {
     }
 
     /**
-     * Returns the path to the local copy of a remote file.
-     * The local path is constructed by combining the {@link #RESOURCE_PATH_STRING}
-     * with a prefixed filename derived from the remote URI.
+     * Extracts the relative path portion after a pattern match.
+     * Handles both Windows and Unix path separators.
      *
      * @param remoteFileUri The remote URI that can be used to determine the local
      *                      path of the file.
@@ -91,20 +88,19 @@ public class TestFileManager {
      * A temporary file is downloaded for the remote URI to perform the hash
      * comparison.
      *
-     * @param fileUri       Remote file URI.
-     * @param localFilePath Local file path.
-     * @return {@code true} if the files are different, {@code false} otherwise.
-     * @throws IOException              If an I/O error occurs during file
-     *                                  operations.
-     * @throws NoSuchAlgorithmException If the SHA-256 algorithm is not available.
+     * @param remoteUri the remote file URI
+     * @param localFilePath the local cached file path
+     * @return {@code true} if the files differ, {@code false} if they are identical
+     * @throws IOException if an I/O error occurs
+     * @throws NoSuchAlgorithmException if SHA-256 algorithm is unavailable
      */
-    private static boolean isRemoteFileDifferent(URI fileUri, Path localFilePath)
+    private static boolean isRemoteFileDifferent(URI remoteUri, Path localFilePath)
             throws IOException, NoSuchAlgorithmException {
         String localFileHash = hashFile(localFilePath);
 
         Path tempFile = Files.createTempFile("remote_file", ".tmp");
         try {
-            downloadFile(fileUri, tempFile);
+            downloadFile(remoteUri, tempFile);
             String remoteFileHash = hashFile(tempFile);
 
             return !localFileHash.equals(remoteFileHash);
@@ -114,42 +110,51 @@ public class TestFileManager {
     }
 
     /**
-     * Downloads a file from a URI to a specified local path.
-     * It ensures the parent directories of the local path exist before copying the
-     * file.
+     * Downloads a file from a remote URI to a local path.
+     * Creates parent directories if they don't exist.
      *
-     * @param fileUri       The URI of the file to download.
-     * @param localFilePath The {@link Path} where the file should be saved locally.
-     * @throws IOException If an I/O error occurs during the download or file
-     *                     writing.
+     * @param remoteUri the URI of the file to download
+     * @param localFilePath the destination path for the downloaded file
+     * @throws IOException if an I/O error occurs during download
      */
-    private static void downloadFile(URI fileUri, Path localFilePath) throws IOException {
+    private static void downloadFile(URI remoteUri, Path localFilePath) throws IOException {
         Files.createDirectories(localFilePath.getParent());
-        try (InputStream in = fileUri.toURL().openStream()) {
+
+        try (InputStream in = remoteUri.toURL().openStream()) {
             Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
     /**
-     * Generates an SHA-256 hash for a given file.
+     * Computes the SHA-256 hash of a file.
      *
-     * @param filePath The {@link Path} to the file.
-     * @return The SHA-256 hash of the file in hexadecimal format.
-     * @throws NoSuchAlgorithmException If the SHA-256 algorithm is not available.
-     * @throws IOException              If an I/O error occurs during file reading.
+     * @param filePath the path to the file
+     * @return the SHA-256 hash in hexadecimal format
+     * @throws NoSuchAlgorithmException if SHA-256 algorithm is unavailable
+     * @throws IOException if an I/O error occurs while reading the file
      */
     private static String hashFile(Path filePath) throws NoSuchAlgorithmException, IOException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
         try (InputStream fis = Files.newInputStream(filePath)) {
-            byte[] byteArray = new byte[1024];
-            int bytesCount;
-            while ((bytesCount = fis.read(byteArray)) != -1) {
-                digest.update(byteArray, 0, bytesCount);
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                digest.update(buffer, 0, bytesRead);
             }
         }
 
-        byte[] bytes = digest.digest();
-        StringBuilder sb = new StringBuilder();
+        return bytesToHex(digest.digest());
+    }
+
+    /**
+     * Converts a byte array to a hexadecimal string.
+     *
+     * @param bytes the byte array
+     * @return the hexadecimal representation
+     */
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
         for (byte b : bytes) {
             sb.append(String.format("%02x", b));
         }
@@ -159,8 +164,8 @@ public class TestFileManager {
     /**
      * Extracts the file name from a URI.
      *
-     * @param fileUri The URI of the file.
-     * @return The file name as a {@code String}.
+     * @param fileUri the URI
+     * @return the file name
      */
     private static String getFileName(URI fileUri) {
         try {
@@ -171,14 +176,10 @@ public class TestFileManager {
             return lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
         }
     }
+
     /**
      * Extracts the relevant segments from the URI path to create local folder
-     * structure.
-     * This is used to create a prefixed folder structure for local caching.
-     * For rdf11 tests:
-     * "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/xmlbase/test.rdf"
-     * returns "rdf11/rdf-xml/xmlbase".
-     * For other patterns, it falls back to two-segment extraction.
+     * structure. This is used to create a prefixed folder structure for local caching.
      *
      * @param uri The URI from which to extract segments.
      * @return A string representing the last relevant path segments, or an empty
@@ -213,7 +214,6 @@ public class TestFileManager {
         } else if (segments.length >= 2) {
             return segments[segments.length - 2];
         } else {
-            // If not enough segments, return the empty string
             return "";
         }
     }
@@ -226,13 +226,11 @@ public class TestFileManager {
      * to create a unique and organized local file path.
      *
      * @param fileUri The URI of the remote file.
-     * @return A {@code String} representing the prefixed filename for local
-     *         storage.
+     * @return A {@code String} representing the prefixed filename for local storage.
      */
     private static String getPrefixedFilename(URI fileUri) {
         String lastSegments = extractLastURISegments(fileUri);
         String filename = getFileName(fileUri);
         return lastSegments + "/" + filename;
     }
-
 }

@@ -50,6 +50,15 @@ public class RDFTestUtils {
     }
 
     /**
+     * Creates a ValueFactory instance for creating RDF values.
+     *
+     * @return A new ValueFactory
+     */
+    public static ValueFactory createValueFactory() {
+        return new CoreseAdaptedValueFactory();
+    }
+
+    /**
      * Loads a file from URI and returns the local file path.
      * 
      * @param fileUri The file URI to load

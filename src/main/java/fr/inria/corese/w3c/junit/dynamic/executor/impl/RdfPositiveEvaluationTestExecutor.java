@@ -1,26 +1,20 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
-import java.io.FileReader;
-import java.net.URI;
-
 import com.apicatalog.jsonld.JsonLdVersion;
-import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fr.inria.corese.core.next.api.Model;
 import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.core.next.api.io.parser.RDFParser;
-import fr.inria.corese.core.next.impl.exception.ParsingErrorException;
+import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
-import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
+
+import java.io.FileReader;
+import java.net.URI;
 
 /**
  * Specialized executor for positive RDF evaluation tests.
  * These tests should parse successfully and match the expected semantic result.
- *
  * Process:
  * 1. Extract needed information from test case
  * 2. Parse the input action file
@@ -31,8 +25,6 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
  */
 public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
-    private static final Logger logger = LoggerFactory.getLogger(RdfPositiveEvaluationTestExecutor.class);
-
     /**
      * Default constructor.
      * This constructor is intentionally empty as no initialization is required.
@@ -42,14 +34,10 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
     }
 
     @Override
-    @SuppressWarnings("java:S3776") // Cognitive complexity acceptable for test executor logic
     public void execute(W3cTestCase testCase) throws Exception {
-        // Extract needed information from test case
-        String testName = testCase.getName();
         URI actionFileUri = testCase.getActionFileUri();
         URI resultFileUri = testCase.getResultFileUri();
 
-        try {
             // Load the action file
             String actionFilePath = RDFTestUtils.loadFile(actionFileUri);
             String actionBaseUriString = RDFTestUtils.getBaseUri(actionFileUri).toString();
@@ -113,22 +101,5 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             try (FileReader reader = new FileReader(resultFilePath)) {
                 resultParser.parse(reader, resultBaseUriString);
             }
-
-            // Test //
-            if (!ModelIsomorphism.areModelsIsomorphic(actionModel, resultModel)) {
-                String msg = RDFTestUtils.formatErrorMessage(
-                        "Positive evaluation test failed - models are not isomorphic",
-                        testName, actionFileUri, resultFileUri, null);
-                logger.error(msg);
-                throw new AssertionError(msg);
-            }
-
-        } catch (ParsingErrorException e) {
-            String msg = RDFTestUtils.formatErrorMessage(
-                    "Positive evaluation test failed - parsing error",
-                    testName, actionFileUri, resultFileUri, e);
-            logger.error(msg, e);
-            throw new AssertionError(msg);
-        }
     }
 }

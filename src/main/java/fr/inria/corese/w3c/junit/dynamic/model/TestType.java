@@ -43,7 +43,23 @@ public enum TestType {
     /** JSON-LD Positive Evaluation test (expects evaluation to succeed) */
     JSON_LD_POSITIVE_EVAL("JSON-LD Positive Evaluation Test"),
     /** JSON-LD Negative Evaluation test (expects evaluation to fail) */
-    JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test");
+    JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test"),
+
+    /**
+     * RDF Canonicalization
+     * Tests the canonical form of RDF graphs according to RDFC10 standard.
+     */
+    RDFC10_EVAL_TEST("Rdfc10EvalTest"),
+    /**
+     * RDF Canonicalization
+     * Tests the mapping functionality of the RDFC10 canonicalization algorithm.
+     */
+    RDFC10_MAP_TEST("Rdfc10MapTest"),
+    /**
+     * RDF Canonicalization
+     * Expects evaluation to fail for invalid inputs or edge cases.
+     */
+    RDFC10_NEGATIVE_EVAL_TEST("Rdfc10NegativeEvalTest");
 
     private final String description;
 
@@ -101,4 +117,5 @@ public enum TestType {
     public String toString() {
         return description;
     }
+
 }

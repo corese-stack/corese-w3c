@@ -1,9 +1,7 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.factory;
 
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.executor.impl.RdfPositiveEvaluationTestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.executor.impl.RdfPositiveSyntaxTestExecutor;
-import fr.inria.corese.w3c.junit.dynamic.executor.impl.RdfNegativeTestExecutor;
+import fr.inria.corese.w3c.junit.dynamic.executor.impl.*;
 import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 
 /**
@@ -16,6 +14,12 @@ public class TestExecutorFactory {
     private static final RdfPositiveEvaluationTestExecutor POSITIVE_EVALUATION_EXECUTOR = new RdfPositiveEvaluationTestExecutor();
     private static final RdfPositiveSyntaxTestExecutor POSITIVE_SYNTAX_EXECUTOR = new RdfPositiveSyntaxTestExecutor();
     private static final RdfNegativeTestExecutor NEGATIVE_TEST_EXECUTOR = new RdfNegativeTestExecutor();
+
+    // Singleton instances for RDF Canonical test executors
+    private static final RdfCanonicalEvaluationTestExecutor CANONICAL_EVALUATION_EXECUTOR = new RdfCanonicalEvaluationTestExecutor();
+    private static final RdfCanonicalMapTestExecutor CANONICAL_MAP_EXECUTOR = new RdfCanonicalMapTestExecutor();
+    private static final RdfCanonicalNegativeTestExecutor CANONICAL_NEGATIVE_EXECUTOR = new RdfCanonicalNegativeTestExecutor();
+
 
     /**
      * constructor
@@ -34,12 +38,19 @@ public class TestExecutorFactory {
         if (testType == null) {
             throw new IllegalArgumentException("Test type cannot be null");
         }
-        
+
         return switch (testType) {
+
+            case RDFC10_EVAL_TEST -> CANONICAL_EVALUATION_EXECUTOR;
+            case RDFC10_MAP_TEST -> CANONICAL_MAP_EXECUTOR;
+            case RDFC10_NEGATIVE_EVAL_TEST -> CANONICAL_NEGATIVE_EXECUTOR;
+
             case TestType type when type.isEvaluationTest() && type.isPositiveTest() -> POSITIVE_EVALUATION_EXECUTOR;
             case TestType type when type.isEvaluationTest() && type.isNegativeTest() -> NEGATIVE_TEST_EXECUTOR;
             case TestType type when type.isSyntaxTest() && type.isPositiveTest() -> POSITIVE_SYNTAX_EXECUTOR;
             case TestType type when type.isSyntaxTest() && type.isNegativeTest() -> NEGATIVE_TEST_EXECUTOR;
+
+
             default -> throw new IllegalArgumentException("No executor available for test type: " + testType);
         };
     }
