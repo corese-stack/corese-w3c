@@ -1,16 +1,18 @@
-package fr.inria.corese.w3c.rdf11rdfa;
+package fr.inria.corese.w3c.rdf11rdfa.xhtml;
 
-import fr.inria.corese.core.next.api.base.io.RDFFormat;
 import fr.inria.corese.w3c.BaseRdf11DynamicTest;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
 import java.util.stream.Stream;
 
-public class Rdf11RdfaDynamicTest extends BaseRdf11DynamicTest {
+/**
+ * Dynamic test suite for RDF 1.1 RDFa+SVG tests.
+ */
+public class Rdf11RDFaXHTMLDynamicTest extends BaseRdf11DynamicTest {
 
     private static final String MANIFEST_URL =
-            "https://www.w3.org/2006/07/SWD/RDFa/testsuite/xhtml1-testcases-20080731/rdfa-xhtml1-test-manifest.rdf";
+            "https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/manifest.ttl";
 
     @Override
     protected String getManifestUrl() {
@@ -19,11 +21,11 @@ public class Rdf11RdfaDynamicTest extends BaseRdf11DynamicTest {
 
     @Override
     protected String getFormatName() {
-        return RDFFormat.RDFa.getName();
+        return "RDFa+XHTML";
     }
 
     @TestFactory
-    Stream<DynamicTest> rdf11RdfaTests() {
+    Stream<DynamicTest> rdf11RDFaXHTMLTests() {
         return createDynamicTests();
     }
 }

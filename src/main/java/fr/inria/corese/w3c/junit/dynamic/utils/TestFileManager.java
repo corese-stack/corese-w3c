@@ -126,7 +126,7 @@ public class TestFileManager {
      */
     private static void downloadFile(URI remoteUri, Path localFilePath) throws IOException {
         Files.createDirectories(localFilePath.getParent());
-        try (InputStream in = getRedirectedUrl(fileUri.toURL()).openStream()) {
+        try (InputStream in = getRedirectedUrl(remoteUri.toURL()).openStream()) {
             Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
         }
     }

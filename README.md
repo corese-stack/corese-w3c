@@ -35,7 +35,7 @@ Test files and manifests are in the `src/test/resources` directory.
 
 
 # RDFa Tests
-./gradlew test --tests "Rdf11RdfaDynamicTest"
+./gradlew test --tests "Rdf11RDFa*DynamicTest"
 ```
 
 ## 2. Managing corese

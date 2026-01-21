@@ -281,7 +281,7 @@ public class W3cTestCase {
         if (manifestPath.contains("json-ld"))
             return RDFFormat.JSONLD.getName();
         if (manifestPath.contains("RDFa"))
-            return RDFFormat.RDFa.getName();
+            return RDFFormat.RDFA.getName();
         return "RDF"; // Default fallback
     }
 

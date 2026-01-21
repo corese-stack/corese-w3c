@@ -41,7 +41,6 @@ public class RDFTestUtils {
      * @param format The RDF format
      * @param model  The model to parse into
      * @return A configured RDFParser
-     * @throws Exception If parser creation fails
      */
     public static RDFParser createParser(RDFFormat format, Model model) {
         ParserFactory parserFactory = new ParserFactory();

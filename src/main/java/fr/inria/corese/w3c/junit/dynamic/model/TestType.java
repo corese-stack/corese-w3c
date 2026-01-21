@@ -45,7 +45,7 @@ public enum TestType {
     /** JSON-LD Negative Evaluation test (expects evaluation to fail) */
     JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test"),
     /** ASK-based evaluation test */
-    ASK_BASED_EVAL("ASK-based Evaluation Test");
+    ASK_BASED_EVAL("ASK-based Evaluation Test"),
 
     /**
      * RDF Canonicalization
