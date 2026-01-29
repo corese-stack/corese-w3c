@@ -98,12 +98,12 @@ This dynamic test system currently supports the following W3C test suites:
   - [TriG tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/) - Positive/negative syntax and evaluation
   - [RDF/XML tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/) - Positive/negative syntax and evaluation
   - [JSON-LD 1.1 tests](https://json-ld.github.io/json-ld.org/test-suite/reports/) - Positive/negative syntax and evaluation
+  - [RDF Canonical](https://w3c.github.io/rdf-canon/tests/) - Positive/negative syntax
 
 ### Planned implementation in corese-w3c
 
 - **RDF tests**
   - [RDFa core](https://rdfa.info/test-suite/)  
-  - [RDF Canonical](https://w3c.github.io/rdf-canon/tests/)
   - RDF 1.1 tests
     - [RDF Schema and Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-mt/)
 - **SPARQL tests**
