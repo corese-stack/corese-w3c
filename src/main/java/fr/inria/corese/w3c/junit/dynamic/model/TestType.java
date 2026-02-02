@@ -61,7 +61,15 @@ public enum TestType {
      * RDF Canonicalization
      * Expects evaluation to fail for invalid inputs or edge cases.
      */
-    RDFC10_NEGATIVE_EVAL_TEST("Rdfc10NegativeEvalTest");
+    RDFC10_NEGATIVE_EVAL_TEST("Rdfc10NegativeEvalTest"),
+    /**
+     * RDFa Positive evaluation
+     */
+    RDFA_POSITIVE_EVAL("RDFa Positive Evaluation"),
+    /**
+     * RDFa Negative evaluation
+     */
+    RDFA_NEGATIVE_EVAL("RDFa Negative Evaluation");
 
     private final String description;
 

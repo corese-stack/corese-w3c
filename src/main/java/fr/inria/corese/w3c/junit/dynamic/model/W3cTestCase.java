@@ -268,19 +268,19 @@ public class W3cTestCase {
      * @return The detected format name (e.g., "Turtle", "Xml"), or "RDF" if unknown.
      */
     private String extractFormatFromManifestPath(String manifestPath) {
-        if (manifestPath.contains("rdf-turtle"))
+        if (manifestPath.toLowerCase().contains("rdf-turtle"))
             return RDFFormat.TURTLE.getName();
-        if (manifestPath.contains("rdf-trig"))
+        if (manifestPath.toLowerCase().contains("rdf-trig"))
             return RDFFormat.TRIG.getName();
-        if (manifestPath.contains("rdf-xml"))
+        if (manifestPath.toLowerCase().contains("rdf-xml"))
             return RDFFormat.RDFXML.getName();
-        if (manifestPath.contains("rdf-n-triples"))
+        if (manifestPath.toLowerCase().contains("rdf-n-triples"))
             return RDFFormat.NTRIPLES.getName();
-        if (manifestPath.contains("rdf-n-quads"))
+        if (manifestPath.toLowerCase().contains("rdf-n-quads"))
             return RDFFormat.NQUADS.getName();
-        if (manifestPath.contains("json-ld"))
+        if (manifestPath.toLowerCase().contains("json-ld"))
             return RDFFormat.JSONLD.getName();
-        if (manifestPath.contains("RDFa"))
+        if (manifestPath.toLowerCase().contains("rdfa"))
             return RDFFormat.RDFA.getName();
         return "RDF"; // Default fallback
     }
