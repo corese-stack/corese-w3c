@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
 
-import fr.inria.corese.core.next.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
 import fr.inria.corese.w3c.junit.dynamic.executor.factory.TestExecutorFactory;
 
 /**

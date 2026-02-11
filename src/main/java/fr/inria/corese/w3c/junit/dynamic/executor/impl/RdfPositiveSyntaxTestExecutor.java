@@ -4,14 +4,14 @@ import java.io.FileReader;
 import java.net.URI;
 
 import com.apicatalog.jsonld.JsonLdVersion;
-import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
+import fr.inria.corese.core.next.data.impl.io.common.JSONLDOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.inria.corese.core.next.api.Model;
-import fr.inria.corese.core.next.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.api.io.parser.RDFParser;
-import fr.inria.corese.core.next.impl.exception.ParsingErrorException;
+import fr.inria.corese.core.next.data.api.Model;
+import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.data.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.impl.exception.ParsingErrorException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;

@@ -2,10 +2,10 @@ package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import com.apicatalog.jsonld.JsonLdVersion;
 import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.next.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.api.io.parser.RDFParser;
-import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
-import fr.inria.corese.core.next.impl.temp.CoreseModel;
+import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.data.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.impl.io.common.JSONLDOptions;
+import fr.inria.corese.core.next.data.impl.temp.CoreseModel;
 import fr.inria.corese.core.query.QueryProcess;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
