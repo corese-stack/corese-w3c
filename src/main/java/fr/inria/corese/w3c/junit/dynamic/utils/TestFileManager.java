@@ -1,8 +1,13 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,6 +23,8 @@ import java.security.NoSuchAlgorithmException;
  * manipulation.
  */
 public class TestFileManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(TestFileManager.class);
 
     /**
      * The base path string for test resources. Files downloaded or accessed by this
@@ -119,10 +126,26 @@ public class TestFileManager {
      */
     private static void downloadFile(URI remoteUri, Path localFilePath) throws IOException {
         Files.createDirectories(localFilePath.getParent());
-
-        try (InputStream in = remoteUri.toURL().openStream()) {
+        try (InputStream in = getRedirectedUrl(remoteUri.toURL()).openStream()) {
             Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
         }
+    }
+
+    private static URL getRedirectedUrl(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setInstanceFollowRedirects(true);
+        int status = connection.getResponseCode();
+        String redirectedUrl = null;
+        if (status == HttpURLConnection.HTTP_MOVED_PERM || status == HttpURLConnection.HTTP_MOVED_TEMP) {
+            redirectedUrl = connection.getHeaderField("Location");
+        }
+        connection.disconnect();
+
+        if(redirectedUrl == null) {
+            return url;
+        }
+
+        return URI.create(redirectedUrl).toURL();
     }
 
     /**

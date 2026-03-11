@@ -1,6 +1,7 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
-import fr.inria.corese.core.next.api.*;
+import fr.inria.corese.core.next.data.api.*;
+import fr.inria.corese.core.next.data.api.Model;
 
 import java.util.*;
 

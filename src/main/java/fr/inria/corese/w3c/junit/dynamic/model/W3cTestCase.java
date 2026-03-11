@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
 
+import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
 import fr.inria.corese.w3c.junit.dynamic.executor.factory.TestExecutorFactory;
 
 /**
@@ -12,6 +13,48 @@ import fr.inria.corese.w3c.junit.dynamic.executor.factory.TestExecutorFactory;
  * data-driven model.
  */
 public class W3cTestCase {
+
+    /**
+     * Property keys for tests
+     */
+    public enum Property {
+        // Common properties
+        NAME("name"),
+        COMMENT("comment"),
+        ACTION("action"),
+        RESULT("result"),
+        // ASK-based test properties
+        EXPECTED_BOOLEAN("expectedBoolean"),
+        // Shape test properties
+        QUERY("query"),
+        DATA("data"),
+        DATA_GRAPH("dataGraph"),
+        SHAPES_GRAPH("shapesGraph"),
+        CONFORMITY("conformity"),
+        // Canonical test properties
+        HASH_ALGORITHM("hashAlgorithm"),
+        // JSON-LD test properties
+        BASE_URI("baseUri"),
+        SPEC_VERSION("specVersion"),
+        USE_NATIVE_TYPES("useNativeTypes"),
+        USE_RDF_TYPES("useRdfType"),
+        ;
+
+        private String key = null;
+
+        Property(String keyString) {
+            this.key = keyString;
+        }
+
+        public String getKey() {
+            return this.key;
+        }
+
+        @Override
+        public String toString() {
+            return this.getKey();
+        }
+    }
 
     private final String testUri;
     private final String name;
@@ -131,6 +174,19 @@ public class W3cTestCase {
     }
 
     /**
+     * Gets a property value with type safety.
+     *
+     * @param <T> The expected type of the property value.
+     * @param property The Property enum item.
+     * @param type The class object representing the expected type.
+     * @return The property value, cast to the expected type, or null if not found.
+     * @throws IllegalArgumentException if the property exists but is not of the expected type.
+     */
+    public <T> T getProperty(Property property, Class<T> type) {
+        return getProperty(property.getKey(), type);
+    }
+
+    /**
      * Gets a property value as URI.
      *
      * @param key The key of the property, expected to hold a String URI.
@@ -148,7 +204,7 @@ public class W3cTestCase {
      * @return The URI of the action file, or null if not present
      */
     public URI getActionFileUri() {
-        return getUriProperty("action");
+        return getUriProperty(Property.ACTION.getKey());
     }
 
     /**
@@ -158,7 +214,7 @@ public class W3cTestCase {
      * @return The URI of the result file, or null if not present
      */
     public URI getResultFileUri() {
-        return getUriProperty("result");
+        return getUriProperty(Property.RESULT.getKey());
     }
 
     /**
@@ -212,18 +268,20 @@ public class W3cTestCase {
      * @return The detected format name (e.g., "Turtle", "Xml"), or "RDF" if unknown.
      */
     private String extractFormatFromManifestPath(String manifestPath) {
-        if (manifestPath.contains("rdf-turtle"))
-            return "Turtle";
-        if (manifestPath.contains("rdf-trig"))
-            return "Trig";
-        if (manifestPath.contains("rdf-xml"))
-            return "Xml";
-        if (manifestPath.contains("rdf-n-triples"))
-            return "N-Triples";
-        if (manifestPath.contains("rdf-n-quads"))
-            return "N-Quads";
-        if (manifestPath.contains("json-ld"))
-            return "JSON-LD";
+        if (manifestPath.toLowerCase().contains("rdf-turtle"))
+            return RDFFormat.TURTLE.getName();
+        if (manifestPath.toLowerCase().contains("rdf-trig"))
+            return RDFFormat.TRIG.getName();
+        if (manifestPath.toLowerCase().contains("rdf-xml"))
+            return RDFFormat.RDFXML.getName();
+        if (manifestPath.toLowerCase().contains("rdf-n-triples"))
+            return RDFFormat.NTRIPLES.getName();
+        if (manifestPath.toLowerCase().contains("rdf-n-quads"))
+            return RDFFormat.NQUADS.getName();
+        if (manifestPath.toLowerCase().contains("json-ld"))
+            return RDFFormat.JSONLD.getName();
+        if (manifestPath.toLowerCase().contains("rdfa"))
+            return RDFFormat.RDFA.getName();
         return "RDF"; // Default fallback
     }
 
@@ -237,9 +295,8 @@ public class W3cTestCase {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof W3cTestCase))
+        if (!(o instanceof W3cTestCase that))
             return false;
-        W3cTestCase that = (W3cTestCase) o;
         return Objects.equals(testUri, that.testUri);
     }
 

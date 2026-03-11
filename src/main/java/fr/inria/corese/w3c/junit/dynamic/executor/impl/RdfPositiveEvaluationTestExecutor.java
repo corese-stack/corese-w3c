@@ -1,10 +1,10 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import com.apicatalog.jsonld.JsonLdVersion;
-import fr.inria.corese.core.next.api.Model;
-import fr.inria.corese.core.next.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.api.io.parser.RDFParser;
-import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
+import fr.inria.corese.core.next.data.api.Model;
+import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.data.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.impl.io.common.JSONLDOptions;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -59,14 +59,14 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             // Parser config for JSON-LD format
             if(actionFormat == RDFFormat.JSONLD || resultFormat == RDFFormat.JSONLD) {
                 JSONLDOptions.Builder optionBuilder = new JSONLDOptions.Builder();
-                if(testCase.getProperty("baseUri", String.class) != null) {
-                    String baseUri = testCase.getProperty("baseUri", String.class);
+                if(testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class) != null) {
+                    String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class);
                     optionBuilder.base(baseUri);
                     actionBaseUriString = baseUri;
                     resultBaseUriString = baseUri;
                 }
-                if(testCase.getProperty("specVersion", String.class) != null) {
-                    String specVersion = testCase.getProperty("specVersion", String.class);
+                if(testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class) != null) {
+                    String specVersion = testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class);
                     if(specVersion.equals("json-ld-1.0")) {
                         optionBuilder.processingMode(JsonLdVersion.V1_0);
                     }
@@ -75,12 +75,12 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
                     }
                 }
 
-                if(testCase.getProperty("useNativeTypes", String.class) != null) {
-                    boolean usesNativeTypes = testCase.getProperty("useNativeTypes", String.class).equals("true");
+                if(testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class) != null) {
+                    boolean usesNativeTypes = testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class).equals("true");
                     optionBuilder.useNativeTypes(usesNativeTypes);
                 }
-                if(testCase.getProperty("useRdfType", String.class) != null) {
-                    boolean useRdfType = testCase.getProperty("useRdfType", String.class).equals("true");
+                if(testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class) != null) {
+                    boolean useRdfType = testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class).equals("true");
                     optionBuilder.useRdfType(useRdfType);
                 }
 

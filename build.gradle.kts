@@ -46,13 +46,13 @@ dependencies {
 
     implementation("commons-logging:commons-logging:1.3.4")
 
-    val lo4j_version = "2.18.0"
-    implementation("org.apache.logging.log4j:log4j-api:${lo4j_version}")
-    implementation("org.apache.logging.log4j:log4j-core:${lo4j_version}")
-    implementation("org.slf4j:slf4j-api:1.8.0-beta2")
-    testImplementation("org.apache.logging.log4j:log4j-api:${lo4j_version}")
-    testImplementation("org.apache.logging.log4j:log4j-core:${lo4j_version}")
-    testImplementation("org.slf4j:slf4j-api:1.8.0-beta2")
+    val lo4j_version = "2.25.2"
+    // === Test dependencies ===
+    testImplementation(platform("org.junit:junit-bom:5.13.2"))                         // JUnit BOM for consistent test versions
+    testImplementation("org.junit.jupiter:junit-jupiter:5.13.2")                       // JUnit Jupiter API and engine
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.2")               // JUnit platform launcher (runtime)
+    testRuntimeOnly("org.apache.logging.log4j:log4j-core:${lo4j_version}")                          // Log4j2 core for internal logging
+    testRuntimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:${lo4j_version}")                   // SLF4J binding for Log4j2 (runtime)
 
     implementation("jakarta.activation:jakarta.activation-api:2.1.3")
 

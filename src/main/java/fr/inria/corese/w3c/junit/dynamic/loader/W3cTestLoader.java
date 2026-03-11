@@ -2,6 +2,7 @@ package fr.inria.corese.w3c.junit.dynamic.loader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,12 +14,15 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.apicatalog.jsonld.document.JsonDocument;
-import fr.inria.corese.core.next.api.Model;
-import fr.inria.corese.core.next.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.api.io.IOOptions;
-import fr.inria.corese.core.next.api.io.parser.RDFParser;
-import fr.inria.corese.core.next.impl.io.common.JSONLDOptions;
-import fr.inria.corese.core.next.impl.temp.CoreseModel;
+import fr.inria.corese.core.next.data.api.Model;
+import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.data.io.IOOptions;
+import fr.inria.corese.core.next.data.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.io.serializer.RDFSerializer;
+import fr.inria.corese.core.next.data.impl.io.common.JSONLDOptions;
+import fr.inria.corese.core.next.data.impl.io.serialization.SerializerFactory;
+import fr.inria.corese.core.next.data.impl.io.serialization.turtle.TurtleSerializerOptions;
+import fr.inria.corese.core.next.data.impl.temp.CoreseModel;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +45,37 @@ public class W3cTestLoader {
     private static final String TEST_LIST_QUERY = """
                 PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX td: <http://www.w3.org/2006/03/test-description#>
                 
                 SELECT DISTINCT ?test ?type WHERE {
-                    ?manifest a mf:Manifest .
-                    { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
-                    UNION { ?manifest mf:entries ?test .}
                     ?test a ?type .
                     FILTER(?type != mf:Manifest)
+                    {
+                        ?manifest a mf:Manifest .
+                        { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
+                        UNION { ?manifest mf:entries ?test .}
+                    } UNION {
+                        FILTER(?type = td:TestCase)
+                    }
                 }
                 ORDER BY ?test
+                """;
+    private static final String TEST_COUNT_QUERY = """
+                PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX td: <http://www.w3.org/2006/03/test-description#>
+                
+                SELECT (COUNT(DISTINCT ?test) AS ?count) WHERE {
+                    ?test a ?type .
+                    FILTER(?type != mf:Manifest)
+                    {
+                        ?manifest a mf:Manifest .
+                        { ?manifest mf:entries/rdf:rest*/rdf:first ?test . }
+                        UNION { ?manifest mf:entries ?test .}
+                    } UNION {
+                        FILTER(?type = td:TestCase)
+                    }
+                }
                 """;
 
     /**
@@ -76,9 +102,23 @@ public class W3cTestLoader {
         List<W3cTestCase> testCases = new ArrayList<>();
 
         try {
+
+            String countQueryString = buildTestCountQuery();
+            Mappings countMappings = queryProcess.query(countQueryString);
+            logger.info("Looking for {} tests", countMappings.get(0));
+
+            SerializerFactory debugSerialFactory = new SerializerFactory();
+            RDFSerializer debugSerializer = debugSerialFactory.createSerializer(RDFFormat.NTRIPLES, model, (new TurtleSerializerOptions.Builder()).build());
+            StringWriter debugWriter = new StringWriter();
+            debugSerializer.write(debugWriter);
+            logger.info(debugWriter.toString());
+
             // Query for all tests in the manifest
             String testQuery = buildTestListQuery();
+            logger.info("Executing {}", testQuery);
             Mappings testMappings = queryProcess.query(testQuery);
+            logger.info("Found {} tests", testMappings.getMappingList().size());
+            logger.info("{}", testMappings);
 
             for (Mapping mapping : testMappings) {
                 String testUri = mapping.getValue("?test").getLabel();
@@ -146,7 +186,9 @@ public class W3cTestLoader {
 
         // Get test details
         String detailQuery = buildTestDetailQuery(testUri);
+        logger.info("Looking for details: {}", detailQuery);
         Mappings detailMappings = queryProcess.query(detailQuery);
+        logger.info("Details found = {}", detailMappings);
 
         if (detailMappings.isEmpty()) {
             throw new IllegalArgumentException("No test details found for: " + testUri);
@@ -180,15 +222,10 @@ public class W3cTestLoader {
     private static Map<String, Object> extractTestProperties(Mapping details) {
         Map<String, Object> properties = new HashMap<>();
 
-        // Common properties
-        addIfPresent(properties, details, "action");
-        addIfPresent(properties, details, "result");
+        for(W3cTestCase.Property property : W3cTestCase.Property.values()) {
+            addIfPresent(properties, details, property.getKey());
+        }
 
-        // JSONLD properties
-        addIfPresent(properties, details, "baseUri");
-        addIfPresent(properties, details, "specVersion");
-        addIfPresent(properties, details, "useNativeTypes");
-        addIfPresent(properties, details, "useRdfType");
         return properties;
     }
 
@@ -232,6 +269,7 @@ public class W3cTestLoader {
         String lowerUri = typeUri.toLowerCase();
 
         return switch (typeUri) {
+            case "http://www.w3.org/2006/03/test-description#TestCase" -> TestType.ASK_BASED_EVAL;
             // RDF 1.1 Turtle tests
             case String s when lowerUri.contains("testturtlenegativesyntax") -> TestType.TURTLE_NEGATIVE_SYNTAX;
             case String s when lowerUri.contains("testturtlepositivesyntax") -> TestType.TURTLE_POSITIVE_SYNTAX;
@@ -266,6 +304,10 @@ public class W3cTestLoader {
             case String s when s.contains("json-ld-api/tests/vocab#NegativeEvaluationTest") -> TestType.JSON_LD_NEGATIVE_EVAL;
             case String s when s.contains("json-ld-api/tests/vocab#PositiveSyntaxTest") -> TestType.JSON_LD_POSITIVE_SYNTAX;
             case String s when s.contains("json-ld-api/tests/vocab#NegativeSyntaxTest") -> TestType.JSON_LD_NEGATIVE_SYNTAX;
+
+            // RDFa tests
+            case String s when s.contains("rdfa-test#PositiveEvaluationTest") -> TestType.RDFA_POSITIVE_EVAL;
+            case String s when s.contains("rdfa-test#NegativeEvaluationTest") -> TestType.RDFA_NEGATIVE_EVAL;
 
             default -> throw new IllegalArgumentException("Unsupported or unknown test type URI: " + typeUri);
         };
@@ -365,6 +407,15 @@ public class W3cTestLoader {
     }
 
     /**
+     * Builds SPARQL query to count the number of tests from a manifest.
+     *
+     * @return the SPARQL query string
+     */
+    private static String buildTestCountQuery() {
+        return TEST_COUNT_QUERY;
+    }
+
+    /**
      * Builds SPARQL query to get detailed properties of a specific test.
      *
      * @param testUri the URI of the test to query details for
@@ -380,25 +431,49 @@ public class W3cTestLoader {
                         PREFIX rdfc: <https://w3c.github.io/rdf-canon/tests/vocab#>
                         PREFIX sh: <http://www.w3.org/ns/shacl#>
                         PREFIX jld: <https://w3c.github.io/json-ld-api/tests/vocab#>
+                        PREFIX td: <http://www.w3.org/2006/03/test-description#>
+                        PREFIX dce: <http://purl.org/dc/elements/1.1/>
                         
-                        SELECT DISTINCT ?name ?comment ?action ?result ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm ?baseUri ?specVersion ?useNativeTypes ?useRdfType WHERE {
-                            OPTIONAL { <%s> mf:name ?name . }
-                            OPTIONAL { <%s> rdfs:comment ?comment . }
-                            OPTIONAL { <%s> mf:action ?action . }
-                            OPTIONAL { <%s> mf:result ?result . }
-                            OPTIONAL { <%s> mf:action/qt:query ?query . }
-                            OPTIONAL { <%s> mf:action/qt:data ?data . }
-                            OPTIONAL { <%s> mf:action/sht:dataGraph ?dataGraph . }
-                            OPTIONAL { <%s> mf:action/sht:shapesGraph ?shapesGraph . }
-                            OPTIONAL { <%s> mf:result/sh:conforms ?conformity . }
-                            OPTIONAL { <%s> rdfc:hashAlgorithm ?hashAlgorithm . }
-                            OPTIONAL { <%s> jld:option ?option . ?option jld:base ?baseUri }
-                            OPTIONAL { <%s> jld:option ?option . ?option jld:specVersion ?specVersion }
-                            OPTIONAL { <%s> jld:option ?option . ?option jld:useNativeTypes ?useNativeTypes }
-                            OPTIONAL { <%s> jld:option ?option . ?option jld:useRdfType ?useRdfType }
+                        SELECT DISTINCT ?uri ?name ?comment ?action ?result ?expectedBoolean ?query ?data ?dataGraph ?shapesGraph ?conformity ?hashAlgorithm ?baseUri ?specVersion ?useNativeTypes ?useRdfType WHERE {
+                            FILTER(?uri = <%s>)
+                            ?uri ?nameProp ?name .
+                            VALUES ?nameProp {
+                                mf:name
+                                dce:title
+                            }
+                            OPTIONAL {
+                                ?uri ?commentProp ?comment .
+                                VALUES ?commentProp {
+                                    rdfs:comment
+                                    td:purpose
+                                }
+                            }
+                            ?uri ?actionProp ?action .
+                            VALUES ?actionProp {
+                                mf:action
+                                td:informationResourceInput
+                            }
+                            OPTIONAL {
+                                ?uri ?resultProp ?result .
+                                VALUES ?resultProp {
+                                    mf:result
+                                    td:informationResourceResults
+                                }
+                            }
+                            OPTIONAL { ?uri td:expectedResults ?expectedBoolean . }
+                            OPTIONAL { ?uri mf:action/qt:query ?query . }
+                            OPTIONAL { ?uri mf:action/qt:data ?data . }
+                            OPTIONAL { ?uri mf:action/sht:dataGraph ?dataGraph . }
+                            OPTIONAL { ?uri mf:action/sht:shapesGraph ?shapesGraph . }
+                            OPTIONAL { ?uri mf:result/sh:conforms ?conformity . }
+                            OPTIONAL { ?uri rdfc:hashAlgorithm ?hashAlgorithm . }
+                            OPTIONAL { ?uri jld:option ?option . ?option jld:base ?baseUri }
+                            OPTIONAL { ?uri jld:option ?option . ?option jld:specVersion ?specVersion }
+                            OPTIONAL { ?uri jld:option ?option . ?option jld:useNativeTypes ?useNativeTypes }
+                            OPTIONAL { ?uri jld:option ?option . ?option jld:useRdfType ?useRdfType }
                         }
                         """,
-                testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri, testUri);
+                testUri);
     }
 
     /**

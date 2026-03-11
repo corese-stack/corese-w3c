@@ -44,6 +44,8 @@ public enum TestType {
     JSON_LD_POSITIVE_EVAL("JSON-LD Positive Evaluation Test"),
     /** JSON-LD Negative Evaluation test (expects evaluation to fail) */
     JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test"),
+    /** ASK-based evaluation test */
+    ASK_BASED_EVAL("ASK-based Evaluation Test"),
 
     /**
      * RDF Canonicalization
@@ -59,7 +61,15 @@ public enum TestType {
      * RDF Canonicalization
      * Expects evaluation to fail for invalid inputs or edge cases.
      */
-    RDFC10_NEGATIVE_EVAL_TEST("Rdfc10NegativeEvalTest");
+    RDFC10_NEGATIVE_EVAL_TEST("Rdfc10NegativeEvalTest"),
+    /**
+     * RDFa Positive evaluation
+     */
+    RDFA_POSITIVE_EVAL("RDFa Positive Evaluation"),
+    /**
+     * RDFa Negative evaluation
+     */
+    RDFA_NEGATIVE_EVAL("RDFa Negative Evaluation");
 
     private final String description;
 
