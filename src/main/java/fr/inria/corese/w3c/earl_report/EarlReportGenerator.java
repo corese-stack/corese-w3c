@@ -102,8 +102,8 @@ public class EarlReportGenerator {
         }
 
         // Write the EARL report to the output directory
-        try {
-            format.write(outputReportPath.toString());
+        try (var out = Files.newOutputStream(outputReportPath)) {
+            format.write(out);
         } catch (IOException e) {
             logger.error("Error while writing EARL report to file: " + outputReportPath.toString(), e);
             e.printStackTrace();

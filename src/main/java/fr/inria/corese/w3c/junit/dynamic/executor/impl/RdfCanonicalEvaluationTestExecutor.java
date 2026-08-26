@@ -1,13 +1,14 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
-import fr.inria.corese.core.next.data.api.Model;
-import fr.inria.corese.core.next.data.api.Statement;
-import fr.inria.corese.core.next.data.api.ValueFactory;
-import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.data.io.parser.RDFParser;
-import fr.inria.corese.core.next.data.impl.io.serialization.canonical.RDFC10Canonicalizer;
-import fr.inria.corese.core.next.data.impl.io.serialization.canonical.RDFC10SerializerOptions;
-import fr.inria.corese.core.next.data.impl.io.serialization.util.StatementUtils;
+
+import fr.inria.corese.core.next.data.api.factory.ValueFactory;
+import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
+import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.api.model.Model;
+import fr.inria.corese.core.next.data.api.model.Statement;
+import fr.inria.corese.core.next.data.impl.io.serializer.rdfc10.RDFC10Canonicalizer;
+import fr.inria.corese.core.next.data.impl.io.serializer.rdfc10.RDFC10SerializerOptions;
+import fr.inria.corese.core.next.data.impl.io.serializer.rdfc10.StatementUtils;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;

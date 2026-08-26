@@ -1,12 +1,14 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import com.apicatalog.jsonld.JsonLdVersion;
-import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.data.io.parser.RDFParser;
-import fr.inria.corese.core.next.data.impl.io.common.JSONLDOptions;
-import fr.inria.corese.core.next.data.impl.temp.CoreseModel;
-import fr.inria.corese.core.query.QueryProcess;
+import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
+import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.impl.adapter.CoreseValueFactory;
+import fr.inria.corese.core.next.data.impl.io.jsonld.JSONLDOptions;
+import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
+import fr.inria.corese.core.next.query.impl.repository.CoreseRepository;
+import fr.inria.corese.core.next.storage.impl.memory.MemoryStorageManager;
+import fr.inria.corese.core.next.storage.impl.model.StorageModel;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -26,13 +28,6 @@ public class AskBasedTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(AskBasedTestExecutor.class);
 
-    /**
-     * Default constructor.
-     */
-    public AskBasedTestExecutor() {
-
-    }
-
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
         // Extract needed information from test case
@@ -47,8 +42,14 @@ public class AskBasedTestExecutor implements TestExecutor {
         // Load the result file
         String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
 
+        // Create storage + model for this test (pure next API, no legacy Graph)
+        MemoryStorageManager storage = MemoryStorageManager.builder().build();
+        StorageModel actionModel = StorageModel.builder()
+                .storage(storage)
+                .valueFactory(new CoreseValueFactory())
+                .build();
+
         // Get format and create parser
-        CoreseModel actionModel = new CoreseModel();
         RDFFormat actionFormat = RDFTestUtils.guessFileFormat(actionFileUri);
         RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 
@@ -89,20 +90,23 @@ public class AskBasedTestExecutor implements TestExecutor {
         // Loading the query to a string
         String resultQueryString = Files.readString(Path.of(resultFilePath), StandardCharsets.UTF_8);
 
-        // Executing the query
-        QueryProcess queryProcess = QueryProcess.create(actionModel.getCoreseGraph());
-        Mappings testQueryResult = queryProcess.query(resultQueryString);
+        // Execute the ASK query via CoreseRepository
+        boolean testQueryResult;
+        try (CoreseRepository repo = new CoreseRepository(storage);
+             RepositoryConnection conn = repo.getConnection()) {
+            testQueryResult = conn.prepareBooleanQuery(resultQueryString).evaluate();
+        }
 
         String expectedResultString = testCase.getProperty(W3cTestCase.Property.EXPECTED_BOOLEAN, String.class);
-        if(expectedResultString != null) {
+        if (expectedResultString != null) {
             boolean expectedResult = Boolean.parseBoolean(expectedResultString);
-            if(testQueryResult.isEmpty() == expectedResult) {
+            if (testQueryResult != expectedResult) {
                 String msg = RDFTestUtils.formatErrorMessage(
-                        "Expected query result to be " + expectedResultString + " but was " + ! testQueryResult.isEmpty() +".", testName, actionFileUri, resultFileUri, null);
+                        "Expected query result to be " + expectedResultString + " but was " + testQueryResult + ".", testName, actionFileUri, resultFileUri, null);
                 logger.error(msg);
                 throw new AssertionError(msg);
             }
-        } else if(testQueryResult.isEmpty()) {
+        } else if (!testQueryResult) {
             String msg = RDFTestUtils.formatErrorMessage(
                     "Expected query to find results but found none.", testName, actionFileUri, resultFileUri, null);
             logger.error(msg);

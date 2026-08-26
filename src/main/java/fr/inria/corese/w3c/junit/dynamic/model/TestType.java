@@ -78,7 +78,7 @@ public enum TestType {
      * 
      * @param description A human-readable description of the test type
      */
-    private TestType(String description) {
+    TestType(String description) {
         this.description = description;
     }
 
