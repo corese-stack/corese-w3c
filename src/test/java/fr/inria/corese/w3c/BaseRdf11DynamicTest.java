@@ -35,6 +35,16 @@ public abstract class BaseRdf11DynamicTest {
     protected abstract String getFormatName();
 
     /**
+     * Optional method for subclasses to provide a skip reason for known unsupported edge cases.
+     *
+     * @param testCase the test case to evaluate
+     * @return skip reason if the test should be skipped, or null if it should be executed
+     */
+    protected String getSkipReason(W3cTestCase testCase) {
+        return null;
+    }
+
+    /**
      * Loads and creates dynamic tests from the W3C manifest.
      *
      * @return stream of dynamic tests
@@ -51,7 +61,11 @@ public abstract class BaseRdf11DynamicTest {
             return testCases.stream()
                     .map(testCase -> DynamicTest.dynamicTest(
                             testCase.getFormattedDisplayName(getFormatName()),
-                            testCase::execute
+                            () -> {
+                                String skipReason = getSkipReason(testCase);
+                                org.junit.jupiter.api.Assumptions.assumeTrue(skipReason == null, skipReason);
+                                testCase.execute();
+                            }
                     ));
 
         } catch (Exception e) {
