@@ -360,25 +360,34 @@ public class W3cTestLoader {
 
     }
 
+    private static final String[] INCLUSION_QUERIES = {
+            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?inclusion . }",
+            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?list1 . ?list1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?inclusion . }",
+            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?list1 . ?list1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> ?list2 . ?list2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?inclusion . }"
+    };
+
     private static List<String> findInclusions(Repository repo, URI manifestUri) {
         String manifestUriStr = manifestUri.toString();
         String manifestUriNoExt = manifestUriStr.replace(
                 "." + RDFTestUtils.guessFileFormat(manifestUri).getDefaultExtension(), "");
-        List<String> inclusions = new ArrayList<>();
-        try (RepositoryConnection conn = repo.getConnection();
-             TupleQueryResult result = conn.prepareTupleQuery(buildInclusionQuery()).evaluate()) {
-            while (result.hasNext()) {
-                BindingSet binding = result.next();
-                Value manifest = binding.getValue("manifest");
-                Value inclusion = binding.getValue("inclusion");
-                if (matchesManifest(manifest, manifestUriStr, manifestUriNoExt) && isIri(inclusion)) {
-                    inclusions.add(inclusion.stringValue());
+        Set<String> inclusions = new LinkedHashSet<>();
+        try (RepositoryConnection conn = repo.getConnection()) {
+            for (String query : INCLUSION_QUERIES) {
+                try (TupleQueryResult result = conn.prepareTupleQuery(query).evaluate()) {
+                    while (result.hasNext()) {
+                        BindingSet binding = result.next();
+                        Value manifest = binding.getValue("manifest");
+                        Value inclusion = binding.getValue("inclusion");
+                        if (matchesManifest(manifest, manifestUriStr, manifestUriNoExt) && isIri(inclusion)) {
+                            inclusions.add(inclusion.stringValue());
+                        }
+                    }
                 }
             }
         } catch (RuntimeException exception) {
-            logger.error("Error executing inclusion query.", exception);
+            logger.error("Error executing inclusion queries.", exception);
         }
-        return inclusions;
+        return new ArrayList<>(inclusions);
     }
 
     private static boolean matchesManifest(Value manifest, String uri, String uriWithoutExtension) {
@@ -389,24 +398,5 @@ public class W3cTestLoader {
     private static boolean isIri(Value value) {
         return value != null && (value.stringValue().startsWith("http://")
                 || value.stringValue().startsWith("https://") || value.stringValue().startsWith("file://"));
-    }
-
-    private static String buildInclusionQuery() {
-        // Property paths and FILTER expressions are not supported by the next pipeline.
-        // We handle the direct case and the first two list levels; manifest/IRI filtering is
-        // done in Java after the query returns.
-        StringBuilder sb = new StringBuilder();
-        sb.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#>\n");
-        sb.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
-        sb.append("SELECT DISTINCT ?manifest ?inclusion WHERE {\n");
-        sb.append("    {\n");
-        sb.append("        ?manifest mf:include ?inclusion .\n");
-        sb.append("    } UNION {\n");
-        sb.append("        ?manifest mf:include ?list1 . ?list1 rdf:first ?inclusion .\n");
-        sb.append("    } UNION {\n");
-        sb.append("        ?manifest mf:include ?list1 . ?list1 rdf:rest ?list2 . ?list2 rdf:first ?inclusion .\n");
-        sb.append("    }\n");
-        sb.append("}");
-        return sb.toString();
     }
 }
