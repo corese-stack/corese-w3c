@@ -56,7 +56,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             parser.setConfig(jsonLdOptions(testCase, baseUri));
         }
         try (FileReader reader = new FileReader(filePath)) {
-            parser.parse(reader, baseUri != null ? baseUri : RDFTestUtils.getBaseUri(fileUri).toString());
+            parser.parse(reader, baseUri != null ? baseUri : fileUri.toString());
         }
         return model;
     }
