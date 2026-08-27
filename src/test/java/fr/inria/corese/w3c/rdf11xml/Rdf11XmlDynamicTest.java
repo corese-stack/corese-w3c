@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  * This provides a cleaner, data-driven approach for executing W3C RDF 1.1 Xml compliance tests.
  * Tests are loaded dynamically from the W3C manifest and executed using the appropriate test executors.
  */
-public class Rdf11XmlDynamicTest extends BaseRdf11DynamicTest {
+class Rdf11XmlDynamicTest extends BaseRdf11DynamicTest {
 
     private static final String MANIFEST_URL =
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl";
@@ -27,6 +27,7 @@ public class Rdf11XmlDynamicTest extends BaseRdf11DynamicTest {
     }
 
     @TestFactory
+    @SuppressWarnings("java:S2699")
     Stream<DynamicTest> rdf11XmlTests() {
         return createDynamicTests();
     }

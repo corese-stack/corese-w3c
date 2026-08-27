@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * Dynamic test suite for RDF 1.1 Trig tests.
  */
-public class Rdf11TrigDynamicTest extends BaseRdf11DynamicTest {
+class Rdf11TrigDynamicTest extends BaseRdf11DynamicTest {
 
     private static final String MANIFEST_URL =
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl";
@@ -25,6 +25,7 @@ public class Rdf11TrigDynamicTest extends BaseRdf11DynamicTest {
     }
 
     @TestFactory
+    @SuppressWarnings("java:S2699")
     Stream<DynamicTest> rdf11TrigTests() {
         return createDynamicTests();
     }

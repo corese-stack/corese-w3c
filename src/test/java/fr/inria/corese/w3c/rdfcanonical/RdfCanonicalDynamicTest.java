@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * and dynamically creates test cases for each test definition. Test cases are
  * routed to the appropriate executor based on their type:
  */
-public class RdfCanonicalDynamicTest extends BaseRdf11DynamicTest {
+class RdfCanonicalDynamicTest extends BaseRdf11DynamicTest {
 
     private static final String MANIFEST_URL = "https://w3c.github.io/rdf-canon/tests/manifest.ttl";
 
@@ -27,6 +27,7 @@ public class RdfCanonicalDynamicTest extends BaseRdf11DynamicTest {
     }
 
     @TestFactory
+    @SuppressWarnings("java:S2699")
     Stream<DynamicTest> rdfCanonicalTests() {
         return createDynamicTests();
     }

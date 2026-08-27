@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * Dynamic test suite for RDF 1.1 NQuads tests.
  */
-public class Rdf11NQuadsDynamicTest extends BaseRdf11DynamicTest {
+class Rdf11NQuadsDynamicTest extends BaseRdf11DynamicTest {
 
     private static final String MANIFEST_URL =
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl";
@@ -25,6 +25,7 @@ public class Rdf11NQuadsDynamicTest extends BaseRdf11DynamicTest {
     }
 
     @TestFactory
+    @SuppressWarnings("java:S2699")
     Stream<DynamicTest> rdf11NQuadsTests() {
         return createDynamicTests();
     }

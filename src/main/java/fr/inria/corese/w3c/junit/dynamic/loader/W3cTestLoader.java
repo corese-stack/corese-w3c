@@ -175,7 +175,7 @@ public class W3cTestLoader {
                             manifestUri,
                             properties));
                 } catch (Exception e) {
-                    logger.warn("Failed to create test case for {}: {}", testUri, e.getMessage());
+                    throw new IllegalStateException("Failed to create test case for " + testUri, e);
                 }
             }
             logger.info("Loaded {} test cases", testCases.size());
@@ -285,7 +285,7 @@ public class W3cTestLoader {
     /**
      * Maps a set of W3C test type URIs to the local {@link TestType} enum.
      */
-    private static TestType mapTestType(Set<String> typeUris) {
+    static TestType mapTestType(Set<String> typeUris) {
         boolean isFromRdf = typeUris.stream().anyMatch(t -> t.toLowerCase(Locale.ROOT).contains("fromrdftest"));
         boolean isToRdf = typeUris.stream().anyMatch(t -> t.toLowerCase(Locale.ROOT).contains("tordftest"));
 
@@ -356,17 +356,17 @@ public class W3cTestLoader {
         if (lowerUri.contains("testturtlepositivesyntax")) return TestType.TURTLE_POSITIVE_SYNTAX;
         if (lowerUri.contains("testturtleeval") && !lowerUri.contains("negative")) return TestType.TURTLE_POSITIVE_EVAL;
         if (lowerUri.contains("testturtlenegativeeval")) return TestType.TURTLE_NEGATIVE_EVAL;
-        if (lowerUri.contains("testtriglnegativesyntax")) return TestType.TRIG_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("testtrignegativesyntax")) return TestType.TRIG_NEGATIVE_SYNTAX;
         if (lowerUri.contains("testtrigpositivesyntax")) return TestType.TRIG_POSITIVE_SYNTAX;
         if (lowerUri.contains("testtrigeval") && !lowerUri.contains("negative")) return TestType.TRIG_POSITIVE_EVAL;
-        if (lowerUri.contains("testtrigegativeeval")) return TestType.TRIG_NEGATIVE_EVAL;
+        if (lowerUri.contains("testtrignegativeeval")) return TestType.TRIG_NEGATIVE_EVAL;
         return null;
     }
 
     private static TestType mapOtherRdfTestType(String lowerUri) {
-        if (lowerUri.contains("testntriplesegativesyntax")) return TestType.NTRIPLES_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("testntriplesnegativesyntax")) return TestType.NTRIPLES_NEGATIVE_SYNTAX;
         if (lowerUri.contains("testntriplespositivesyntax")) return TestType.NTRIPLES_POSITIVE_SYNTAX;
-        if (lowerUri.contains("testnquadsegativesyntax")) return TestType.NQUADS_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("testnquadsnegativesyntax")) return TestType.NQUADS_NEGATIVE_SYNTAX;
         if (lowerUri.contains("testnquadspositivesyntax")) return TestType.NQUADS_POSITIVE_SYNTAX;
         if (lowerUri.contains("testxmlnegativesyntax")) return TestType.RDF_XML_NEGATIVE_SYNTAX;
         if (lowerUri.contains("testxmleval")) return TestType.RDF_XML_POSITIVE_EVAL;
