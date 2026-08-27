@@ -50,6 +50,9 @@ public class TestExecutorFactory {
             case RDFC10_NEGATIVE_EVAL_TEST -> CANONICAL_NEGATIVE_EXECUTOR;
             case JSON_LD_FROM_RDF_POSITIVE_EVAL -> JSONLD_FROM_RDF_EVALUATION_EXECUTOR;
             case JSON_LD_FROM_RDF_NEGATIVE_EVAL -> JSONLD_FROM_RDF_NEGATIVE_EXECUTOR;
+            // A JSON-LD negative evaluation test succeeds only when parsing fails.
+            // It must be selected before the generic evaluation branch below.
+            case JSON_LD_NEGATIVE_EVAL -> NEGATIVE_TEST_EXECUTOR;
             case TestType type when type.isEvaluationTest() -> POSITIVE_EVALUATION_EXECUTOR;
             case TestType type when type.isSyntaxTest() && type.isPositiveTest() -> POSITIVE_SYNTAX_EXECUTOR;
             case TestType type when type.isSyntaxTest() && type.isNegativeTest() -> NEGATIVE_TEST_EXECUTOR;

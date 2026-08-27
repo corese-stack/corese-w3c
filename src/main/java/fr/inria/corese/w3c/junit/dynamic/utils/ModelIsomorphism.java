@@ -1,5 +1,6 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
+import fr.inria.corese.core.next.data.RdfCanonicalization;
 import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.model.Statement;
 import fr.inria.corese.core.next.data.api.term.*;
@@ -45,7 +46,19 @@ public class ModelIsomorphism {
             return false;
         }
 
-        return canonicalize(model1).equals(canonicalize(model2));
+        return canonicalizeRdfc10(model1).equals(canonicalizeRdfc10(model2));
+    }
+
+    /**
+     * Uses Corese's RDF Dataset Canonicalization 1.0 implementation for the
+     * actual equality decision. The legacy signature-based canonicalizer below
+     * remains useful for concise failure diagnostics, but cannot safely break
+     * ties between structurally equivalent blank nodes.
+     */
+    private static String canonicalizeRdfc10(Model model) {
+        return RdfCanonicalization.canonicalize(model).stream()
+                .map(RdfCanonicalization::toNQuad)
+                .reduce("", (left, right) -> left.isEmpty() ? right : left + "\n" + right);
     }
 
     /**
