@@ -20,11 +20,15 @@ public class TestExecutorFactory {
     private static final RdfCanonicalMapTestExecutor CANONICAL_MAP_EXECUTOR = new RdfCanonicalMapTestExecutor();
     private static final RdfCanonicalNegativeTestExecutor CANONICAL_NEGATIVE_EXECUTOR = new RdfCanonicalNegativeTestExecutor();
 
+    // Singleton instances for JSON-LD FromRDF test executors
+    private static final JsonLdFromRdfEvaluationTestExecutor JSONLD_FROM_RDF_EVALUATION_EXECUTOR = new JsonLdFromRdfEvaluationTestExecutor();
+    private static final JsonLdFromRdfNegativeTestExecutor JSONLD_FROM_RDF_NEGATIVE_EXECUTOR = new JsonLdFromRdfNegativeTestExecutor();
 
     /**
-     * constructor
+     * Private constructor to prevent instantiation of utility class.
      */
-    public TestExecutorFactory() {
+    private TestExecutorFactory() {
+        throw new IllegalStateException("Utility class");
     }
 
     /**
@@ -44,6 +48,8 @@ public class TestExecutorFactory {
             case RDFC10_EVAL_TEST -> CANONICAL_EVALUATION_EXECUTOR;
             case RDFC10_MAP_TEST -> CANONICAL_MAP_EXECUTOR;
             case RDFC10_NEGATIVE_EVAL_TEST -> CANONICAL_NEGATIVE_EXECUTOR;
+            case JSON_LD_FROM_RDF_POSITIVE_EVAL -> JSONLD_FROM_RDF_EVALUATION_EXECUTOR;
+            case JSON_LD_FROM_RDF_NEGATIVE_EVAL -> JSONLD_FROM_RDF_NEGATIVE_EXECUTOR;
             case TestType type when type.isEvaluationTest() && type.isPositiveTest() -> POSITIVE_EVALUATION_EXECUTOR;
             case TestType type when type.isEvaluationTest() && type.isNegativeTest() -> NEGATIVE_TEST_EXECUTOR;
             case TestType type when type.isSyntaxTest() && type.isPositiveTest() -> POSITIVE_SYNTAX_EXECUTOR;

@@ -41,7 +41,9 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
         Model actionModel = loadModel(testCase.getActionFileUri(), testCase);
         Model resultModel = loadModel(testCase.getResultFileUri(), testCase);
         if (!ModelIsomorphism.areModelsIsomorphic(actionModel, resultModel)) {
-            throw new AssertionError("RDF models differ for test: " + testCase.getName());
+            throw new AssertionError("RDF models differ for test: " + testCase.getName()
+                    + "\nAction canonical:\n" + ModelIsomorphism.canonicalize(actionModel)
+                    + "\nResult canonical:\n" + ModelIsomorphism.canonicalize(resultModel));
         }
     }
 
@@ -55,7 +57,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
         if (format == RDFFormat.JSONLD) {
             parser.setConfig(jsonLdOptions(testCase, baseUri));
         }
-        try (FileReader reader = new FileReader(filePath)) {
+        try (FileReader reader = new FileReader(filePath, java.nio.charset.StandardCharsets.UTF_8)) {
             parser.parse(reader, baseUri != null ? baseUri : fileUri.toString());
         }
         return model;
@@ -63,12 +65,26 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
     private JSONLDOptions jsonLdOptions(W3cTestCase testCase, String baseUri) {
         JSONLDOptions.Builder builder = new JSONLDOptions.Builder();
-        if (baseUri != null) builder.base(baseUri);
-        String version = testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class);
-        if ("json-ld-1.0".equals(version)) builder.processingMode(JsonLdVersion.V1_0);
-        if ("json-ld-1.1".equals(version)) builder.processingMode(JsonLdVersion.V1_1);
+        if (baseUri != null) {
+            builder.base(baseUri);
+        }
+        String processingMode = testCase.getProperty(W3cTestCase.Property.PROCESSING_MODE, String.class);
+        if ("json-ld-1.0".equals(processingMode)) {
+            builder.processingMode(JsonLdVersion.V1_0);
+        } else if ("json-ld-1.1".equals(processingMode)) {
+            builder.processingMode(JsonLdVersion.V1_1);
+        }
         builder.useNativeTypes("true".equals(testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class)));
         builder.useRdfType("true".equals(testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class)));
+        builder.produceGeneralizedRdf("true".equals(testCase.getProperty(W3cTestCase.Property.PRODUCE_GENERALIZED_RDF, String.class)));
+        String rdfDirection = testCase.getProperty(W3cTestCase.Property.RDF_DIRECTION, String.class);
+        if (rdfDirection != null) {
+            builder.rdfDirection(rdfDirection);
+        }
+        String expandContext = testCase.getProperty(W3cTestCase.Property.EXPAND_CONTEXT, String.class);
+        if (expandContext != null) {
+            builder.expandContext(URI.create(expandContext));
+        }
         return builder.build();
     }
 }

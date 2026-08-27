@@ -44,6 +44,10 @@ public enum TestType {
     JSON_LD_POSITIVE_EVAL("JSON-LD Positive Evaluation Test"),
     /** JSON-LD Negative Evaluation test (expects evaluation to fail) */
     JSON_LD_NEGATIVE_EVAL("JSON-LD Negative Evaluation Test"),
+    /** JSON-LD FromRDF Positive Evaluation test (expects RDF-to-JSON-LD serialization to succeed) */
+    JSON_LD_FROM_RDF_POSITIVE_EVAL("JSON-LD FromRDF Positive Evaluation Test"),
+    /** JSON-LD FromRDF Negative Evaluation test (expects RDF-to-JSON-LD serialization to fail) */
+    JSON_LD_FROM_RDF_NEGATIVE_EVAL("JSON-LD FromRDF Negative Evaluation Test"),
     /** ASK-based evaluation test */
     ASK_BASED_EVAL("ASK-based Evaluation Test"),
 

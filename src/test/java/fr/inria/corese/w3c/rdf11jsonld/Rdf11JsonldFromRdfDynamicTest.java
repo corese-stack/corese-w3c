@@ -6,7 +6,7 @@ import org.junit.jupiter.api.TestFactory;
 
 import java.util.stream.Stream;
 
-public class Rdf11JsonldFromRdfDynamicTest extends BaseRdf11DynamicTest {
+class Rdf11JsonldFromRdfDynamicTest extends BaseRdf11DynamicTest {
     private static final String MANIFEST_URL =
             "https://w3c.github.io/json-ld-api/tests/fromRdf-manifest.jsonld";
     @Override
@@ -20,7 +20,8 @@ public class Rdf11JsonldFromRdfDynamicTest extends BaseRdf11DynamicTest {
     }
 
     @TestFactory
-    Stream<DynamicTest> Rdf11JsonldFromRdfDynamicTest() {
+    @SuppressWarnings("java:S2699")
+    Stream<DynamicTest> rdf11JsonldFromRdfTests() {
         return createDynamicTests();
     }
 }

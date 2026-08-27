@@ -36,65 +36,59 @@ public class RdfNegativeTestExecutor implements TestExecutor {
         // No initialization required
     }
 
-    @SuppressWarnings("java:S3776") // Cognitive complexity acceptable for test executor logic
+    @Override
     public void execute(W3cTestCase testCase) throws Exception {
-        // Extract needed information from test case
         String testName = testCase.getName();
         URI actionFileUri = testCase.getActionFileUri();
-        String actionBaseUriString = RDFTestUtils.getBaseUri(actionFileUri).toString();
+        String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class);
+        String actionBaseUriString = baseUri != null ? baseUri : actionFileUri.toString();
 
         try {
-            // Load the action file
             String actionFilePath = RDFTestUtils.loadFile(actionFileUri);
-
-            // Get format and create parser
             Model actionModel = RDFTestUtils.createModel();
             RDFFormat actionFormat = RDFTestUtils.guessFileFormat(actionFileUri);
             RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
 
-            // Parser config for JSON-LD format
-            if(actionFormat == RDFFormat.JSONLD) {
-                JSONLDOptions.Builder optionBuilder = new JSONLDOptions.Builder();
-                if(testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class) != null) {
-                    String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class);
-                    optionBuilder.base(baseUri);
-                    actionBaseUriString = baseUri;
-                }
-                if(testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class) != null) {
-                    String specVersion = testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class);
-                    if(specVersion.equals("json-ld-1.0")) {
-                        optionBuilder.processingMode(JsonLdVersion.V1_0);
-                    }
-                    if(specVersion.equals("json-ld-1.1")) {
-                        optionBuilder.processingMode(JsonLdVersion.V1_1);
-                    }
-                }
-
-                if(testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class) != null) {
-                    boolean usesNativeTypes = testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class).equals("true");
-                    optionBuilder.useNativeTypes(usesNativeTypes);
-                }
-                if(testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class) != null) {
-                    boolean useRdfType = testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class).equals("true");
-                    optionBuilder.useRdfType(useRdfType);
-                }
-                actionParser.setConfig(optionBuilder.build());
+            if (actionFormat == RDFFormat.JSONLD) {
+                actionParser.setConfig(jsonLdOptions(testCase, baseUri));
             }
 
-            // Attempt to parse the input file
-            try (FileReader reader = new FileReader(actionFilePath)) {
+            try (FileReader reader = new FileReader(actionFilePath, java.nio.charset.StandardCharsets.UTF_8)) {
                 actionParser.parse(reader, actionBaseUriString);
             }
 
-            // If we reach here, parsing succeeded when it should have failed
             String msg = RDFTestUtils.formatErrorMessage(
                     "Expected parsing to fail but it succeeded", testName, actionFileUri, null, null);
             logger.error(msg);
             throw new AssertionError(msg);
 
         } catch (ParsingException e) {
-            // This is expected for negative tests - parsing should fail
-            // Test passes when we catch this exception
+            // Expected failure for negative tests
         }
+    }
+
+    private JSONLDOptions jsonLdOptions(W3cTestCase testCase, String baseUri) {
+        JSONLDOptions.Builder builder = new JSONLDOptions.Builder();
+        if (baseUri != null) {
+            builder.base(baseUri);
+        }
+        String processingMode = testCase.getProperty(W3cTestCase.Property.PROCESSING_MODE, String.class);
+        if ("json-ld-1.0".equals(processingMode)) {
+            builder.processingMode(JsonLdVersion.V1_0);
+        } else if ("json-ld-1.1".equals(processingMode)) {
+            builder.processingMode(JsonLdVersion.V1_1);
+        }
+        builder.useNativeTypes("true".equals(testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class)));
+        builder.useRdfType("true".equals(testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class)));
+        builder.produceGeneralizedRdf("true".equals(testCase.getProperty(W3cTestCase.Property.PRODUCE_GENERALIZED_RDF, String.class)));
+        String rdfDirection = testCase.getProperty(W3cTestCase.Property.RDF_DIRECTION, String.class);
+        if (rdfDirection != null) {
+            builder.rdfDirection(rdfDirection);
+        }
+        String expandContext = testCase.getProperty(W3cTestCase.Property.EXPAND_CONTEXT, String.class);
+        if (expandContext != null) {
+            builder.expandContext(URI.create(expandContext));
+        }
+        return builder.build();
     }
 }

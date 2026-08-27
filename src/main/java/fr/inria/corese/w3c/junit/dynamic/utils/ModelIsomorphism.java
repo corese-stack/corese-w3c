@@ -19,11 +19,14 @@ public class ModelIsomorphism {
     private static final String XSD_DECIMAL = "http://www.w3.org/2001/XMLSchema#decimal";
     private static final String XSD_DOUBLE = "http://www.w3.org/2001/XMLSchema#double";
     private static final String XSD_FLOAT = "http://www.w3.org/2001/XMLSchema#float";
-    /**
-     * Default constructor
-     */
-    public ModelIsomorphism() {
+    private static final String BNODE_PREFIX = "BNODE:";
+    private static final String VALUE_PREFIX = "VALUE:";
 
+    /**
+     * Private constructor to prevent instantiation of utility class.
+     */
+    private ModelIsomorphism() {
+        throw new IllegalStateException("Utility class");
     }
     /**
      * Checks if two RDF models are isomorphic.
@@ -150,8 +153,8 @@ public class ModelIsomorphism {
      * Extracts a blank node from an RDF value if applicable.
      */
     private static void extractBlankNode(Value value, Set<BNode> blankNodes) {
-        if (value instanceof BNode) {
-            blankNodes.add((BNode) value);
+        if (value instanceof BNode bnode) {
+            blankNodes.add(bnode);
         }
     }
 
@@ -165,11 +168,12 @@ public class ModelIsomorphism {
         try {
             for (Statement stmt : model.filter(null, null, null)) {
                 statements.add(stmt);
-                if (stmt.getSubject() instanceof BNode) {
-                    blankNodes.add((BNode) stmt.getSubject());
+                if (stmt.getSubject() instanceof BNode bnode) {
+                    blankNodes.add(bnode);
                 }
             }
         } catch (Exception e) {
+            // Ignored: fallback collection on incomplete models
         }
 
         return new BlankNodeCollection(blankNodes, statements);
@@ -242,10 +246,10 @@ public class ModelIsomorphism {
         StringBuilder part = new StringBuilder("S:");
         part.append(stmt.getPredicate().stringValue()).append(":");
 
-        if (stmt.getObject() instanceof BNode) {
-            part.append("BNODE:").append(signatures.get((BNode) stmt.getObject()));
+        if (stmt.getObject() instanceof BNode bnodeObj) {
+            part.append(BNODE_PREFIX).append(signatures.get(bnodeObj));
         } else {
-            part.append("VALUE:").append(canonicalizeNonBlankValue(stmt.getObject()));
+            part.append(VALUE_PREFIX).append(canonicalizeNonBlankValue(stmt.getObject()));
         }
 
         appendGraphContext(stmt, signatures, part);
@@ -264,10 +268,10 @@ public class ModelIsomorphism {
         StringBuilder part = new StringBuilder("O:");
         part.append(stmt.getPredicate().stringValue()).append(":");
 
-        if (stmt.getSubject() instanceof BNode) {
-            part.append("BNODE:").append(signatures.get((BNode) stmt.getSubject()));
+        if (stmt.getSubject() instanceof BNode bnodeSubj) {
+            part.append(BNODE_PREFIX).append(signatures.get(bnodeSubj));
         } else {
-            part.append("VALUE:").append(canonicalizeNonBlankValue(stmt.getSubject()));
+            part.append(VALUE_PREFIX).append(canonicalizeNonBlankValue(stmt.getSubject()));
         }
 
         appendGraphContext(stmt, signatures, part);
@@ -288,14 +292,15 @@ public class ModelIsomorphism {
             part.append(stmt.getSubject().stringValue()).append(":");
             part.append(stmt.getPredicate().stringValue()).append(":");
 
-            if (stmt.getObject() instanceof BNode) {
-                part.append("BNODE:").append(signatures.get((BNode) stmt.getObject()));
+            if (stmt.getObject() instanceof BNode bnodeObj) {
+                part.append(BNODE_PREFIX).append(signatures.get(bnodeObj));
             } else {
-                part.append("VALUE:").append(canonicalizeNonBlankValue(stmt.getObject()));
+                part.append(VALUE_PREFIX).append(canonicalizeNonBlankValue(stmt.getObject()));
             }
 
             parts.add(part.toString());
         } catch (Exception e) {
+            // Ignored: context signature resolution error
         }
     }
 
@@ -306,8 +311,8 @@ public class ModelIsomorphism {
                                            StringBuilder part) {
         try {
             if (stmt.getContext() != null) {
-                if (stmt.getContext() instanceof BNode) {
-                    part.append(":G:BNODE:").append(signatures.get((BNode) stmt.getContext()));
+                if (stmt.getContext() instanceof BNode bnodeCtx) {
+                    part.append(":G:BNODE:").append(signatures.get(bnodeCtx));
                 } else {
                     part.append(":G:").append(stmt.getContext().stringValue());
                 }
@@ -337,7 +342,7 @@ public class ModelIsomorphism {
             List<BNode> bnodes = signatureGroups.get(signature);
 
             if (bnodes.size() > 1) {
-                bnodes.sort(Comparator.comparing(BNode::stringValue));
+                bnodes.sort((b1, b2) -> b1.stringValue().compareTo(b2.stringValue()));
             }
 
             for (BNode bnode : bnodes) {
@@ -363,11 +368,11 @@ public class ModelIsomorphism {
      * Canonicalizes a non-blank RDF value for use in signatures.
      */
     private static String canonicalizeNonBlankValue(Value value) {
-        if (value instanceof IRI) {
-            return "<" + ((IRI) value).stringValue() + ">";
+        if (value instanceof IRI iri) {
+            return "<" + iri.stringValue() + ">";
         }
-        if (value instanceof Literal) {
-            return canonicalizeLiteralValue((Literal) value);
+        if (value instanceof Literal literal) {
+            return canonicalizeLiteralValue(literal);
         }
         return value.stringValue();
     }
@@ -377,8 +382,10 @@ public class ModelIsomorphism {
      */
     private static String canonicalizeLiteralValue(Literal literal) {
         String label = canonicalizeLiteralLabel(literal);
-        String datatype = normalizeDatatype(literal.getDatatype().stringValue());
-        String language = literal.getLanguage() != null ? "@" + literal.getLanguage() : "";
+        String datatype = literal.getDatatype() != null
+                ? normalizeDatatype(literal.getDatatype().stringValue())
+                : "http://www.w3.org/2001/XMLSchema#string";
+        String language = literal.getLanguage().map(l -> "@" + l).orElse("");
 
         return "\"" + label + "\"^^<" + datatype + ">" + language;
     }
@@ -399,14 +406,14 @@ public class ModelIsomorphism {
      * Canonicalizes an RDF value with blank node mapping.
      */
     private static String canonicalizeValue(Value value, Map<BNode, String> bnodeMap) {
-        if (value instanceof BNode) {
-            return bnodeMap.getOrDefault((BNode) value, "_:unknown");
+        if (value instanceof BNode bnode) {
+            return bnodeMap.getOrDefault(bnode, "_:unknown");
         }
-        if (value instanceof IRI) {
-            return "<" + ((IRI) value).stringValue() + ">";
+        if (value instanceof IRI iri) {
+            return "<" + iri.stringValue() + ">";
         }
-        if (value instanceof Literal) {
-            return canonicalizeLiteralValue((Literal) value);
+        if (value instanceof Literal literal) {
+            return canonicalizeLiteralValue(literal);
         }
         return value.stringValue();
     }
@@ -467,6 +474,7 @@ public class ModelIsomorphism {
                 subjects.add(stmt.getSubject());
             }
         } catch (Exception e) {
+            // Ignored: subject collection fallback
         }
         return subjects;
     }
@@ -483,6 +491,7 @@ public class ModelIsomorphism {
                 }
             }
         } catch (Exception e) {
+            // Ignored: statement extraction fallback
         }
     }
 
@@ -499,8 +508,8 @@ public class ModelIsomorphism {
      */
     private static boolean isValidContext(Resource context) {
         try {
-            if (context instanceof IRI) {
-                return ((IRI) context).stringValue().contains(":");
+            if (context instanceof IRI iri) {
+                return iri.stringValue().contains(":");
             }
             return context instanceof BNode;
         } catch (Exception e) {
@@ -536,6 +545,7 @@ public class ModelIsomorphism {
                 return String.valueOf(Double.parseDouble(label));
             }
         } catch (NumberFormatException e) {
+            // Ignored: return original label
         }
         return label;
     }

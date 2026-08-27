@@ -36,6 +36,10 @@ public class W3cTestCase {
         // JSON-LD test properties
         BASE_URI("baseUri"),
         SPEC_VERSION("specVersion"),
+        PROCESSING_MODE("processingMode"),
+        PRODUCE_GENERALIZED_RDF("produceGeneralizedRdf"),
+        RDF_DIRECTION("rdfDirection"),
+        EXPAND_CONTEXT("expandContext"),
         USE_NATIVE_TYPES("useNativeTypes"),
         USE_RDF_TYPES("useRdfType"),
         ;
@@ -145,7 +149,7 @@ public class W3cTestCase {
      * @return The property value, cast to the expected type, or null if not found.
      * @throws IllegalArgumentException if the property exists but is not of the expected type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("null")
     public <T> T getProperty(String key, Class<T> type) {
         Object value = properties.get(key);
         if (value == null) {
@@ -155,7 +159,7 @@ public class W3cTestCase {
             throw new IllegalArgumentException(
                     "Property '" + key + "' is not of expected type " + type.getSimpleName());
         }
-        return (T) value;
+        return type.cast(value);
     }
 
     /**

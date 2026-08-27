@@ -43,6 +43,7 @@ public class W3cTestLoader {
             "SELECT ?uri ?type WHERE { ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type . }";
     private static final String MANIFEST_ACTION = "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>";
     private static final String JSONLD_OPTION = "<https://w3c.github.io/json-ld-api/tests/vocab#option>";
+    private static final String JSON_LD_API = "json-ld-api";
     /**
      * Default constructor.
      * This constructor is intentionally empty as the class contains only static methods.
@@ -77,7 +78,9 @@ public class W3cTestLoader {
             // The "next" pipeline crashes on OPTIONAL, UNION, FILTER, and VALUES;
             // only simple triple-pattern queries are safe.
             logger.info("Loading test types");
-            Map<String, String> uriToType = new HashMap<>();
+            // Step 1: find all test URIs and their rdf:type(s).
+            // A single test may have multiple types (e.g. jld:PositiveEvaluationTest and jld:FromRDFTest).
+            Map<String, Set<String>> uriToTypes = new HashMap<>();
             try (TupleQueryResult r = conn.prepareTupleQuery(TYPE_QUERY).evaluate()) {
                 while (r.hasNext()) {
                     BindingSet bs = r.next();
@@ -85,11 +88,11 @@ public class W3cTestLoader {
                     String type = getStringValue(bs, "type");
                     if (uri != null && type != null
                             && !type.equals("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#Manifest")) {
-                        uriToType.putIfAbsent(uri, type);
+                        uriToTypes.computeIfAbsent(uri, k -> new HashSet<>()).add(type);
                     }
                 }
             }
-            logger.info("Found {} test URIs", uriToType.size());
+            logger.info("Found {} test URIs", uriToTypes.size());
 
             // Step 2: load each property via a separate plain-BGP query.
             // Predicates are full angle-bracket IRIs — no PREFIX declarations needed.
@@ -128,15 +131,27 @@ public class W3cTestLoader {
                     "<https://w3c.github.io/json-ld-api/tests/vocab#specVersion>", "specVersion");
             run2HopPropQuery(conn, props,
                     JSONLD_OPTION,
+                    "<https://w3c.github.io/json-ld-api/tests/vocab#processingMode>", "processingMode");
+            run2HopPropQuery(conn, props,
+                    JSONLD_OPTION,
+                    "<https://w3c.github.io/json-ld-api/tests/vocab#produceGeneralizedRdf>", "produceGeneralizedRdf");
+            run2HopPropQuery(conn, props,
+                    JSONLD_OPTION,
+                    "<https://w3c.github.io/json-ld-api/tests/vocab#rdfDirection>", "rdfDirection");
+            run2HopPropQuery(conn, props,
+                    JSONLD_OPTION,
+                    "<https://w3c.github.io/json-ld-api/tests/vocab#expandContext>", "expandContext");
+            run2HopPropQuery(conn, props,
+                    JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#useNativeTypes>", "useNativeTypes");
             run2HopPropQuery(conn, props,
                     JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#useRdfType>", "useRdfType");
 
             // Step 3: build W3cTestCase objects
-            for (Map.Entry<String, String> entry : uriToType.entrySet()) {
+            for (Map.Entry<String, Set<String>> entry : uriToTypes.entrySet()) {
                 String testUri = entry.getKey();
-                String typeUri = entry.getValue();
+                Set<String> typeUris = entry.getValue();
                 try {
                     Map<String, String> p = props.getOrDefault(testUri, Map.of());
 
@@ -145,7 +160,7 @@ public class W3cTestLoader {
                     String action = coalesce(p.get("action"), p.get("actionAlt"));
                     String result2 = coalesce(p.get("result"), p.get("resultAlt"));
 
-                    TestType testType = mapTestType(typeUri);
+                    TestType testType = mapTestType(typeUris);
                     Map<String, Object> properties = buildPropertiesFromMap(p, action, result2);
                     String displayName = name != null
                             ? name.trim().toLowerCase(Locale.ROOT).replace("-", "").replace(" ", "_").replace("#", "").replace(".", "")
@@ -268,39 +283,99 @@ public class W3cTestLoader {
     }
 
     /**
-     * Maps a W3C test type URI to the local {@link TestType} enum.
+     * Maps a set of W3C test type URIs to the local {@link TestType} enum.
      */
-    private static TestType mapTestType(String typeUri) {
-        logger.debug("Mapping test type URI: {}", typeUri);
-        String lowerUri = typeUri.toLowerCase();
+    private static TestType mapTestType(Set<String> typeUris) {
+        boolean isFromRdf = typeUris.stream().anyMatch(t -> t.toLowerCase(Locale.ROOT).contains("fromrdftest"));
+        boolean isToRdf = typeUris.stream().anyMatch(t -> t.toLowerCase(Locale.ROOT).contains("tordftest"));
 
-        return switch (typeUri) {
-            case "http://www.w3.org/2006/03/test-description#TestCase" -> TestType.ASK_BASED_EVAL;
-            case String s when lowerUri.contains("testturtlenegativesyntax") -> TestType.TURTLE_NEGATIVE_SYNTAX;
-            case String s when lowerUri.contains("testturtlepositivesyntax") -> TestType.TURTLE_POSITIVE_SYNTAX;
-            case String s when lowerUri.contains("testturtleeval") && !lowerUri.contains("negative") -> TestType.TURTLE_POSITIVE_EVAL;
-            case String s when lowerUri.contains("testturtlenegativeeval") -> TestType.TURTLE_NEGATIVE_EVAL;
-            case String s when lowerUri.contains("testntriplesegativesyntax") -> TestType.NTRIPLES_NEGATIVE_SYNTAX;
-            case String s when lowerUri.contains("testntriplespositivesyntax") -> TestType.NTRIPLES_POSITIVE_SYNTAX;
-            case String s when lowerUri.contains("testtriglnegativesyntax") -> TestType.TRIG_NEGATIVE_SYNTAX;
-            case String s when lowerUri.contains("testtrigpositivesyntax") -> TestType.TRIG_POSITIVE_SYNTAX;
-            case String s when lowerUri.contains("testtrigeval") && !lowerUri.contains("negative") -> TestType.TRIG_POSITIVE_EVAL;
-            case String s when lowerUri.contains("testtrigegativeeval") -> TestType.TRIG_NEGATIVE_EVAL;
-            case String s when lowerUri.contains("testnquadsegativesyntax") -> TestType.NQUADS_NEGATIVE_SYNTAX;
-            case String s when lowerUri.contains("testnquadspositivesyntax") -> TestType.NQUADS_POSITIVE_SYNTAX;
-            case String s when lowerUri.contains("testxmlnegativesyntax") -> TestType.RDF_XML_NEGATIVE_SYNTAX;
-            case String s when lowerUri.contains("testxmleval") -> TestType.RDF_XML_POSITIVE_EVAL;
-            case String s when lowerUri.contains("rdfc10negativeevaltest") -> TestType.RDFC10_NEGATIVE_EVAL_TEST;
-            case String s when lowerUri.contains("rdfc10maptest") -> TestType.RDFC10_MAP_TEST;
-            case String s when lowerUri.contains("rdfc10evaltest") -> TestType.RDFC10_EVAL_TEST;
-            case String s when s.contains("json-ld-api/tests/vocab#PositiveEvaluationTest") -> TestType.JSON_LD_POSITIVE_EVAL;
-            case String s when s.contains("json-ld-api/tests/vocab#NegativeEvaluationTest") -> TestType.JSON_LD_NEGATIVE_EVAL;
-            case String s when s.contains("json-ld-api/tests/vocab#PositiveSyntaxTest") -> TestType.JSON_LD_POSITIVE_SYNTAX;
-            case String s when s.contains("json-ld-api/tests/vocab#NegativeSyntaxTest") -> TestType.JSON_LD_NEGATIVE_SYNTAX;
-            case String s when s.contains("rdfa-test#PositiveEvaluationTest") -> TestType.RDFA_POSITIVE_EVAL;
-            case String s when s.contains("rdfa-test#NegativeEvaluationTest") -> TestType.RDFA_NEGATIVE_EVAL;
-            default -> throw new IllegalArgumentException("Unsupported or unknown test type URI: " + typeUri);
-        };
+        for (String typeUri : typeUris) {
+            String lowerUri = typeUri.toLowerCase(Locale.ROOT);
+            TestType mapped = mapJsonLdTestType(lowerUri, isFromRdf, isToRdf);
+            if (mapped != null) {
+                return mapped;
+            }
+            mapped = mapStandardRdfTestType(typeUri, lowerUri);
+            if (mapped != null) {
+                return mapped;
+            }
+        }
+
+        throw new IllegalArgumentException("Unsupported or unknown test type URIs: " + typeUris);
+    }
+
+    private static TestType mapJsonLdTestType(String lowerUri, boolean isFromRdf, boolean isToRdf) {
+        TestType evalType = mapJsonLdEvalTestType(lowerUri, isFromRdf, isToRdf);
+        if (evalType != null) {
+            return evalType;
+        }
+        return mapJsonLdSyntaxTestType(lowerUri);
+    }
+
+    private static TestType mapJsonLdEvalTestType(String lowerUri, boolean isFromRdf, boolean isToRdf) {
+        if (!lowerUri.contains("evaluationtest")) {
+            return null;
+        }
+        boolean isApi = isToRdf || lowerUri.contains(JSON_LD_API);
+        boolean isPositive = lowerUri.contains("positive");
+        if (isFromRdf) {
+            return isPositive ? TestType.JSON_LD_FROM_RDF_POSITIVE_EVAL : TestType.JSON_LD_FROM_RDF_NEGATIVE_EVAL;
+        }
+        if (isApi) {
+            return isPositive ? TestType.JSON_LD_POSITIVE_EVAL : TestType.JSON_LD_NEGATIVE_EVAL;
+        }
+        return null;
+    }
+
+    private static TestType mapJsonLdSyntaxTestType(String lowerUri) {
+        if (!lowerUri.contains(JSON_LD_API)) {
+            return null;
+        }
+        if (lowerUri.contains("positivesyntaxtest")) {
+            return TestType.JSON_LD_POSITIVE_SYNTAX;
+        }
+        if (lowerUri.contains("negativesyntaxtest")) {
+            return TestType.JSON_LD_NEGATIVE_SYNTAX;
+        }
+        return null;
+    }
+
+    private static TestType mapStandardRdfTestType(String typeUri, String lowerUri) {
+        if ("http://www.w3.org/2006/03/test-description#TestCase".equalsIgnoreCase(typeUri)) {
+            return TestType.ASK_BASED_EVAL;
+        }
+        TestType type = mapTurtleOrTrigTestType(lowerUri);
+        if (type != null) {
+            return type;
+        }
+        return mapOtherRdfTestType(lowerUri);
+    }
+
+    private static TestType mapTurtleOrTrigTestType(String lowerUri) {
+        if (lowerUri.contains("testturtlenegativesyntax")) return TestType.TURTLE_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("testturtlepositivesyntax")) return TestType.TURTLE_POSITIVE_SYNTAX;
+        if (lowerUri.contains("testturtleeval") && !lowerUri.contains("negative")) return TestType.TURTLE_POSITIVE_EVAL;
+        if (lowerUri.contains("testturtlenegativeeval")) return TestType.TURTLE_NEGATIVE_EVAL;
+        if (lowerUri.contains("testtriglnegativesyntax")) return TestType.TRIG_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("testtrigpositivesyntax")) return TestType.TRIG_POSITIVE_SYNTAX;
+        if (lowerUri.contains("testtrigeval") && !lowerUri.contains("negative")) return TestType.TRIG_POSITIVE_EVAL;
+        if (lowerUri.contains("testtrigegativeeval")) return TestType.TRIG_NEGATIVE_EVAL;
+        return null;
+    }
+
+    private static TestType mapOtherRdfTestType(String lowerUri) {
+        if (lowerUri.contains("testntriplesegativesyntax")) return TestType.NTRIPLES_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("testntriplespositivesyntax")) return TestType.NTRIPLES_POSITIVE_SYNTAX;
+        if (lowerUri.contains("testnquadsegativesyntax")) return TestType.NQUADS_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("testnquadspositivesyntax")) return TestType.NQUADS_POSITIVE_SYNTAX;
+        if (lowerUri.contains("testxmlnegativesyntax")) return TestType.RDF_XML_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("testxmleval")) return TestType.RDF_XML_POSITIVE_EVAL;
+        if (lowerUri.contains("rdfc10negativeevaltest")) return TestType.RDFC10_NEGATIVE_EVAL_TEST;
+        if (lowerUri.contains("rdfc10maptest")) return TestType.RDFC10_MAP_TEST;
+        if (lowerUri.contains("rdfc10evaltest")) return TestType.RDFC10_EVAL_TEST;
+        if (lowerUri.contains("rdfa-test#positiveevaluationtest")) return TestType.RDFA_POSITIVE_EVAL;
+        if (lowerUri.contains("rdfa-test#negativeevaluationtest")) return TestType.RDFA_NEGATIVE_EVAL;
+        return null;
     }
 
 
