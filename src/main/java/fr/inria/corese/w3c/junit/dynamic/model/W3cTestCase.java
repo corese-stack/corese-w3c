@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
 
-import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
+import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.w3c.junit.dynamic.executor.factory.TestExecutorFactory;
 
 /**
@@ -40,7 +40,7 @@ public class W3cTestCase {
         USE_RDF_TYPES("useRdfType"),
         ;
 
-        private String key = null;
+        private final String key;
 
         Property(String keyString) {
             this.key = keyString;
@@ -95,13 +95,6 @@ public class W3cTestCase {
     }
 
     // Getters
-    /**
-     * Gets the unique URI identifying the test case.
-     * @return The URI identifying the test case.
-     */
-    public String getTestUri() {
-        return testUri;
-    }
 
     /**
      * Gets the short name of the test case.
@@ -109,14 +102,6 @@ public class W3cTestCase {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Gets the user-friendly display name for the test.
-     * @return The user-friendly display name for the test.
-     */
-    public String getDisplayName() {
-        return displayName;
     }
 
     /**

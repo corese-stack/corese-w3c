@@ -4,14 +4,14 @@ import java.io.FileReader;
 import java.net.URI;
 
 import com.apicatalog.jsonld.JsonLdVersion;
-import fr.inria.corese.core.next.data.impl.io.common.JSONLDOptions;
+import fr.inria.corese.core.next.data.api.exception.ParsingException;
+import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
+import fr.inria.corese.core.next.data.api.model.Model;
+import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.inria.corese.core.next.data.api.Model;
-import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.data.io.parser.RDFParser;
-import fr.inria.corese.core.next.data.impl.exception.ParsingErrorException;
+import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -19,7 +19,6 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 /**
  * Specialized executor for positive RDF syntax tests.
  * These tests should parse successfully without throwing exceptions.
- * 
  * Process:
  * 1. Extract needed information from test case
  * 2. Attempt to parse the input file
@@ -91,7 +90,7 @@ public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
 
             // If we reach here, parsing succeeded as expected for positive syntax test
 
-        } catch (ParsingErrorException e) {
+        } catch (ParsingException e) {
             // This should not happen for positive syntax tests
             String msg = RDFTestUtils.formatErrorMessage(
                     "Expected successful parsing but got parse error", testName, actionFileUri, null, e);

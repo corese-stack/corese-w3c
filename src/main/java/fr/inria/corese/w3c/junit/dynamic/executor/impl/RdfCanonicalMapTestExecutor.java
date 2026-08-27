@@ -13,6 +13,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -178,6 +179,7 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
      * @param content The string content of the result file in line-based format.
      * @return A map containing the parsed mapping.
      */
+    @SuppressWarnings("null")
     private Map<String, String> parseLineBasedMapping(String content) {
         return Arrays.stream(content.split("\n"))
                 .map(String::trim)
@@ -308,6 +310,7 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
      * @param mapping The blank node mapping (e.g., {@code "b1" -> "c14n0"}).
      * @return A map where the key is the original blank node ID and the value is the numeric index (e.g., {@code "b1" -> 0}).
      */
+    @SuppressWarnings("null")
     private Map<String, Integer> extractCanonicalIndices(Map<String, String> mapping) {
         return mapping.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
@@ -338,6 +341,7 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
      * @param indices A map containing the extracted numeric indices.
      * @return {@code true} if indices are consistent (0 to max without gaps), {@code false} otherwise.
      */
+    @SuppressWarnings("null")
     private boolean areIndicesConsistent(Map<String, Integer> indices) {
         if (indices.isEmpty()) {
             return true;
@@ -360,6 +364,7 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
      * @param indices A map containing the extracted numeric indices.
      * @return The maximum index, or {@code NOT_FOUND} ({@code -1}) if the map is empty.
      */
+    @SuppressWarnings("null")
     private int getMaxIndex(Map<String, Integer> indices) {
         return indices.values().stream().max(Integer::compare).orElse(NOT_FOUND);
     }
@@ -371,9 +376,9 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
      *
      * @param fileUri  The URI of the action or result file.
      * @return The local path string to the resolved file.
-     * @throws Exception If the file cannot be resolved or an unsupported URI scheme is encountered.
+     * @throws IOException If the file cannot be resolved or downloaded.
      */
-    private String resolveFile(URI fileUri) throws Exception {
+    private String resolveFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
         String scheme = fileUri.getScheme();
 
         return switch (scheme) {
@@ -388,9 +393,10 @@ public class RdfCanonicalMapTestExecutor implements TestExecutor {
      *
      * @param fileUri The URI of the file.
      * @return The local path string to the resolved file.
-     * @throws Exception If the file cannot be resolved or downloaded.
+     * @throws IOException If the file cannot be resolved or downloaded.
+     * @throws NoSuchAlgorithmException If algorithm resolution fails.
      */
-    private String resolveLocalOrRemoteFile(URI fileUri) throws Exception {
+    private String resolveLocalOrRemoteFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
         Path filePath = Paths.get(fileUri);
 
         if (Files.exists(filePath)) {

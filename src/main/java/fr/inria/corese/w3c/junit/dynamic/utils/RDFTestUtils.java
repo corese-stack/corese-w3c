@@ -2,17 +2,17 @@ package fr.inria.corese.w3c.junit.dynamic.utils;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
-import fr.inria.corese.core.next.data.api.Model;
-import fr.inria.corese.core.next.data.api.ValueFactory;
-import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.data.io.parser.RDFParser;
-import fr.inria.corese.core.next.data.impl.io.parser.ParserFactory;
-import fr.inria.corese.core.next.data.impl.temp.CoreseAdaptedValueFactory;
-import fr.inria.corese.core.next.data.impl.temp.CoreseModel;
+import fr.inria.corese.core.next.data.api.factory.ValueFactory;
+import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
+import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.api.model.Model;
+import fr.inria.corese.core.next.data.Values;
+import fr.inria.corese.core.next.io.CoreseIO;
+import fr.inria.corese.core.next.storage.Storages;
+import fr.inria.corese.core.next.storage.StorageModels;
 
 /**
  * Utility class providing simple, reusable helper methods for test executors.
@@ -31,7 +31,7 @@ public class RDFTestUtils {
      * @return A new Model ready for parsing
      */
     public static Model createModel() {
-        return new CoreseModel();
+        return StorageModels.create(Storages.create());
     }
 
     /**
@@ -43,9 +43,7 @@ public class RDFTestUtils {
      * @return A configured RDFParser
      */
     public static RDFParser createParser(RDFFormat format, Model model) {
-        ParserFactory parserFactory = new ParserFactory();
-        ValueFactory valueFactory = new CoreseAdaptedValueFactory();
-        return parserFactory.createRDFParser(format, model, valueFactory);
+        return CoreseIO.rdfParserFactory().createRDFParser(format, model, Values.factory());
     }
 
     /**
@@ -54,7 +52,7 @@ public class RDFTestUtils {
      * @return A new ValueFactory
      */
     public static ValueFactory createValueFactory() {
-        return new CoreseAdaptedValueFactory();
+        return Values.factory();
     }
 
     /**
@@ -62,8 +60,8 @@ public class RDFTestUtils {
      * 
      * @param fileUri The file URI to load
      * @return The local file path
-     * @throws IOException 
-     * @throws Exception If loading fails
+     * @throws IOException if the file cannot be read
+     * @throws NoSuchAlgorithmException if the hash algorithm is unavailable
      */
     public static String loadFile(URI fileUri) throws NoSuchAlgorithmException, IOException {
         TestFileManager.loadFile(fileUri);
@@ -94,24 +92,10 @@ public class RDFTestUtils {
         if (cause != null) {
             // Use toString() to get exception class and message (more informative than
             // getMessage()
-            sb.append(". Cause: ").append(cause.toString());
+            sb.append(". Cause: ").append(cause);
         }
 
         return sb.toString();
-    }
-
-    /**
-     * Try to guess the RDFFormat from a file name
-     * @param filePath A URL or local path to an RDF file
-     * @return the RDFFormat of the file
-     */
-    @SuppressWarnings("java:S112") 
-    public static RDFFormat guessFileFormat(String filePath) {
-        try {
-            return guessFileFormat(new URI(filePath));
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -131,7 +115,7 @@ public class RDFTestUtils {
     }
 
     /**
-     * Copied and expanded from https://www.baeldung.com/java-file-extension
+     * Copied and expanded from <a href="https://www.baeldung.com/java-file-extension">...</a>
      * Tries to extract the extension of a file in a filepath.
      * @param filename a file path
      * @return the extension of the file
@@ -157,19 +141,8 @@ public class RDFTestUtils {
         return "";
     }
 
-
     /**
-     * Attempt to retrieve the base URI of a given URI string such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
-     * @param uriString Full uri string
-     * @return The truncated uri as string
-     * @throws URISyntaxException if the string is not a standard URI
-     */
-    public static String getBaseUri(String uriString) throws URISyntaxException {
-        return getBaseUri(new URI(uriString)).toString();
-    }
-
-    /**
-     * Attempt to retrieve the base URI of a given URI object such as "https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution" will return  "https://docs.gradle.org/8.10.1/userguide/"
+     * Attempt to retrieve the base URI of a given URI object such as "<a href="https://docs.gradle.org/8.10.1/userguide/java_testing.html#sec:test_execution">...</a>" will return  "<a href="https://docs.gradle.org/8.10.1/userguide/">...</a>"
      * @param uri Full uri
      * @return The truncated URI
      */

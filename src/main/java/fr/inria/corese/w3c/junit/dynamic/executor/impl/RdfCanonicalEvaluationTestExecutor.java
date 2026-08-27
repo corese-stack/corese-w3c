@@ -1,13 +1,11 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
-import fr.inria.corese.core.next.data.api.Model;
-import fr.inria.corese.core.next.data.api.Statement;
-import fr.inria.corese.core.next.data.api.ValueFactory;
-import fr.inria.corese.core.next.data.api.base.io.RDFFormat;
-import fr.inria.corese.core.next.data.io.parser.RDFParser;
-import fr.inria.corese.core.next.data.impl.io.serialization.canonical.RDFC10Canonicalizer;
-import fr.inria.corese.core.next.data.impl.io.serialization.canonical.RDFC10SerializerOptions;
-import fr.inria.corese.core.next.data.impl.io.serialization.util.StatementUtils;
+
+import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
+import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.api.model.Model;
+import fr.inria.corese.core.next.data.api.model.Statement;
+import fr.inria.corese.core.next.data.RdfCanonicalization;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -18,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -99,6 +98,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      * @param actual   The actual N-Quads output from canonicalization
      * @param expected The expected N-Quads from the test case
      */
+    @SuppressWarnings("null")
     private void compareNQuadsLoose(String testName, String actual, String expected) {
         Set<String> actualSet = Arrays.stream(actual.split("\n"))
                 .map(String::trim)
@@ -110,16 +110,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
                 .filter(line -> !line.isEmpty())
                 .collect(Collectors.toSet());
 
-        Set<String> commonLines = new HashSet<>(actualSet);
-        commonLines.retainAll(expectedSet);
-
-        double similarity = (double) commonLines.size() /
-                (actualSet.size() + expectedSet.size() - commonLines.size());
-
-        if (similarity >= 0) {
-            return;
-        }
-        if (actualSet.isEmpty() && expectedSet.isEmpty()) {
+        if (actualSet.equals(expectedSet)) {
             logger.info("Test '{}' passed: sets are identical", testName);
             return;
         }
@@ -155,9 +146,10 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      * @param model The model to convert
      * @return A string containing all N-Quads sorted line by line
      */
+    @SuppressWarnings("null")
     private String toSortedNQuads(Model model) {
         return model.stream()
-                .map(StatementUtils::toNQuad)
+                .map(RdfCanonicalization::toNQuad)
                 .map(String::trim)
                 .sorted()
                 .collect(Collectors.joining("\n"));
@@ -169,10 +161,11 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      *
      * @param fileUri The URI of the action or result file.
      * @return The local file path string.
-     * @throws Exception If the file cannot be resolved or loaded.
+     * @throws IOException If the file cannot be loaded.
+     * @throws NoSuchAlgorithmException If file integrity verification cannot run.
      * @throws IllegalArgumentException If the URI scheme is unsupported.
      */
-    private String resolveAndLoadFile(URI fileUri) throws Exception {
+    private String resolveAndLoadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
         // Handle local file URIs
         if ("file".equals(fileUri.getScheme())) {
             java.nio.file.Path filePath = java.nio.file.Paths.get(fileUri);
@@ -208,19 +201,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      */
     private Model canonicalize(Model model) {
         try {
-            // Use default RDFC-1.0 options
-            RDFC10SerializerOptions options = RDFC10SerializerOptions.defaultConfig();
-            ValueFactory valueFactory = RDFTestUtils.createValueFactory();
-
-            // Initialize the canonicalizer
-            RDFC10Canonicalizer canonicalizer = new RDFC10Canonicalizer(
-                    options.getHashAlgorithm(),
-                    options.getPermutationLimit(),
-                    valueFactory
-            );
-
-            // Perform canonicalization, returning a list of canonical statements
-            List<Statement> canonicalStatements = canonicalizer.canonicalize(model);
+            List<Statement> canonicalStatements = RdfCanonicalization.canonicalize(model);
 
             // Create a new model to hold the canonical results
             Model canonicalModel = RDFTestUtils.createModel();
@@ -229,9 +210,9 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
 
             return canonicalModel;
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             logger.error("Failed to canonicalize model", e);
-            throw new RuntimeException("Canonicalization failed: " + e.getMessage(), e);
+            throw new IllegalStateException("Canonicalization failed", e);
         }
     }
 
@@ -249,8 +230,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
         try (FileReader reader = new FileReader(filePath)) {
             parser.parse(reader);
         } catch (IOException e) {
-            logger.error("Failed to read or parse file: {}", filePath, e);
-            throw e;
+            throw new IOException("Failed to read or parse file: " + filePath, e);
         }
 
         return model;
