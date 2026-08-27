@@ -231,7 +231,11 @@ public class ModelIsomorphism {
         }
 
         Collections.sort(signatureParts);
-        return String.join("|", signatureParts);
+        String combined = String.join("|", signatureParts);
+        if (combined.length() > 256) {
+            return Integer.toHexString(combined.hashCode()) + ":" + combined.substring(0, 128);
+        }
+        return combined;
     }
 
     /**

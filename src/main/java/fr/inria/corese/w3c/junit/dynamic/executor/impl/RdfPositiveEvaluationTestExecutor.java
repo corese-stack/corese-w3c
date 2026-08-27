@@ -6,6 +6,7 @@ import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
+import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
@@ -51,7 +52,9 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             throws IOException, NoSuchAlgorithmException {
         String filePath = RDFTestUtils.loadFile(fileUri);
         String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class);
-        RDFFormat format = RDFTestUtils.guessFileFormat(fileUri);
+        RDFFormat format = ((testCase.getType() == TestType.RDFA_POSITIVE_EVAL || testCase.getType() == TestType.RDFA_NEGATIVE_EVAL) && fileUri.equals(testCase.getActionFileUri()))
+                ? RDFFormat.RDFA
+                : RDFTestUtils.guessFileFormat(fileUri);
         Model model = RDFTestUtils.createModel();
         RDFParser parser = RDFTestUtils.createParser(format, model);
         if (format == RDFFormat.JSONLD) {

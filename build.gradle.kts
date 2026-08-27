@@ -53,6 +53,7 @@ tasks.withType<Javadoc> {
 
 tasks.test {
     useJUnitPlatform()
+    maxHeapSize = "2g"
     testLogging {
         events("started", "passed", "skipped", "failed")
         showExceptions = true
