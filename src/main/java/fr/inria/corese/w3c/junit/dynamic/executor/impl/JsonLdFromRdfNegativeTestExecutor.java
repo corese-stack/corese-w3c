@@ -6,7 +6,7 @@ import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.io.serializer.RDFSerializer;
 import fr.inria.corese.core.next.data.api.model.Model;
-import fr.inria.corese.core.next.data.impl.io.serializer.jsonld.JSONLDSerializer;
+import fr.inria.corese.core.next.io.CoreseIO;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -39,7 +39,7 @@ public class JsonLdFromRdfNegativeTestExecutor implements TestExecutor {
 
         JSONLDOptions jsonldOptions = buildJsonLdOptions(testCase, baseUri);
         StringWriter writer = new StringWriter();
-        RDFSerializer serializer = new JSONLDSerializer(model, jsonldOptions);
+        RDFSerializer serializer = CoreseIO.serializer(model, RDFFormat.JSONLD, jsonldOptions);
 
         try {
             serializer.write(writer);

@@ -6,7 +6,6 @@ import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.model.Statement;
 import fr.inria.corese.core.next.data.RdfCanonicalization;
-import fr.inria.corese.core.next.data.impl.io.serializer.rdfc10.RDFC10SerializerOptions;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -202,16 +201,12 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      */
     private Model canonicalize(Model model, W3cTestCase testCase) {
         try {
-            RDFC10SerializerOptions.HashAlgorithm algorithm = testCase.getName().contains("SHA-384")
+            RdfCanonicalization.HashAlgorithm algorithm = testCase.getName().contains("SHA-384")
                     || (testCase.getComment() != null && testCase.getComment().contains("SHA-384"))
-                    ? RDFC10SerializerOptions.HashAlgorithm.SHA_384
-                    : RDFC10SerializerOptions.HashAlgorithm.SHA_256;
+                    ? RdfCanonicalization.HashAlgorithm.SHA_384
+                    : RdfCanonicalization.HashAlgorithm.SHA_256;
 
-            RDFC10SerializerOptions options = RDFC10SerializerOptions.builder()
-                    .hashAlgorithm(algorithm)
-                    .build();
-
-            List<Statement> canonicalStatements = RdfCanonicalization.canonicalize(model, options);
+            List<Statement> canonicalStatements = RdfCanonicalization.canonicalize(model, algorithm);
 
             // Create a new model to hold the canonical results
             Model canonicalModel = RDFTestUtils.createModel();
