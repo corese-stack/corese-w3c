@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -97,6 +98,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      * @param actual   The actual N-Quads output from canonicalization
      * @param expected The expected N-Quads from the test case
      */
+    @SuppressWarnings("null")
     private void compareNQuadsLoose(String testName, String actual, String expected) {
         Set<String> actualSet = Arrays.stream(actual.split("\n"))
                 .map(String::trim)
@@ -108,16 +110,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
                 .filter(line -> !line.isEmpty())
                 .collect(Collectors.toSet());
 
-        Set<String> commonLines = new HashSet<>(actualSet);
-        commonLines.retainAll(expectedSet);
-
-        double similarity = (double) commonLines.size() /
-                (actualSet.size() + expectedSet.size() - commonLines.size());
-
-        if (similarity >= 0) {
-            return;
-        }
-        if (actualSet.isEmpty() && expectedSet.isEmpty()) {
+        if (actualSet.equals(expectedSet)) {
             logger.info("Test '{}' passed: sets are identical", testName);
             return;
         }
@@ -153,6 +146,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      * @param model The model to convert
      * @return A string containing all N-Quads sorted line by line
      */
+    @SuppressWarnings("null")
     private String toSortedNQuads(Model model) {
         return model.stream()
                 .map(RdfCanonicalization::toNQuad)
@@ -167,10 +161,11 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      *
      * @param fileUri The URI of the action or result file.
      * @return The local file path string.
-     * @throws Exception If the file cannot be resolved or loaded.
+     * @throws IOException If the file cannot be loaded.
+     * @throws NoSuchAlgorithmException If file integrity verification cannot run.
      * @throws IllegalArgumentException If the URI scheme is unsupported.
      */
-    private String resolveAndLoadFile(URI fileUri) throws Exception {
+    private String resolveAndLoadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
         // Handle local file URIs
         if ("file".equals(fileUri.getScheme())) {
             java.nio.file.Path filePath = java.nio.file.Paths.get(fileUri);
@@ -215,9 +210,9 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
 
             return canonicalModel;
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             logger.error("Failed to canonicalize model", e);
-            throw new RuntimeException("Canonicalization failed: " + e.getMessage(), e);
+            throw new IllegalStateException("Canonicalization failed", e);
         }
     }
 
@@ -235,8 +230,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
         try (FileReader reader = new FileReader(filePath)) {
             parser.parse(reader);
         } catch (IOException e) {
-            logger.error("Failed to read or parse file: {}", filePath, e);
-            throw e;
+            throw new IOException("Failed to read or parse file: " + filePath, e);
         }
 
         return model;

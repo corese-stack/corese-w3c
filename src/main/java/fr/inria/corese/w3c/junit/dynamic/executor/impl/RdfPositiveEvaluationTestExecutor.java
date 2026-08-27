@@ -8,9 +8,12 @@ import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
+import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Specialized executor for positive RDF evaluation tests.
@@ -35,71 +38,37 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
 
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
-        URI actionFileUri = testCase.getActionFileUri();
-        URI resultFileUri = testCase.getResultFileUri();
+        Model actionModel = loadModel(testCase.getActionFileUri(), testCase);
+        Model resultModel = loadModel(testCase.getResultFileUri(), testCase);
+        if (!ModelIsomorphism.areModelsIsomorphic(actionModel, resultModel)) {
+            throw new AssertionError("RDF models differ for test: " + testCase.getName());
+        }
+    }
 
-            // Load the action file
-            String actionFilePath = RDFTestUtils.loadFile(actionFileUri);
-            String actionBaseUriString = RDFTestUtils.getBaseUri(actionFileUri).toString();
+    private Model loadModel(URI fileUri, W3cTestCase testCase)
+            throws IOException, NoSuchAlgorithmException {
+        String filePath = RDFTestUtils.loadFile(fileUri);
+        String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class);
+        RDFFormat format = RDFTestUtils.guessFileFormat(fileUri);
+        Model model = RDFTestUtils.createModel();
+        RDFParser parser = RDFTestUtils.createParser(format, model);
+        if (format == RDFFormat.JSONLD) {
+            parser.setConfig(jsonLdOptions(testCase, baseUri));
+        }
+        try (FileReader reader = new FileReader(filePath)) {
+            parser.parse(reader, baseUri != null ? baseUri : RDFTestUtils.getBaseUri(fileUri).toString());
+        }
+        return model;
+    }
 
-            // Get format and create parser
-            Model actionModel = RDFTestUtils.createModel();
-            RDFFormat actionFormat = RDFTestUtils.guessFileFormat(actionFileUri);
-            RDFParser actionParser = RDFTestUtils.createParser(actionFormat, actionModel);
-
-            // Load the result file
-            String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
-            String resultBaseUriString = RDFTestUtils.getBaseUri(resultFileUri).toString();
-
-            // Detect format of result file and create parser
-            Model resultModel = RDFTestUtils.createModel();
-            RDFFormat resultFormat = RDFTestUtils.guessFileFormat(resultFileUri);
-            RDFParser resultParser = RDFTestUtils.createParser(resultFormat, resultModel);
-
-            // Parser config for JSON-LD format
-            if(actionFormat == RDFFormat.JSONLD || resultFormat == RDFFormat.JSONLD) {
-                JSONLDOptions.Builder optionBuilder = new JSONLDOptions.Builder();
-                if(testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class) != null) {
-                    String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class);
-                    optionBuilder.base(baseUri);
-                    actionBaseUriString = baseUri;
-                    resultBaseUriString = baseUri;
-                }
-                if(testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class) != null) {
-                    String specVersion = testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class);
-                    if(specVersion.equals("json-ld-1.0")) {
-                        optionBuilder.processingMode(JsonLdVersion.V1_0);
-                    }
-                    if(specVersion.equals("json-ld-1.1")) {
-                        optionBuilder.processingMode(JsonLdVersion.V1_1);
-                    }
-                }
-
-                if(testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class) != null) {
-                    boolean usesNativeTypes = testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class).equals("true");
-                    optionBuilder.useNativeTypes(usesNativeTypes);
-                }
-                if(testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class) != null) {
-                    boolean useRdfType = testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class).equals("true");
-                    optionBuilder.useRdfType(useRdfType);
-                }
-
-                if(actionFormat == RDFFormat.JSONLD) {
-                    actionParser.setConfig(optionBuilder.build());
-                }
-                if (resultFormat == RDFFormat.JSONLD) {
-                    resultParser.setConfig(optionBuilder.build());
-                }
-            }
-
-            // Parse the input file
-            try (FileReader reader = new FileReader(actionFilePath)) {
-                actionParser.parse(reader, actionBaseUriString);
-            }
-
-            // Parse the result file
-            try (FileReader reader = new FileReader(resultFilePath)) {
-                resultParser.parse(reader, resultBaseUriString);
-            }
+    private JSONLDOptions jsonLdOptions(W3cTestCase testCase, String baseUri) {
+        JSONLDOptions.Builder builder = new JSONLDOptions.Builder();
+        if (baseUri != null) builder.base(baseUri);
+        String version = testCase.getProperty(W3cTestCase.Property.SPEC_VERSION, String.class);
+        if ("json-ld-1.0".equals(version)) builder.processingMode(JsonLdVersion.V1_0);
+        if ("json-ld-1.1".equals(version)) builder.processingMode(JsonLdVersion.V1_1);
+        builder.useNativeTypes("true".equals(testCase.getProperty(W3cTestCase.Property.USE_NATIVE_TYPES, String.class)));
+        builder.useRdfType("true".equals(testCase.getProperty(W3cTestCase.Property.USE_RDF_TYPES, String.class)));
+        return builder.build();
     }
 }

@@ -41,6 +41,8 @@ public class W3cTestLoader {
     // as full angle-bracket IRIs to avoid any prefix-expansion dependency.
     private static final String TYPE_QUERY =
             "SELECT ?uri ?type WHERE { ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type . }";
+    private static final String MANIFEST_ACTION = "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>";
+    private static final String JSONLD_OPTION = "<https://w3c.github.io/json-ld-api/tests/vocab#option>";
     /**
      * Default constructor.
      * This constructor is intentionally empty as the class contains only static methods.
@@ -97,38 +99,38 @@ public class W3cTestLoader {
             runPropQuery(conn, props, "<http://purl.org/dc/elements/1.1/title>", "nameAlt");
             runPropQuery(conn, props, "<http://www.w3.org/2000/01/rdf-schema#comment>", "comment");
             runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#purpose>", "commentAlt");
-            runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>", "action");
+            runPropQuery(conn, props, MANIFEST_ACTION, "action");
             runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceInput>", "actionAlt");
             runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#result>", "result");
             runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceResults>", "resultAlt");
             runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#expectedResults>", "expectedBoolean");
             runPropQuery(conn, props, "<https://w3c.github.io/rdf-canon/tests/vocab#hashAlgorithm>", "hashAlgorithm");
             run2HopPropQuery(conn, props,
-                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>",
+                    MANIFEST_ACTION,
                     "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#query>", "query");
             run2HopPropQuery(conn, props,
-                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>",
+                    MANIFEST_ACTION,
                     "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#data>", "data");
             run2HopPropQuery(conn, props,
-                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>",
+                    MANIFEST_ACTION,
                     "<http://www.w3.org/ns/shacl-test#dataGraph>", "dataGraph");
             run2HopPropQuery(conn, props,
-                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>",
+                    MANIFEST_ACTION,
                     "<http://www.w3.org/ns/shacl-test#shapesGraph>", "shapesGraph");
             run2HopPropQuery(conn, props,
                     "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#result>",
                     "<http://www.w3.org/ns/shacl#conforms>", "conformity");
             run2HopPropQuery(conn, props,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#option>",
+                    JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#base>", "baseUri");
             run2HopPropQuery(conn, props,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#option>",
+                    JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#specVersion>", "specVersion");
             run2HopPropQuery(conn, props,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#option>",
+                    JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#useNativeTypes>", "useNativeTypes");
             run2HopPropQuery(conn, props,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#option>",
+                    JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#useRdfType>", "useRdfType");
 
             // Step 3: build W3cTestCase objects
@@ -268,7 +270,6 @@ public class W3cTestLoader {
     /**
      * Maps a W3C test type URI to the local {@link TestType} enum.
      */
-    @SuppressWarnings("unused")
     private static TestType mapTestType(String typeUri) {
         logger.debug("Mapping test type URI: {}", typeUri);
         String lowerUri = typeUri.toLowerCase();
@@ -342,32 +343,7 @@ public class W3cTestLoader {
             // Collect inclusion URIs before recursing (avoids open cursor during model mutation).
             // FILTER expressions are not supported by the next pipeline, so manifest URI and
             // IRI filtering is done here in Java.
-            String inclusionQuery = buildInclusionQuery(manifestUri);
-            String manifestUriStr = manifestUri != null ? manifestUri.toString() : null;
-            String manifestUriNoExt = manifestUri != null
-                    ? manifestUri.toString().replace("." + RDFTestUtils.guessFileFormat(manifestUri).getDefaultExtension(), "")
-                    : null;
-            List<String> inclusions = new ArrayList<>();
-            try (RepositoryConnection conn = repo.getConnection();
-                 TupleQueryResult inclusionResult = conn.prepareTupleQuery(inclusionQuery).evaluate()) {
-                while (inclusionResult.hasNext()) {
-                    BindingSet bs = inclusionResult.next();
-                    Value manifestValue = bs.getValue("manifest");
-                    Value inclusionValue = bs.getValue("inclusion");
-                    if (manifestValue == null || inclusionValue == null) continue;
-                    String manifestStr = manifestValue.stringValue();
-                    // Apply the manifest filter in Java (FILTER not supported by next pipeline)
-                    if (manifestUriStr != null && !manifestStr.equals(manifestUriStr) && !manifestStr.equals(manifestUriNoExt))
-                        continue;
-                    String inclusionStr = inclusionValue.stringValue();
-                    // Only keep IRI values (not blank nodes / literals)
-                    if (inclusionStr.startsWith("http://") || inclusionStr.startsWith("https://") || inclusionStr.startsWith("file://")) {
-                        inclusions.add(inclusionStr);
-                    }
-                }
-            } catch (Exception e) {
-                logger.error("Error executing inclusion query.", e);
-            }
+            List<String> inclusions = findInclusions(repo, manifestUri);
 
             for (String inclusion : inclusions) {
                 URI inclusionUri = URI.create(inclusion);
@@ -384,7 +360,38 @@ public class W3cTestLoader {
 
     }
 
-    private static String buildInclusionQuery(URI manifestUri) {
+    private static List<String> findInclusions(Repository repo, URI manifestUri) {
+        String manifestUriStr = manifestUri.toString();
+        String manifestUriNoExt = manifestUriStr.replace(
+                "." + RDFTestUtils.guessFileFormat(manifestUri).getDefaultExtension(), "");
+        List<String> inclusions = new ArrayList<>();
+        try (RepositoryConnection conn = repo.getConnection();
+             TupleQueryResult result = conn.prepareTupleQuery(buildInclusionQuery()).evaluate()) {
+            while (result.hasNext()) {
+                BindingSet binding = result.next();
+                Value manifest = binding.getValue("manifest");
+                Value inclusion = binding.getValue("inclusion");
+                if (matchesManifest(manifest, manifestUriStr, manifestUriNoExt) && isIri(inclusion)) {
+                    inclusions.add(inclusion.stringValue());
+                }
+            }
+        } catch (RuntimeException exception) {
+            logger.error("Error executing inclusion query.", exception);
+        }
+        return inclusions;
+    }
+
+    private static boolean matchesManifest(Value manifest, String uri, String uriWithoutExtension) {
+        return manifest != null && (manifest.stringValue().equals(uri)
+                || manifest.stringValue().equals(uriWithoutExtension));
+    }
+
+    private static boolean isIri(Value value) {
+        return value != null && (value.stringValue().startsWith("http://")
+                || value.stringValue().startsWith("https://") || value.stringValue().startsWith("file://"));
+    }
+
+    private static String buildInclusionQuery() {
         // Property paths and FILTER expressions are not supported by the next pipeline.
         // We handle the direct case and the first two list levels; manifest/IRI filtering is
         // done in Java after the query returns.

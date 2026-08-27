@@ -16,6 +16,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Executor for negative evaluation tests of RDF Canonicalization (RDFC10NegativeEvalTest).
@@ -69,9 +71,10 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      *
      * @param fileUri  The URI of the poison graph file
      * @return Parsed Model containing the poison graph
-     * @throws Exception If file cannot be loaded or parsed
+     * @throws IOException If file cannot be loaded or parsed
+     * @throws NoSuchAlgorithmException If file integrity verification cannot run
      */
-    private Model loadPoisonGraph(URI fileUri) throws Exception {
+    private Model loadPoisonGraph(URI fileUri) throws IOException, NoSuchAlgorithmException {
         String filePath = resolveAndLoadFile(fileUri);
 
         Model model = RDFTestUtils.createModel();
@@ -101,7 +104,7 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
             canonicalize(model);
             // If we reach here, no exception was thrown - TEST FAILS
             String msg = String.format(
-                    "RDF Canonical negative test FAILED - expected an exception but none was thrown. Test: %s\nAction: %s\n graph should have exceeded maximum calls limit of %d.",
+                    "RDF Canonical negative test FAILED - expected an exception but none was thrown. Test: %s%nAction: %s%n graph should have exceeded maximum calls limit of %d.",
                     testName, actionFileUri, MAX_HASH_N_DEGREE_QUADS_CALLS);
             logger.error(msg);
             throw new AssertionError(msg);
@@ -131,9 +134,10 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      *
      * @param fileUri The URI to resolve
      * @return The absolute local file path
-     * @throws Exception If URI scheme is unsupported
+     * @throws IOException If a file cannot be loaded
+     * @throws NoSuchAlgorithmException If file integrity verification cannot run
      */
-    private String resolveAndLoadFile(URI fileUri) throws Exception {
+    private String resolveAndLoadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
         String scheme = fileUri.getScheme();
 
         if ("file".equals(scheme)) {
@@ -154,9 +158,10 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      *
      * @param fileUri The file:// URI
      * @return The absolute local file path
-     * @throws Exception If file cannot be resolved
+     * @throws IOException If file cannot be loaded
+     * @throws NoSuchAlgorithmException If file integrity verification cannot run
      */
-    private String resolveLocalOrRemoteFile(URI fileUri) throws Exception {
+    private String resolveLocalOrRemoteFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
         Path filePath = Paths.get(fileUri);
 
         if (Files.exists(filePath)) {
@@ -176,18 +181,9 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      *
      * @param model The model to canonicalize
      * @throws SerializationException When call limit is exceeded
-     * @throws Exception For other canonicalization failures
      */
-    private void canonicalize(Model model) throws Exception {
-        try {
-            RdfCanonicalization.canonicalize(model, MAX_HASH_N_DEGREE_QUADS_CALLS);
-
-        } catch (SerializationException e) {
-            // Re-throw serialization exceptions (expected for poison graphs)
-            throw e;
-        } catch (Exception e) {
-            throw new Exception("Canonicalization failed: " + e.getMessage(), e);
-        }
+    private void canonicalize(Model model) {
+        RdfCanonicalization.canonicalize(model, MAX_HASH_N_DEGREE_QUADS_CALLS);
     }
 
     /**
