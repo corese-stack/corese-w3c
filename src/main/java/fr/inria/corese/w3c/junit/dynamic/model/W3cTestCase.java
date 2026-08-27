@@ -101,6 +101,15 @@ public class W3cTestCase {
     // Getters
 
     /**
+     * Gets the stable URI identifying this test in its W3C manifest.
+     *
+     * @return the test URI
+     */
+    public String getTestUri() {
+        return testUri;
+    }
+
+    /**
      * Gets the short name of the test case.
      * @return The short name of the test.
      */
