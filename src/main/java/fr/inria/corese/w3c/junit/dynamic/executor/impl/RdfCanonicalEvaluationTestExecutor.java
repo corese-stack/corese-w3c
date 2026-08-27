@@ -6,6 +6,7 @@ import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.model.Statement;
 import fr.inria.corese.core.next.data.RdfCanonicalization;
+import fr.inria.corese.core.next.data.impl.io.serializer.rdfc10.RDFC10SerializerOptions;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -69,7 +70,7 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
             Model actionModel = loadModelFromFile(actionFilePath);
 
             // STEP 3: Canonicalize the action model using RDFC-1.0
-            Model canonicalizedModel = canonicalize(actionModel);
+            Model canonicalizedModel = canonicalize(actionModel, testCase);
 
             // STEP 4: Load the expected canonical result into a model for comparison
             Model expectedModel = loadModelFromFile(resultFilePath);
@@ -199,14 +200,22 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      * @return A new {@link Model} containing the canonicalized statements.
      * @throws RuntimeException If the canonicalization process fails unexpectedly.
      */
-    private Model canonicalize(Model model) {
+    private Model canonicalize(Model model, W3cTestCase testCase) {
         try {
-            List<Statement> canonicalStatements = RdfCanonicalization.canonicalize(model);
+            RDFC10SerializerOptions.HashAlgorithm algorithm = testCase.getName().contains("SHA-384")
+                    || (testCase.getComment() != null && testCase.getComment().contains("SHA-384"))
+                    ? RDFC10SerializerOptions.HashAlgorithm.SHA_384
+                    : RDFC10SerializerOptions.HashAlgorithm.SHA_256;
+
+            RDFC10SerializerOptions options = RDFC10SerializerOptions.builder()
+                    .hashAlgorithm(algorithm)
+                    .build();
+
+            List<Statement> canonicalStatements = RdfCanonicalization.canonicalize(model, options);
 
             // Create a new model to hold the canonical results
             Model canonicalModel = RDFTestUtils.createModel();
             canonicalModel.addAll(canonicalStatements);
-
 
             return canonicalModel;
 
