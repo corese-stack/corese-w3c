@@ -4,7 +4,7 @@ import com.apicatalog.jsonld.JsonLdVersion;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
-import fr.inria.corese.core.next.data.impl.io.jsonld.JSONLDOptions;
+import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;

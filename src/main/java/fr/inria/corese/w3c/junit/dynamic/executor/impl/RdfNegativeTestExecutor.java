@@ -7,7 +7,7 @@ import com.apicatalog.jsonld.JsonLdVersion;
 import fr.inria.corese.core.next.data.api.exception.ParsingException;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.model.Model;
-import fr.inria.corese.core.next.data.impl.io.jsonld.JSONLDOptions;
+import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

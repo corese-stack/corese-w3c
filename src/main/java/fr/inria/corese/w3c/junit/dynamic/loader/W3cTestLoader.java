@@ -3,15 +3,17 @@ package fr.inria.corese.w3c.junit.dynamic.loader;
 import com.apicatalog.jsonld.document.JsonDocument;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
+import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
+import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.term.Value;
-import fr.inria.corese.core.next.data.impl.adapter.CoreseValueFactory;
-import fr.inria.corese.core.next.data.impl.io.jsonld.JSONLDOptions;
+import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
+import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.result.BindingSet;
 import fr.inria.corese.core.next.query.api.result.TupleQueryResult;
-import fr.inria.corese.core.next.query.impl.repository.CoreseRepository;
-import fr.inria.corese.core.next.storage.impl.memory.MemoryStorageManager;
-import fr.inria.corese.core.next.storage.impl.model.StorageModel;
+import fr.inria.corese.core.next.storage.Storages;
+import fr.inria.corese.core.next.storage.StorageModels;
+import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.junit.dynamic.model.TestType;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -57,13 +59,10 @@ public class W3cTestLoader {
     public static List<W3cTestCase> loadTestsFromManifest(URI manifestUri) {
 
         // Create storage + model (pure next API, no legacy Graph)
-        MemoryStorageManager storage = MemoryStorageManager.builder().build();
-        StorageModel model = StorageModel.builder()
-                .storage(storage)
-                .valueFactory(new CoreseValueFactory())
-                .build();
+        StorageManager storage = Storages.create();
+        Model model = StorageModels.create(storage);
 
-        CoreseRepository repo = new CoreseRepository(storage);
+        Repository repo = Repositories.create(storage);
 
         // Load manifest (and sub-manifests) into the model
         loadManifestInto(manifestUri, model, repo);
@@ -305,14 +304,14 @@ public class W3cTestLoader {
 
 
     /**
-     * Loads a manifest file into the given StorageModel, recursively following inclusions.
+     * Loads a manifest file into the given model, recursively following inclusions.
      *
      * @param manifestUri The URI of the manifest file to load.
-     * @param model       The StorageModel to load into.
-     * @param repo        An initialised CoreseRepository backed by the same storage as {@code model}.
+     * @param model       Model to load into.
+     * @param repo        Repository backed by the same storage as {@code model}.
      */
     @SuppressWarnings({"java:S1141", "java:S2589"})
-    private static void loadManifestInto(URI manifestUri, StorageModel model, CoreseRepository repo) {
+    private static void loadManifestInto(URI manifestUri, Model model, Repository repo) {
         URI baseUri = RDFTestUtils.getBaseUri(manifestUri);
 
         try {

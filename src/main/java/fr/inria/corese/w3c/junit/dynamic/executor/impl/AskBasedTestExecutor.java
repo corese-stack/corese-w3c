@@ -3,12 +3,14 @@ package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 import com.apicatalog.jsonld.JsonLdVersion;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
-import fr.inria.corese.core.next.data.impl.adapter.CoreseValueFactory;
-import fr.inria.corese.core.next.data.impl.io.jsonld.JSONLDOptions;
+import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
+import fr.inria.corese.core.next.data.api.model.Model;
+import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
-import fr.inria.corese.core.next.query.impl.repository.CoreseRepository;
-import fr.inria.corese.core.next.storage.impl.memory.MemoryStorageManager;
-import fr.inria.corese.core.next.storage.impl.model.StorageModel;
+import fr.inria.corese.core.next.storage.Storages;
+import fr.inria.corese.core.next.storage.StorageModels;
+import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -43,11 +45,8 @@ public class AskBasedTestExecutor implements TestExecutor {
         String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
 
         // Create storage + model for this test (pure next API, no legacy Graph)
-        MemoryStorageManager storage = MemoryStorageManager.builder().build();
-        StorageModel actionModel = StorageModel.builder()
-                .storage(storage)
-                .valueFactory(new CoreseValueFactory())
-                .build();
+        StorageManager storage = Storages.create();
+        Model actionModel = StorageModels.create(storage);
 
         // Get format and create parser
         RDFFormat actionFormat = RDFTestUtils.guessFileFormat(actionFileUri);
@@ -90,9 +89,9 @@ public class AskBasedTestExecutor implements TestExecutor {
         // Loading the query to a string
         String resultQueryString = Files.readString(Path.of(resultFilePath), StandardCharsets.UTF_8);
 
-        // Execute the ASK query via CoreseRepository
+        // Execute the ASK query against the repository sharing the model storage.
         boolean testQueryResult;
-        try (CoreseRepository repo = new CoreseRepository(storage);
+        try (Repository repo = Repositories.create(storage);
              RepositoryConnection conn = repo.getConnection()) {
             testQueryResult = conn.prepareBooleanQuery(resultQueryString).evaluate();
         }

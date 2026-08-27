@@ -9,10 +9,10 @@ import fr.inria.corese.core.next.data.api.factory.ValueFactory;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
-import fr.inria.corese.core.next.data.impl.adapter.CoreseValueFactory;
-import fr.inria.corese.core.next.data.impl.io.parser.DefaultRDFParserFactory;
-import fr.inria.corese.core.next.storage.impl.memory.MemoryStorageManager;
-import fr.inria.corese.core.next.storage.impl.model.StorageModel;
+import fr.inria.corese.core.next.data.Values;
+import fr.inria.corese.core.next.io.CoreseIO;
+import fr.inria.corese.core.next.storage.Storages;
+import fr.inria.corese.core.next.storage.StorageModels;
 
 /**
  * Utility class providing simple, reusable helper methods for test executors.
@@ -31,11 +31,7 @@ public class RDFTestUtils {
      * @return A new Model ready for parsing
      */
     public static Model createModel() {
-        MemoryStorageManager storage = MemoryStorageManager.builder().build();
-        return StorageModel.builder()
-                .storage(storage)
-                .valueFactory(new CoreseValueFactory())
-                .build();
+        return StorageModels.create(Storages.create());
     }
 
     /**
@@ -47,9 +43,7 @@ public class RDFTestUtils {
      * @return A configured RDFParser
      */
     public static RDFParser createParser(RDFFormat format, Model model) {
-        DefaultRDFParserFactory parserFactory = new DefaultRDFParserFactory();
-        ValueFactory valueFactory = new CoreseValueFactory();
-        return parserFactory.createRDFParser(format, model, valueFactory);
+        return CoreseIO.rdfParserFactory().createRDFParser(format, model, Values.factory());
     }
 
     /**
@@ -57,8 +51,8 @@ public class RDFTestUtils {
      *
      * @return A new ValueFactory
      */
-    public static CoreseValueFactory createValueFactory() {
-        return new CoreseValueFactory();
+    public static ValueFactory createValueFactory() {
+        return Values.factory();
     }
 
     /**

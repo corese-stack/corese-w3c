@@ -1,12 +1,10 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import fr.inria.corese.core.next.data.api.exception.SerializationException;
-import fr.inria.corese.core.next.data.api.factory.ValueFactory;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
-import fr.inria.corese.core.next.data.impl.io.serializer.rdfc10.RDFC10Canonicalizer;
-import fr.inria.corese.core.next.data.impl.io.serializer.rdfc10.RDFC10SerializerOptions;
+import fr.inria.corese.core.next.data.RdfCanonicalization;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -182,16 +180,7 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      */
     private void canonicalize(Model model) throws Exception {
         try {
-            RDFC10SerializerOptions options = RDFC10SerializerOptions.defaultConfig();
-            ValueFactory valueFactory = RDFTestUtils.createValueFactory();
-
-            RDFC10Canonicalizer canonicalizer = new RDFC10Canonicalizer(
-                    options.getHashAlgorithm(),
-                    MAX_HASH_N_DEGREE_QUADS_CALLS,
-                    valueFactory
-            );
-
-            canonicalizer.canonicalize(model);
+            RdfCanonicalization.canonicalize(model, MAX_HASH_N_DEGREE_QUADS_CALLS);
 
         } catch (SerializationException e) {
             // Re-throw serialization exceptions (expected for poison graphs)
