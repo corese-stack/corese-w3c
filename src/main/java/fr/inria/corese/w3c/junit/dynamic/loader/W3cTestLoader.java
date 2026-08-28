@@ -5,6 +5,9 @@ import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
 import fr.inria.corese.core.next.data.api.model.Model;
+import fr.inria.corese.core.next.data.api.model.Statement;
+import fr.inria.corese.core.next.data.api.term.BNode;
+import fr.inria.corese.core.next.data.api.term.Resource;
 import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
@@ -375,6 +378,10 @@ public class W3cTestLoader {
         if (lowerUri.contains("rdfc10evaltest")) return TestType.RDFC10_EVAL_TEST;
         if (lowerUri.contains("rdfa-test#positiveevaluationtest")) return TestType.RDFA_POSITIVE_EVAL;
         if (lowerUri.contains("rdfa-test#negativeevaluationtest")) return TestType.RDFA_NEGATIVE_EVAL;
+        // SPARQL 1.0 test types (test-manifest# prefix)
+        if (lowerUri.contains("test-manifest#queryevaluationtest")) return TestType.SPARQL10_QUERY_EVAL;
+        if (lowerUri.contains("test-manifest#negativesyntaxtest")) return TestType.SPARQL10_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("test-manifest#positivesyntaxtest")) return TestType.SPARQL10_POSITIVE_SYNTAX;
         return null;
     }
 
@@ -418,7 +425,7 @@ public class W3cTestLoader {
             // Collect inclusion URIs before recursing (avoids open cursor during model mutation).
             // FILTER expressions are not supported by the next pipeline, so manifest URI and
             // IRI filtering is done here in Java.
-            List<String> inclusions = findInclusions(repo, manifestUri);
+            List<String> inclusions = findInclusions(model, manifestUri);
 
             for (String inclusion : inclusions) {
                 URI inclusionUri = URI.create(inclusion);
@@ -435,34 +442,77 @@ public class W3cTestLoader {
 
     }
 
-    private static final String[] INCLUSION_QUERIES = {
-            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?inclusion . }",
-            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?list1 . ?list1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?inclusion . }",
-            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?list1 . ?list1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> ?list2 . ?list2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?inclusion . }"
-    };
+    private static final String MF_INCLUDE =
+            "http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include";
+    private static final String RDF_FIRST =
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#first";
+    private static final String RDF_REST =
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest";
+    private static final String RDF_NIL =
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil";
 
-    private static List<String> findInclusions(Repository repo, URI manifestUri) {
+    /**
+     * Finds all sub-manifest URIs declared via {@code mf:include} for the given
+     * manifest URI.
+     * <p>
+     * The manifest vocabulary allows both a direct IRI value and an RDF list
+     * (the Turtle {@code ( ... )} shorthand). SPARQL-based traversal cannot
+     * handle arbitrary-depth lists using plain BGPs, so we walk the model
+     * directly, following {@code rdf:first} / {@code rdf:rest} links for as
+     * many levels as needed.
+     */
+    private static List<String> findInclusions(Model model, URI manifestUri) {
         String manifestUriStr = manifestUri.toString();
         String manifestUriNoExt = manifestUriStr.replace(
                 "." + RDFTestUtils.guessFileFormat(manifestUri).getDefaultExtension(), "");
+
         Set<String> inclusions = new LinkedHashSet<>();
-        try (RepositoryConnection conn = repo.getConnection()) {
-            for (String query : INCLUSION_QUERIES) {
-                try (TupleQueryResult result = conn.prepareTupleQuery(query).evaluate()) {
-                    while (result.hasNext()) {
-                        BindingSet binding = result.next();
-                        Value manifest = binding.getValue("manifest");
-                        Value inclusion = binding.getValue("inclusion");
-                        if (matchesManifest(manifest, manifestUriStr, manifestUriNoExt) && isIri(inclusion)) {
-                            inclusions.add(inclusion.stringValue());
-                        }
-                    }
+
+        for (Statement stmt : model.filter(null, null, null)) {
+            // Only consider the default graph (context == null)
+            if (stmt.getContext() != null) continue;
+            if (!MF_INCLUDE.equals(stmt.getPredicate().stringValue())) continue;
+            if (!matchesManifest(stmt.getSubject(), manifestUriStr, manifestUriNoExt)) continue;
+
+            Value obj = stmt.getObject();
+            if (isIri(obj)) {
+                // Direct IRI inclusion (non-list)
+                inclusions.add(obj.stringValue());
+            } else if (obj instanceof BNode bnode) {
+                // RDF list — traverse all rdf:first / rdf:rest links
+                traverseRdfList(bnode, model, inclusions);
+            }
+        }
+
+        return new ArrayList<>(inclusions);
+    }
+
+    /**
+     * Walks an RDF list rooted at {@code listHead} and adds every IRI-valued
+     * {@code rdf:first} element to {@code items}.
+     */
+    private static void traverseRdfList(BNode listHead, Model model, Set<String> items) {
+        Resource current = listHead;
+        Set<String> visited = new HashSet<>();
+
+        while (current != null) {
+            String nodeId = current.stringValue();
+            if (!visited.add(nodeId)) break; // cycle guard
+
+            Value next = null;
+            for (Statement stmt : model.filter(current, null, null)) {
+                String pred = stmt.getPredicate().stringValue();
+                Value obj = stmt.getObject();
+                if (RDF_FIRST.equals(pred) && isIri(obj)) {
+                    items.add(obj.stringValue());
+                } else if (RDF_REST.equals(pred)) {
+                    next = obj;
                 }
             }
-        } catch (RuntimeException exception) {
-            logger.error("Error executing inclusion queries.", exception);
+
+            if (next == null || RDF_NIL.equals(next.stringValue())) break;
+            current = (next instanceof Resource r) ? r : null;
         }
-        return new ArrayList<>(inclusions);
     }
 
     private static boolean matchesManifest(Value manifest, String uri, String uriWithoutExtension) {

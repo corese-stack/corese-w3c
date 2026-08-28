@@ -60,3 +60,24 @@ See [the EARL application profile](docs/EARL_REPORT.md) for the exact model, pro
 ### Exclusions Policy
 
 To ensure high scientific integrity and transparency, no test is skipped silently. All exclusions are documented with exact fragment identifiers and reactivation conditions in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).
+# JSON-LD 1.1 fromRdf (RDF to JSON-LD) tests
+./gradlew test --tests "*Rdf11JsonldFromRdfDynamicTest*"
+
+# All JSON-LD tests
+./gradlew test --tests "*Jsonld*"
+
+# RDFa 1.1 XHTML tests
+./gradlew test --tests "*Rdf11RDFaXHTMLDynamicTest*"
+
+# RDFa 1.1 XML tests
+./gradlew test --tests "*Rdf11RDFaXMLDynamicTest*"
+
+# RDFa 1.1 SVG tests
+./gradlew test --tests "*Rdf11RDFaSVGDynamicTest*"
+
+# All RDFa tests
+./gradlew test --tests "*RDFa*"
+
+# SPARQL 1.0 tests
+./gradlew test --tests "*Sparql10DynamicTest*"
+```

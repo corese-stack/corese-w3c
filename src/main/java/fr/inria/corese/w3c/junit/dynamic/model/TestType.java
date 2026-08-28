@@ -73,7 +73,15 @@ public enum TestType {
     /**
      * RDFa Negative evaluation
      */
-    RDFA_NEGATIVE_EVAL("RDFa Negative Evaluation");
+    RDFA_NEGATIVE_EVAL("RDFa Negative Evaluation"),
+
+    // SPARQL 1.0 Tests
+    /** SPARQL 1.0 Query Evaluation Test (SELECT, ASK, CONSTRUCT, DESCRIBE) */
+    SPARQL10_QUERY_EVAL("SPARQL 1.0 Query Evaluation Test"),
+    /** SPARQL 1.0 Positive Syntax Test (query should parse without error) */
+    SPARQL10_POSITIVE_SYNTAX("SPARQL 1.0 Positive Syntax Test"),
+    /** SPARQL 1.0 Negative Syntax Test (query should fail to parse) */
+    SPARQL10_NEGATIVE_SYNTAX("SPARQL 1.0 Negative Syntax Test");
 
     private final String description;
 
