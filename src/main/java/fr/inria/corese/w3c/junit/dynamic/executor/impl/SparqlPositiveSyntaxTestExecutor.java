@@ -8,9 +8,6 @@ import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -23,8 +20,6 @@ import java.nio.file.Path;
  * The test fails if a {@link QuerySyntaxException} is thrown.
  */
 public class SparqlPositiveSyntaxTestExecutor implements TestExecutor {
-
-    private static final Logger logger = LoggerFactory.getLogger(SparqlPositiveSyntaxTestExecutor.class);
 
     public SparqlPositiveSyntaxTestExecutor() {
     }
@@ -43,11 +38,9 @@ public class SparqlPositiveSyntaxTestExecutor implements TestExecutor {
              RepositoryConnection conn = repo.getConnection()) {
             prepareQuery(conn, queryText, testCase.getName());
         } catch (QuerySyntaxException e) {
-            String msg = String.format(
+            throw new AssertionError(String.format(
                     "Expected query to parse successfully but got syntax error in '%s': %s",
-                    testCase.getName(), e.getMessage());
-            logger.error(msg);
-            throw new AssertionError(msg, e);
+                    testCase.getName(), e.getMessage()), e);
         }
     }
 

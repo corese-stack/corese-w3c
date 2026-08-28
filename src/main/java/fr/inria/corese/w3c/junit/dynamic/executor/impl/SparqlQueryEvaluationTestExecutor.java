@@ -4,6 +4,7 @@ import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.model.Statement;
+import fr.inria.corese.core.next.data.Values;
 import fr.inria.corese.core.next.data.api.term.BNode;
 import fr.inria.corese.core.next.data.api.term.IRI;
 import fr.inria.corese.core.next.data.api.term.Literal;
@@ -23,9 +24,6 @@ import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import fr.inria.corese.w3c.junit.dynamic.utils.RsVocabResultParser;
 import fr.inria.corese.w3c.junit.dynamic.utils.SparqlResultParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.net.URI;
@@ -55,8 +53,6 @@ import java.util.stream.Collectors;
  */
 public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
 
-    private static final Logger logger = LoggerFactory.getLogger(SparqlQueryEvaluationTestExecutor.class);
-
     private static final Pattern QUERY_TYPE_PATTERN =
             Pattern.compile("(?i)\\b(SELECT|ASK|CONSTRUCT|DESCRIBE)\\b");
 
@@ -82,13 +78,19 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         // 3. Read query text
         String queryPath = RDFTestUtils.loadFile(queryUri);
         String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
-        logger.debug("Test: {} | Query:\n{}", testCase.getName(), queryText);
 
-        // 4. Build in-memory dataset
+        // 4. Build in-memory dataset (default graph + named graphs)
         StorageManager storage = Storages.create();
         Model model = StorageModels.create(storage);
         if (dataUriStr != null) {
             loadRdfFile(URI.create(dataUriStr), model);
+        }
+        @SuppressWarnings("unchecked")
+        List<String> graphDataUris = testCase.getProperty(W3cTestCase.Property.GRAPH_DATA, List.class);
+        if (graphDataUris != null) {
+            for (String graphDataUri : graphDataUris) {
+                loadRdfFileAsNamedGraph(URI.create(graphDataUri), model, graphDataUri);
+            }
         }
 
         // 5. Execute query and compare result
@@ -102,9 +104,6 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                 default -> throw new AssertionError(
                         "Cannot determine SPARQL query type for test: " + testCase.getName());
             }
-        } catch (Exception e) {
-            logger.error("FAIL [{}]: {} | Query: {}", testCase.getName(), e.getMessage(), queryText.trim().replaceAll("\\s+", " "));
-            throw e;
         }
     }
 
@@ -284,6 +283,25 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         RDFParser parser = RDFTestUtils.createParser(fmt, model);
         try (FileReader reader = new FileReader(filePath, StandardCharsets.UTF_8)) {
             parser.parse(reader, fileUri.toString());
+        }
+    }
+
+    /**
+     * Loads an RDF file into a named graph (context) within the given model.
+     * The graph name is the original URI of the file as declared in the manifest
+     * (i.e., the remote URL used as {@code qt:graphData} value).
+     */
+    private static void loadRdfFileAsNamedGraph(URI fileUri, Model model, String graphName) throws Exception {
+        String filePath = RDFTestUtils.loadFile(fileUri);
+        RDFFormat fmt = guessRdfOrFallback(fileUri);
+        Model tempModel = RDFTestUtils.createModel();
+        RDFParser tempParser = RDFTestUtils.createParser(fmt, tempModel);
+        try (FileReader reader = new FileReader(filePath, StandardCharsets.UTF_8)) {
+            tempParser.parse(reader, fileUri.toString());
+        }
+        IRI graphIri = Values.factory().createIRI(graphName);
+        for (Statement stmt : tempModel) {
+            model.add(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(), graphIri);
         }
     }
 

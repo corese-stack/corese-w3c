@@ -151,6 +151,13 @@ public class W3cTestLoader {
                     JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#useRdfType>", "useRdfType");
 
+            // Collect multi-valued properties (qt:graphData can appear more than once per test)
+            Map<String, List<String>> multiProps = new HashMap<>();
+            runMultiValue2HopPropQuery(conn, multiProps,
+                    MANIFEST_ACTION,
+                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#graphData>",
+                    W3cTestCase.Property.GRAPH_DATA.getKey());
+
             // Step 3: build W3cTestCase objects
             for (Map.Entry<String, Set<String>> entry : uriToTypes.entrySet()) {
                 String testUri = entry.getKey();
@@ -165,6 +172,10 @@ public class W3cTestLoader {
 
                     TestType testType = mapTestType(typeUris);
                     Map<String, Object> properties = buildPropertiesFromMap(p, action, result2);
+                    List<String> graphData = multiProps.getOrDefault(testUri, List.of());
+                    if (!graphData.isEmpty()) {
+                        properties.put(W3cTestCase.Property.GRAPH_DATA.getKey(), new ArrayList<>(graphData));
+                    }
                     String displayName = name != null
                             ? name.trim().toLowerCase(Locale.ROOT).replace("-", "").replace(" ", "_").replace("#", "").replace(".", "")
                             : "unknown_test";
@@ -261,6 +272,29 @@ public class W3cTestLoader {
             }
         } catch (Exception e) {
             logger.warn("2-hop property query failed for {}: {}", propKey, e.getMessage());
+        }
+    }
+
+    /**
+     * Runs a two-hop query and collects ALL values per URI into a list (no deduplication).
+     * Used for multi-valued properties such as {@code qt:graphData}, which can appear
+     * more than once in a single test's action blank node.
+     */
+    private static void runMultiValue2HopPropQuery(RepositoryConnection conn,
+                                                   Map<String, List<String>> multiProps,
+                                                   String pred1, String pred2, String propKey) {
+        String q = "SELECT ?uri ?value WHERE { ?uri " + pred1 + " ?node . ?node " + pred2 + " ?value . }";
+        try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
+            while (r.hasNext()) {
+                BindingSet bs = r.next();
+                String uri = getStringValue(bs, "uri");
+                String val = getStringValue(bs, "value");
+                if (uri != null && val != null) {
+                    multiProps.computeIfAbsent(uri, k -> new ArrayList<>()).add(val);
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Multi-value 2-hop property query failed for {}: {}", propKey, e.getMessage());
         }
     }
 

@@ -1,16 +1,12 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import fr.inria.corese.core.next.query.Repositories;
-import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException; // caught from prepareXxx()
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
 import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -23,8 +19,6 @@ import java.nio.file.Path;
  * The test fails if the query is accepted without a syntax error.
  */
 public class SparqlNegativeSyntaxTestExecutor implements TestExecutor {
-
-    private static final Logger logger = LoggerFactory.getLogger(SparqlNegativeSyntaxTestExecutor.class);
 
     public SparqlNegativeSyntaxTestExecutor() {
     }
@@ -43,17 +37,11 @@ public class SparqlNegativeSyntaxTestExecutor implements TestExecutor {
              RepositoryConnection conn = repo.getConnection()) {
             prepareQuery(conn, queryText);
             // If we reach here, the query was accepted — test must fail
-            String msg = String.format(
+            throw new AssertionError(String.format(
                     "Expected query to fail parsing but it succeeded for negative syntax test: '%s'",
-                    testCase.getName());
-            logger.error(msg);
-            throw new AssertionError(msg);
-        } catch (QuerySyntaxException e) {
-            // Expected: query parsing failed — negative syntax test passes
-            logger.debug("Negative syntax test passed (QuerySyntaxException): {}", testCase.getName());
+                    testCase.getName()));
         } catch (Exception e) {
-            // Any other parse-level exception is also acceptable
-            logger.debug("Negative syntax test passed ({}): {}", e.getClass().getSimpleName(), testCase.getName());
+            // Expected: query parsing failed — negative syntax test passes
         }
     }
 

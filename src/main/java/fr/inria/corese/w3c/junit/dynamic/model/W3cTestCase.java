@@ -31,6 +31,8 @@ public class W3cTestCase {
         DATA_GRAPH("dataGraph"),
         SHAPES_GRAPH("shapesGraph"),
         CONFORMITY("conformity"),
+        // SPARQL test properties
+        GRAPH_DATA("graphData"),
         // Canonical test properties
         HASH_ALGORITHM("hashAlgorithm"),
         // JSON-LD test properties
