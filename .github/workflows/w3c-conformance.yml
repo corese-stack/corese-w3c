@@ -1,0 +1,145 @@
+name: W3C Conformance & Dashboard
+
+on:
+  push:
+    branches: [ main, develop, "feature/**" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 4 * * *' # Daily nightly benchmark at 4:00 AM UTC
+  workflow_dispatch:
+    inputs:
+      corese_branch:
+        description: "Branch or ref of corese-core to test against (leave empty for auto-detection)"
+        required: false
+        default: ""
+  repository_dispatch:
+    types: [ corese-core-push ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  test-and-report:
+    name: Execute W3C Conformance Suite
+    runs-on: [self-hosted, corese-stack-ubuntu-24]
+
+    steps:
+      - name: Checkout corese-w3c
+        uses: actions/checkout@v4
+        with:
+          path: corese-w3c
+          fetch-depth: 0
+
+      - name: Checkout corese-core
+        uses: actions/checkout@v4
+        with:
+          repository: corese-stack/corese-core
+          path: corese-core
+          fetch-depth: 0
+
+      - name: Select corese-core target branch
+        working-directory: corese-core
+        run: |
+          TARGET="${{ github.event.inputs.corese_branch }}"
+          if [ -n "$TARGET" ]; then
+            echo "Using explicitly requested corese-core ref: $TARGET"
+            git checkout "$TARGET"
+          elif git show-ref --verify --quiet refs/remotes/origin/feature/corese-next; then
+            echo "Auto-detected active development branch: feature/corese-next"
+            git checkout feature/corese-next
+          elif git show-ref --verify --quiet refs/remotes/origin/develop; then
+            echo "Auto-detected integration branch: develop"
+            git checkout develop
+          else
+            echo "Fallback to default branch: main"
+            git checkout main
+          fi
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: "gradle"
+
+      - name: Cache W3C Test Fixtures
+        uses: actions/cache@v4
+        with:
+          path: corese-w3c/src/test/resources
+          key: w3c-fixtures-${{ hashFiles('corese-w3c/src/main/java/fr/inria/corese/w3c/junit/dynamic/utils/TestFileManager.java') }}
+          restore-keys: |
+            w3c-fixtures-
+
+      - name: Run W3C Conformance Tests
+        working-directory: corese-w3c
+        continue-on-error: true
+        run: |
+          chmod +x gradlew
+          ./gradlew test --no-daemon
+
+      - name: Prepare Dashboard Artifact & Auto-Archive Releases
+        if: always()
+        working-directory: corese-w3c
+        run: |
+          mkdir -p site/data/history
+          if [ -f build/reports/w3c-report.json ]; then
+            cp build/reports/w3c-report.json site/data/w3c-report.json
+          fi
+
+          # Automatically detect release tag and archive historical snapshot
+          if [ "${{ github.event_name }}" = "release" ] || [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            TAG="${GITHUB_REF_NAME}"
+            echo "Auto-archiving benchmark snapshot for release tag: $TAG"
+            if [ -f build/reports/w3c-report.json ]; then
+              cp build/reports/w3c-report.json "site/data/history/${TAG}.json"
+              python3 -c "
+          import json, os
+          v_file = 'site/data/versions.json'
+          data = json.load(open(v_file)) if os.path.exists(v_file) else [{'id': 'latest', 'label': 'v5.0.0-SNAPSHOT (latest)', 'file': './data/w3c-report.json'}]
+          tag = '$TAG'
+          entry = {'id': tag, 'label': tag, 'file': f'./data/history/{tag}.json'}
+          if not any(x.get('id') == tag for x in data):
+              idx = 1 if len(data) > 0 and data[0].get('id') == 'latest' else 0
+              data.insert(idx, entry)
+          with open(v_file, 'w', encoding='utf-8') as f:
+              json.dump(data, f, indent=2)
+          "
+            fi
+          fi
+
+      - name: Upload Test Report Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3c-conformance-report
+          path: |
+            corese-w3c/build/reports/w3c-report.json
+            corese-w3c/build/reports/tests/test/
+          retention-days: 14
+
+      - name: Upload GitHub Pages Artifact
+        if: github.ref == 'refs/heads/main' || github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v') || github.event_name == 'schedule'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: corese-w3c/site/
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main' || github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v') || github.event_name == 'schedule'
+    needs: test-and-report
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

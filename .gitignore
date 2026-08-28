@@ -1,5 +1,5 @@
 # ==========================================
-# Java
+# Java & JVM
 # ==========================================
 
 # Compiled class files
@@ -23,8 +23,7 @@
 *.tar.gz
 *.rar
 
-# Virtual machine crash logs
-# See http://www.java.com/en/download/help/error_hotspot.xml
+# JVM crash logs
 hs_err_pid*
 replay_pid*
 
@@ -42,7 +41,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 
 # ==========================================
-# IDEs
+# IDEs & Editors
 # ==========================================
 
 # Visual Studio Code
@@ -53,11 +52,22 @@ build/
 *.iml
 *.iws
 *.ipr
+out/
 
 # Eclipse
 .classpath
 .project
 .settings/
+
+# ==========================================
+# Python & Scripts
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
 
 # ==========================================
 # OS Generated
@@ -69,8 +79,6 @@ build/
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-Thumbs.db
 
 # Windows
 Thumbs.db
@@ -88,12 +96,19 @@ $RECYCLE.BIN/
 # Project Specific
 # ==========================================
 
-# Corese-core external dependency (cloned repository)
+# External Corese repository clone
 corese-core/
 
-# Downloaded W3C test manifests and data (cached at runtime)
+# Runtime test cache & W3C manifests downloaded by test suite
 src/test/resources/
+
+# Generated conformance dashboard data (produced dynamically during test execution)
+site/data/w3c-report.json
+site/data/report-data.js
+site/data/history/
 
 # Temporary directories
 bin/
 logs/
+tmp/
+.temp/

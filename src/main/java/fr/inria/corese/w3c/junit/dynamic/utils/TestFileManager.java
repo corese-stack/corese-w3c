@@ -1,8 +1,5 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -23,8 +20,6 @@ import java.security.NoSuchAlgorithmException;
  * manipulation.
  */
 public class TestFileManager {
-
-    private static final Logger logger = LoggerFactory.getLogger(TestFileManager.class);
 
     /**
      * The base path string for test resources. Files downloaded or accessed by this
@@ -101,6 +96,7 @@ public class TestFileManager {
      * @throws IOException if an I/O error occurs
      * @throws NoSuchAlgorithmException if SHA-256 algorithm is unavailable
      */
+    @SuppressWarnings("java:S5443")
     private static boolean isRemoteFileDifferent(URI remoteUri, Path localFilePath)
             throws IOException, NoSuchAlgorithmException {
         String localFileHash = hashFile(localFilePath);
@@ -125,27 +121,71 @@ public class TestFileManager {
      * @throws IOException if an I/O error occurs during download
      */
     private static void downloadFile(URI remoteUri, Path localFilePath) throws IOException {
-        Files.createDirectories(localFilePath.getParent());
-        try (InputStream in = getRedirectedUrl(remoteUri.toURL()).openStream()) {
-            Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
+        if (localFilePath.getParent() != null) {
+            Files.createDirectories(localFilePath.getParent());
         }
+
+        IOException lastException = null;
+        for (int attempt = 1; attempt <= 3; attempt++) {
+            try {
+                URL url = remoteUri.toURL();
+                for (int redirectCount = 0; redirectCount < 5; redirectCount++) {
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setInstanceFollowRedirects(true);
+                    conn.setConnectTimeout(15000);
+                    conn.setReadTimeout(20000);
+                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+                    int status = conn.getResponseCode();
+
+                    if (status == HttpURLConnection.HTTP_MOVED_PERM || status == HttpURLConnection.HTTP_MOVED_TEMP
+                            || status == HttpURLConnection.HTTP_SEE_OTHER || status == 307 || status == 308) {
+                        String location = conn.getHeaderField("Location");
+                        conn.disconnect();
+                        if (location != null && !location.isBlank()) {
+                            url = URI.create(location).isAbsolute() ? URI.create(location).toURL() : remoteUri.resolve(location).toURL();
+                            continue;
+                        }
+                    }
+
+                    if (status >= 400) {
+                        conn.disconnect();
+                        throw new IOException("HTTP " + status + " error while downloading: " + remoteUri);
+                    }
+
+                    try (InputStream in = conn.getInputStream()) {
+                        Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
+                    } finally {
+                        conn.disconnect();
+                    }
+                    sanitizeIfTtlManifest(localFilePath);
+                    return;
+                }
+            } catch (IOException e) {
+                lastException = e;
+                try {
+                    Thread.sleep(500L * attempt);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException("Download interrupted for " + remoteUri, ie);
+                }
+            }
+        }
+
+        throw lastException != null ? lastException : new IOException("Failed to download: " + remoteUri);
     }
 
-    private static URL getRedirectedUrl(URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setInstanceFollowRedirects(true);
-        int status = connection.getResponseCode();
-        String redirectedUrl = null;
-        if (status == HttpURLConnection.HTTP_MOVED_PERM || status == HttpURLConnection.HTTP_MOVED_TEMP) {
-            redirectedUrl = connection.getHeaderField("Location");
+    private static void sanitizeIfTtlManifest(Path localFilePath) {
+        if (localFilePath.toString().endsWith("manifest.ttl")) {
+            try {
+                String content = Files.readString(localFilePath);
+                if (content.contains("\\\"\"\"\"")) {
+                    String sanitized = content.replace("\\\"\"\"\"", "\\\" \"\"\"");
+                    Files.writeString(localFilePath, sanitized);
+                }
+            } catch (IOException e) {
+                // Ignore if unable to read/write
+            }
         }
-        connection.disconnect();
-
-        if(redirectedUrl == null) {
-            return url;
-        }
-
-        return URI.create(redirectedUrl).toURL();
     }
 
     /**
@@ -219,7 +259,7 @@ public class TestFileManager {
                 // Found rdf11, extract from this point to the end (excluding filename)
                 StringBuilder result = new StringBuilder();
                 for (int j = i; j < segments.length - 1; j++) {
-                    if (result.length() > 0) {
+                    if (!result.isEmpty()) {
                         result.append("/");
                     }
                     result.append(segments[j]);

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corese - W3C Conformance</title>
+  <meta name="description" content="W3C standards conformance benchmarks and test reports for Corese.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-wrapper">
+    <header class="page-header">
+      <div class="header-content">
+        <div class="header-titles">
+          <div class="title-row">
+            <h1 class="main-title">Corese</h1>
+            <span class="badge-tag">W3C Conformance</span>
+          </div>
+          <p class="main-desc">Specification compliance reports and test suites execution results for <a href="https://github.com/corese-stack/corese-core" target="_blank" rel="noopener">Corese</a>.</p>
+        </div>
+
+        <div class="header-controls">
+          <div class="version-control">
+            <label for="version-select" class="sr-only">Benchmark Version</label>
+            <select id="version-select" class="form-select select-sm" aria-label="Select benchmark version">
+              <option value="latest">v5.0.0-SNAPSHOT (latest)</option>
+            </select>
+          </div>
+
+          <div class="meta-tags" id="header-meta">
+            <a class="meta-tag meta-link" id="meta-commit" href="#" target="_blank" rel="noopener">Commit ...</a>
+            <span class="meta-tag" id="meta-date">...</span>
+          </div>
+
+          <button id="theme-toggle" class="theme-btn" title="Toggle theme" aria-label="Toggle theme">
+            <svg id="icon-moon" class="theme-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="icon-sun" class="theme-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" style="display: none;">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-main">
+      <!-- High Level Metrics Overview -->
+      <section class="summary-section">
+        <div class="metrics-grid">
+          <div class="metric-block">
+            <span class="metric-label">Total Tests</span>
+            <span class="metric-num" id="val-total">-</span>
+            <span class="metric-note">11 standard suites</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-label">Passed</span>
+            <span class="metric-num text-success" id="val-passed">-</span>
+            <span class="metric-note" id="val-pass-rate">-%</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-label">Documented Skips</span>
+            <span class="metric-num text-warning" id="val-skipped">-</span>
+            <span class="metric-note"><a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md" target="_blank" rel="noopener">See rationale</a></span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-label">Failures</span>
+            <span class="metric-num" id="val-failed">0</span>
+            <span class="metric-note">0 regressions</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Specifications Grid -->
+      <section class="content-section">
+        <div class="section-title-row">
+          <h2 class="section-heading">Supported Specifications</h2>
+          <span class="section-hint">Select a suite to filter results</span>
+        </div>
+        <div class="suites-list" id="suites-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Tests Table Explorer -->
+      <section class="content-section">
+        <div class="section-title-row">
+          <h2 class="section-heading">Test Results</h2>
+          <span class="section-hint" id="explorer-count">0 tests</span>
+        </div>
+
+        <div class="table-toolbar">
+          <div class="search-input-wrapper">
+            <label for="search-input" class="sr-only">Search tests</label>
+            <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="search" id="search-input" placeholder="Search test name, ID, or description..." autocomplete="off" aria-label="Search test name, ID, or description">
+          </div>
+
+          <div class="filter-actions">
+            <label for="suite-select" class="sr-only">Filter by specification</label>
+            <select id="suite-select" class="form-select" aria-label="Filter by specification">
+              <option value="all">All Specifications</option>
+            </select>
+
+            <div class="filter-group" id="status-pills">
+              <button class="filter-btn active" data-status="all">All</button>
+              <button class="filter-btn" data-status="PASSED">Passed</button>
+              <button class="filter-btn" data-status="SKIPPED">Skipped</button>
+              <button class="filter-btn" data-status="FAILED">Failed</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="report-table" id="tests-table">
+            <thead>
+              <tr>
+                <th style="width: 100px;">Status</th>
+                <th style="width: 170px;">Specification</th>
+                <th>Test Case</th>
+                <th style="width: 90px; text-align: right;">Time</th>
+                <th style="width: 70px; text-align: center;">Details</th>
+              </tr>
+            </thead>
+            <tbody id="tests-table-body">
+              <tr>
+                <td colspan="5" class="empty-state">Loading test results...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-container" id="pagination-bar">
+          <span class="pagination-info" id="page-info">Page 1 of 1</span>
+          <div class="pagination-controls">
+            <button class="btn btn-sm" id="btn-prev" disabled>Previous</button>
+            <button class="btn btn-sm" id="btn-next" disabled>Next</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <div class="footer-links">
+        <a href="https://project.inria.fr/corese/" target="_blank" rel="noopener">Corese Project</a>
+        <span>&bull;</span>
+        <a href="https://team.inria.fr/wimmics/" target="_blank" rel="noopener">Inria Wimmics</a>
+        <span>&bull;</span>
+        <a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md" target="_blank" rel="noopener">Exclusions Policy</a>
+        <span>&bull;</span>
+        <a href="https://github.com/corese-stack/corese-w3c" target="_blank" rel="noopener">Repository</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Test Detail Modal -->
+  <dialog id="test-modal" class="modal-window">
+    <div class="modal-inner">
+      <div class="modal-top">
+        <div class="modal-title-box">
+          <span class="status-badge" id="modal-status">PASSED</span>
+          <h3 id="modal-title">Test Details</h3>
+        </div>
+        <button class="modal-close-icon" id="modal-close-btn" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <div class="modal-content-body">
+        <div class="info-row">
+          <span class="info-label">Specification Suite</span>
+          <span class="info-value" id="modal-suite">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Full Display Name</span>
+          <div class="info-code" id="modal-display-name">-</div>
+        </div>
+        <div class="info-row" id="modal-skip-reason-group" style="display: none;">
+          <span class="info-label">Exclusion Rationale</span>
+          <div class="info-callout warning" id="modal-skip-reason">-</div>
+        </div>
+        <div class="info-row" id="modal-error-group" style="display: none;">
+          <span class="info-label">Failure Message</span>
+          <div class="info-callout danger" id="modal-error">-</div>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Duration</span>
+          <span class="info-value font-mono" id="modal-duration">-</span>
+        </div>
+        <div class="info-row" id="modal-fixtures-group">
+          <span class="info-label">W3C Test Fixtures</span>
+          <div class="info-links" id="modal-fixtures">-</div>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Normative References & Source</span>
+          <div class="info-links" id="modal-links">-</div>
+        </div>
+      </div>
+
+      <div class="modal-bottom">
+        <button class="btn btn-sm" id="modal-ok-btn">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="data/report-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -59,14 +59,28 @@ public abstract class BaseRdf11DynamicTest {
                     testCases.size(), getFormatName());
 
             return testCases.stream()
-                    .map(testCase -> DynamicTest.dynamicTest(
-                            testCase.getFormattedDisplayName(getFormatName()),
-                            () -> {
-                                String skipReason = getSkipReason(testCase);
-                                org.junit.jupiter.api.Assumptions.assumeTrue(skipReason == null, skipReason);
-                                testCase.execute();
-                            }
-                    ));
+                    .map(testCase -> {
+                        String skipReason = getSkipReason(testCase);
+                        String displayName = testCase.getFormattedDisplayName(getFormatName());
+                        if (skipReason != null) {
+                            displayName += " [EXCLUDED: " + skipReason + "]";
+                        }
+                        String actionProp = testCase.getProperty(W3cTestCase.Property.ACTION, String.class);
+                        if (actionProp != null && !actionProp.isBlank()) {
+                            displayName += " [ACTION: " + actionProp + "]";
+                        }
+                        String resultProp = testCase.getProperty(W3cTestCase.Property.RESULT, String.class);
+                        if (resultProp != null && !resultProp.isBlank()) {
+                            displayName += " [RESULT: " + resultProp + "]";
+                        }
+                        return DynamicTest.dynamicTest(
+                                displayName,
+                                () -> {
+                                    org.junit.jupiter.api.Assumptions.assumeTrue(skipReason == null, skipReason);
+                                    testCase.execute();
+                                }
+                        );
+                    });
 
         } catch (Exception e) {
             logger.error("Failed to load {} test manifest: {}",

@@ -192,7 +192,14 @@ public class W3cTestCase {
      */
     public URI getUriProperty(String key) {
         String value = getProperty(key, String.class);
-        return value != null ? URI.create(value) : null;
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        try {
+            return URI.create(value);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /**

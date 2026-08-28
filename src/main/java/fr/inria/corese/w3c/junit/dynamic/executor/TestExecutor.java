@@ -14,5 +14,6 @@ public interface TestExecutor {
      * @param testCase The test case to execute
      * @throws Exception If the test execution fails
      */
+    @SuppressWarnings("java:S112")
     void execute(W3cTestCase testCase) throws Exception;
 }
