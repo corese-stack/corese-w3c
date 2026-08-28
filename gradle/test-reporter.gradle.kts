@@ -1,30 +1,50 @@
 /**
  * Custom Gradle Test Reporter for W3C Test Suites.
  *
- * Provides a clean, ANSI-colored summary table in the terminal upon test completion.
- *
  * Features:
- * - Aggregates leaf test results by official W3C specification suite.
- * - Filters out internal harness unit tests to ensure strict W3C metric reporting.
- * - Thread-safe result accumulation with ConcurrentHashMap.
- * - Sized ASCII table with exact column and banner alignment.
- * - Configurable verbosity (-PverboseTests=true or --info).
+ * 1. Rich ANSI Terminal Summary Table:
+ *    - Aggregates leaf test results by official W3C specification suite.
+ *    - Filters out internal harness unit tests to ensure strict W3C metric reporting.
+ *    - Thread-safe result accumulation with ConcurrentHashMap.
+ *    - Sized ASCII table with exact column and banner alignment.
+ *    - Configurable verbosity (-PverboseTests=true or --info).
+ *
+ * 2. Machine-Readable Test Artifacts:
+ *    - Exports structured JSON report to build/reports/w3c-report.json.
+ *    - Captures metadata (timestamp, project version, git branch/commit, duration).
+ *    - Captures suite-level summaries and per-test execution statuses with skip/failure reasons.
  */
 
+import java.io.File
+import java.time.Instant
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import org.gradle.api.tasks.testing.TestDescriptor
 import org.gradle.api.tasks.testing.TestListener
 import org.gradle.api.tasks.testing.TestResult
 
 /**
+ * Individual test case execution result.
+ */
+class TestCaseResult(
+    val name: String,
+    val displayName: String,
+    val status: String,
+    val durationMs: Long,
+    val skipReason: String? = null,
+    val errorMessage: String? = null
+)
+
+/**
  * Encapsulates execution statistics for a specific W3C specification suite.
  */
-class SuiteStats(val key: String, val name: String) {
+class SuiteStats(val key: String, val id: String, val name: String) {
     var total: Int = 0
     var passed: Int = 0
     var failed: Int = 0
     var skipped: Int = 0
     var durationMs: Long = 0L
+    val testCases = Collections.synchronizedList(mutableListOf<TestCaseResult>())
 
     val successRate: Double
         get() = if (total > 0) (passed.toDouble() / total.toDouble()) * 100.0 else 100.0
@@ -54,6 +74,28 @@ fun resolveSuiteName(className: String?): String? {
 }
 
 /**
+ * Resolves a normalized, URL-friendly specification identifier for dashboards and reports.
+ */
+fun resolveSuiteId(className: String?): String {
+    if (className == null) return "unknown"
+    val simpleName = className.substringAfterLast('.')
+    return when (simpleName) {
+        "Rdf11TurtleDynamicTest" -> "turtle"
+        "Rdf11TrigDynamicTest" -> "trig"
+        "Rdf11XmlDynamicTest" -> "rdf-xml"
+        "Rdf11NTriplesDynamicTest" -> "ntriples"
+        "Rdf11NQuadsDynamicTest" -> "nquads"
+        "RdfCanonicalDynamicTest" -> "rdf-canonical"
+        "Rdf11JsonldToRdfDynamicTest" -> "jsonld-tordf"
+        "Rdf11JsonldFromRdfDynamicTest" -> "jsonld-fromrdf"
+        "Rdf11RDFaXHTMLDynamicTest" -> "rdfa-xhtml"
+        "Rdf11RDFaXMLDynamicTest" -> "rdfa-xml"
+        "Rdf11RDFaSVGDynamicTest" -> "rdfa-svg"
+        else -> simpleName.removeSuffix("DynamicTest").lowercase()
+    }
+}
+
+/**
  * Builds a clean progress bar string with filled/unfilled blocks and percentage.
  */
 fun buildProgressBar(rate: Double, width: Int = 10): String {
@@ -61,6 +103,23 @@ fun buildProgressBar(rate: Double, width: Int = 10): String {
     val empty = width - filled
     val bar = "█".repeat(filled) + "░".repeat(empty)
     return String.format("%s %6.1f%%", bar, rate)
+}
+
+/**
+ * Retrieves current git branch and short commit hash.
+ */
+fun getGitInfo(): Pair<String, String> {
+    var branch = "unknown"
+    var commit = "unknown"
+    try {
+        val branchProc = ProcessBuilder("git", "rev-parse", "--abbrev-ref", "HEAD").start()
+        branch = branchProc.inputStream.bufferedReader().readText().trim()
+        val commitProc = ProcessBuilder("git", "rev-parse", "--short", "HEAD").start()
+        commit = commitProc.inputStream.bufferedReader().readText().trim()
+    } catch (_: Exception) {
+        // Fallback for non-git environments
+    }
+    return Pair(branch, commit)
 }
 
 val suiteStatsMap = ConcurrentHashMap<String, SuiteStats>()
@@ -112,7 +171,29 @@ tasks.named<Test>("test") {
 
             val suiteName = resolveSuiteName(resolvedClass) ?: return
             val suiteKey = resolvedClass ?: "unknown"
-            val stats = suiteStatsMap.computeIfAbsent(suiteKey) { SuiteStats(suiteKey, suiteName) }
+            val suiteId = resolveSuiteId(resolvedClass)
+            val stats = suiteStatsMap.computeIfAbsent(suiteKey) { SuiteStats(suiteKey, suiteId, suiteName) }
+
+            val duration = result.endTime - result.startTime
+            val status = when (result.resultType) {
+                TestResult.ResultType.SUCCESS -> "PASSED"
+                TestResult.ResultType.FAILURE -> "FAILED"
+                TestResult.ResultType.SKIPPED -> "SKIPPED"
+                null -> "UNKNOWN"
+            }
+
+            val rawDisplayName = testDescriptor.displayName
+            val skipReason = if (rawDisplayName.contains(" [EXCLUDED: ")) {
+                rawDisplayName.substringAfter(" [EXCLUDED: ").substringBeforeLast("]")
+            } else null
+
+            val cleanDisplayName = if (skipReason != null) {
+                rawDisplayName.replace(" [EXCLUDED: " + skipReason + "]", "")
+            } else rawDisplayName
+
+            val errorMessage = if (result.resultType == TestResult.ResultType.FAILURE) {
+                result.exceptions.firstOrNull()?.message ?: result.exceptions.firstOrNull()?.toString()
+            } else null
 
             synchronized(stats) {
                 stats.total++
@@ -122,7 +203,15 @@ tasks.named<Test>("test") {
                     TestResult.ResultType.SKIPPED -> stats.skipped++
                     null -> {}
                 }
-                stats.durationMs += (result.endTime - result.startTime)
+                stats.durationMs += duration
+                stats.testCases.add(TestCaseResult(
+                    name = testDescriptor.name,
+                    displayName = cleanDisplayName,
+                    status = status,
+                    durationMs = duration,
+                    skipReason = skipReason,
+                    errorMessage = errorMessage
+                ))
             }
         }
 
@@ -203,6 +292,62 @@ tasks.named<Test>("test") {
                 }
                 println(bold + bannerLine + reset)
                 println()
+
+                // Generate machine-readable JSON artifact: build/reports/w3c-report.json
+                try {
+                    val reportDir = project.layout.buildDirectory.dir("reports").get().asFile
+                    reportDir.mkdirs()
+                    val reportFile = File(reportDir, "w3c-report.json")
+                    val (gitBranch, gitCommit) = getGitInfo()
+
+                    val reportMap = linkedMapOf(
+                        "metadata" to linkedMapOf(
+                            "generatedAt" to Instant.now().toString(),
+                            "project" to project.name,
+                            "version" to project.version.toString(),
+                            "git" to linkedMapOf(
+                                "branch" to gitBranch,
+                                "commit" to gitCommit
+                            ),
+                            "durationSeconds" to (Math.round(totalDurationSec * 100.0) / 100.0)
+                        ),
+                        "summary" to linkedMapOf(
+                            "total" to totalTests,
+                            "passed" to totalPassed,
+                            "failed" to totalFailed,
+                            "skipped" to totalSkipped,
+                            "passRate" to (Math.round(totalRate * 100.0) / 100.0)
+                        ),
+                        "suites" to sortedSuites.map { s ->
+                            linkedMapOf(
+                                "id" to s.id,
+                                "name" to s.name,
+                                "total" to s.total,
+                                "passed" to s.passed,
+                                "failed" to s.failed,
+                                "skipped" to s.skipped,
+                                "passRate" to (Math.round(s.successRate * 100.0) / 100.0),
+                                "durationMs" to s.durationMs,
+                                "tests" to s.testCases.map { t ->
+                                    val testMap = linkedMapOf<String, Any?>(
+                                        "name" to t.name,
+                                        "displayName" to t.displayName,
+                                        "status" to t.status,
+                                        "durationMs" to t.durationMs
+                                    )
+                                    if (t.skipReason != null) testMap["skipReason"] = t.skipReason
+                                    if (t.errorMessage != null) testMap["errorMessage"] = t.errorMessage
+                                    testMap
+                                }
+                            )
+                        }
+                    )
+
+                    reportFile.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(reportMap)))
+                    println(muted + "JSON conformance report generated: " + reportFile.relativeTo(project.rootDir).path + reset)
+                } catch (e: Exception) {
+                    logger.warn("Failed to generate w3c-report.json: {}", e.message)
+                }
             }
         }
     })
