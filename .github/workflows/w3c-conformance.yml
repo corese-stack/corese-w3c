@@ -27,7 +27,7 @@ concurrency:
 jobs:
   test-and-report:
     name: Execute W3C Conformance Suite
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, corese-stack-ubuntu-24]
 
     steps:
       - name: Checkout corese-w3c
