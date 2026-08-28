@@ -115,10 +115,24 @@
   const modalError = document.getElementById("modal-error");
   const modalDuration = document.getElementById("modal-duration");
 
-  // Theme Management (Monochrome SVG Icons)
+  // Theme Management (Automatic OS detection + Manual override with Monochrome SVG Icons)
   function initTheme() {
-    const savedTheme = localStorage.getItem("corese-theme") || "dark";
-    applyTheme(savedTheme);
+    const savedTheme = localStorage.getItem("corese-theme");
+    if (savedTheme) {
+      applyTheme(savedTheme);
+    } else {
+      const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      applyTheme(prefersLight ? "light" : "dark");
+    }
+
+    // Listen for OS theme changes if user has not explicitly set a manual preference
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", (e) => {
+        if (!localStorage.getItem("corese-theme")) {
+          applyTheme(e.matches ? "light" : "dark");
+        }
+      });
+    }
   }
 
   function applyTheme(theme) {
