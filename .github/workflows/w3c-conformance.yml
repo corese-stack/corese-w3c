@@ -70,6 +70,14 @@ jobs:
           distribution: "temurin"
           cache: "gradle"
 
+      - name: Cache W3C Test Fixtures
+        uses: actions/cache@v4
+        with:
+          path: corese-w3c/src/test/resources
+          key: w3c-fixtures-${{ hashFiles('corese-w3c/src/main/java/fr/inria/corese/w3c/junit/dynamic/utils/TestFileManager.java') }}
+          restore-keys: |
+            w3c-fixtures-
+
       - name: Run W3C Conformance Tests
         working-directory: corese-w3c
         continue-on-error: true
