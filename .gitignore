@@ -96,3 +96,4 @@ src/test/resources/
 
 # Temporary directories
 bin/
+logs/

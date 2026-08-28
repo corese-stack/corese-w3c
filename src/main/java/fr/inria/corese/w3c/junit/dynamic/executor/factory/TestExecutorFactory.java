@@ -44,19 +44,24 @@ public class TestExecutorFactory {
         }
 
         return switch (testType) {
-
+            // 1. RDFC 1.0 Canonicalization
             case RDFC10_EVAL_TEST -> CANONICAL_EVALUATION_EXECUTOR;
             case RDFC10_MAP_TEST -> CANONICAL_MAP_EXECUTOR;
             case RDFC10_NEGATIVE_EVAL_TEST -> CANONICAL_NEGATIVE_EXECUTOR;
+
+            // 2. JSON-LD FromRDF (RDF to JSON-LD transformation)
             case JSON_LD_FROM_RDF_POSITIVE_EVAL -> JSONLD_FROM_RDF_EVALUATION_EXECUTOR;
             case JSON_LD_FROM_RDF_NEGATIVE_EVAL -> JSONLD_FROM_RDF_NEGATIVE_EXECUTOR;
-            // A JSON-LD negative evaluation test succeeds only when parsing fails.
-            // It must be selected before the generic evaluation branch below.
-            case JSON_LD_NEGATIVE_EVAL -> NEGATIVE_TEST_EXECUTOR;
-            case TestType type when type.isEvaluationTest() -> POSITIVE_EVALUATION_EXECUTOR;
-            case TestType type when type.isSyntaxTest() && type.isPositiveTest() -> POSITIVE_SYNTAX_EXECUTOR;
+
+            // 3. Negative tests expecting parsing/loading failures (negative syntax and negative evaluation for JSON-LD/Turtle/TriG)
+            case JSON_LD_NEGATIVE_EVAL, TURTLE_NEGATIVE_EVAL, TRIG_NEGATIVE_EVAL -> NEGATIVE_TEST_EXECUTOR;
             case TestType type when type.isSyntaxTest() && type.isNegativeTest() -> NEGATIVE_TEST_EXECUTOR;
 
+            // 4. Positive syntax tests (parsing succeeds without graph comparison)
+            case TestType type when type.isSyntaxTest() && type.isPositiveTest() -> POSITIVE_SYNTAX_EXECUTOR;
+
+            // 5. Positive evaluation tests (graph isomorphism comparison with mf:result)
+            case TestType type when type.isEvaluationTest() -> POSITIVE_EVALUATION_EXECUTOR;
 
             default -> throw new IllegalArgumentException("No executor available for test type: " + testType);
         };
