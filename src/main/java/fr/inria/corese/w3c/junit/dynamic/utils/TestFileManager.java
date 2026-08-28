@@ -175,7 +175,7 @@ public class TestFileManager {
     }
 
     private static void sanitizeIfTtlManifest(Path localFilePath) {
-        if (localFilePath.toString().endsWith(".ttl")) {
+        if (localFilePath.toString().endsWith("manifest.ttl")) {
             try {
                 String content = Files.readString(localFilePath);
                 if (content.contains("\\\"\"\"\"")) {
