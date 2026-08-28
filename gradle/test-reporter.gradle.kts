@@ -124,12 +124,22 @@ fun getGitInfo(): Pair<String, String> {
     return Pair(branch, commit)
 }
 
+fun extractTag(text: String, tag: String): String? {
+    return if (text.contains(" [$tag: ")) {
+        text.substringAfter(" [$tag: ").substringBefore("] [").substringBeforeLast("]")
+    } else null
+}
+
 val suiteStatsMap = ConcurrentHashMap<String, SuiteStats>()
 
 tasks.named<Test>("test") {
     outputs.upToDateWhen { false }
 
     val verbose = project.hasProperty("verboseTests") || project.gradle.startParameter.logLevel == LogLevel.INFO
+    val projectName = project.name
+    val projectVersionStr = project.version.toString()
+    val projectRootDirFile = project.rootDir
+    val buildReportsDirFile = project.layout.buildDirectory.dir("reports").get().asFile
 
     testLogging {
         if (verbose) {
@@ -181,21 +191,10 @@ tasks.named<Test>("test") {
                 null -> "UNKNOWN"
             }
 
-            val rawDisplayName = testDescriptor.displayName
-
-            val skipReason = if (rawDisplayName.contains(" [EXCLUDED: ")) {
-                rawDisplayName.substringAfter(" [EXCLUDED: ").substringBefore("] [").substringBeforeLast("]")
-            } else null
-
-            val actionUri = if (rawDisplayName.contains(" [ACTION: ")) {
-                rawDisplayName.substringAfter(" [ACTION: ").substringBefore("] [").substringBeforeLast("]")
-            } else null
-
-            val resultUri = if (rawDisplayName.contains(" [RESULT: ")) {
-                rawDisplayName.substringAfter(" [RESULT: ").substringBefore("] [").substringBeforeLast("]")
-            } else null
-
-            var cleanDisplayName = rawDisplayName
+            var cleanDisplayName = testDescriptor.displayName
+            val skipReason = extractTag(cleanDisplayName, "EXCLUDED")
+            val actionUri = extractTag(cleanDisplayName, "ACTION")
+            val resultUri = extractTag(cleanDisplayName, "RESULT")
             if (skipReason != null) cleanDisplayName = cleanDisplayName.replace(" [EXCLUDED: " + skipReason + "]", "")
             if (actionUri != null) cleanDisplayName = cleanDisplayName.replace(" [ACTION: " + actionUri + "]", "")
             if (resultUri != null) cleanDisplayName = cleanDisplayName.replace(" [RESULT: " + resultUri + "]", "")
@@ -248,45 +247,44 @@ tasks.named<Test>("test") {
 
                 val nameColWidth = 34
                 val numColWidth = 7
-                val confColWidth = 18
 
-                val topBorder = "┌" + "─".repeat(nameColWidth + 2) + "┬" + ("─".repeat(numColWidth + 2) + "┬").repeat(4) + "─".repeat(confColWidth + 2) + "┐"
-                val midBorder = "├" + "─".repeat(nameColWidth + 2) + "┼" + ("─".repeat(numColWidth + 2) + "┼").repeat(4) + "─".repeat(confColWidth + 2) + "┤"
-                val botBorder = "└" + "─".repeat(nameColWidth + 2) + "┴" + ("─".repeat(numColWidth + 2) + "┴").repeat(4) + "─".repeat(confColWidth + 2) + "┘"
+                val topBorder = "┌" + "─".repeat(nameColWidth + 2) + "┬" + ("─".repeat(numColWidth + 2) + "┬").repeat(4) + "─".repeat(20) + "┐"
+                val midBorder = "├" + "─".repeat(nameColWidth + 2) + "┼" + ("─".repeat(numColWidth + 2) + "┼").repeat(4) + "─".repeat(20) + "┤"
+                val botBorder = "└" + "─".repeat(nameColWidth + 2) + "┴" + ("─".repeat(numColWidth + 2) + "┴").repeat(4) + "─".repeat(20) + "┘"
 
-                val headerStr = String.format("│ %-${nameColWidth}s │ %${numColWidth}s │ %${numColWidth}s │ %${numColWidth}s │ %${numColWidth}s │ %-${confColWidth}s │",
-                    "W3C Specification Suite", "Total", "Passed", "Failed", "Skipped", "Conformance")
-
+                val bannerLine = "=".repeat(99)
                 val title = "CORESE W3C CONFORMANCE"
-                val bannerLine = "=".repeat(topBorder.length)
-                val totalPad = topBorder.length - title.length
-                val leftPad = totalPad / 2
-                val rightPad = totalPad - leftPad
-                val centeredTitle = " ".repeat(leftPad) + title + " ".repeat(rightPad)
-
+                val padLeft = (99 - title.length) / 2
+                val padRight = 99 - title.length - padLeft
                 println()
                 println(bold + bannerLine + reset)
-                println(bold + centeredTitle + reset)
+                println(bold + " ".repeat(padLeft) + title + " ".repeat(padRight) + reset)
                 println(bold + bannerLine + reset)
                 println(topBorder)
-                println(bold + headerStr + reset)
+                println(bold + "│ " + String.format("%-${nameColWidth}s", "W3C Specification Suite") + " │ " +
+                        String.format("%${numColWidth}s", "Total") + " │ " +
+                        String.format("%${numColWidth}s", "Passed") + " │ " +
+                        String.format("%${numColWidth}s", "Failed") + " │ " +
+                        String.format("%${numColWidth}s", "Skipped") + " │ " +
+                        String.format("%-18s", "Conformance") + " │" + reset)
                 println(midBorder)
 
                 for (s in sortedSuites) {
-                    val nameStr = String.format("%-${nameColWidth}s", s.name)
+                    val nameStr = String.format("%-${nameColWidth}s", if (s.name.length > nameColWidth) s.name.substring(0, nameColWidth - 1) + "…" else s.name)
                     val totalStr = String.format("%${numColWidth}d", s.total)
-                    val passedStr = if (s.passed > 0) green + String.format("%${numColWidth}d", s.passed) + reset else String.format("%${numColWidth}d", s.passed)
-                    val failedStr = if (s.failed > 0) red + String.format("%${numColWidth}d", s.failed) + reset else String.format("%${numColWidth}d", s.failed)
-                    val skippedStr = if (s.skipped > 0) yellow + String.format("%${numColWidth}d", s.skipped) + reset else String.format("%${numColWidth}d", s.skipped)
+                    val passedStr = (if (s.passed > 0) green else "") + String.format("%${numColWidth}d", s.passed) + reset
+                    val failedStr = (if (s.failed > 0) red else "") + String.format("%${numColWidth}d", s.failed) + reset
+                    val skippedStr = (if (s.skipped > 0) yellow else "") + String.format("%${numColWidth}d", s.skipped) + reset
                     val barStr = buildProgressBar(s.successRate, 10)
 
                     println("│ " + nameStr + " │ " + totalStr + " │ " + passedStr + " │ " + failedStr + " │ " + skippedStr + " │ " + barStr + " │")
                 }
 
                 println(midBorder)
+
                 val totalNameStr = bold + String.format("%-${nameColWidth}s", "TOTAL CONSOLIDATED") + reset
                 val totalTestsStr = bold + String.format("%${numColWidth}d", totalTests) + reset
-                val totalPassedStr = bold + green + String.format("%${numColWidth}d", totalPassed) + reset
+                val totalPassedStr = (if (totalPassed > 0) bold + green else bold) + String.format("%${numColWidth}d", totalPassed) + reset
                 val totalFailedStr = (if (totalFailed > 0) bold + red else bold) + String.format("%${numColWidth}d", totalFailed) + reset
                 val totalSkippedStr = (if (totalSkipped > 0) bold + yellow else bold) + String.format("%${numColWidth}d", totalSkipped) + reset
                 val totalBarStr = bold + buildProgressBar(totalRate, 10) + reset
@@ -305,16 +303,15 @@ tasks.named<Test>("test") {
 
                 // Generate machine-readable JSON artifact: build/reports/w3c-report.json
                 try {
-                    val reportDir = project.layout.buildDirectory.dir("reports").get().asFile
-                    reportDir.mkdirs()
-                    val reportFile = File(reportDir, "w3c-report.json")
+                    buildReportsDirFile.mkdirs()
+                    val reportFile = File(buildReportsDirFile, "w3c-report.json")
                     val (gitBranch, gitCommit) = getGitInfo()
 
                     val reportMap = linkedMapOf(
                         "metadata" to linkedMapOf(
                             "generatedAt" to Instant.now().toString(),
-                            "project" to project.name,
-                            "version" to project.version.toString(),
+                            "project" to projectName,
+                            "version" to projectVersionStr,
                             "git" to linkedMapOf(
                                 "branch" to gitBranch,
                                 "commit" to gitCommit
@@ -357,9 +354,9 @@ tasks.named<Test>("test") {
 
                     val jsonText = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(reportMap))
                     reportFile.writeText(jsonText)
-                    println(muted + "JSON conformance report generated: " + reportFile.relativeTo(project.rootDir).path + reset)
+                    println(muted + "JSON conformance report generated: " + reportFile.relativeTo(projectRootDirFile).path + reset)
 
-                    val siteDataDir = File(project.rootDir, "site/data")
+                    val siteDataDir = File(projectRootDirFile, "site/data")
                     if (siteDataDir.exists()) {
                         File(siteDataDir, "w3c-report.json").writeText(jsonText)
                         File(siteDataDir, "report-data.js").writeText("window.__CORESE_W3C_DATA__ = " + jsonText + ";\n")
