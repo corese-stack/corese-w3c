@@ -65,6 +65,14 @@ public abstract class BaseRdf11DynamicTest {
                         if (skipReason != null) {
                             displayName += " [EXCLUDED: " + skipReason + "]";
                         }
+                        String actionProp = testCase.getProperty(W3cTestCase.Property.ACTION, String.class);
+                        if (actionProp != null && !actionProp.isBlank()) {
+                            displayName += " [ACTION: " + actionProp + "]";
+                        }
+                        String resultProp = testCase.getProperty(W3cTestCase.Property.RESULT, String.class);
+                        if (resultProp != null && !resultProp.isBlank()) {
+                            displayName += " [RESULT: " + resultProp + "]";
+                        }
                         return DynamicTest.dynamicTest(
                                 displayName,
                                 () -> {

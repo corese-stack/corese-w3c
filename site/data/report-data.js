@@ -1,4 +1,4 @@
-{
+window.__CORESE_W3C_DATA__ = {
     "metadata": {
         "generatedAt": "2026-08-28T12:29:05.404506825Z",
         "project": "corese-w3c",
@@ -15075,4 +15075,4 @@
             ]
         }
     ]
-}
+};

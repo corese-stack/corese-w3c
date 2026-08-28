@@ -12,7 +12,7 @@
  * 2. Machine-Readable Test Artifacts:
  *    - Exports structured JSON report to build/reports/w3c-report.json.
  *    - Captures metadata (timestamp, project version, git branch/commit, duration).
- *    - Captures suite-level summaries and per-test execution statuses with skip/failure reasons.
+ *    - Captures suite-level summaries and per-test execution statuses with fixture URIs, skip reasons, and failure errors.
  */
 
 import java.io.File
@@ -31,6 +31,8 @@ class TestCaseResult(
     val displayName: String,
     val status: String,
     val durationMs: Long,
+    val actionUri: String? = null,
+    val resultUri: String? = null,
     val skipReason: String? = null,
     val errorMessage: String? = null
 )
@@ -125,7 +127,6 @@ fun getGitInfo(): Pair<String, String> {
 val suiteStatsMap = ConcurrentHashMap<String, SuiteStats>()
 
 tasks.named<Test>("test") {
-    // In corese-w3c, ensure the W3C conformance suite executes and produces the report on each run
     outputs.upToDateWhen { false }
 
     val verbose = project.hasProperty("verboseTests") || project.gradle.startParameter.logLevel == LogLevel.INFO
@@ -135,7 +136,6 @@ tasks.named<Test>("test") {
             events("started", "passed", "skipped", "failed")
             showStandardStreams = true
         } else {
-            // Only stream failures in default mode to avoid cluttering the terminal output
             events("failed")
             showStandardStreams = false
         }
@@ -155,7 +155,6 @@ tasks.named<Test>("test") {
         override fun beforeTest(testDescriptor: TestDescriptor) {}
 
         override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {
-            // Ignore container / factory descriptors, count only individual leaf test cases
             if (testDescriptor.isComposite) return
 
             var current: TestDescriptor? = testDescriptor
@@ -183,13 +182,23 @@ tasks.named<Test>("test") {
             }
 
             val rawDisplayName = testDescriptor.displayName
+
             val skipReason = if (rawDisplayName.contains(" [EXCLUDED: ")) {
-                rawDisplayName.substringAfter(" [EXCLUDED: ").substringBeforeLast("]")
+                rawDisplayName.substringAfter(" [EXCLUDED: ").substringBefore("] [").substringBeforeLast("]")
             } else null
 
-            val cleanDisplayName = if (skipReason != null) {
-                rawDisplayName.replace(" [EXCLUDED: " + skipReason + "]", "")
-            } else rawDisplayName
+            val actionUri = if (rawDisplayName.contains(" [ACTION: ")) {
+                rawDisplayName.substringAfter(" [ACTION: ").substringBefore("] [").substringBeforeLast("]")
+            } else null
+
+            val resultUri = if (rawDisplayName.contains(" [RESULT: ")) {
+                rawDisplayName.substringAfter(" [RESULT: ").substringBefore("] [").substringBeforeLast("]")
+            } else null
+
+            var cleanDisplayName = rawDisplayName
+            if (skipReason != null) cleanDisplayName = cleanDisplayName.replace(" [EXCLUDED: " + skipReason + "]", "")
+            if (actionUri != null) cleanDisplayName = cleanDisplayName.replace(" [ACTION: " + actionUri + "]", "")
+            if (resultUri != null) cleanDisplayName = cleanDisplayName.replace(" [RESULT: " + resultUri + "]", "")
 
             val errorMessage = if (result.resultType == TestResult.ResultType.FAILURE) {
                 result.exceptions.firstOrNull()?.message ?: result.exceptions.firstOrNull()?.toString()
@@ -209,6 +218,8 @@ tasks.named<Test>("test") {
                     displayName = cleanDisplayName,
                     status = status,
                     durationMs = duration,
+                    actionUri = actionUri,
+                    resultUri = resultUri,
                     skipReason = skipReason,
                     errorMessage = errorMessage
                 ))
@@ -216,7 +227,6 @@ tasks.named<Test>("test") {
         }
 
         override fun afterSuite(suite: TestDescriptor, result: TestResult) {
-            // Render consolidated report table only when the root test suite finishes
             if (suite.parent == null) {
                 if (suiteStatsMap.isEmpty()) return
 
@@ -335,6 +345,8 @@ tasks.named<Test>("test") {
                                         "status" to t.status,
                                         "durationMs" to t.durationMs
                                     )
+                                    if (t.actionUri != null) testMap["actionUri"] = t.actionUri
+                                    if (t.resultUri != null) testMap["resultUri"] = t.resultUri
                                     if (t.skipReason != null) testMap["skipReason"] = t.skipReason
                                     if (t.errorMessage != null) testMap["errorMessage"] = t.errorMessage
                                     testMap
@@ -343,8 +355,15 @@ tasks.named<Test>("test") {
                         }
                     )
 
-                    reportFile.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(reportMap)))
+                    val jsonText = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(reportMap))
+                    reportFile.writeText(jsonText)
                     println(muted + "JSON conformance report generated: " + reportFile.relativeTo(project.rootDir).path + reset)
+
+                    val siteDataDir = File(project.rootDir, "site/data")
+                    if (siteDataDir.exists()) {
+                        File(siteDataDir, "w3c-report.json").writeText(jsonText)
+                        File(siteDataDir, "report-data.js").writeText("window.__CORESE_W3C_DATA__ = " + jsonText + ";\n")
+                    }
                 } catch (e: Exception) {
                     logger.warn("Failed to generate w3c-report.json: {}", e.message)
                 }

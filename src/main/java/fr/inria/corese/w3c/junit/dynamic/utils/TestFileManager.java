@@ -1,8 +1,5 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -23,8 +20,6 @@ import java.security.NoSuchAlgorithmException;
  * manipulation.
  */
 public class TestFileManager {
-
-    private static final Logger logger = LoggerFactory.getLogger(TestFileManager.class);
 
     /**
      * The base path string for test resources. Files downloaded or accessed by this
@@ -101,6 +96,7 @@ public class TestFileManager {
      * @throws IOException if an I/O error occurs
      * @throws NoSuchAlgorithmException if SHA-256 algorithm is unavailable
      */
+    @SuppressWarnings("java:S5443")
     private static boolean isRemoteFileDifferent(URI remoteUri, Path localFilePath)
             throws IOException, NoSuchAlgorithmException {
         String localFileHash = hashFile(localFilePath);
@@ -219,7 +215,7 @@ public class TestFileManager {
                 // Found rdf11, extract from this point to the end (excluding filename)
                 StringBuilder result = new StringBuilder();
                 for (int j = i; j < segments.length - 1; j++) {
-                    if (result.length() > 0) {
+                    if (!result.isEmpty()) {
                         result.append("/");
                     }
                     result.append(segments[j]);
