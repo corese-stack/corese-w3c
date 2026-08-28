@@ -2,7 +2,7 @@
 
 W3C standards conformance test suite and dynamic execution harness for [Corese](https://github.com/corese-stack/corese-core).
 
-Tests are dynamically loaded from official W3C manifests and executed against Corese using JUnit 5 Dynamic Tests.
+Tests are dynamically loaded from official W3C manifests and executed against Corese using JUnit 5 Dynamic Tests. Live reports and interactive benchmarks are published at: https://corese-stack.github.io/corese-w3c/
 
 ## Supported W3C Specifications
 

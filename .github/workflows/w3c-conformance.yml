@@ -1,0 +1,76 @@
+name: W3C Conformance & Dashboard
+
+on:
+  push:
+    branches: [ main, develop, "feature/**" ]
+  pull_request:
+    branches: [ main, develop ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  test-and-report:
+    name: Execute W3C Conformance Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout corese-w3c
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: "gradle"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run W3C Conformance Tests
+        run: ./gradlew test --no-daemon
+
+      - name: Prepare Dashboard Artifact
+        run: |
+          mkdir -p site/data
+          cp build/reports/w3c-report.json site/data/w3c-report.json
+
+      - name: Upload Test Report Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3c-conformance-report
+          path: |
+            build/reports/w3c-report.json
+            build/reports/tests/test/
+          retention-days: 14
+
+      - name: Upload GitHub Pages Artifact
+        if: github.ref == 'refs/heads/main' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    needs: test-and-report
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
