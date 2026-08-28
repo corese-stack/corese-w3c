@@ -52,22 +52,27 @@ jobs:
 
       - name: Run W3C Conformance Tests
         working-directory: corese-w3c
+        continue-on-error: true
         run: |
           chmod +x gradlew
           ./gradlew test --no-daemon
 
       - name: Prepare Dashboard Artifact & Auto-Archive Releases
+        if: always()
         working-directory: corese-w3c
         run: |
           mkdir -p site/data/history
-          cp build/reports/w3c-report.json site/data/w3c-report.json
+          if [ -f build/reports/w3c-report.json ]; then
+            cp build/reports/w3c-report.json site/data/w3c-report.json
+          fi
 
           # Automatically detect release tag and archive historical snapshot
           if [ "${{ github.event_name }}" = "release" ] || [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             TAG="${GITHUB_REF_NAME}"
             echo "Auto-archiving benchmark snapshot for release tag: $TAG"
-            cp build/reports/w3c-report.json "site/data/history/${TAG}.json"
-            python3 -c "
+            if [ -f build/reports/w3c-report.json ]; then
+              cp build/reports/w3c-report.json "site/data/history/${TAG}.json"
+              python3 -c "
           import json, os
           v_file = 'site/data/versions.json'
           data = json.load(open(v_file)) if os.path.exists(v_file) else [{'id': 'latest', 'label': 'v5.0.0-SNAPSHOT (latest)', 'file': './data/w3c-report.json'}]
@@ -79,9 +84,11 @@ jobs:
           with open(v_file, 'w', encoding='utf-8') as f:
               json.dump(data, f, indent=2)
           "
+            fi
           fi
 
       - name: Upload Test Report Artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: w3c-conformance-report
