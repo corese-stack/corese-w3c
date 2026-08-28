@@ -54,12 +54,7 @@ tasks.withType<Javadoc> {
 tasks.test {
     useJUnitPlatform()
     maxHeapSize = "2g"
-    testLogging {
-        events("started", "passed", "skipped", "failed")
-        showExceptions = true
-        showCauses = true
-        showStackTraces = false
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
-        showStandardStreams = true
-    }
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
 }
+
+apply(from = "gradle/test-reporter.gradle.kts")
