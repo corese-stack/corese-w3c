@@ -1,13 +1,13 @@
 window.__CORESE_W3C_DATA__ = {
     "metadata": {
-        "generatedAt": "2026-08-28T12:29:05.404506825Z",
+        "generatedAt": "2026-08-28T12:47:20.691256467Z",
         "project": "corese-w3c",
         "version": "5.0.0-SNAPSHOT",
         "git": {
             "branch": "feature/issue-16-w3c-reporting",
-            "commit": "9956b16"
+            "commit": "16718a2"
         },
-        "durationSeconds": 25.58
+        "durationSeconds": 23.57
     },
     "summary": {
         "total": 1938,
@@ -25,13 +25,13 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 4,
             "passRate": 92.59,
-            "durationMs": 122,
+            "durationMs": 83,
             "tests": [
                 {
                     "name": "rdf11JsonldFromRdfTests()[1]",
                     "displayName": "rdfdirection:_compoundliteral_with_compound_literal_with_direction_and_language - Parses compound literal with proper option. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 22,
+                    "durationMs": 14,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di12-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di12-out.jsonld"
                 },
@@ -39,7 +39,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[2]",
                     "displayName": "rdfdirection:_compoundliteral_with_compound_literal_with_direction_and_no_language - Parses compound literal with proper option. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di11-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di11-out.jsonld"
                 },
@@ -47,7 +47,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[3]",
                     "displayName": "rdfdirection:_compoundliteral_with_i18n_literal_with_direction_and_language - Does not parse i18n datatype without proper option. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di10-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di10-out.jsonld"
                 },
@@ -63,7 +63,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[5]",
                     "displayName": "json_literal_(boolean_false) - Tests creating property with rdf:type rdf:JSON to a JSON literal (boolean false). [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js02-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js02-out.jsonld"
                 },
@@ -71,7 +71,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[6]",
                     "displayName": "json_literal_(double) - Tests creating property with rdf:type rdf:JSON to a JSON literal (double). [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 7,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js03-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js03-out.jsonld"
                 },
@@ -87,7 +87,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[8]",
                     "displayName": "json_literal_(integer) - Tests creating property with rdf:type rdf:JSON to a JSON literal (integer). [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js05-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js05-out.jsonld"
                 },
@@ -103,7 +103,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[10]",
                     "displayName": "json_literal_(array) - Tests creating property with rdf:type rdf:JSON to a JSON literal (array). [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js07-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js07-out.jsonld"
                 },
@@ -111,7 +111,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[11]",
                     "displayName": "invalid_json_literal_(bareword) - Processors must generate an error when deserializing an invalid JSON literal. [Jsonld Json-ld fromrdf negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/js08-in.nq",
                     "resultUri": "invalid JSON literal"
                 },
@@ -127,7 +127,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[13]",
                     "displayName": "rdfdirection:_compoundliteral_with_i18n_literal_with_direction_and_no_language - Does not parse i18n datatype without proper option. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di09-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di09-out.jsonld"
                 },
@@ -151,7 +151,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[16]",
                     "displayName": "multiple_languages_for_same_subject+property+value - Uniqness of triples should include the value language [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0024-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0024-out.jsonld"
                 },
@@ -159,7 +159,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[17]",
                     "displayName": "rdfdirection:_i18ndatatype_with_i18n_literal_with_direction_and_no_language - Parses i18n datatype with proper option. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di05-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di05-out.jsonld"
                 },
@@ -167,7 +167,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[18]",
                     "displayName": "use_native_types_flag_with_values_that_cannot_be_serialized_to_json - useNativeTypes flag being true is disregarded for a value that cannot be serialized into a native JSON value. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 3,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0027-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0027-out.jsonld",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: useNativeTypes throws for a non-finite numeric lexical form instead of preserving the typed literal"
@@ -176,7 +176,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[19]",
                     "displayName": "rdfdirection:_i18ndatatype_with_compound_literal_with_direction_and_language - Does not parse compound literal without proper option. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di08-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di08-out.jsonld"
                 },
@@ -240,7 +240,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[27]",
                     "displayName": "rdfdirection:_null_with_compound_literal_with_direction_and_language - Does not parse compound literal without proper option. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di04-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/di04-out.jsonld"
                 },
@@ -256,7 +256,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[29]",
                     "displayName": "list_from_duplicate_triples - Duplicate triples for a list node will not prevent @list from being properly generated [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0022-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0022-out.jsonld"
                 },
@@ -280,7 +280,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[32]",
                     "displayName": "use_native_types_flag_with_nonnative_values - Ensure that useNativeTypes flag being true does not interfere with values that cannot be serialized into a native value. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0028-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0028-out.jsonld",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: useNativeTypes throws for a non-native numeric lexical form instead of preserving the typed literal"
@@ -289,7 +289,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[33]",
                     "displayName": "list_pattern_with_multiple_values_of_rdf:rest - Do not convert list nodes to @list if nodes contain more than one value for rdf:rest. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0014-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0014-out.jsonld"
                 },
@@ -297,7 +297,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[34]",
                     "displayName": "@list_containing_multiple_lists - List of lists [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/li02-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/li02-out.jsonld"
                 },
@@ -305,7 +305,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[35]",
                     "displayName": "@list_containing_empty_@list - List of lists [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/li01-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/li01-out.jsonld",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: nested empty RDF lists trigger a null dereference during fromRdf conversion"
@@ -338,7 +338,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[39]",
                     "displayName": "t0008_as_interpreted_for_11 - List of lists [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/li03-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/li03-out.jsonld"
                 },
@@ -354,7 +354,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[41]",
                     "displayName": "list_pattern_with_cycles - Detect lists containing cycles and do not convert them to @list. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0012-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0012-out.jsonld"
                 },
@@ -362,7 +362,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[42]",
                     "displayName": "list_pattern_with_extra_properties - If additional properties are associated to a list node, the list is only partially converted to @list. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0011-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0011-out.jsonld"
                 },
@@ -378,7 +378,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[44]",
                     "displayName": "remove_duplicate_triples - Equivalent triples are used only once [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0017-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0017-out.jsonld"
                 },
@@ -386,7 +386,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[45]",
                     "displayName": "use_rdf:type_flag_set_to_false - Setting useRdfType to true causes an rdf:type predicate to be treated like a normal property, not @type [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0019-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0019-out.jsonld"
                 },
@@ -394,7 +394,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[46]",
                     "displayName": "bnodes_and_references - BNode name generation and references between resources. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0003-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0003-out.jsonld"
                 },
@@ -426,7 +426,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[50]",
                     "displayName": "object_lists - Tests generation using different types of objects. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0001-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0001-out.jsonld"
                 },
@@ -434,7 +434,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[51]",
                     "displayName": "graph_with_multiple_named_graphs - Testing @graph recursion. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0007-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0007-out.jsonld"
                 },
@@ -442,7 +442,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldFromRdfTests()[52]",
                     "displayName": "two_graphs_having_same_subject_but_different_values - Ensure that properties and list elements aren't confused between graphs. [Jsonld Json-ld fromrdf positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0006-in.nq",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/fromRdf/0006-out.jsonld"
                 },
@@ -473,7 +473,7 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 10,
             "passRate": 97.86,
-            "durationMs": 15546,
+            "durationMs": 12693,
             "tests": [
                 {
                     "name": "rdf11JsonldToRdfTests()[1]",
@@ -521,7 +521,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[7]",
                     "displayName": "literal_all_punctuation - literal_all_punctuation '!\"#$%&()...' from N-Triples [Jsonld Json-ld positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/nt04-in.jsonld"
                 },
                 {
@@ -549,21 +549,21 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[11]",
                     "displayName": "literal_with_backspace - literal with BACKSPACE from N-Triples [Jsonld Json-ld positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/nt11-in.jsonld"
                 },
                 {
                     "name": "rdf11JsonldToRdfTests()[12]",
                     "displayName": "literal_with_line_feed - literal with LINE FEED from N-Triples [Jsonld Json-ld positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/nt12-in.jsonld"
                 },
                 {
                     "name": "rdf11JsonldToRdfTests()[13]",
                     "displayName": "literal_with_carriage_return - literal with CARRIAGE RETURN from N-Triples [Jsonld Json-ld positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/nt13-in.jsonld"
                 },
                 {
@@ -591,7 +591,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[17]",
                     "displayName": "adds_@id_to_object_not_having_an_@id - Expansion using @container: @id [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 6,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m001-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m001-out.nq"
                 },
@@ -599,7 +599,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[18]",
                     "displayName": "language_map_with_@none - index on @language [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m009-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m009-out.nq"
                 },
@@ -615,7 +615,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[20]",
                     "displayName": "adds_document_expanded_@type_to_object - Expansion using @container: @type [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m007-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m007-out.nq"
                 },
@@ -647,7 +647,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[24]",
                     "displayName": "adds_@type_to_object_not_having_an_@type - Expansion using @container: @type [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m003-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m003-out.nq"
                 },
@@ -655,7 +655,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[25]",
                     "displayName": "retains_@id_in_object_already_having_an_@id - Expansion using @container: @id [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m002-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m002-out.nq"
                 },
@@ -679,7 +679,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[28]",
                     "displayName": "language_map_with_alias_of_@none - index on @language [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m010-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m010-out.nq"
                 },
@@ -711,7 +711,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[32]",
                     "displayName": "graph_id_index_map_with_aliased_@none - index on @graph and @id with @none [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m016-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m016-out.nq"
                 },
@@ -719,7 +719,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[33]",
                     "displayName": "graph_id_index_map_with_aliased_@none - index on @graph and @id with @none [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m015-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m015-out.nq"
                 },
@@ -735,7 +735,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[35]",
                     "displayName": "graph_index_map_with_@none - index on @graph and @index [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m013-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m013-out.nq"
                 },
@@ -743,7 +743,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[36]",
                     "displayName": "string_value_of_type_map_must_not_be_a_literal - index on @type [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/m020-in.jsonld",
                     "resultUri": "invalid type mapping"
                 },
@@ -751,7 +751,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[37]",
                     "displayName": "overriding_a_term - Expansion using a scoped context uses term scope for selecting proper term [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c002-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c002-out.nq"
                 },
@@ -767,7 +767,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[39]",
                     "displayName": "adding_new_term - Expansion using a scoped context uses term scope for selecting proper term [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c001-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c001-out.nq"
                 },
@@ -791,7 +791,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[42]",
                     "displayName": "deep_@context_affects_nested_nodes - Expansion using a scoped context uses term scope for selecting proper term [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c004-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c004-out.nq"
                 },
@@ -799,7 +799,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[43]",
                     "displayName": "scoped_context_layers_on_intemediate_contexts - Expansion using a scoped context uses term scope for selecting proper term [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c005-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c005-out.nq"
                 },
@@ -823,7 +823,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[46]",
                     "displayName": "expands_input_using_aliased_@nest - Expansion using @nest [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/n002-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/n002-out.nq"
                 },
@@ -831,7 +831,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[47]",
                     "displayName": "expands_input_using_@nest - Expansion using @nest [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/n001-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/n001-out.nq"
                 },
@@ -839,7 +839,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[48]",
                     "displayName": "multiple_keys_may_mapping_to_@type_when_nesting - Expansion using @nest [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/n008-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/n008-out.nq"
                 },
@@ -871,7 +871,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[52]",
                     "displayName": "scoped_context_layers_on_intemediate_contexts - scoped context on @type [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c010-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c010-out.nq"
                 },
@@ -879,7 +879,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[53]",
                     "displayName": "appends_nested_values_from_all_@nest_aliases_in_term_order - Expansion using @nest [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/n004-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/n004-out.nq"
                 },
@@ -895,7 +895,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[55]",
                     "displayName": "type_maps_use_scoped_context_from_type_index_and_not_scoped_context_from_containing - scoped context on @type [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c013-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c013-out.nq"
                 },
@@ -919,7 +919,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[58]",
                     "displayName": "deep_propertyterm_scoped_@context_in_@typescoped_@context_affects_nested_nodes - scoped context on @type [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c012-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c012-out.nq"
                 },
@@ -943,7 +943,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[61]",
                     "displayName": "typescoped_base - type-scoped base [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c015-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c015-out.nq"
                 },
@@ -951,7 +951,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[62]",
                     "displayName": "typescoped_vocab - type-scoped vocab [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c016-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c016-out.nq"
                 },
@@ -975,7 +975,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[65]",
                     "displayName": "term_definition_on_@type_with_empty_map - Verifies that an exception is raised if @type is defined as a term with an empty map [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/ec02-in.jsonld",
                     "resultUri": "keyword redefinition"
                 },
@@ -983,7 +983,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[66]",
                     "displayName": "transform_json_literal_without_expanding_contents - Tests transforming JSON literal does not expand terms inside json. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js14-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js14-out.nq"
                 },
@@ -991,7 +991,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[67]",
                     "displayName": "transform_json_literal_with_wierd_canonicalization - Tests transforming JSON literal with wierd canonicalization. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js13-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js13-out.nq"
                 },
@@ -1015,7 +1015,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[70]",
                     "displayName": "transform_json_literal_with_structural_canonicalization - Tests transforming JSON literal with structural canonicalization. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js10-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js10-out.nq"
                 },
@@ -1023,7 +1023,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[71]",
                     "displayName": "transform_json_literal_with_aliased_@type - Tests transforming JSON literal with aliased @type. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js19-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js19-out.nq"
                 },
@@ -1031,7 +1031,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[72]",
                     "displayName": "transform_json_literal_(null) - Tests transforming property with @type @json to a JSON literal (null). [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js18-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js18-out.nq"
                 },
@@ -1039,7 +1039,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[73]",
                     "displayName": "transform_json_literal_(string) - Tests transforming property with @type @json to a JSON literal (string). [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js17-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js17-out.nq"
                 },
@@ -1047,7 +1047,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[74]",
                     "displayName": "transform_json_literal_aleady_in_expanded_form_with_aliased_keys - Tests transforming JSON literal in expanded form with aliased keys in value object. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js16-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js16-out.nq"
                 },
@@ -1063,7 +1063,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[76]",
                     "displayName": "simple_language_map_with_term_direction - Term selection with language maps and @direction. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di04-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di04-out.nq"
                 },
@@ -1071,7 +1071,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[77]",
                     "displayName": "simple_language_mapwith_overriding_term_direction - Term selection with language maps and @direction. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di05-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di05-out.nq"
                 },
@@ -1079,7 +1079,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[78]",
                     "displayName": "simple_language_mapwith_overriding_null_direction - Term selection with language maps and @direction. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di06-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di06-out.nq"
                 },
@@ -1103,7 +1103,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[81]",
                     "displayName": "simple_language_map_with_mismatching_term_direction - Term selection with language maps and @direction. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di07-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di07-out.nq"
                 },
@@ -1151,7 +1151,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[87]",
                     "displayName": "@direction_must_be_one_of_ltr_or_rtl - Generate an error if @direction has illegal value. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di08-in.jsonld",
                     "resultUri": "invalid base direction"
                 },
@@ -1167,7 +1167,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[89]",
                     "displayName": "@import_overflow - Processors must detect source contexts that include @import. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 136,
+                    "durationMs": 23,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so03-in.jsonld",
                     "resultUri": "invalid context entry"
                 },
@@ -1175,7 +1175,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[90]",
                     "displayName": "@import_must_be_a_string - @import must be a string. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so02-in.jsonld",
                     "resultUri": "invalid @import value"
                 },
@@ -1183,7 +1183,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[91]",
                     "displayName": "@import_is_invalid_in_10 - @import is invalid in 1.0. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so01-in.jsonld",
                     "resultUri": "invalid context entry"
                 },
@@ -1191,7 +1191,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[92]",
                     "displayName": "override_term_defined_in_sourced_context - The containing context is merged into the source context. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 130,
+                    "durationMs": 24,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so08-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so08-out.nq"
                 },
@@ -1199,7 +1199,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[93]",
                     "displayName": "protect_all_terms_in_sourced_context - A protected context protects all term definitions. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 139,
+                    "durationMs": 24,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so07-in.jsonld",
                     "resultUri": "protected term redefinition"
                 },
@@ -1207,7 +1207,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[94]",
                     "displayName": "@propagate:_false_on_propertyscoped_context_with_@import - property-scoped context with @propagate: false do not survive node-objects (with @import) [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 150,
+                    "durationMs": 48,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so06-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so06-out.nq"
                 },
@@ -1215,7 +1215,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[95]",
                     "displayName": "@propagate:_true_on_typescoped_context_with_@import - type-scoped context with @propagate: true survive node-objects (with @import) [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 147,
+                    "durationMs": 47,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so05-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so05-out.nq"
                 },
@@ -1223,7 +1223,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[96]",
                     "displayName": "rdfdirection:_i18ndatatype_with_direction_and_language - Generates i18n datatype from literal with direction with option. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di10-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di10-out.nq"
                 },
@@ -1231,7 +1231,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[97]",
                     "displayName": "rdfdirection:_compoundliteral_with_direction_and_no_language - Generates i18n datatype from literal with direction with option. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di11-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di11-out.nq"
                 },
@@ -1239,7 +1239,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[98]",
                     "displayName": "rdfdirection:_compoundliteral_with_direction_and_language - Generates compound literal from literal with direction with option. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di12-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/di12-out.nq"
                 },
@@ -1247,7 +1247,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[99]",
                     "displayName": "override_@vocab_defined_in_sourced_context - The containing context is merged into the source context. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 123,
+                    "durationMs": 32,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so09-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so09-out.nq"
                 },
@@ -1255,7 +1255,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[100]",
                     "displayName": "@import_can_only_reference_a_single_context - @import can only reference a single context. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 126,
+                    "durationMs": 27,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so13-in.jsonld",
                     "resultUri": "invalid remote context"
                 },
@@ -1263,7 +1263,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[101]",
                     "displayName": "@import_may_not_be_used_in_an_imported_context - @import only valid within a term definition. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 137,
+                    "durationMs": 24,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so12-in.jsonld",
                     "resultUri": "invalid context entry"
                 },
@@ -1271,7 +1271,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[102]",
                     "displayName": "override_protected_terms_in_sourced_context - The containing context is merged into the source context. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 27,
+                    "durationMs": 25,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so11-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so11-out.nq"
                 },
@@ -1279,7 +1279,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[103]",
                     "displayName": "protect_terms_in_sourced_context - The containing context is merged into the source context. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 125,
+                    "durationMs": 26,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/so10-in.jsonld",
                     "resultUri": "protected term redefinition"
                 },
@@ -1287,7 +1287,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[104]",
                     "displayName": "error_if_attempting_to_add_property_to_value_object_for_propertyvalued_index - Expanding index maps where index is a property. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi05-in.jsonld",
                     "resultUri": "invalid value object"
                 },
@@ -1295,7 +1295,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[105]",
                     "displayName": "error_if_@index_is_not_a_string_for_propertyvalued_index - Expanding index maps where index is a property. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi04-in.jsonld",
                     "resultUri": "invalid term definition"
                 },
@@ -1303,7 +1303,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[106]",
                     "displayName": "propertyvalued_index_appends_to_property_value,_instead_of_@index_(value) - Expanding index maps where index is a property. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi07-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi07-out.nq"
                 },
@@ -1311,7 +1311,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[107]",
                     "displayName": "propertyvalued_index_expands_to_property_value,_instead_of_@index_(value) - Expanding index maps where index is a property. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi06-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi06-out.nq"
                 },
@@ -1319,7 +1319,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[108]",
                     "displayName": "propertyvalued_index_appends_to_property_value,_instead_of_@index_(node) - Expanding index maps where index is a property. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 8,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi09-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi09-out.nq"
                 },
@@ -1327,7 +1327,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[109]",
                     "displayName": "propertyvalued_index_expands_to_property_value,_instead_of_@index_(node) - Expanding index maps where index is a property. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 9,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi08-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi08-out.nq"
                 },
@@ -1335,7 +1335,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[110]",
                     "displayName": "error_if_@version_is_jsonld10_for_propertyvalued_index - Expanding index maps where index is a property. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi01-in.jsonld",
                     "resultUri": "invalid term definition"
                 },
@@ -1367,7 +1367,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[114]",
                     "displayName": "propertyvalued_index_adds_property_to_graph_object - Expanding index maps where index is a property. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi11-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pi11-out.nq"
                 },
@@ -1375,7 +1375,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[115]",
                     "displayName": "jsonapi_example - Tests included blocks. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 8,
+                    "durationMs": 7,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in06-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in06-out.nq"
                 },
@@ -1383,7 +1383,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[116]",
                     "displayName": "error_if_@included_value_is_a_string - Tests included blocks. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in07-in.jsonld",
                     "resultUri": "invalid @included value"
                 },
@@ -1391,7 +1391,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[117]",
                     "displayName": "included_containing_@included - Tests included blocks. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in04-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in04-out.nq"
                 },
@@ -1399,7 +1399,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[118]",
                     "displayName": "property_value_with_@included - Tests included blocks. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in05-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in05-out.nq"
                 },
@@ -1407,7 +1407,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[119]",
                     "displayName": "basic_included_object - Tests included blocks. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in02-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in02-out.nq"
                 },
@@ -1415,7 +1415,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[120]",
                     "displayName": "multiple_properties_mapping_to_@included_are_folded_together - Tests included blocks. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in03-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in03-out.nq"
                 },
@@ -1423,7 +1423,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[121]",
                     "displayName": "basic_included_array - Tests included blocks. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in01-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in01-out.nq"
                 },
@@ -1431,7 +1431,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[122]",
                     "displayName": "error_if_@included_value_is_a_value_object - Tests included blocks. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/in08-in.jsonld",
                     "resultUri": "invalid @included value"
                 },
@@ -1447,7 +1447,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[124]",
                     "displayName": "@type:_@none_expands_strings_as_value_objects - @type: @none leaves inputs other than strings alone [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 5,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/tn02-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/tn02-out.nq"
                 },
@@ -1463,7 +1463,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[126]",
                     "displayName": "reset_the_default_language - RDF version of expand-0041 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e041-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e041-out.nq"
                 },
@@ -1471,7 +1471,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[127]",
                     "displayName": "language_and_index_expansion_on_nonobjects - RDF version of expand-0040 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e040-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e040-out.nq"
                 },
@@ -1487,7 +1487,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[129]",
                     "displayName": "ensure_index_maps_use_language_mapping - RDF version of expand-0044 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e044-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e044-out.nq"
                 },
@@ -1503,7 +1503,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[131]",
                     "displayName": "expanding_reverse_properties - RDF version of expand-0042 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e042-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e042-out.nq"
                 },
@@ -1519,7 +1519,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[133]",
                     "displayName": "test_prefix_defined_in_@context - Generate an IRI using a prefix defined within an @context. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0008-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0008-out.nq"
                 },
@@ -1527,7 +1527,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[134]",
                     "displayName": "iri_resolution_(9) - IRI resolution according to RFC3986. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0129-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0129-out.nq"
                 },
@@ -1535,7 +1535,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[135]",
                     "displayName": "tests_'a'_generates_rdf:type_and_object_is_implicit_iri - Verify that 'a' is an alias for rdf:type, and the object is created as an IRI. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0007-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0007-out.nq"
                 },
@@ -1575,7 +1575,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[140]",
                     "displayName": "remove_freefloating_set_values_and_lists - RDF version of expand-0047 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e047-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e047-out.nq"
                 },
@@ -1591,7 +1591,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[142]",
                     "displayName": "iri_resolution_(6) - IRI resolution according to RFC3986. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 10,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0126-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0126-out.nq"
                 },
@@ -1607,7 +1607,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[144]",
                     "displayName": "test_using_an_empty_suffix - An empty suffix may be used. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0009-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0009-out.nq"
                 },
@@ -1623,7 +1623,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[146]",
                     "displayName": "test_object_processing_defines_object_with_implicit_bnode - If no @ is specified, a BNode is created, and will be used as the object of an enclosing property. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0011-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0011-out.nq"
                 },
@@ -1655,7 +1655,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[150]",
                     "displayName": "creation_of_a_list_with_multiple_elements - Tests that list with multiple elements. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0015-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0015-out.nq"
                 },
@@ -1727,7 +1727,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[159]",
                     "displayName": "@list_containing_@list_(with_coercion) - List of lists [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li03-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li03-out.nq"
                 },
@@ -1759,7 +1759,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[163]",
                     "displayName": "expansion_of_keyword_aliases_in_term_definitions - RDF version of expand-0051 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e051-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e051-out.nq"
                 },
@@ -1767,7 +1767,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[164]",
                     "displayName": "term_definitions_with_prefix_separate_from_prefix_definitions - RDF version of expand-0050 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e050-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e050-out.nq"
                 },
@@ -1799,7 +1799,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[168]",
                     "displayName": "expand_term_with_@type:_@vocab - RDF version of expand-0054 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e054-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e054-out.nq"
                 },
@@ -1823,7 +1823,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[171]",
                     "displayName": "produce_generalized_rdf_flag - Triples with blank node predicates are not dropped if the produce generalized RDF flag is true. [Jsonld Json-ld positive evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0118-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0118-out.nq",
                     "skipReason": "OPTIONAL_UNSUPPORTED: generalized RDF permits blank-node predicates, which the Corese RDF 1.1 model cannot represent"
@@ -1832,7 +1832,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[172]",
                     "displayName": "reset_@vocab_by_setting_it_to_null - RDF version of expand-0059 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e059-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e059-out.nq"
                 },
@@ -1896,7 +1896,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[180]",
                     "displayName": "iri_resolution_(1) - IRI resolution according to RFC3986. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 9,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0121-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0121-out.nq"
                 },
@@ -1904,7 +1904,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[181]",
                     "displayName": "iri_resolution_(0) - IRI resolution according to RFC3986. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 7,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0120-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0120-out.nq"
                 },
@@ -1912,7 +1912,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[182]",
                     "displayName": "literal_with_language_tag - Tests that a plain literal is created with a language tag. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0004-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0004-out.nq"
                 },
@@ -1952,7 +1952,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[187]",
                     "displayName": "iri_resolution_(3) - IRI resolution according to RFC3986. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0123-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0123-out.nq"
                 },
@@ -1960,7 +1960,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[188]",
                     "displayName": "iri_resolution_(2) - IRI resolution according to RFC3986. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 6,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0122-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0122-out.nq"
                 },
@@ -1976,7 +1976,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[190]",
                     "displayName": "list_with_null_@base - Tests list elements expanded to IRIs with a null @base. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 8,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li14-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li14-out.nq"
                 },
@@ -1984,7 +1984,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[191]",
                     "displayName": "list_with_empty_@base - Tests list elements expanded to IRIs with an empty @base. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li13-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li13-out.nq"
                 },
@@ -1992,7 +1992,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[192]",
                     "displayName": "list_with_bad_@base - Tests list elements expanded to IRIs with a bad @base. [Jsonld Json-ld positive evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li12-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li12-out.nq",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: rejects the malformed @base before applying the W3C list expansion behavior"
@@ -2001,7 +2001,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[193]",
                     "displayName": "list_with_good_@base - Tests list elements expanded to IRIs with a good @base. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li11-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/li11-out.nq"
                 },
@@ -2009,7 +2009,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[194]",
                     "displayName": "expand_a_reverse_property_with_an_indexcontainer - RDF version of expand-0063 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e063-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e063-out.nq"
                 },
@@ -2017,7 +2017,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[195]",
                     "displayName": "various_relative_iris_with_with_@base - RDF version of expand-0062 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 9,
+                    "durationMs": 4,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e062-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e062-out.nq"
                 },
@@ -2033,7 +2033,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[197]",
                     "displayName": "@nest_must_not_have_a_boolen_value - Transparent Nesting [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/en02-in.jsonld",
                     "resultUri": "invalid @nest value"
                 },
@@ -2041,7 +2041,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[198]",
                     "displayName": "coercing_native_types_to_arbitrary_datatypes - RDF version of expand-0061 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e061-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e061-out.nq"
                 },
@@ -2049,7 +2049,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[199]",
                     "displayName": "overwrite_document_base_with_@base_and_reset_it_again - RDF version of expand-0060 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e060-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e060-out.nq"
                 },
@@ -2057,7 +2057,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[200]",
                     "displayName": "@nest_must_not_have_a_numeric_value - Transparent Nesting [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/en03-in.jsonld",
                     "resultUri": "invalid @nest value"
                 },
@@ -2065,7 +2065,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[201]",
                     "displayName": "prefix:://sufffix_not_a_compact_iri - RDF version of expand-0067 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e067-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e067-out.nq"
                 },
@@ -2073,7 +2073,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[202]",
                     "displayName": "use_@vocab_to_expand_keys_in_reversemaps - RDF version of expand-0066 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e066-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e066-out.nq"
                 },
@@ -2121,7 +2121,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[208]",
                     "displayName": "does_not_allow_a_keyword_other_than_@nest_for_the_value_of_@nest - Transparent Nesting [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/en05-in.jsonld",
                     "resultUri": "invalid @nest value"
                 },
@@ -2145,7 +2145,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[211]",
                     "displayName": "dataset_with_a_iri_named_graph - Basic use of creating a named graph using an IRI name [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0113-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0113-out.nq"
                 },
@@ -2161,7 +2161,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[213]",
                     "displayName": "@id_not_first_property - Objects are unordered, so serialized node definition containing @id may have @id at the end of the node definition [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e074-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e074-out.nq"
                 },
@@ -2194,7 +2194,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[217]",
                     "displayName": "multiple_reverse_properties - Use of multiple reverse properties [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e078-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e078-out.nq"
                 },
@@ -2202,7 +2202,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[218]",
                     "displayName": "expandcontext_option - Use of the expandContext option to expand the input document [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 124,
+                    "durationMs": 30,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e077-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e077-out.nq"
                 },
@@ -2210,7 +2210,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[219]",
                     "displayName": "base_option_overrides_document_location - Use of the base option overrides the document location [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e076-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e076-out.nq"
                 },
@@ -2218,7 +2218,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[220]",
                     "displayName": "@vocab_as_blank_node_identifier - Use @vocab to map all properties to blank node identifiers [Jsonld Json-ld positive evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e075-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e075-out.nq",
                     "skipReason": "OPTIONAL_UNSUPPORTED: a blank-node @vocab produces predicates outside the Corese RDF 1.1 data model"
@@ -2235,7 +2235,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[222]",
                     "displayName": "creates_an_@graph_container_if_value_is_a_graph - Don't double-expand an already expanded graph [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e081-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e081-out.nq"
                 },
@@ -2283,7 +2283,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[228]",
                     "displayName": "expand_[@graph,_@index]_container - Use of @graph containers with @index [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e082-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e082-out.nq"
                 },
@@ -2291,7 +2291,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[229]",
                     "displayName": "empty_@base_applied_to_the_base_option - Use of an empty @base is applied to the base option [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e089-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e089-out.nq"
                 },
@@ -2299,7 +2299,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[230]",
                     "displayName": "do_not_expand_native_values_to_iris - Value Expansion does not expand native values, such as booleans, to a node object [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e088-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e088-out.nq"
                 },
@@ -2331,7 +2331,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[234]",
                     "displayName": "relative_and_absolute_@base_overrides_base_option_and_document_location - Use of a relative and absolute @base overrides base option and document location [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e091-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e091-out.nq"
                 },
@@ -2347,7 +2347,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[236]",
                     "displayName": "expand_[@graph,_@index]_container_(multiple_indexed_objects) - Use of @graph containers with @index [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e096-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e096-out.nq"
                 },
@@ -2371,7 +2371,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[239]",
                     "displayName": "expand_@graph_container_(multiple_objects) - Use of @graph containers [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e093-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e093-out.nq"
                 },
@@ -2379,7 +2379,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[240]",
                     "displayName": "expand_[@graph,_@id]_container_(multiple_objects) - Use of @graph containers with @id [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e099-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e099-out.nq"
                 },
@@ -2507,7 +2507,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[256]",
                     "displayName": "transform_json_literal_(doublezero) - Tests transforming property with @type @json to a JSON literal (double-zero). [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js04-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/js04-out.nq"
                 },
@@ -2515,7 +2515,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[257]",
                     "displayName": "triples_including_invalid_graph_name_iris_are_rejected - ToRdf emits only well-formed statements. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/wf07-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/wf07-out.nq"
                 },
@@ -2539,7 +2539,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[260]",
                     "displayName": "typescoped_+_propertyscoped_+_values_evaluates_against_previous_context - type-scoped + property-scoped + values evaluates against previous context [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c024-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c024-out.nq"
                 },
@@ -2563,7 +2563,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[263]",
                     "displayName": "composed_typescoped_propertyscoped_contexts_including_@type:@vocab - composed type-scoped property-scoped contexts including @type:@vocab [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c023-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c023-out.nq"
                 },
@@ -2571,7 +2571,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[264]",
                     "displayName": "@propagate:_false_on_embedded_context - embedded context with @propagate: false do not survive node-objects [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c028-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c028-out.nq"
                 },
@@ -2603,7 +2603,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[268]",
                     "displayName": "@context_resolutions_respects_relative_urls - URL resolution follows RFC3986 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 275,
+                    "durationMs": 76,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c031-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c031-out.nq"
                 },
@@ -2611,7 +2611,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[269]",
                     "displayName": "unused_embedded_context_with_error - An embedded context which is never used should still be checked. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c032-in.jsonld",
                     "resultUri": "invalid scoped context"
                 },
@@ -2643,7 +2643,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[273]",
                     "displayName": "unused_context_with_an_embedded_context_error - An unused context with an embedded context should still be checked. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c033-in.jsonld",
                     "resultUri": "invalid scoped context"
                 },
@@ -2651,7 +2651,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[274]",
                     "displayName": "remote_scoped_context - Scoped contexts may be externally loaded. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 160,
+                    "durationMs": 47,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c034-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/c034-out.nq"
                 },
@@ -2699,7 +2699,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[280]",
                     "displayName": "invalid_remote_context - Verifies that an exception is raised on expansion when a remote context is not an object containing @context [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 132,
+                    "durationMs": 22,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er05-in.jsonld",
                     "resultUri": "invalid remote context"
                 },
@@ -2715,7 +2715,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[282]",
                     "displayName": "expand_@graph_container_if_value_is_a_graph_(multiple_objects) - Does not create a new graph object if indexed value is already a graph object [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 5,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e102-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e102-out.nq"
                 },
@@ -2739,7 +2739,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[285]",
                     "displayName": "do_not_expand_[@graph,_@id]_container_if_value_is_a_graph_(multiple_objects) - Does not create a new graph object if indexed value is already a graph object [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e101-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e101-out.nq"
                 },
@@ -2755,7 +2755,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[287]",
                     "displayName": "expand_[@graph,_@index]_container_(indexes_with_multiple_objects) - Use of @graph containers with @index [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e107-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e107-out.nq"
                 },
@@ -2763,7 +2763,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[288]",
                     "displayName": "keywords_cannot_be_aliased_to_other_keywords - Verifies that an exception is raised on expansion when processing an invalid context aliasing a keyword to another keyword [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er01-in.jsonld",
                     "resultUri": "keyword redefinition"
                 },
@@ -2779,7 +2779,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[290]",
                     "displayName": "a_context_may_not_include_itself_recursively_(direct) - Verifies that an exception is raised on expansion when processing a context referencing itself [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 6083,
+                    "durationMs": 5827,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er02-in.jsonld",
                     "resultUri": "recursive context inclusion"
                 },
@@ -2787,7 +2787,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[291]",
                     "displayName": "a_context_may_not_include_itself_recursively_(indirect) - Verifies that an exception is raised on expansion when processing a context referencing itself indirectly [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 6013,
+                    "durationMs": 5596,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er03-in.jsonld",
                     "resultUri": "recursive context inclusion"
                 },
@@ -2795,7 +2795,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[292]",
                     "displayName": "do_not_expand_[@graph,_@index]_container_if_value_is_a_graph_(mixed_graph_and_object) - Does not create a new graph object if indexed value is already a graph object [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e105-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e105-out.nq"
                 },
@@ -2811,7 +2811,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[294]",
                     "displayName": "invalid_vocab_mapping - Verifies that an exception is raised on expansion when a context contains an invalid @vocab mapping [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er08-in.jsonld",
                     "resultUri": "invalid vocab mapping"
                 },
@@ -2819,7 +2819,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[295]",
                     "displayName": "invalid_default_language - Verifies that an exception is raised on expansion when a context contains an invalid @language [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er09-in.jsonld",
                     "resultUri": "invalid default language"
                 },
@@ -2827,7 +2827,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[296]",
                     "displayName": "set_a_term_to_not_be_protected - A term with @protected: false is not protected. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr02-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr02-out.nq"
                 },
@@ -2835,7 +2835,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[297]",
                     "displayName": "protect_a_term - Check error when overriding a protected term. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr01-in.jsonld",
                     "resultUri": "protected term redefinition"
                 },
@@ -2851,7 +2851,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[299]",
                     "displayName": "various_relative_iris_as_properties_with_with_relative_@vocab_itself_relative_to_an_existing_vocabulary_base - Pathological relative property IRIs [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 4,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e111-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e111-out.nq"
                 },
@@ -2859,7 +2859,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[300]",
                     "displayName": "various_relative_iris_as_properties_with_with_relative_@vocab - Pathological relative property IRIs [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e110-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e110-out.nq"
                 },
@@ -2875,7 +2875,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[302]",
                     "displayName": "invalid_iri_mapping_(@reverse_not_a_string) - Verifies that an exception is raised on expansion when a invalid IRI mapping is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er15-in.jsonld",
                     "resultUri": "invalid IRI mapping"
                 },
@@ -2883,7 +2883,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[303]",
                     "displayName": "verifies_that_relative_iris_as_properties_with_@vocab:_''_in_10_generate_an_error - Pathological relative property IRIs in 1.0 [Jsonld Json-ld negative evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e115-in.jsonld",
                     "resultUri": "invalid vocab mapping",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: accepts a relative property with an empty @vocab in JSON-LD 1.0 instead of reporting an error"
@@ -2892,7 +2892,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[304]",
                     "displayName": "expansion_allows_multiple_properties_expanding_to_@type - An exception for the colliding keywords error is made for @type [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e114-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e114-out.nq"
                 },
@@ -2908,7 +2908,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[306]",
                     "displayName": "clear_active_context_of_protected_terms_from_a_term - The Active context may be set to null from a scoped context of a term. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr06-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr06-out.nq"
                 },
@@ -2916,7 +2916,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[307]",
                     "displayName": "invalid_reverse_property_(invalid_@container) - Verifies that an exception is raised on expansion when a invalid reverse property is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er17-in.jsonld",
                     "resultUri": "invalid reverse property"
                 },
@@ -2996,7 +2996,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[317]",
                     "displayName": "a_term_starting_with_a_colon_can_expand_to_a_different_iri - Terms may begin with a colon and not be treated as IRIs. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e117-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e117-out.nq"
                 },
@@ -3020,7 +3020,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[320]",
                     "displayName": "verifies_that_relative_iris_as_properties_with_relative_@vocab_in_10_generate_an_error - Pathological relative property IRIs in 1.0 [Jsonld Json-ld negative evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e116-in.jsonld",
                     "resultUri": "invalid vocab mapping",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: accepts a relative property with a relative @vocab in JSON-LD 1.0 instead of reporting an error"
@@ -3037,7 +3037,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[322]",
                     "displayName": "invalid_keyword_alias_(@context) - Verifies that an exception is raised on expansion when a invalid keyword alias is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er19-in.jsonld",
                     "resultUri": "invalid keyword alias"
                 },
@@ -3061,7 +3061,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[325]",
                     "displayName": "override_unprotected_term - Override unprotected term. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr13-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr13-out.nq"
                 },
@@ -3077,7 +3077,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[327]",
                     "displayName": "invalid_iri_mapping_(no_vocab_mapping) - Verifies that an exception is raised on expansion when a invalid IRI mapping is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er20-in.jsonld",
                     "resultUri": "invalid IRI mapping"
                 },
@@ -3117,7 +3117,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[332]",
                     "displayName": "ignore_some_values_of_@id_with_@,_allow_others - Processors SHOULD generate a warning and MUST ignore values of @id having the form of a keyword. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e120-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e120-out.nq"
                 },
@@ -3133,7 +3133,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[334]",
                     "displayName": "do_not_expand_aliased_@id/@type - RDF version of expand-0005 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e005-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e005-out.nq"
                 },
@@ -3141,7 +3141,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[335]",
                     "displayName": "a_scoped_context_may_include_itself_recursively_(direct) - Verifies that no exception is raised on expansion when processing a scoped context referencing itself directly [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 151,
+                    "durationMs": 44,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e126-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e126-out.nq"
                 },
@@ -3149,7 +3149,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[336]",
                     "displayName": "clear_protection_with_array_with_null_context - Clear protection with array with null context [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr15-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr15-out.nq"
                 },
@@ -3157,7 +3157,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[337]",
                     "displayName": "clear_protection_with_null_context - Clear protection with null context. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr14-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr14-out.nq"
                 },
@@ -3165,7 +3165,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[338]",
                     "displayName": "optimize_@set,_keep_empty_arrays - RDF version of expand-0004 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e004-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e004-out.nq"
                 },
@@ -3173,7 +3173,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[339]",
                     "displayName": "invalid_@id_value - Verifies that an exception is raised in Expansion when an invalid @id value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er27-in.jsonld",
                     "resultUri": "invalid @id value"
                 },
@@ -3181,7 +3181,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[340]",
                     "displayName": "term_as_@vocab - Verifies that @vocab defined as a term expands properly [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e125-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e125-out.nq"
                 },
@@ -3189,7 +3189,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[341]",
                     "displayName": "drop_null_and_unmapped_properties - Properties mapped to null or which are never mapped are dropped (from expand-0003) [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e003-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e003-out.nq"
                 },
@@ -3197,7 +3197,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[342]",
                     "displayName": "compact_iri_as_@vocab - Verifies that @vocab defined as a compact IRI expands properly [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e124-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e124-out.nq"
                 },
@@ -3205,7 +3205,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[343]",
                     "displayName": "invalid_type_value - Verifies that an exception is raised in Expansion when an invalid type value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er28-in.jsonld",
                     "resultUri": "invalid type value"
                 },
@@ -3213,7 +3213,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[344]",
                     "displayName": "fail_to_override_protected_terms_with_type - Fail to override protected terms with type. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr17-in.jsonld",
                     "resultUri": "invalid context nullification"
                 },
@@ -3229,7 +3229,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[346]",
                     "displayName": "basic - Basic RDF conversion (from expand-0002) [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e002-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e002-out.nq"
                 },
@@ -3237,7 +3237,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[347]",
                     "displayName": "invalid_value_object_value - Verifies that an exception is raised in Expansion when an invalid value object value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er29-in.jsonld",
                     "resultUri": "invalid value object value"
                 },
@@ -3245,7 +3245,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[348]",
                     "displayName": "value_objects_including_invalid_literal_datatype_iris_are_rejected - Processors MUST validate datatype IRIs. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e123-in.jsonld",
                     "resultUri": "invalid typed value"
                 },
@@ -3269,7 +3269,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[351]",
                     "displayName": "mix_of_protected_and_unprotected_terms - Mix of protected and unprotected terms. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr19-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr19-out.nq"
                 },
@@ -3277,7 +3277,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[352]",
                     "displayName": "fail_to_override_protected_terms_with_type+null+ctx - Fail to override protected terms with type+null+ctx. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr18-in.jsonld",
                     "resultUri": "invalid context nullification"
                 },
@@ -3293,7 +3293,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[354]",
                     "displayName": "invalid_iri_mapping_(relative_iri_in_@type) - Verifies that an exception is raised on expansion when a invalid type mapping is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er23-in.jsonld",
                     "resultUri": "invalid type mapping"
                 },
@@ -3301,7 +3301,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[355]",
                     "displayName": "@value_with_@language - RDF version of expand-0008 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e008-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e008-out.nq"
                 },
@@ -3309,7 +3309,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[356]",
                     "displayName": "date_typecoercion - Type-coerced dates generate typed literals (from expand-0007) [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e007-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e007-out.nq"
                 },
@@ -3326,7 +3326,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[358]",
                     "displayName": "two_scoped_context_may_include_a_shared_context - Verifies that no exception is raised on expansion when processing two scoped contexts referencing a shared context [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 410,
+                    "durationMs": 113,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e128-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e128-out.nq"
                 },
@@ -3334,7 +3334,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[359]",
                     "displayName": "alias_keywords - RDF version of expand-0006 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e006-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e006-out.nq"
                 },
@@ -3342,7 +3342,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[360]",
                     "displayName": "invalid_reverse_property_map - Verifies that an exception is raised in Expansion when a invalid reverse property map is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er25-in.jsonld",
                     "resultUri": "invalid reverse property map"
                 },
@@ -3350,7 +3350,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[361]",
                     "displayName": "a_scoped_context_may_include_itself_recursively_(indirect) - Verifies that no exception is raised on expansion when processing a scoped context referencing itself indirectly [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 369,
+                    "durationMs": 110,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e127-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e127-out.nq"
                 },
@@ -3358,7 +3358,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[362]",
                     "displayName": "fail_with_mix_of_protected_and_unprotected_terms_with_type+null+ctx - Fail with mix of protected and unprotected terms with type+null+ctx. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr20-in.jsonld",
                     "resultUri": "invalid context nullification"
                 },
@@ -3366,7 +3366,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[363]",
                     "displayName": "representing_numbers_>=_1e21 - numbers with no fractions but that are >= 1e21 are represented as xsd:double [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 6,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/rt01-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/rt01-out.nq"
                 },
@@ -3374,7 +3374,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[364]",
                     "displayName": "check_legal_overriding_of_typescoped_protected_term_from_nested_node - Check legal overriding of type-scoped protected term from nested node. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr22-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr22-out.nq"
                 },
@@ -3398,7 +3398,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[367]",
                     "displayName": "fail_with_mix_of_protected_and_unprotected_terms_with_type+null - Fail with mix of protected and unprotected terms with type+null. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr21-in.jsonld",
                     "resultUri": "invalid context nullification"
                 },
@@ -3414,7 +3414,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[369]",
                     "displayName": "@version_setting_[11,_10] - If processing mode is not set through API, it is set by the first context containing @version. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/p003-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/p003-out.nq"
                 },
@@ -3422,7 +3422,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[370]",
                     "displayName": "@version_setting_[11,_10,_11] - If processing mode is not set through API, it is set by the first context containing @version. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/p004-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/p004-out.nq"
                 },
@@ -3430,7 +3430,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[371]",
                     "displayName": "allows_redefinition_of_protected_alias_term_with_same_definition - Allows redefinition of protected alias term with same definition. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr23-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr23-out.nq"
                 },
@@ -3438,7 +3438,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[372]",
                     "displayName": "invalid_languagetagged_string - Verifies that an exception is raised in Expansion when an invalid language-tagged string value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er30-in.jsonld",
                     "resultUri": "invalid language-tagged string"
                 },
@@ -3446,7 +3446,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[373]",
                     "displayName": "invalid_@index_value - Verifies that an exception is raised in Expansion when an invalid @index value value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er31-in.jsonld",
                     "resultUri": "invalid @index value"
                 },
@@ -3454,7 +3454,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[374]",
                     "displayName": "list_of_lists_(from_array) - Verifies that an exception is raised in Expansion when a list of lists is found [Jsonld Json-ld negative evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er32-in.jsonld",
                     "resultUri": "list of lists",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: accepts an array containing a list of lists instead of reporting an error"
@@ -3463,7 +3463,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[375]",
                     "displayName": "@graph_with_embed - RDF version of expand-0012 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e012-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e012-out.nq"
                 },
@@ -3471,7 +3471,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[376]",
                     "displayName": "coerced_@id - RDF version of expand-0011 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e011-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e011-out.nq"
                 },
@@ -3479,7 +3479,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[377]",
                     "displayName": "native_types - Native types generate typed literals (from expand-0010) [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e010-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e010-out.nq"
                 },
@@ -3487,7 +3487,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[378]",
                     "displayName": "base_without_trailing_slash,_with_path - Verify URI resolution relative to base (without trailing slash, with path) according to RFC 3986 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e130-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e130-out.nq"
                 },
@@ -3495,7 +3495,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[379]",
                     "displayName": "fails_on_redefinition_of_terms_with_scoped_contexts_using_different_definitions - Fails on redefinition of terms with scoped contexts using different definitions. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr26-in.jsonld",
                     "resultUri": "protected term redefinition"
                 },
@@ -3503,7 +3503,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[380]",
                     "displayName": "context_reset - RDF version of expand-0016 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e016-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e016-out.nq"
                 },
@@ -3511,7 +3511,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[381]",
                     "displayName": "invalid_value_object_(unexpected_keyword) - Verifies that an exception is raised in Expansion when an invalid value object is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er37-in.jsonld",
                     "resultUri": "invalid value object"
                 },
@@ -3519,7 +3519,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[382]",
                     "displayName": "collapse_set_of_sets,_keep_empty_lists - RDF version of expand-0015 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e015-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e015-out.nq"
                 },
@@ -3527,7 +3527,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[383]",
                     "displayName": "invalid_value_object_(@type_and_@language) - Verifies that an exception is raised in Expansion when an invalid value object is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er38-in.jsonld",
                     "resultUri": "invalid value object"
                 },
@@ -3535,7 +3535,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[384]",
                     "displayName": "allows_redefinition_of_terms_with_scoped_contexts_using_same_definitions - Allows redefinition of terms with scoped contexts using same definitions. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr25-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr25-out.nq"
                 },
@@ -3543,7 +3543,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[385]",
                     "displayName": "fails_if_trying_to_redefine_a_protected_null_term - A protected term with a null IRI mapping cannot be redefined. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr28-in.jsonld",
                     "resultUri": "protected term redefinition"
                 },
@@ -3551,7 +3551,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[386]",
                     "displayName": "invalid_languagetagged_value - Verifies that an exception is raised in Expansion when an invalid language-tagged value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er39-in.jsonld",
                     "resultUri": "invalid language-tagged value"
                 },
@@ -3559,7 +3559,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[387]",
                     "displayName": "@set_of_@value_objects_with_keyword_aliases - RDF version of expand-0014 [Jsonld Json-ld positive evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e014-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e014-out.nq",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: expands a datatype compact IRI using JSON-LD 1.1 rules in this JSON-LD 1.0 case"
@@ -3576,7 +3576,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[389]",
                     "displayName": "expand_already_expanded - RDF version of expand-0013 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e013-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e013-out.nq"
                 },
@@ -3584,7 +3584,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[390]",
                     "displayName": "invalid_@reverse_value - Verifies that an exception is raised in Expansion when an invalid @reverse value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er33-in.jsonld",
                     "resultUri": "invalid @reverse value"
                 },
@@ -3592,7 +3592,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[391]",
                     "displayName": "invalid_reverse_property_value_(in_@reverse) - Verifies that an exception is raised in Expansion when an invalid reverse property value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er34-in.jsonld",
                     "resultUri": "invalid reverse property value"
                 },
@@ -3600,7 +3600,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[392]",
                     "displayName": "remove_@value_=_null - RDF version of expand-0019 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e019-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e019-out.nq"
                 },
@@ -3608,7 +3608,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[393]",
                     "displayName": "does_not_expand_a_compact_iri_using_a_nonprefix_term - Expansion of Compact IRIs considers if the term can be used as a prefix. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr29-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr29-out.nq"
                 },
@@ -3616,7 +3616,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[394]",
                     "displayName": "override_default_@language - RDF version of expand-0018 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e018-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e018-out.nq"
                 },
@@ -3624,7 +3624,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[395]",
                     "displayName": "invalid_language_map_value - Verifies that an exception is raised in Expansion when an invalid language map value is found [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er35-in.jsonld",
                     "resultUri": "invalid language map value"
                 },
@@ -3672,7 +3672,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[401]",
                     "displayName": "protected_@type_cannot_be_overridden - Keywords may not be redefined other than to protect them. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr32-in.jsonld",
                     "resultUri": "protected term redefinition"
                 },
@@ -3760,7 +3760,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[412]",
                     "displayName": "keep_duplicate_values_in_@list_and_@set - RDF version of expand-0027 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e027-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e027-out.nq"
                 },
@@ -3800,7 +3800,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[417]",
                     "displayName": "expanding_term_mapping_to_@type_uses_@type_syntax - RDF version of expand-0026 [Jsonld Json-ld positive evaluation test]",
                     "status": "SKIPPED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e026-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e026-out.nq",
                     "skipReason": "UPSTREAM_TITANIUM_1_6: rejects the valid JSON-LD 1.0 @type term-mapping form"
@@ -3809,7 +3809,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[418]",
                     "displayName": "a_relative_iri_cannot_be_used_as_a_prefix - Verifies that a relative IRI cannot be used as a term. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er49-in.jsonld",
                     "resultUri": "invalid term definition"
                 },
@@ -3833,7 +3833,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[421]",
                     "displayName": "ignores_a_term_mapping_to_a_value_in_the_form_of_a_keyword_(@reverse_with_@vocab) - Terms in the form of a keyword, which are not keywords, are ignored. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr39-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr39-out.nq"
                 },
@@ -3841,7 +3841,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[422]",
                     "displayName": "simple_named_graph_(wikidata) - Using @graph with other keys places triples in a named graph. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0027-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0027-out.nq"
                 },
@@ -3913,7 +3913,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[431]",
                     "displayName": "protected_terms_and_propertyscoped_contexts - Check overriding of protected term from property-scoped context. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr40-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr40-out.nq"
                 },
@@ -3929,7 +3929,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[433]",
                     "displayName": "fail_if_protected_flag_not_retained_during_redefinition - Check protected redefinition retains protected flag. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr42-in.jsonld",
                     "resultUri": "protected term redefinition"
                 },
@@ -3945,7 +3945,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[435]",
                     "displayName": "allows_protected_redefinition_of_equivalent_id_terms - Check protected redefinition of equivalent id terms in different forms. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr41-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/pr41-out.nq"
                 },
@@ -3961,7 +3961,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[437]",
                     "displayName": "use_nodemapgeneration_bnode_labels - The toRDF algorithm does not relabel blank nodes; it reuses the counter from the nodeMapGeneration to generate new ones [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0036-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0036-out.nq"
                 },
@@ -4017,7 +4017,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[444]",
                     "displayName": "invalid_prefix_value - Verifies that an exception is raised on expansion when a context contains an invalid @prefix value [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er53-in.jsonld",
                     "resultUri": "invalid @prefix value"
                 },
@@ -4025,7 +4025,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[445]",
                     "displayName": "invalid_value_object,_multiple_values_for_@type - The value of @type in a value object MUST be a string or null. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er54-in.jsonld",
                     "resultUri": "invalid typed value"
                 },
@@ -4049,7 +4049,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[448]",
                     "displayName": "mapping_a_term_to_null_decouples_it_from_@vocab - RDF version of expand-0032 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e032-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e032-out.nq"
                 },
@@ -4057,7 +4057,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[449]",
                     "displayName": "invalid_reverse_id - Verifies that an exception is raised in Expansion when an invalid IRI is used for @reverse. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/er50-in.jsonld",
                     "resultUri": "invalid IRI mapping"
                 },
@@ -4073,7 +4073,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[451]",
                     "displayName": "test_type_coercion_to_anyuri - Tests coercion of object to anyURI when specified. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0019-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0019-out.nq"
                 },
@@ -4097,7 +4097,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[454]",
                     "displayName": "frag_id_expands_relative_resource_location - Expanding a fragment uses the test file location. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0018-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0018-out.nq"
                 },
@@ -4105,7 +4105,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[455]",
                     "displayName": "relative_iri_expands_relative_resource_location - Expanding a relative IRI uses the test file location. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0017-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0017-out.nq"
                 },
@@ -4113,7 +4113,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[456]",
                     "displayName": "expanding_@index - RDF version of expand-0036 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e036-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e036-out.nq"
                 },
@@ -4145,7 +4145,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[460]",
                     "displayName": "invalid_redefinition_of_@context_keyword - Verifies that an exception is raised when attempting to redefine @context. [Jsonld Json-ld negative evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/expand/er56-in.jsonld",
                     "resultUri": "keyword redefinition"
                 },
@@ -4153,7 +4153,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[461]",
                     "displayName": "using_terms_in_a_reversemaps - RDF version of expand-0039 [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e039-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/e039-out.nq"
                 },
@@ -4169,7 +4169,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[463]",
                     "displayName": "test_type_coercion_to_typed_literal - Tests coercion of object to a typed literal when specified. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0020-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0020-out.nq"
                 },
@@ -4201,7 +4201,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11JsonldToRdfTests()[467]",
                     "displayName": "test_coercion_of_integer_value - Tests that a decimal value generates a xsd:integer typed literal. [Jsonld Json-ld positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0023-in.jsonld",
                     "resultUri": "https://w3c.github.io/json-ld-api/tests/toRdf/0023-out.nq"
                 }
@@ -4215,20 +4215,20 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 0,
             "passRate": 100.0,
-            "durationMs": 24,
+            "durationMs": 22,
             "tests": [
                 {
                     "name": "rdf11NQuadsTests()[1]",
                     "displayName": "literal_with_dquote - literal with dquote \"x\"y\" [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/literal_with_dquote.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[2]",
                     "displayName": "literal_with_backspace - literal with BACKSPACE [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/literal_with_BACKSPACE.nq"
                 },
                 {
@@ -4242,7 +4242,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[4]",
                     "displayName": "nqsyntaxbadliteral02 - Graph name may not be a language tagged literal (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nq-syntax-bad-literal-02.nq"
                 },
                 {
@@ -4270,7 +4270,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[8]",
                     "displayName": "literal_with_carriage_return - literal with CARRIAGE RETURN [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/literal_with_CARRIAGE_RETURN.nq"
                 },
                 {
@@ -4284,7 +4284,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[10]",
                     "displayName": "nqsyntaxbadliteral03 - Graph name may not be a datatyped literal (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nq-syntax-bad-literal-03.nq"
                 },
                 {
@@ -4312,14 +4312,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[14]",
                     "displayName": "ntsyntaxbadprefix01 - @prefix not allowed in N-Quads (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-prefix-01.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[15]",
                     "displayName": "nqsyntaxuri01 - URI graph with URI triple [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nq-syntax-uri-01.nq"
                 },
                 {
@@ -4347,14 +4347,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[19]",
                     "displayName": "ntsyntaxbadstring05 - long double string literal (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-string-05.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[20]",
                     "displayName": "ntsyntaxbadstring06 - string literal with no end (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-string-06.nq"
                 },
                 {
@@ -4375,14 +4375,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[23]",
                     "displayName": "ntsyntaxbadbase01 - @base not allowed in N-Quads (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-base-01.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[24]",
                     "displayName": "ntsyntaxbadstring02 - mismatching string literal open/close (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-string-02.nq"
                 },
                 {
@@ -4403,14 +4403,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[27]",
                     "displayName": "ntsyntaxbadstring04 - long single string literal (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-string-04.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[28]",
                     "displayName": "ntsyntaxstresc01 - string literal with escaped newline [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-str-esc-01.nq"
                 },
                 {
@@ -4431,7 +4431,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[31]",
                     "displayName": "ntsyntaxbadnum03 - no numbers in N-Quads (float) (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-num-03.nq"
                 },
                 {
@@ -4473,7 +4473,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[37]",
                     "displayName": "ntsyntaxbadbnode01 - Colon in bnode label not allowed (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-bnode-01.nq"
                 },
                 {
@@ -4494,7 +4494,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[40]",
                     "displayName": "ntsyntaxbadstruct02 - N-Quads does not have predicateObjectList (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-struct-02.nq"
                 },
                 {
@@ -4592,7 +4592,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[54]",
                     "displayName": "ntsyntaxbaduri04 - Bad IRI : character escapes not allowed (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-uri-04.nq"
                 },
                 {
@@ -4669,14 +4669,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[65]",
                     "displayName": "literal_with_numeric_escape8 - literal with numeric escape8 \\U [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/literal_with_numeric_escape8.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[66]",
                     "displayName": "nqsyntaxbnode01 - BNode graph with URI triple [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nq-syntax-bnode-01.nq"
                 },
                 {
@@ -4697,14 +4697,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[69]",
                     "displayName": "ntsyntaxfile03 - One comment, one empty line [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-file-03.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[70]",
                     "displayName": "ntsyntaxfile02 - Only comment [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-file-02.nq"
                 },
                 {
@@ -4725,14 +4725,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[73]",
                     "displayName": "nqsyntaxbnode06 - BNode graph with datatyped literal [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nq-syntax-bnode-06.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[74]",
                     "displayName": "nqsyntaxbnode05 - BNode graph with language tagged literal [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nq-syntax-bnode-05.nq"
                 },
                 {
@@ -4746,7 +4746,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[76]",
                     "displayName": "ntsyntaxuri01 - Only IRIs [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-uri-01.nq"
                 },
                 {
@@ -4760,14 +4760,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[78]",
                     "displayName": "literal_with_form_feed - literal with FORM FEED [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/literal_with_FORM_FEED.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[79]",
                     "displayName": "comment_following_triple - Tests comments after a triple [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/comment_following_triple.nq"
                 },
                 {
@@ -4781,14 +4781,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[81]",
                     "displayName": "literal_with_2_squotes - literal with 2 squotes \"x''y\" [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/literal_with_2_squotes.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[82]",
                     "displayName": "ntsyntaxbadesc03 - Bad string escape (negative test) [N-Quads N-quads negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-bad-esc-03.nq"
                 },
                 {
@@ -4809,14 +4809,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NQuadsTests()[85]",
                     "displayName": "ntsyntaxuri04 - Legal IRIs [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-uri-04.nq"
                 },
                 {
                     "name": "rdf11NQuadsTests()[86]",
                     "displayName": "ntsyntaxuri02 - IRIs with Unicode escape [N-Quads N-quads positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/nt-syntax-uri-02.nq"
                 },
                 {
@@ -4870,14 +4870,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[5]",
                     "displayName": "ntsyntaxbadstring07 - string literal with no start (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-07.nt"
                 },
                 {
                     "name": "rdf11NTriplesTests()[6]",
                     "displayName": "ntsyntaxbadstring06 - string literal with no end (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-06.nt"
                 },
                 {
@@ -4891,7 +4891,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[8]",
                     "displayName": "ntsyntaxbadstring04 - long single string literal (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-04.nt"
                 },
                 {
@@ -4905,7 +4905,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[10]",
                     "displayName": "ntsyntaxbadstring03 - single quotes (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-03.nt"
                 },
                 {
@@ -4919,7 +4919,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[12]",
                     "displayName": "ntsyntaxstresc03 - string literal with long Unicode escape [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-str-esc-03.nt"
                 },
                 {
@@ -4940,7 +4940,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[15]",
                     "displayName": "literal_with_backspace - literal with BACKSPACE [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_BACKSPACE.nt"
                 },
                 {
@@ -4961,14 +4961,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[18]",
                     "displayName": "ntsyntaxdatatypes01 - xsd:byte literal [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-datatypes-01.nt"
                 },
                 {
                     "name": "rdf11NTriplesTests()[19]",
                     "displayName": "ntsyntaxbadbnode01 - Colon in bnode label not allowed (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-bnode-01.nt"
                 },
                 {
@@ -4982,7 +4982,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[21]",
                     "displayName": "literal_ascii_boundaries - literal_ascii_boundaries '\\x00\\x26\\x28...' [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_ascii_boundaries.nt"
                 },
                 {
@@ -5017,14 +5017,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[26]",
                     "displayName": "ntsyntaxbadstruct02 - N-Triples does not have predicateObjectList (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-struct-02.nt"
                 },
                 {
                     "name": "rdf11NTriplesTests()[27]",
                     "displayName": "literal_with_numeric_escape8 - literal with numeric escape8 \\U [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_numeric_escape8.nt"
                 },
                 {
@@ -5038,7 +5038,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[29]",
                     "displayName": "literal_with_numeric_escape4 - literal with numeric escape4 \\u [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_numeric_escape4.nt"
                 },
                 {
@@ -5087,14 +5087,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[36]",
                     "displayName": "ntsyntaxuri01 - Only IRIs [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-uri-01.nt"
                 },
                 {
                     "name": "rdf11NTriplesTests()[37]",
                     "displayName": "ntsyntaxuri02 - IRIs with Unicode escape [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-uri-02.nt"
                 },
                 {
@@ -5122,7 +5122,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[41]",
                     "displayName": "ntsyntaxbadnum03 - no numbers in N-Triples (float) (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-num-03.nt"
                 },
                 {
@@ -5136,7 +5136,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[43]",
                     "displayName": "ntsyntaxstring02 - langString literal [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-string-02.nt"
                 },
                 {
@@ -5171,14 +5171,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[48]",
                     "displayName": "ntsyntaxbadprefix01 - @prefix not allowed in n-triples (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-prefix-01.nt"
                 },
                 {
                     "name": "rdf11NTriplesTests()[49]",
                     "displayName": "literal_with_carriage_return - literal with CARRIAGE RETURN [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_CARRIAGE_RETURN.nt"
                 },
                 {
@@ -5199,7 +5199,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[52]",
                     "displayName": "literal_with_squote - literal with squote \"x'y\" [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_squote.nt"
                 },
                 {
@@ -5220,7 +5220,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[55]",
                     "displayName": "ntsyntaxbaduri07 - Bad IRI : relative IRI not allowed in predicate (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-07.nt"
                 },
                 {
@@ -5241,14 +5241,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[58]",
                     "displayName": "literal_with_reverse_solidus - literal with REVERSE SOLIDUS [N-Triples N-triples positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_REVERSE_SOLIDUS.nt"
                 },
                 {
                     "name": "rdf11NTriplesTests()[59]",
                     "displayName": "ntsyntaxbaduri05 - Bad IRI : character escapes not allowed (2) (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-05.nt"
                 },
                 {
@@ -5269,14 +5269,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[62]",
                     "displayName": "ntsyntaxbaduri04 - Bad IRI : character escapes not allowed (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-04.nt"
                 },
                 {
                     "name": "rdf11NTriplesTests()[63]",
                     "displayName": "ntsyntaxbaduri03 - Bad IRI : bad long escape (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-03.nt"
                 },
                 {
@@ -5297,7 +5297,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[66]",
                     "displayName": "ntsyntaxbaduri02 - Bad IRI : bad escape (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-02.nt"
                 },
                 {
@@ -5325,7 +5325,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11NTriplesTests()[70]",
                     "displayName": "ntsyntaxbaduri09 - Bad IRI : relative IRI not allowed in datatype (negative test) [N-Triples N-triples negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-09.nt"
                 }
             ]
@@ -5338,7 +5338,7 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 0,
             "passRate": 100.0,
-            "durationMs": 125,
+            "durationMs": 120,
             "tests": [
                 {
                     "name": "rdf11XmlTests()[1]",
@@ -5384,7 +5384,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[6]",
                     "displayName": "rdfmsrdfnamesusetest036 - \n    Property is allowed as a property element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-036.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-036.nt"
                 },
@@ -5392,7 +5392,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[7]",
                     "displayName": "rdfmsrdfnamesusetest037 - \n    List is allowed as a property element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-037.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-037.nt"
                 },
@@ -5408,7 +5408,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[9]",
                     "displayName": "xmlbasetest007 - \n    example of relative URI resolution.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/xmlbase/test007.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/xmlbase/test007.nt"
                 },
@@ -5456,7 +5456,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[15]",
                     "displayName": "rdfmsxmllangtest006 - \n    In-scope xml:lang applies to element content literal values\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-xmllang/test006.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-xmllang/test006.nt"
                 },
@@ -5464,7 +5464,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[16]",
                     "displayName": "xmlbasetest001 - \n    xml:base applies to an rdf:ID on an rdf:Description element.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/xmlbase/test001.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/xmlbase/test001.nt"
                 },
@@ -5472,7 +5472,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[17]",
                     "displayName": "rdfmsxmllangtest005 - \n    In-scope xml:lang applies to element content literal values\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-xmllang/test005.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-xmllang/test005.nt"
                 },
@@ -5488,7 +5488,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[19]",
                     "displayName": "rdfmsxmllangtest003 - \n    In-scope xml:lang applies to element content literal values\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-xmllang/test003.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-xmllang/test003.nt"
                 },
@@ -5496,7 +5496,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[20]",
                     "displayName": "rdfcontainerssyntaxvsschemaerror001 - \n    rdf:li is not allowed as as an attribute\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/error001.rdf"
                 },
                 {
@@ -5526,7 +5526,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[24]",
                     "displayName": "rdfmsrdfnamesusetest024 - \n    predicate is allowed as a property element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-024.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-024.nt"
                 },
@@ -5542,7 +5542,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[26]",
                     "displayName": "rdfmsdifferencebetweenidandabouttest2 - \n    This test shows the treatment of non-ASCII characters in the\nvalue of rdf:ID attribute.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-difference-between-ID-and-about/test2.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-difference-between-ID-and-about/test2.nt"
                 },
@@ -5574,7 +5574,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[30]",
                     "displayName": "rdfmsrdfnamesusetest028 - \n    first is allowed as a property element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-028.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-028.nt"
                 },
@@ -5582,7 +5582,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[31]",
                     "displayName": "rdfmsdifferencebetweenidandabouttest1 - \n    A statement with an rdf:ID creates a regular triple.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-difference-between-ID-and-about/test1.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-difference-between-ID-and-about/test1.nt"
                 },
@@ -5598,7 +5598,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[33]",
                     "displayName": "rdfmsemptypropertyelementstest004 - \n    If the parseType indicates the value is a resource, we must\ncreate one. With no additional information, the resource is\nanonymous.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test004.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test004.nt"
                 },
@@ -5606,7 +5606,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[34]",
                     "displayName": "rdfmsemptypropertyelementstest005 - \n    An empty property element just gives an empty literal. We\nreify the statement at the same time.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test005.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test005.nt"
                 },
@@ -5638,7 +5638,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[38]",
                     "displayName": "rdfmsrdfnamesusetest031 - \n    li is allowed as a property element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-031.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-031.nt"
                 },
@@ -5662,7 +5662,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[41]",
                     "displayName": "rdfmsrdfnamesusetest032 - \n    Seq is allowed as a property element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-032.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-032.nt"
                 },
@@ -5670,7 +5670,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[42]",
                     "displayName": "datatypestest001 - \n    A simple datatype production; a language+datatype production.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/datatypes/test001.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/datatypes/test001.nt"
                 },
@@ -5686,28 +5686,28 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[44]",
                     "displayName": "rdfmsrdfiderror003 - \n    The value of rdf:ID must match the XML Name production, (as\nmodified by XML Namespaces).\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-id/error003.rdf"
                 },
                 {
                     "name": "rdf11XmlTests()[45]",
                     "displayName": "rdfmsrdfiderror002 - \n    The value of rdf:ID must match the XML Name production, (as\nmodified by XML Namespaces).\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-id/error002.rdf"
                 },
                 {
                     "name": "rdf11XmlTests()[46]",
                     "displayName": "rdfmsrdfiderror005 - \n    The value of rdf:ID must match the XML Name production, (as\nmodified by XML Namespaces).\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-id/error005.rdf"
                 },
                 {
                     "name": "rdf11XmlTests()[47]",
                     "displayName": "rdfmsrdfiderror004 - \n    The value of rdf:ID must match the XML Name production, (as\nmodified by XML Namespaces).\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-id/error004.rdf"
                 },
                 {
@@ -5782,7 +5782,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[57]",
                     "displayName": "rdfmsabouteacherror001 - \n    aboutEach removed from the RDF specifications.\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-abouteach/error001.rdf"
                 },
                 {
@@ -6041,7 +6041,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[91]",
                     "displayName": "rdfnsprefixconfusiontest0009 - \n    Namespace qualification MUST be used for all property\nattributes.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0009.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0009.nt"
                 },
@@ -6159,7 +6159,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[107]",
                     "displayName": "rdfnsprefixconfusiontest0010 - \n    Non-prefixed RDF elements (NOT attributes) are allowed when a\ndefault XML element namespace is defined with an\nxmlns=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" attribute.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0010.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0010.nt"
                 },
@@ -6175,7 +6175,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[109]",
                     "displayName": "rdfnsprefixconfusiontest0011 - \n    Non-prefixed RDF elements (NOT attributes) are allowed when a\ndefault XML element namespace is defined with an\nxmlns=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" attribute.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0011.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0011.nt"
                 },
@@ -6191,7 +6191,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[111]",
                     "displayName": "rdfmssyntaxincompleteerror006 - \n    Cannot have rdf:nodeID and rdf:resource.\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/error006.rdf"
                 },
                 {
@@ -6206,21 +6206,21 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[113]",
                     "displayName": "rdfmssyntaxincompleteerror004 - \n    Cannot have rdf:nodeID and rdf:ID.\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/error004.rdf"
                 },
                 {
                     "name": "rdf11XmlTests()[114]",
                     "displayName": "rdfmssyntaxincompleteerror005 - \n    Cannot have rdf:nodeID and rdf:about.\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/error005.rdf"
                 },
                 {
                     "name": "rdf11XmlTests()[115]",
                     "displayName": "rdfmsrdfnamesusetest011 - \n    type is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-011.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-011.nt"
                 },
@@ -6252,7 +6252,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[119]",
                     "displayName": "rdfmsrdfnamesusetest014 - \n    rest is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-014.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-014.nt"
                 },
@@ -6268,7 +6268,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[121]",
                     "displayName": "rdfsdomainandrangetest001 - \n    a RDF Property may have more than one domain property\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfs-domain-and-range/test001.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfs-domain-and-range/test001.nt"
                 },
@@ -6291,7 +6291,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[124]",
                     "displayName": "rdfmsidentityanonresourcestest003 - \n    a RDF container (in this case a Bag) without an ID attribute\ndescribes an un-named resource, aka a bNode.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-identity-anon-resources/test003.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-identity-anon-resources/test003.nt"
                 },
@@ -6299,14 +6299,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[125]",
                     "displayName": "rdfmssyntaxincompleteerror003 - \n    The value of rdf:nodeID must match the XML Name production,\n(as modified by XML Namespaces).\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/error003.rdf"
                 },
                 {
                     "name": "rdf11XmlTests()[126]",
                     "displayName": "rdfmsrdfnamesusetest016 - \n    nil is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-016.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-016.nt"
                 },
@@ -6314,7 +6314,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[127]",
                     "displayName": "rdfmsidentityanonresourcestest004 - \n    a RDF container (in this case an Alt) without an ID attribute\ndescribes an un-named resource, aka a bNode.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-identity-anon-resources/test004.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-identity-anon-resources/test004.nt"
                 },
@@ -6338,7 +6338,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[130]",
                     "displayName": "rdfmsidentityanonresourcestest005 - \n    a RDF container (in this case an Seq) without an ID attribute\ndescribes an un-named resource, aka a bNode.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-identity-anon-resources/test005.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-identity-anon-resources/test005.nt"
                 },
@@ -6362,7 +6362,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[133]",
                     "displayName": "rdfmsrdfnamesusetest018 - \n    Bag is allowed as a property element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-018.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-018.nt"
                 },
@@ -6370,7 +6370,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[134]",
                     "displayName": "rdfmssyntaxincompleteerror001 - \n    The value of rdf:nodeID must match the XML Name production,\n(as modified by XML Namespaces).\n   [Xml Rdf/xml negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/error001.rdf"
                 },
                 {
@@ -6449,7 +6449,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[144]",
                     "displayName": "rdfmsemptypropertyelementstest013 - \n    Test of the last alternative for production [6.12],\ninterpreted according to RDFMS paragraphs 229-234:\nhttp://lists.w3.org/Archives/Public/www-archive/2001Jun/att-0021/00-part#229\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test013.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test013.nt"
                 },
@@ -6465,7 +6465,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[146]",
                     "displayName": "rdfmsrdfnamesusetest008 - \n    subject is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-008.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-008.nt"
                 },
@@ -6473,7 +6473,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[147]",
                     "displayName": "rdfmsreificationrequiredtest002 - \n    A parser must generate inside of other reifications\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-reification-required/test002.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-reification-required/test002.nt"
                 },
@@ -6481,7 +6481,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[148]",
                     "displayName": "rdfmsrdfnamesusetest009 - \n    predicate is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-009.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-009.nt"
                 },
@@ -6489,7 +6489,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[149]",
                     "displayName": "rdfmsreificationrequiredtest001 - \n    A parser is not required to generate a bag of reified\nstatements for all description elements.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-reification-required/test001.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-reification-required/test001.nt"
                 },
@@ -6505,7 +6505,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[151]",
                     "displayName": "rdfmsrdfnamesusetest001 - \n    Description is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-001.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-001.nt"
                 },
@@ -6513,7 +6513,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[152]",
                     "displayName": "rdfmssyntaxincompletetest003 - \n    On an rdf:Description or typed node rdf:nodeID behaves\nsimilarly to an rdf:about.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/test003.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/test003.nt"
                 },
@@ -6521,7 +6521,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[153]",
                     "displayName": "rdfmsrdfnamesusetest002 - \n    Seq is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-002.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-002.nt"
                 },
@@ -6537,7 +6537,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[155]",
                     "displayName": "rdfmsrdfnamesusetest003 - \n    Bag is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-003.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-003.nt"
                 },
@@ -6553,7 +6553,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[157]",
                     "displayName": "rdfmsrdfnamesusetest005 - \n    Statement is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-005.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-005.nt"
                 },
@@ -6561,7 +6561,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[158]",
                     "displayName": "rdfmsrdfnamesusetest006 - \n    Property is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-006.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-006.nt"
                 },
@@ -6569,7 +6569,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[159]",
                     "displayName": "rdfmsrdfnamesusetest007 - \n    List is allowed as a node element name.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-007.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-rdf-names-use/test-007.nt"
                 },
@@ -6577,7 +6577,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11XmlTests()[160]",
                     "displayName": "rdfmssyntaxincompletetest001 - \n    rdf:nodeID can be used to label a blank node.\n   [Xml Rdf/xml positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/test001.rdf",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/test001.nt"
                 },
@@ -6638,13 +6638,13 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 0,
             "passRate": 100.0,
-            "durationMs": 274,
+            "durationMs": 272,
             "tests": [
                 {
                     "name": "rdfCanonicalTests()[1]",
                     "displayName": "blank_node__point_at_circle_of_3_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 40,
+                    "durationMs": 42,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test030-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test030-rdfc10map.json"
                 },
@@ -6676,7 +6676,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[5]",
                     "displayName": "poison__clique_graph_(negative_test) - A 10-node Clique of blank node resources all inter-related. [RDF-Canonical Rdfc10negativeevaltest]",
                     "status": "PASSED",
-                    "durationMs": 90,
+                    "durationMs": 96,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test074-in.nq"
                 },
                 {
@@ -6691,7 +6691,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[7]",
                     "displayName": "dataset__isomorphic_default_and_iri_named - Isomorphic graphs in default and IRI named graph [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test070-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test070-rdfc10.nq"
                 },
@@ -6699,7 +6699,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[8]",
                     "displayName": "bnode [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test003-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test003-rdfc10.nq"
                 },
@@ -6707,7 +6707,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[9]",
                     "displayName": "deep_diff_(1) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test047-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test047-rdfc10.nq"
                 },
@@ -6715,7 +6715,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[10]",
                     "displayName": "nquads_parsing [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test059-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test059-rdfc10.nq"
                 },
@@ -6723,7 +6723,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[11]",
                     "displayName": "blank_node__double_circle_of_3_(120) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test027-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test027-rdfc10.nq"
                 },
@@ -6755,7 +6755,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[15]",
                     "displayName": "typecoerced_type [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test011-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test011-rdfc10.nq"
                 },
@@ -6763,7 +6763,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[16]",
                     "displayName": "blank_node__double_circle_of_3_(120,_reversed) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test067-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test067-rdfc10.nq"
                 },
@@ -6779,7 +6779,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[18]",
                     "displayName": "reordered_w/strings_(1) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test035-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test035-rdfc10.nq"
                 },
@@ -6811,7 +6811,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[22]",
                     "displayName": "bnode_embed_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test005-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test005-rdfc10map.json"
                 },
@@ -6819,7 +6819,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[23]",
                     "displayName": "same_literal_value_with_multiple_languages [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test061-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test061-rdfc10.nq"
                 },
@@ -6843,7 +6843,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[26]",
                     "displayName": "@list - RDF Collections using rdf:first/rest ladders. [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test053-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test053-rdfc10.nq"
                 },
@@ -6859,7 +6859,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[28]",
                     "displayName": "unnamed_graph_with_blank_node_objects [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test058-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test058-rdfc10.nq"
                 },
@@ -6867,7 +6867,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[29]",
                     "displayName": "check_types [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test014-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test014-rdfc10.nq"
                 },
@@ -6915,7 +6915,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[35]",
                     "displayName": "blank_node__double_circle_of_3_(102,_reversed) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test066-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test066-rdfc10.nq"
                 },
@@ -6939,7 +6939,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[38]",
                     "displayName": "poison_\u2013_evil_(3) - A poison graph which is computable given defined limits. [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 11,
+                    "durationMs": 12,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test046-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test046-rdfc10.nq"
                 },
@@ -6955,7 +6955,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[40]",
                     "displayName": "blank_node__self_link [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test018-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test018-rdfc10.nq"
                 },
@@ -6963,7 +6963,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[41]",
                     "displayName": "blank_node__diamond_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test020-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test020-rdfc10map.json"
                 },
@@ -6979,7 +6979,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[43]",
                     "displayName": "dataset__shared_blank_nodes_(map_test) - Blank nodes shared in default and named graph [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test072-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test072-rdfc10map.json"
                 },
@@ -6987,7 +6987,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[44]",
                     "displayName": "dataset__shared_blank_nodes - Blank nodes shared in default and named graph [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test072-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test072-rdfc10.nq"
                 },
@@ -6995,7 +6995,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[45]",
                     "displayName": "blank_node__dual_link__embed_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test016-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test016-rdfc10map.json"
                 },
@@ -7003,7 +7003,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[46]",
                     "displayName": "reordered_6_bnodes_(1) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test040-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test040-rdfc10.nq"
                 },
@@ -7019,7 +7019,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[48]",
                     "displayName": "blank_node__diamond [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test020-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test020-rdfc10.nq"
                 },
@@ -7027,7 +7027,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[49]",
                     "displayName": "simple_reorder_(2)_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test056-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test056-rdfc10map.json"
                 },
@@ -7035,7 +7035,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[50]",
                     "displayName": "bnode_plus_embed_w/subject_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test004-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test004-rdfc10map.json"
                 },
@@ -7043,7 +7043,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[51]",
                     "displayName": "deep_diff_(2)_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test048-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test048-rdfc10map.json"
                 },
@@ -7051,7 +7051,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[52]",
                     "displayName": "nquads_escaping [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 7,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test060-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test060-rdfc10.nq"
                 },
@@ -7059,7 +7059,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[53]",
                     "displayName": "blank_node__double_circle_of_3_(201,_reversed) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test069-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test069-rdfc10.nq"
                 },
@@ -7067,7 +7067,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[54]",
                     "displayName": "blank_node__double_circle_of_3_(021) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test025-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test025-rdfc10.nq"
                 },
@@ -7091,7 +7091,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[57]",
                     "displayName": "blank_node__double_circle_of_3_(021,_reversed) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test065-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test065-rdfc10.nq"
                 },
@@ -7099,7 +7099,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[58]",
                     "displayName": "blank_node__circle_of_2 [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test021-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test021-rdfc10.nq"
                 },
@@ -7107,7 +7107,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[59]",
                     "displayName": "duplicate_triple_with_blank_node_in_input - The duplicate triples must be removed [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test077-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test077-rdfc10.nq"
                 },
@@ -7123,7 +7123,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[61]",
                     "displayName": "poison_\u2013_evil_(2) - A poison graph which is computable given defined limits. [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 12,
+                    "durationMs": 13,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test045-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test045-rdfc10.nq"
                 },
@@ -7131,7 +7131,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[62]",
                     "displayName": "simple_id [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test001-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test001-rdfc10.nq"
                 },
@@ -7139,7 +7139,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[63]",
                     "displayName": "typecoerced_type,_cycle [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test013-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test013-rdfc10.nq"
                 },
@@ -7155,7 +7155,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[65]",
                     "displayName": "blank_node__double_circle_of_3_(201) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test029-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test029-rdfc10.nq"
                 },
@@ -7187,7 +7187,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[69]",
                     "displayName": "simple_reorder_(1)_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test055-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test055-rdfc10map.json"
                 },
@@ -7227,7 +7227,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[74]",
                     "displayName": "deep_diff_(1)_(map_test) [RDF-Canonical Rdfc10maptest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test047-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test047-rdfc10map.json"
                 },
@@ -7235,7 +7235,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[75]",
                     "displayName": "dataset__isomorphic_default_and_node_named - Isomorphic graphs in default and blank node named graph [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test071-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test071-rdfc10.nq"
                 },
@@ -7291,7 +7291,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[82]",
                     "displayName": "poison_\u2013_evil_(1) - A poison graph which is computable given defined limits. [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 25,
+                    "durationMs": 11,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test044-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test044-rdfc10.nq"
                 },
@@ -7307,7 +7307,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[84]",
                     "displayName": "blank_node__double_circle_of_3_(210,_reversed) [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test068-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test068-rdfc10.nq"
                 },
@@ -7323,7 +7323,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdfCanonicalTests()[86]",
                     "displayName": "single_subject_complex [RDF-Canonical Rdfc10evaltest]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test008-in.nq",
                     "resultUri": "https://w3c.github.io/rdf-canon/tests/rdfc10/test008-rdfc10.nq"
                 }
@@ -7337,13 +7337,13 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 1,
             "passRate": 96.77,
-            "durationMs": 82,
+            "durationMs": 47,
             "tests": [
                 {
                     "name": "rdf11RDFaSVGTests()[1]",
                     "displayName": "test_0226:_confusion_between_multiple_implicit_collections_(resource) - Use of @inlist with implicit subject uses different list [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 19,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0226.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0226.ttl"
                 },
@@ -7351,7 +7351,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[2]",
                     "displayName": "test_0304:_embedded_chunks_of_rdf/xml - Tests that embedded RDF/XML is added to the same graph. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0304.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0304.ttl"
                 },
@@ -7359,7 +7359,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[3]",
                     "displayName": "test_0227:_confusion_between_multiple_implicit_collections_(about) - Use of @inlist with implicit subject uses different list [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0227.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0227.ttl"
                 },
@@ -7383,7 +7383,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[6]",
                     "displayName": "test_0291:_@href_as_subject_overridden_by_@about - When @property, @datatype, @href and @about are present but @rel and @rev are not, @about is used as subject. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0291.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0291.ttl"
                 },
@@ -7391,7 +7391,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[7]",
                     "displayName": "test_0292:_@about_overriding_@href_as_subject_is_used_as_parent_resource - When @property, @datatype, @href and @about are present but @rel and @rev are not, @about is used as subject and is also applied to nested descriptions. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0292.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0292.ttl"
                 },
@@ -7399,7 +7399,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[8]",
                     "displayName": "test_0297:_@about=[]_with_@typeof_does_not_create_a_new_subject - When the @about resolves to nothing, the typed resource should not create a new subject. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0297.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0297.ttl"
                 },
@@ -7407,7 +7407,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[9]",
                     "displayName": "test_0298:_@about=[]_with_@typeof_does_not_create_a_new_object - When the @about resolves to nothing, the typed resource should not create a new subject (chaining). [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0298.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0298.ttl"
                 },
@@ -7424,13 +7424,13 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[11]",
                     "displayName": "test_0296:_@property_does_set_parent_object_without_@typeof - When @property is used with a resource attribute (@href, @resource, ...) it does not set parent object. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 7,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0296.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0296.ttl"
                 },
                 {
                     "name": "rdf11RDFaSVGTests()[12]",
-                    "displayName": "test_0214:_root_element_has_implicit_@about=\"\" - All documents have an implicit @about=\"\" [RDFa+SVG Rdfa positive evaluation]",
+                    "displayName": "test_0214:_root_element_has_implicit_@about=\"\" - All documents have an implicit @about=\"\"  [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
                     "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0214.svg",
@@ -7440,7 +7440,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[13]",
                     "displayName": "test_0299:_@resource=[]_with_@href_or_@src_uses_@href_or_@src_(@rel) - When the @resource resolves to nothing, @href or @src should be used (@rel case). [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0299.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0299.ttl"
                 },
@@ -7456,7 +7456,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[15]",
                     "displayName": "test_0234:_all_defined_html_link_relation_values - Tests to ensure that all defined linked relations expand [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0234.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0234.ttl"
                 },
@@ -7464,7 +7464,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[16]",
                     "displayName": "test_0218:_@inlist_to_create_empty_list - @inlist on @rel with no incomplete triples creates an empty list. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0218.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0218.ttl"
                 },
@@ -7472,7 +7472,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[17]",
                     "displayName": "test_0259:_xml+rdfa_initial_context - All processors must load the RDFa Core Initial Context. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 6,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0259.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0259.ttl"
                 },
@@ -7480,7 +7480,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[18]",
                     "displayName": "test_0219:_@inlist_with_literal - @inlist with @property creates a list having a literal as a single element. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0219.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0219.ttl"
                 },
@@ -7496,7 +7496,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[20]",
                     "displayName": "test_0221:_@inlist_with_hetrogenious_membership - @inlist with @rel and @property creates a list with both IRI and Literal elements. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0221.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0221.ttl"
                 },
@@ -7512,7 +7512,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[22]",
                     "displayName": "test_0224:_@inlist_hanging_@rel - Use of @rel and @inlist with decendent IRI elements creates list [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0224.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0224.ttl"
                 },
@@ -7528,7 +7528,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[24]",
                     "displayName": "test_0203:_tests_to_ensure_@xml:base,_xml+rdfa_used_in_nonroot_elements_in_svg - Tests to make sure that @xml:base is used in non-root elements in SVG+RDFa, XML+RDFa. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0203.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0203.ttl"
                 },
@@ -7536,7 +7536,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[25]",
                     "displayName": "test_0302:_@typeof_with_different_content_types - Tests that @typof works with terms, CURIES or IRIs. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0302.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0302.ttl"
                 },
@@ -7560,7 +7560,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[28]",
                     "displayName": "test_0201:_expressing_an_attribute_using_@property - Tests @property to establish the predicate; literal object is in the content of the element. [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0201.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0201.ttl"
                 },
@@ -7584,7 +7584,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaSVGTests()[31]",
                     "displayName": "test_0300:_@resource=[]_with_@href_or_@src_uses_@href_or_@src_(@property) - When the @resource resolves to nothing, @href or @src should be used (@property case). [RDFa+SVG Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0300.svg",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/svg/0300.ttl"
                 }
@@ -7598,13 +7598,13 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 1,
             "passRate": 99.45,
-            "durationMs": 280,
+            "durationMs": 666,
             "tests": [
                 {
                     "name": "rdf11RDFaXHTMLTests()[1]",
                     "displayName": "test_0070:_relative_uri_in_@resource - Tests to ensure that relative URI is resolved correctly when used in @resource [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 22,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0070.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0070.ttl"
                 },
@@ -7612,7 +7612,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[2]",
                     "displayName": "test_0190:_test_term_case_insensitivity - Check to ensure a mixed case term matches a case insensitive definition [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 6,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0190.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0190.ttl"
                 },
@@ -7620,7 +7620,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[3]",
                     "displayName": "test_0074:_relative_uri_in_@href_(with_xhtml_base_in_head) - Tests to ensure that relative URIs are resolved correctly when used in @href with XHTML base set in head [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0074.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0074.ttl"
                 },
@@ -7628,7 +7628,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[4]",
                     "displayName": "test_0073:_relative_uri_in_@resource_(with_xhtml_base_in_head) - Tests to ensure that relative URIs are resolved correctly when used in @resource with XHTML base set in head [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0073.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0073.ttl"
                 },
@@ -7636,7 +7636,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[5]",
                     "displayName": "test_0072:_relative_uri_in_@about_(with_xhtml_base_in_head) - Tests to ensure that relative URIs are resolved correctly when used in @about with XHTML base set in head [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0072.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0072.ttl"
                 },
@@ -7644,7 +7644,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[6]",
                     "displayName": "test_0071:_no_explicit_@about - Tests to ensure that a triple is generated even if @typeof and @about is not specified anywhere in the document [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0071.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0071.ttl"
                 },
@@ -7652,15 +7652,15 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[7]",
                     "displayName": "test_0229:_img[@src]_test_with_omitted_@about - Tests if a @src (in img element) does not set the URIref object (with omitted @about) -- from 0042 [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0229.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0229.ttl"
                 },
                 {
                     "name": "rdf11RDFaXHTMLTests()[8]",
-                    "displayName": "test_0108:_plain_literal_with_datatype=\"\"_and_xml:lang_preservation - Checks to make sure that the RDFa parser emits a plain literal when the datatype is specified as \"\" and preserves the xml:lang value. [RDFa+XHTML Rdfa positive evaluation]",
+                    "displayName": "test_0108:_plain_literal_with_datatype=\"\"_and_xml:lang_preservation - Checks to make sure that the RDFa parser emits a plain literal when the datatype is specified as \"\" and preserves the xml:lang value. The text, with control characters and whitespace preserved, reads \"Greek\nwhite   space\n\". [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 6,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0108.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0108.ttl"
                 },
@@ -7668,7 +7668,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[9]",
                     "displayName": "test_0107:_no_garbage_collecting_bnodes - Checks to make sure that that while we shouldn't garbage collect bnodes no triples are generated. [RDFa+XHTML Rdfa negative evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0107.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0107.ttl"
                 },
@@ -7684,7 +7684,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[11]",
                     "displayName": "test_0227:_confusion_between_multiple_implicit_collections_(about) - Use of @inlist with implicit subject uses different list [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 8,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0227.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0227.ttl"
                 },
@@ -7692,7 +7692,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[12]",
                     "displayName": "test_0106:_chaining_with_empty_value_in_inner_@rel - Tests the behavior of triple generation in the case where the inner @rel is defined, but is blank, which halts chaining. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0106.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0106.ttl"
                 },
@@ -7700,7 +7700,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[13]",
                     "displayName": "test_0226:_confusion_between_multiple_implicit_collections_(resource) - Use of @inlist with implicit subject uses different list [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0226.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0226.ttl"
                 },
@@ -7708,7 +7708,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[14]",
                     "displayName": "test_0221:_@inlist_with_hetrogenious_membership - @inlist with @rel and @property creates a list with both IRI and Literal elements. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0221.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0221.ttl"
                 },
@@ -7716,7 +7716,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[15]",
                     "displayName": "test_0067:_@property_in_the_head - Test to make sure that @property in head uses the implied current document as the subject if no other subject is specified [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0067.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0067.ttl"
                 },
@@ -7724,7 +7724,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[16]",
                     "displayName": "test_0188:_@vocab_only_affects_predicates - Check that @vocab definitions on parent elements only affect predicate establishment. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0188.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0188.ttl"
                 },
@@ -7732,7 +7732,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[17]",
                     "displayName": "test_0187:_@vocab_redefinition - Check that a more deeply nested @vocab attribute overloads a previous @vocab definition. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0187.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0187.ttl"
                 },
@@ -7740,7 +7740,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[18]",
                     "displayName": "test_0220:_@inlist_with_iri - @inlist with @rel and @href creates a list having an IRI as a single element. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0220.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0220.ttl"
                 },
@@ -7748,7 +7748,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[19]",
                     "displayName": "test_0066:_@about_with_@typeof_in_the_head - Test to make sure that @about (with current document) is implied in the head, and the proper triples are generated using @typeof [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0066.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0066.ttl"
                 },
@@ -7756,7 +7756,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[20]",
                     "displayName": "test_0065:_@rel_with_safe_curie - Tests if @rel properly connects triples generated when safe CURIEs are used [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 12,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0065.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0065.ttl"
                 },
@@ -7764,7 +7764,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[21]",
                     "displayName": "test_0186:_@vocab_after_subject_declaration - Check that @vocab establishes a new default vocabulary when declared on the same element as a subject declaration via @about. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0186.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0186.ttl"
                 },
@@ -7772,7 +7772,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[22]",
                     "displayName": "test_0064:_@about_with_safe_curie - Tests if @about generates a proper triple when a safe CURIE is used [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0064.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0064.ttl"
                 },
@@ -7780,7 +7780,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[23]",
                     "displayName": "test_0104:_rdf:value - Tests rdf:value with blank nodes to give a value with a unit [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0104.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0104.ttl"
                 },
@@ -7788,7 +7788,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[24]",
                     "displayName": "test_0225:_@inlist_on_different_elements_with_same_subject - @inlist with same property and subject on different elements creates multiple lists [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0225.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0225.ttl"
                 },
@@ -7796,7 +7796,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[25]",
                     "displayName": "test_0224:_@inlist_hanging_@rel - Use of @rel and @inlist with decendent IRI elements creates list [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0224.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0224.ttl"
                 },
@@ -7804,7 +7804,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[26]",
                     "displayName": "test_0069:_relative_uri_in_@href - Tests to ensure that relative URI is resolved correctly when used in @href [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0069.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0069.ttl"
                 },
@@ -7812,7 +7812,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[27]",
                     "displayName": "test_0223:_@inlist_with_nonlist_property - Use of predicate with @inlist and without @inlist creates both list and non-list triples. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0223.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0223.ttl"
                 },
@@ -7820,7 +7820,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[28]",
                     "displayName": "test_0068:_relative_uri_in_@about - Tests to ensure that relative URI is resolved correctly when used in @about [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0068.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0068.ttl"
                 },
@@ -7828,7 +7828,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[29]",
                     "displayName": "test_0222:_@inlist_with_multilevel_elements - @inlist with @property at different levels of descendence creates single list. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0222.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0222.ttl"
                 },
@@ -7836,7 +7836,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[30]",
                     "displayName": "test_0189:_@vocab_overrides_default_term - \n    Check that @vocab changes a default term from XHV. Lookup checks default vocabulary before\n    local term mappings.\n    [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0189.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0189.ttl"
                 },
@@ -7844,7 +7844,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[31]",
                     "displayName": "test_0080:_@about_overrides_@resource_in_incomplete_triples - Tests if @about has a higher priority than @resource in handling incomplete triples [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0080.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0080.ttl"
                 },
@@ -7852,7 +7852,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[32]",
                     "displayName": "test_0085:_@resource_and_@href_in_completing_incomplete_triples - Tests the role of @resource and @href in completing incomplete triples (including their mutual priorities), but with an intermediate layer (ie, bNode) added [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0085.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0085.ttl"
                 },
@@ -7860,7 +7860,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[33]",
                     "displayName": "test_0084:_multiple_ways_of_handling_incomplete_triples,_this_time_with_both_@rel_and_@rev - Tests multiple ways of handling incomplete triples, this time with both @rel and @rev. There is an intermediate div that should be ignored by the process [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0084.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0084.ttl"
                 },
@@ -7868,7 +7868,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[34]",
                     "displayName": "test_0083:_multiple_ways_of_handling_incomplete_triples_(merged) - Tests multiple ways of handling incomplete triples; the first two triples should use the same bNode as subject ('merged'); the third case should use @about [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0083.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0083.ttl"
                 },
@@ -7876,7 +7876,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[35]",
                     "displayName": "test_0119:_\"[prefix:]\"_curie_format_is_valid - Checks to make sure that an RDFa processor expands CURIEs having only a prefix and a\n    colon if a prefix is properly defined using xmlns.\n     [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0119.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0119.ttl"
                 },
@@ -7884,7 +7884,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[36]",
                     "displayName": "test_0118:_empty_string_\"\"_is_not_equivalent_to_null__@about - Checks to make sure that the empty\n  string \"\" isn't considered as NULL in languages such as Javascript when\n  generating triples. This test sets the subject in a chain using @href\n  and then immediately changes the subject using @about and generates a\n  triple. A buggy parser may use the @href subject\n  (http://example.org/javascript.html) instead of the one defined by @about. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0118.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0118.ttl"
                 },
@@ -7892,7 +7892,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[37]",
                     "displayName": "test_0117:_fragment_identifiers_stripped_from_base - Checks to make sure that fragment identifiers are stripped from [base] when used to generate triples. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0117.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0117.ttl"
                 },
@@ -7900,7 +7900,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[38]",
                     "displayName": "test_0111:_two_bnodes_generated_after_three_levels_of_nesting - Tests to make sure that two bNodes are generated after three levels of nesting and that the last div does not generate a triple. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0111.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0111.ttl"
                 },
@@ -7908,7 +7908,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[39]",
                     "displayName": "test_0232:_@typeof_with_@rel_present,_no_@href,_@resource,_or_@about_(11_behavior_of_0046); - Tests @typeof with @rel present, no @href, @resource, or @about creates a BNode object [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0232.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0232.ttl"
                 },
@@ -7916,7 +7916,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[40]",
                     "displayName": "test_0110:_bnode_generated_even_though_no_nested_@about_exists - Tests to make sure that a bNode is generated even though no nested @about exists. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 6,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0110.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0110.ttl"
                 },
@@ -7924,7 +7924,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[41]",
                     "displayName": "test_0231:_set_image_license_information - Tests new behavior of @src in 1.1 [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 7,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0231.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0231.ttl"
                 },
@@ -7932,7 +7932,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[42]",
                     "displayName": "test_0077:_all_reserved_xhtml_@rev_values - Tests to ensure that all reserved XHTML words are supported in @rev [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 9,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0077.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0077.ttl"
                 },
@@ -7940,7 +7940,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[43]",
                     "displayName": "test_0198:_datatype_xmlliteral_with_other_embedded_rdfa - Checks to ensure that when datatype is the default the parser generates triples for embedded content. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 8,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0198.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0198.ttl"
                 },
@@ -7956,7 +7956,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[45]",
                     "displayName": "test_0197:_test_termorcurieorabsuri_requires_an_absolute_uri - TERMorCURIEorAbsURI requires an absolute URI [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 74,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0197.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0197.ttl"
                 },
@@ -7964,7 +7964,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[46]",
                     "displayName": "test_0076:_all_reserved_xhtml_@rel_values - Tests to ensure that all reserved XHTML words are supported in @rel [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0076.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0076.ttl"
                 },
@@ -7980,7 +7980,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[48]",
                     "displayName": "test_0196:_test_process_explicit_xmlliteral - XMLLiteral must be explicitly specified, otherwise a normal untyped literal is created [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0196.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0196.ttl"
                 },
@@ -7988,7 +7988,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[49]",
                     "displayName": "test_0115:_xml_entities_must_be_supported_by_rdfa_parser - Checks to make sure that XML Entities are treated properly by the RDFa parser. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0115.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0115.ttl"
                 },
@@ -7996,7 +7996,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[50]",
                     "displayName": "test_0114:_relative_uri_dotsegment_removal - Checks to make sure that a relative URI is resolved correctly according to RFC3986, section 5 (even when the relative URI is invalid, in this case). [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 8,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0114.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0114.ttl"
                 },
@@ -8004,7 +8004,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[51]",
                     "displayName": "test_0113:_element_with_@property_and_no_child_nodes_generates__empty_plain_literal - Checks to make sure that an element with @property and no child nodes generates empty plain literal. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0113.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0113.ttl"
                 },
@@ -8012,7 +8012,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[52]",
                     "displayName": "test_0234:_all_defined_html_link_relation_values - Tests to ensure that all defined linked relations expand [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0234.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0234.ttl"
                 },
@@ -8020,7 +8020,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[53]",
                     "displayName": "test_0079:_@resource_and_@href_in_completing_incomplete_triples - Tests role of @resource and @href in completing incomplete triples (including their mutual priorities) [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0079.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0079.ttl"
                 },
@@ -8028,7 +8028,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[54]",
                     "displayName": "test_0233:_@typeof_with_@rel_and_@resource_present,_no_@about_(11_behavior_of_0047) - Tests @typeof with @rel and @resource present, no @about adds type to object [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0233.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0233.ttl"
                 },
@@ -8036,7 +8036,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[55]",
                     "displayName": "test_0112:_plain_literal_with_datatype=\"\" - Checks to make sure that the RDFa parser emits a plain literal when the datatype is specified as \"\". [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0112.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0112.ttl"
                 },
@@ -8060,7 +8060,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[58]",
                     "displayName": "test_0093:_tests_xmlliteral_content_with_explicit_@datatype_(userdatatyped_literal) - Tests the explicit specification of an RDF XMLLiteral with @datatype using a non-RDF namespace, yielding a user-data-typed literal [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0093.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0093.ttl"
                 },
@@ -8076,7 +8076,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[60]",
                     "displayName": "test_0008:_empty_string_@about - Tests empty @about. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0008.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0008.ttl"
                 },
@@ -8084,7 +8084,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[61]",
                     "displayName": "test_0249:_multiple_ways_of_handling_incomplete_triples_(with_@rel_and_@rev);_rdfa_11_version - Tests multiple ways of handling incomplete triples, this time with both @rel and @rev [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0249.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0249.ttl"
                 },
@@ -8092,7 +8092,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[62]",
                     "displayName": "test_0007:_@rel,_@rev,_@property,_@content - Tests @rel, @rev, @property, and @content together to generate several RDF triples. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0007.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0007.ttl"
                 },
@@ -8100,7 +8100,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[63]",
                     "displayName": "test_0006:_@rel_and_@rev - Tests @rev and @rel together, with the object being specified by @href, ignoring content [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0006.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0006.ttl"
                 },
@@ -8108,7 +8108,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[64]",
                     "displayName": "test_0248:_multiple_ways_of_handling_incomplete_triples_(with_@rev);_rdfa_11_version - Tests multiple ways of handling incomplete triples, this time with @rev [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0248.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0248.ttl"
                 },
@@ -8116,7 +8116,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[65]",
                     "displayName": "test_0001:_predicate_establishment_with_@property - Tests @property to establish the predicate; literal object is in the content of the element. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0001.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0001.ttl"
                 },
@@ -8132,15 +8132,15 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[67]",
                     "displayName": "test_0089:_@src_sets_a_new_subject_(@typeof) - Tests to ensure that @src sets a new subject (focuses on @typeof). [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0089.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0089.ttl"
                 },
                 {
                     "name": "rdf11RDFaXHTMLTests()[68]",
-                    "displayName": "test_0088:_interpretation_of_the_curie_\"_:\" - Test the interpretation of the CURIE \"_:\" [RDFa+XHTML Rdfa positive evaluation]",
+                    "displayName": "test_0088:_interpretation_of_the_curie_\"_:\" - Test the interpretation of the CURIE \"_:\"  [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0088.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0088.ttl"
                 },
@@ -8148,7 +8148,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[69]",
                     "displayName": "test_0121:_\"[]\"_is_a_valid_safe_curie - Checks to make sure RDFa processors resolve the empty CURIE correctly. Note that this is not valid HTML due to recursive <p> elements. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0121.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0121.ttl"
                 },
@@ -8156,7 +8156,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[70]",
                     "displayName": "test_0087:_all_reserved_xhtml_@rel_values_(with_:xxx) - Tests to ensure that all reserved XHTML words are supported in @rel (with :xxx) [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0087.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0087.ttl"
                 },
@@ -8164,7 +8164,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[71]",
                     "displayName": "test_0120:_\"[:]\"_curie_format_is_valid - Checks to make sure that an RDFa processor expands CURIEs having only a colon to the\n  default prefix \"http://www.w3.org/1999/test-cases/vocab#\".\n [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0120.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0120.ttl"
                 },
@@ -8172,7 +8172,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[72]",
                     "displayName": "test_0247:_multiple_incomplete_triples,_rdfa_11version - Tests multiple ways of handling incomplete triples; the first two triples should use the same bnode as subject ('merged'). The third should have a separate bNode. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0247.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0247.ttl"
                 },
@@ -8188,7 +8188,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[74]",
                     "displayName": "test_0246:_hanging_@rel_creates_multiple_triples,_@typeof_permutation;_rdfa_11_version - Tests if hanging @rel creates multiple triples with @typeof permutation [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0246.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0246.ttl"
                 },
@@ -8196,7 +8196,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[75]",
                     "displayName": "test_0140:_blank_nodes_identifiers_are_not_allowed_as_predicates - The RDF data model does not allow blank node identifiers in predicates. This test ensures that RDFa processors do not emit invalid triples. [RDFa+XHTML Rdfa negative evaluation]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0140.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0140.ttl"
                 },
@@ -8204,7 +8204,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[76]",
                     "displayName": "test_0261:_white_space_preservation_in_xmlliteral - Whitespace must be maintained in an XMLLiteral, too [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0261.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0261.ttl"
                 },
@@ -8212,7 +8212,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[77]",
                     "displayName": "test_0260:_xhtml+rdfa_initial_context - XHTML+RDFa initial context. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0260.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0260.ttl"
                 },
@@ -8220,7 +8220,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[78]",
                     "displayName": "test_0019:_@about_for_subject - Tests @about to establish subject. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0019.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0019.ttl"
                 },
@@ -8228,7 +8228,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[79]",
                     "displayName": "test_0018:_@rel_for_predicate - Tests @rel to establish predicate. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0018.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0018.ttl"
                 },
@@ -8244,7 +8244,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[81]",
                     "displayName": "test_0259:_xml+rdfa_initial_context - All processors must load the RDFa Core Initial Context. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 5,
+                    "durationMs": 9,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0259.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0259.ttl"
                 },
@@ -8252,7 +8252,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[82]",
                     "displayName": "test_0012:_@xml:lang - Tests @xml:lang [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0012.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0012.ttl"
                 },
@@ -8260,7 +8260,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[83]",
                     "displayName": "test_0254:_@datatype=\"\"_generates_plain_literal_in_presence_of_child_nodes - Checks to ensure that when @datatype=\"\" is used on an element that contains child nodes, that the literal that is generated is a plain literal. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0254.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0254.ttl"
                 },
@@ -8274,9 +8274,9 @@ window.__CORESE_W3C_DATA__ = {
                 },
                 {
                     "name": "rdf11RDFaXHTMLTests()[85]",
-                    "displayName": "test_0253:_plain_literal_with_datatype=\"\"_and_lang_preservation - Checks to make sure that the RDFa parser emits a plain literal when the datatype is specified as \"\" and preserves the xml:lang value. [RDFa+XHTML Rdfa positive evaluation]",
+                    "displayName": "test_0253:_plain_literal_with_datatype=\"\"_and_lang_preservation - Checks to make sure that the RDFa parser emits a plain literal when the datatype is specified as \"\" and preserves the xml:lang value. The text, with control characters and whitespace preserved, reads \"Greek\nwhite   space\n\". [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0253.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0253.ttl"
                 },
@@ -8284,7 +8284,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[86]",
                     "displayName": "test_0252:_lang_inheritance - Tests lang inheritance [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0252.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0252.ttl"
                 },
@@ -8292,7 +8292,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[87]",
                     "displayName": "test_0131:_whitespace_alternatives_in_attributes - Ensures that multiple whitespace alternatives in attributes are allowed. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0131.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0131.ttl"
                 },
@@ -8300,7 +8300,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[88]",
                     "displayName": "test_0010:_@rel,_@rev,_@href - Tests @rel, @rev, and @href to generate two RDF triples. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0010.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0010.ttl"
                 },
@@ -8308,7 +8308,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[89]",
                     "displayName": "test_0251:_lang - Tests lang [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0251.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0251.ttl"
                 },
@@ -8316,7 +8316,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[90]",
                     "displayName": "test_0258:_the_underscore_character_is_not_allowed_as_a_prefix_or_in_xmlns - Ensures that a prefix cannot start with an underscore character when specified using xmlns or prefix. [RDFa+XHTML Rdfa negative evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0258.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0258.ttl"
                 },
@@ -8324,7 +8324,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[91]",
                     "displayName": "test_0257:_element_with_@property_and_no_child_nodes_generates__empty_plain_literal_(html5_version_of_0113) - Checks to make sure that an element with @property and no child nodes generates empty plain literal. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0257.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0257.ttl"
                 },
@@ -8332,7 +8332,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[92]",
                     "displayName": "test_0015:_meta_and_link - Tests meta and link with no parent @about [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0015.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0015.ttl"
                 },
@@ -8340,7 +8340,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[93]",
                     "displayName": "test_0256:_lang_and_xml:lang_on_the_same_element - Tests @xml:lang and @lang on the same element with different values; @xml:lang should prevail. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0256.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0256.ttl"
                 },
@@ -8348,7 +8348,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[94]",
                     "displayName": "test_0014:_@datatype,_xsd:integer - Tests setting the @datatype to xsd:integer [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0014.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0014.ttl"
                 },
@@ -8364,7 +8364,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[96]",
                     "displayName": "test_0134:_uppercase_reserved_words - Ensures that mixed-case reserved words generate triples. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0134.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0134.ttl"
                 },
@@ -8380,7 +8380,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[98]",
                     "displayName": "test_0030:_omitted_@about - Tests omitted @about. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0030.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0030.ttl"
                 },
@@ -8396,7 +8396,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[100]",
                     "displayName": "test_0029:_markup_stripping_with_@datatype - Tests markup stripping from a span element with @datatype=xsd:string [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0029.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0029.ttl"
                 },
@@ -8412,7 +8412,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[102]",
                     "displayName": "test_0265:_@property_appearing_on_the_head_element_gets_the_subject_from_<html>,_ie,_parent - @property appearing on the head element gets the subject from <html>, ie, parent; in this case the parent subject is explicitly set via @about [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0265.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0265.ttl"
                 },
@@ -8420,7 +8420,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[103]",
                     "displayName": "test_0264:_@property_appearing_on_the_head_element_gets_the_subject_from_<html>,_ie,_parent - @property appearing on the head element gets the subject from <html>, ie, parent [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0264.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0264.ttl"
                 },
@@ -8428,7 +8428,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[104]",
                     "displayName": "test_0263:_@property_appearing_on_the_html_element_yields_the_base_as_the_subject - @property appearing on the html element without @content or @datatype yields the base as the subject [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0263.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0263.ttl"
                 },
@@ -8436,7 +8436,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[105]",
                     "displayName": "test_0021:_subject_inheritance_with_no_@about - Tests inheritance of subject when no @about can be found [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0021.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0021.ttl"
                 },
@@ -8444,7 +8444,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[106]",
                     "displayName": "test_0262:_predicate_establishment_with_@property,_with_white_spaces_before_and_after_the_attribute_value - Tests @property to establish the predicate; literal object is in the content of the element. There are extra whitespaces before and after the property attribute value which should be ignored [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0262.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0262.ttl"
                 },
@@ -8452,7 +8452,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[107]",
                     "displayName": "test_0020:_inheriting_@about_for_subject - Tests @about inheritance to establish subject. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0020.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0020.ttl"
                 },
@@ -8460,7 +8460,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[108]",
                     "displayName": "test_0302:_@typeof_with_different_content_types - Tests that @typof works with terms, CURIES or IRIs. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 6,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0302.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0302.ttl"
                 },
@@ -8468,7 +8468,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[109]",
                     "displayName": "test_0027:_@content,_ignore_element_content - Tests @content for literal object, overriding element content. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0027.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0027.ttl"
                 },
@@ -8476,7 +8476,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[110]",
                     "displayName": "test_0269:_use_of_@property_in_head_without_explicit_subject - @property appearing on the html element without @content or @datatype yields the base as the subject, also with @content [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0269.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0269.ttl"
                 },
@@ -8484,7 +8484,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[111]",
                     "displayName": "test_0147:_xmlns_prefix_'xmlzzz'_(reserved) - Ensures that RDFa processors allow the prefix 'xmlzzz', even though it is a reserved prefix in XML. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0147.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0147.ttl"
                 },
@@ -8516,7 +8516,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[115]",
                     "displayName": "test_0267:_@property_without_@content_or_@datatype,_typed_object_set_by_@resource_and_@typeof - @property without @content or @datatype, typed object set by @resource and @typeof [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0267.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0267.ttl"
                 },
@@ -8524,7 +8524,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[116]",
                     "displayName": "test_0025:_simple_chaining_test - Tests simple chaining with cascade of @resource and @property [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0025.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0025.ttl"
                 },
@@ -8532,7 +8532,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[117]",
                     "displayName": "test_0300:_@resource=[]_with_@href_or_@src_uses_@href_or_@src_(@property) - When the @resource resolves to nothing, @href or @src should be used (@property case). [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0300.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0300.ttl"
                 },
@@ -8540,7 +8540,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[118]",
                     "displayName": "test_0266:_@property_without_@content_or_@datatype,_typed_object_set_by_@href_and_@typeof - @property without @content or @datatype, typed object set by @href and @typeof [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0266.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0266.ttl"
                 },
@@ -8556,7 +8556,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[120]",
                     "displayName": "test_0039:_@rev__@src/@href_test - Tests if @href overwrites @src correctly to set the URIref subject (due to @rev) [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0039.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0039.ttl"
                 },
@@ -8564,7 +8564,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[121]",
                     "displayName": "test_0319:_relative_@profile - \n     Relative IRI's used with @prefix do not resolve against the document base; they are not processed in any way.\n     However, the returned document does have a base, so when queried, it will seem to have\n     the same base as the original document.\n     [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0319.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0319.ttl"
                 },
@@ -8572,7 +8572,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[122]",
                     "displayName": "test_0318:_setting_@vocab_to_empty_strings_removes_default_vocabulary - If the value (of @vocab) is empty, then the local default vocabulary must be reset to the Host Language defined default. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0318.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0318.ttl"
                 },
@@ -8580,7 +8580,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[123]",
                     "displayName": "test_0034:_simple_img[@src]_test - Tests if a @src (in img element) correctly sets the URIref object [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0034.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0034.ttl"
                 },
@@ -8588,7 +8588,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[124]",
                     "displayName": "test_0033:_simple_chaining_test_with_bnode - Tests simple chaining with cascade of bNode and @property [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0033.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0033.ttl"
                 },
@@ -8596,7 +8596,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[125]",
                     "displayName": "test_0032:_@resource_overrides_@href - Tests if @resource overrides @href to set the URIref object. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0032.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0032.ttl"
                 },
@@ -8604,7 +8604,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[126]",
                     "displayName": "test_0031:_simple_@resource - Tests if @resource sets URIref object correct. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0031.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0031.ttl"
                 },
@@ -8612,7 +8612,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[127]",
                     "displayName": "test_0038:_@rev__img[@src]_test - Tests if a @src (in img element) correctly sets the URIref subject (due to @rev) [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0038.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0038.ttl"
                 },
@@ -8620,7 +8620,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[128]",
                     "displayName": "test_0037:_@src/@href/@resource_test - Tests if @resource overwrites both @href and @src [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0037.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0037.ttl"
                 },
@@ -8628,7 +8628,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[129]",
                     "displayName": "test_0311:_ensure_no_triples_are_generated_when_@property_is_empty - If no terms or CURIEs are present in @property, no triple should be generated from it. [RDFa+XHTML Rdfa negative evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0311.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0311.ttl"
                 },
@@ -8636,7 +8636,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[130]",
                     "displayName": "test_0036:_@src/@resource_test - Tests if @resource overwrites @src [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0036.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0036.ttl"
                 },
@@ -8644,7 +8644,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[131]",
                     "displayName": "test_0035:_@src/@href_test - Tests if @href overwrites @src [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0035.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0035.ttl"
                 },
@@ -8652,7 +8652,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[132]",
                     "displayName": "test_0290:_@href_becomes_subject_when_@property_and_@datatype_are_present - When @property and @datatype are present but @about, @rel and @rev are not, @href is used as subject and element content is used as an object literal. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0290.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0290.ttl"
                 },
@@ -8660,7 +8660,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[133]",
                     "displayName": "test_0173:_@xml:lang=\"\"_clears_language_setting - Checks to ensure that when @xml:lang=\"\" is used that any parent element language setting is cleared and a language-less literal is generated. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0173.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0173.ttl"
                 },
@@ -8668,7 +8668,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[134]",
                     "displayName": "test_0052:_@typeof_with_@resource_and_nothing_else - Tests to ensure that @typeof does not apply to @resource [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0052.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0052.ttl"
                 },
@@ -8676,7 +8676,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[135]",
                     "displayName": "test_0051:_@typeof_with_a_single_@property - Tests @typeof with a single @property [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0051.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0051.ttl"
                 },
@@ -8684,7 +8684,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[136]",
                     "displayName": "test_0293:_testing_the_':'_character_usage_in_a_curie - RDFa 1.1 CURIE allows the ':' to appear in the reference part of a CURIE. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0293.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0293.ttl"
                 },
@@ -8692,7 +8692,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[137]",
                     "displayName": "test_0172:_@datatype=\"\"_generates_plain_literal_in_presence_of_child_nodes - Checks to ensure that when @datatype=\"\" is used on an element that contains child nodes, that the literal that is generated is a plain literal. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0172.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0172.ttl"
                 },
@@ -8700,7 +8700,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[138]",
                     "displayName": "test_0050:_@typeof_without_anything_else - Tests @typeof without anything else [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0050.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0050.ttl"
                 },
@@ -8708,7 +8708,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[139]",
                     "displayName": "test_0292:_@about_overriding_@href_as_subject_is_used_as_parent_resource - When @property, @datatype, @href and @about are present but @rel and @rev are not, @about is used as subject and is also applied to nested descriptions. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0292.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0292.ttl"
                 },
@@ -8716,7 +8716,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[140]",
                     "displayName": "test_0291:_@href_as_subject_overridden_by_@about - When @property, @datatype, @href and @about are present but @rel and @rev are not, @about is used as subject. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0291.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0291.ttl"
                 },
@@ -8724,7 +8724,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[141]",
                     "displayName": "test_0207:_vevent_using_@typeof - Tests Vevent using @typeof (inlc. dtstart, dtend, etc.) [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 14,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0207.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0207.ttl"
                 },
@@ -8740,7 +8740,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[143]",
                     "displayName": "test_0329:_recursive_triple_generation - Tests recursive triple generation for nested literals. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0329.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0329.ttl"
                 },
@@ -8764,7 +8764,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[146]",
                     "displayName": "test_0048:_@typeof_with_@about_and_@rel_present,_no_@resource - Tests @typeof with @about and @rel present, no @resource [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0048.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0048.ttl"
                 },
@@ -8772,7 +8772,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[147]",
                     "displayName": "test_0289:_@href_becomes_subject_when_@property_and_@content_are_present - When @property and @content are present but @about, @rel and @rev are not, @href is used as subject. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0289.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0289.ttl"
                 },
@@ -8780,7 +8780,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[148]",
                     "displayName": "test_0180:_test_@prefix_with_empty_mapping - Checks to make sure @prefix with empty prefix does not create a mapping. [RDFa+XHTML Rdfa negative evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0180.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0180.ttl"
                 },
@@ -8788,7 +8788,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[149]",
                     "displayName": "test_0063:_@rel_in_head_using_reserved_xhtml_value_and_emptyprefix_curie_syntax - Tests @rel in head using reserved XHTML value and empty-prefix CURIE syntax [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0063.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0063.ttl"
                 },
@@ -8796,7 +8796,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[150]",
                     "displayName": "test_0062:_@rev_in_head_using_reserved,_nonprefixed_xhtml_value - Tests @rev in head using reserved, non-prefixed XHTML value [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0062.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0062.ttl"
                 },
@@ -8812,7 +8812,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[152]",
                     "displayName": "test_0182:_test_prefix_locality - Checks to be sure that prefixes are defined within the element hierarchy. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0182.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0182.ttl"
                 },
@@ -8820,7 +8820,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[153]",
                     "displayName": "test_0061:_@rel_in_head_using_reserved,_nonprefixed_xhtml_value - Tests @rel in head using reserved, non-prefixed XHTML value [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0061.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0061.ttl"
                 },
@@ -8836,7 +8836,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[155]",
                     "displayName": "test_0060:_utf8_conformance - Tests conformance with UTF-8 encoding [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0060.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0060.ttl"
                 },
@@ -8876,7 +8876,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[160]",
                     "displayName": "test_0331:_@datatype_overrides_inherited_@lang,_with_@content - Tests @datatype is used instead of @lang when @datatype is not empty, and @content is used for the value (e.g. annotating a language with human and machine readable text). [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0331.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0331.ttl"
                 },
@@ -8892,7 +8892,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[162]",
                     "displayName": "test_0298:_@about=[]_with_@typeof_does_not_create_a_new_object - When the @about resolves to nothing, the typed resource should not create a new subject (chaining). [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 4,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0298.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0298.ttl"
                 },
@@ -8908,7 +8908,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[164]",
                     "displayName": "test_0176:_iri_for_@rel_and_@rev_is_allowed - Checks to make sure that a URI may be used as @rel and @rev values [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0176.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0176.ttl"
                 },
@@ -8924,7 +8924,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[166]",
                     "displayName": "test_0055:_multiple_@rel - Tests multiple @rel separated by white spaces [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0055.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0055.ttl"
                 },
@@ -8932,7 +8932,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[167]",
                     "displayName": "test_0330:_@datatype_overrides_inherited_@lang - Tests @datatype is used instead of @lang when @datatype is not empty (e.g. annotating a date). [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0330.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0330.ttl"
                 },
@@ -8948,7 +8948,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[169]",
                     "displayName": "test_0296:_@property_does_set_parent_object_without_@typeof - When @property is used with a resource attribute (@href, @resource, ...) it does not set parent object. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 7,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0296.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0296.ttl"
                 },
@@ -8964,7 +8964,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[171]",
                     "displayName": "test_0053:_@typeof_with_@resource_and_nothing_else,_with_a_subelement - Tests to make sure that @typeof does not apply to @resource, but @resource sets the subject for the next triple to be generated [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 6,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0053.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0053.ttl"
                 },
@@ -8972,7 +8972,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[172]",
                     "displayName": "test_0174:_support_single_character_prefix_in_curies - Checks to ensure that the RDFa processor correctly processes single character prefixes when processing CURIEs. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0174.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0174.ttl"
                 },
@@ -8980,16 +8980,16 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[173]",
                     "displayName": "test_0295:_benchmark_test - Complex benchmark document. [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "SKIPPED",
-                    "durationMs": 0,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0295.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0295.ttl",
                     "skipReason": "UPSTREAM_FIXTURE: benchmark concatenation changes RDFa list and context scope, while its expected graph is the union of isolated tests"
                 },
                 {
                     "name": "rdf11RDFaXHTMLTests()[174]",
-                    "displayName": "test_0214:_root_element_has_implicit_@about=\"\" - All documents have an implicit @about=\"\" [RDFa+XHTML Rdfa positive evaluation]",
+                    "displayName": "test_0214:_root_element_has_implicit_@about=\"\" - All documents have an implicit @about=\"\"  [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0214.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0214.ttl"
                 },
@@ -8997,7 +8997,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[175]",
                     "displayName": "test_0059:_multiple_hanging_@rels_with_multiple_children - Tests multiple hanging @rels with multiple children [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 3,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0059.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0059.ttl"
                 },
@@ -9013,7 +9013,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[177]",
                     "displayName": "test_0179:_test_@prefix_vs_@xmlns_priority - Checks to make sure @prefix has a higher priority than @xmlns [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0179.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0179.ttl"
                 },
@@ -9021,7 +9021,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[178]",
                     "displayName": "test_0178:_test_@prefix_with_multiple_mappings - Checks to make sure @prefix with multiple entires creates multiple URI mappings [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0178.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0178.ttl"
                 },
@@ -9029,7 +9029,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[179]",
                     "displayName": "test_0299:_@resource=[]_with_@href_or_@src_uses_@href_or_@src_(@rel) - When the @resource resolves to nothing, @href or @src should be used (@rel case). [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0299.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0299.ttl"
                 },
@@ -9037,7 +9037,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXHTMLTests()[180]",
                     "displayName": "test_0332:_empty_@datatype_doesn't_override_inherited_@lang,_with_@content - Tests @lang is used instead of @datatype when @datatype is empty, and @content is used for the value (e.g. annotating a language with human and machine readable text). [RDFa+XHTML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0332.xhtml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0332.ttl"
                 },
@@ -9059,7 +9059,7 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 1,
             "passRate": 99.21,
-            "durationMs": 153,
+            "durationMs": 152,
             "tests": [
                 {
                     "name": "rdf11RDFaXMLTests()[1]",
@@ -9081,7 +9081,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[3]",
                     "displayName": "test_0048:_@typeof_with_@about_and_@rel_present,_no_@resource - Tests @typeof with @about and @rel present, no @resource [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0048.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0048.ttl"
                 },
@@ -9097,7 +9097,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[5]",
                     "displayName": "test_0289:_@href_becomes_subject_when_@property_and_@content_are_present - When @property and @content are present but @about, @rel and @rev are not, @href is used as subject. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0289.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0289.ttl"
                 },
@@ -9105,7 +9105,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[6]",
                     "displayName": "test_0329:_recursive_triple_generation - Tests recursive triple generation for nested literals. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0329.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0329.ttl"
                 },
@@ -9113,7 +9113,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[7]",
                     "displayName": "test_0207:_vevent_using_@typeof - Tests Vevent using @typeof (inlc. dtstart, dtend, etc.) [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0207.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0207.ttl"
                 },
@@ -9137,7 +9137,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[10]",
                     "displayName": "test_0320:_@property_binds_to_@href - Given @property with @href and @src, @href is used as object and sets new subject. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0320.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0320.ttl"
                 },
@@ -9161,7 +9161,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[13]",
                     "displayName": "test_0038:_@rev__img[@src]_test - Tests if a @src (in img element) correctly sets the URIref subject (due to @rev) [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0038.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0038.ttl"
                 },
@@ -9177,7 +9177,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[15]",
                     "displayName": "test_0311:_ensure_no_triples_are_generated_when_@property_is_empty - If no terms or CURIEs are present in @property, no triple should be generated from it. [RDFa+XML Rdfa negative evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0311.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0311.ttl"
                 },
@@ -9193,7 +9193,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[17]",
                     "displayName": "test_0318:_setting_@vocab_to_empty_strings_removes_default_vocabulary - If the value (of @vocab) is empty, then the local default vocabulary must be reset to the Host Language defined default. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0318.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0318.ttl"
                 },
@@ -9201,7 +9201,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[18]",
                     "displayName": "test_0031:_simple_@resource - Tests if @resource sets URIref object correct. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0031.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0031.ttl"
                 },
@@ -9265,7 +9265,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[26]",
                     "displayName": "test_0302:_@typeof_with_different_content_types - Tests that @typof works with terms, CURIES or IRIs. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0302.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0302.ttl"
                 },
@@ -9321,7 +9321,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[33]",
                     "displayName": "test_0025:_simple_chaining_test - Tests simple chaining with cascade of @resource and @property [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0025.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0025.ttl"
                 },
@@ -9361,7 +9361,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[38]",
                     "displayName": "test_0140:_blank_nodes_identifiers_are_not_allowed_as_predicates - The RDF data model does not allow blank node identifiers in predicates. This test ensures that RDFa processors do not emit invalid triples. [RDFa+XML Rdfa negative evaluation]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0140.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0140.ttl"
                 },
@@ -9417,7 +9417,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[45]",
                     "displayName": "test_0021:_subject_inheritance_with_no_@about - Tests inheritance of subject when no @about can be found [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0021.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0021.ttl"
                 },
@@ -9425,7 +9425,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[46]",
                     "displayName": "test_0017:_related_blanknodes - Tests creation of statements involving explicitly created blank nodes. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0017.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0017.ttl"
                 },
@@ -9433,7 +9433,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[47]",
                     "displayName": "test_0259:_xml+rdfa_initial_context - All processors must load the RDFa Core Initial Context. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 4,
+                    "durationMs": 5,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0259.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0259.ttl"
                 },
@@ -9441,7 +9441,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[48]",
                     "displayName": "test_0258:_the_underscore_character_is_not_allowed_as_a_prefix_or_in_xmlns - Ensures that a prefix cannot start with an underscore character when specified using xmlns or prefix. [RDFa+XML Rdfa negative evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0258.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0258.ttl"
                 },
@@ -9489,7 +9489,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[54]",
                     "displayName": "test_0013:_@xml:lang_inheritance - Tests @xml:lang inheritance [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0013.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0013.ttl"
                 },
@@ -9529,7 +9529,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[59]",
                     "displayName": "test_0091:_nonreserved,_unprefixed_curie_in_@property - Tests to ensure that non-reserved, un-prefixed CURIEs, when used in @property, generate triples. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0091.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0091.ttl"
                 },
@@ -9537,7 +9537,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[60]",
                     "displayName": "test_0006:_@rel_and_@rev - Tests @rev and @rel together, with the object being specified by @href, ignoring content [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0006.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0006.ttl"
                 },
@@ -9561,7 +9561,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[63]",
                     "displayName": "test_0247:_multiple_incomplete_triples,_rdfa_11version - Tests multiple ways of handling incomplete triples; the first two triples should use the same bnode as subject ('merged'). The third should have a separate bNode. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0247.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0247.ttl"
                 },
@@ -9577,7 +9577,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[65]",
                     "displayName": "test_0009:_@rev - Tests @rev. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0009.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0009.ttl"
                 },
@@ -9585,7 +9585,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[66]",
                     "displayName": "test_0008:_empty_string_@about - Tests empty @about. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0008.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0008.ttl"
                 },
@@ -9601,7 +9601,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[68]",
                     "displayName": "test_0007:_@rel,_@rev,_@property,_@content - Tests @rel, @rev, @property, and @content together to generate several RDF triples. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0007.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0007.ttl"
                 },
@@ -9609,7 +9609,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[69]",
                     "displayName": "test_0085:_@resource_and_@href_in_completing_incomplete_triples - Tests the role of @resource and @href in completing incomplete triples (including their mutual priorities), but with an intermediate layer (ie, bNode) added [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0085.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0085.ttl"
                 },
@@ -9617,7 +9617,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[70]",
                     "displayName": "test_0084:_multiple_ways_of_handling_incomplete_triples,_this_time_with_both_@rel_and_@rev - Tests multiple ways of handling incomplete triples, this time with both @rel and @rev. There is an intermediate div that should be ignored by the process [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0084.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0084.ttl"
                 },
@@ -9663,9 +9663,9 @@ window.__CORESE_W3C_DATA__ = {
                 },
                 {
                     "name": "rdf11RDFaXMLTests()[76]",
-                    "displayName": "test_0088:_interpretation_of_the_curie_\"_:\" - Test the interpretation of the CURIE \"_:\" [RDFa+XML Rdfa positive evaluation]",
+                    "displayName": "test_0088:_interpretation_of_the_curie_\"_:\" - Test the interpretation of the CURIE \"_:\"  [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0088.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0088.ttl"
                 },
@@ -9697,7 +9697,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[80]",
                     "displayName": "test_0115:_xml_entities_must_be_supported_by_rdfa_parser - Checks to make sure that XML Entities are treated properly by the RDFa parser. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0115.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0115.ttl"
                 },
@@ -9705,7 +9705,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[81]",
                     "displayName": "test_0113:_element_with_@property_and_no_child_nodes_generates__empty_plain_literal - Checks to make sure that an element with @property and no child nodes generates empty plain literal. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0113.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0113.ttl"
                 },
@@ -9729,7 +9729,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[84]",
                     "displayName": "test_0196:_test_process_explicit_xmlliteral - XMLLiteral must be explicitly specified, otherwise a normal untyped literal is created [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0196.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0196.ttl"
                 },
@@ -9737,7 +9737,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[85]",
                     "displayName": "test_0112:_plain_literal_with_datatype=\"\" - Checks to make sure that the RDFa parser emits a plain literal when the datatype is specified as \"\". [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0112.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0112.ttl"
                 },
@@ -9753,7 +9753,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[87]",
                     "displayName": "test_0071:_no_explicit_@about - Tests to ensure that a triple is generated even if @typeof and @about is not specified anywhere in the document [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0071.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0071.ttl"
                 },
@@ -9767,7 +9767,7 @@ window.__CORESE_W3C_DATA__ = {
                 },
                 {
                     "name": "rdf11RDFaXMLTests()[89]",
-                    "displayName": "test_0108:_plain_literal_with_datatype=\"\"_and_xml:lang_preservation - Checks to make sure that the RDFa parser emits a plain literal when the datatype is specified as \"\" and preserves the xml:lang value. [RDFa+XML Rdfa positive evaluation]",
+                    "displayName": "test_0108:_plain_literal_with_datatype=\"\"_and_xml:lang_preservation - Checks to make sure that the RDFa parser emits a plain literal when the datatype is specified as \"\" and preserves the xml:lang value. The text, with control characters and whitespace preserved, reads \"Greek\nwhite   space\n\". [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
                     "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0108.xml",
@@ -9801,7 +9801,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[93]",
                     "displayName": "test_0064:_@about_with_safe_curie - Tests if @about generates a proper triple when a safe CURIE is used [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0064.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0064.ttl"
                 },
@@ -9863,7 +9863,7 @@ window.__CORESE_W3C_DATA__ = {
                 },
                 {
                     "name": "rdf11RDFaXMLTests()[101]",
-                    "displayName": "test_0214:_root_element_has_implicit_@about=\"\" - All documents have an implicit @about=\"\" [RDFa+XML Rdfa positive evaluation]",
+                    "displayName": "test_0214:_root_element_has_implicit_@about=\"\" - All documents have an implicit @about=\"\"  [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
                     "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0214.xml",
@@ -9922,7 +9922,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[108]",
                     "displayName": "test_0051:_@typeof_with_a_single_@property - Tests @typeof with a single @property [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0051.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0051.ttl"
                 },
@@ -10018,7 +10018,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[120]",
                     "displayName": "test_0176:_iri_for_@rel_and_@rev_is_allowed - Checks to make sure that a URI may be used as @rel and @rev values [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0176.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0176.ttl"
                 },
@@ -10058,7 +10058,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11RDFaXMLTests()[125]",
                     "displayName": "test_0291:_@href_as_subject_overridden_by_@about - When @property, @datatype, @href and @about are present but @rel and @rev are not, @about is used as subject. [RDFa+XML Rdfa positive evaluation]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0291.xml",
                     "resultUri": "http://rdfa.info/test-suite/test-cases/rdfa1.1/xml/0291.ttl"
                 },
@@ -10080,13 +10080,13 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 0,
             "passRate": 100.0,
-            "durationMs": 183,
+            "durationMs": 191,
             "tests": [
                 {
                     "name": "rdf11TrigTests()[1]",
                     "displayName": "trigsyntaxbadkw05 - 'true' cannot be used as object (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 6,
+                    "durationMs": 7,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-kw-05.trig"
                 },
                 {
@@ -10124,7 +10124,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[6]",
                     "displayName": "number_sign_following_localname - number sign following localName [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/number_sign_following_localName.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/number_sign_following_localName.nq"
                 },
@@ -10154,7 +10154,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[10]",
                     "displayName": "trigsyntaxbadnsdotstart - Prefix must not start with dot [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-ns-dot-start.trig"
                 },
                 {
@@ -10228,7 +10228,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[20]",
                     "displayName": "trigkwgraph03 - Named graph may be empty [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-kw-graph-03.trig"
                 },
                 {
@@ -10242,7 +10242,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[22]",
                     "displayName": "trigkwgraph06 [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-kw-graph-06.trig"
                 },
                 {
@@ -10256,14 +10256,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[24]",
                     "displayName": "trigkwgraph04 [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-kw-graph-04.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[25]",
                     "displayName": "prefix_with_pn_chars_base_character_boundaries - prefix with PN CHARS BASE character boundaries (prefix: AZaz\u00c0\u00d6\u00d8\u00f6\u00f8...:) [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/prefix_with_PN_CHARS_BASE_character_boundaries.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_spo.nq"
                 },
@@ -10271,7 +10271,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[26]",
                     "displayName": "trigkwgraph05 - Use of empty prefix inside named graph [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-kw-graph-05.trig"
                 },
                 {
@@ -10285,14 +10285,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[28]",
                     "displayName": "trigsyntaxbaduri04 - Bad IRI : character escapes not allowed (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-uri-04.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[29]",
                     "displayName": "trigsyntaxbnode09 - bnode property list [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bnode-09.trig"
                 },
                 {
@@ -10306,14 +10306,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[31]",
                     "displayName": "trigsyntaxbaduri02 - Bad IRI : bad escape (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-uri-02.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[32]",
                     "displayName": "trigkwgraph08 - Named graph may be named with BNode [] [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-kw-graph-08.trig"
                 },
                 {
@@ -10334,35 +10334,35 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[35]",
                     "displayName": "trigsyntaxbaduriescape02 - Bad IRI : hex 3C is < (negative evaluation test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-uri-escape-02.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[36]",
                     "displayName": "trigsyntaxbnode06 - labeled bnode subject [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bnode-06.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[37]",
                     "displayName": "trigsyntaxbaduriescape01 - Bad IRI : good escape, bad character (negative evaluation test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-uri-escape-01.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[38]",
                     "displayName": "trigsyntaxbnode05 - bnode property list subject [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bnode-05.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[39]",
                     "displayName": "literal1_ascii_boundaries - LITERAL1_ascii_boundaries '\\x00\\x09\\x0b\\x0c\\x0e\\x26\\x28...' [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL1_ascii_boundaries.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL1_ascii_boundaries.nq"
                 },
@@ -10370,7 +10370,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[40]",
                     "displayName": "trigsyntaxbnode08 - bare bnode property list [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bnode-08.trig"
                 },
                 {
@@ -10384,7 +10384,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[42]",
                     "displayName": "trigsyntaxbnode02 - bnode object [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bnode-02.trig"
                 },
                 {
@@ -10398,7 +10398,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[44]",
                     "displayName": "trigsyntaxbnode04 - bnode property list object (2) [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bnode-04.trig"
                 },
                 {
@@ -10449,7 +10449,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[51]",
                     "displayName": "trigsyntaxuri03 - IRIs with long Unicode escape [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-uri-03.trig"
                 },
                 {
@@ -10470,14 +10470,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[54]",
                     "displayName": "trigsyntaxuri02 - IRIs with Unicode escape [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-uri-02.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[55]",
                     "displayName": "iri_with_eight_digit_numeric_escape - IRI with eight digit numeric escape (\\U) [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_with_eight_digit_numeric_escape.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_spo.nq"
                 },
@@ -10485,7 +10485,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[56]",
                     "displayName": "number_sign_following_pname_ns - number sign following PNAME_NS [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/number_sign_following_PNAME_NS.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/number_sign_following_PNAME_NS.nq"
                 },
@@ -10515,14 +10515,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[60]",
                     "displayName": "trigsyntaxbadn3extras08 - @keywords is not TriG (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-n3-extras-08.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[61]",
                     "displayName": "trigsyntaxbadn3extras09 - => is not TriG (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-n3-extras-09.trig"
                 },
                 {
@@ -10536,14 +10536,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[63]",
                     "displayName": "trigsyntaxbaduriescape03 - Bad IRI : hex 3E is  (negative evaluation test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-uri-escape-03.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[64]",
                     "displayName": "trigsyntaxbadn3extras04 - N3 paths not in TriG (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-n3-extras-04.trig"
                 },
                 {
@@ -10557,7 +10557,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[66]",
                     "displayName": "trigsyntaxbadn3extras06 - N3 paths not in TriG (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-n3-extras-06.trig"
                 },
                 {
@@ -10571,7 +10571,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[68]",
                     "displayName": "literal_with_line_feed - literal with LINE FEED [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_LINE_FEED.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_LINE_FEED.nq"
                 },
@@ -10579,7 +10579,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[69]",
                     "displayName": "literal_with_reverse_solidus - literal with REVERSE SOLIDUS [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_REVERSE_SOLIDUS.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_REVERSE_SOLIDUS.nq"
                 },
@@ -10587,7 +10587,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[70]",
                     "displayName": "trigsyntaxbadn3extras01 - {} fomulae not in TriG (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-n3-extras-01.trig"
                 },
                 {
@@ -10601,7 +10601,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[72]",
                     "displayName": "labeled_blank_node_object - labeled blank node object [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/labeled_blank_node_object.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/labeled_blank_node_object.nq"
                 },
@@ -10609,14 +10609,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[73]",
                     "displayName": "trigsyntaxbadn3extras03 - N3 paths not in TriG (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-n3-extras-03.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[74]",
                     "displayName": "trigsyntaxstring03 - langString literal with region [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-string-03.trig"
                 },
                 {
@@ -10630,14 +10630,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[76]",
                     "displayName": "trigsyntaxstring05 - squote langString literal [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-string-05.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[77]",
                     "displayName": "trigsyntaxstring04 - squote string literal [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-string-04.trig"
                 },
                 {
@@ -10658,14 +10658,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[80]",
                     "displayName": "trigturtle04 - TriG can parse Turtle (blankNodePropertyList subject) [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-turtle-04.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[81]",
                     "displayName": "trigturtle03 - TriG can parse Turtle (blankNodePropertyList subject) [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-turtle-03.trig"
                 },
                 {
@@ -10679,14 +10679,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[83]",
                     "displayName": "trigsyntaxstring09 - squote long string literal with embedded single- and double-quotes [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-string-09.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[84]",
                     "displayName": "trigturtle06 - TriG can parse Turtle (collection subject and object) [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-turtle-06.trig"
                 },
                 {
@@ -10700,14 +10700,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[86]",
                     "displayName": "trigsyntaxstring08 - long string literal with embedded newline [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-string-08.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[87]",
                     "displayName": "trigsyntaxstring01 - string literal [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-string-01.trig"
                 },
                 {
@@ -10758,7 +10758,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[94]",
                     "displayName": "last - last, not first, non-empty nested collection [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/last.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/last.nq"
                 },
@@ -10766,7 +10766,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[95]",
                     "displayName": "trigsyntaxbadn3extras11 - @forSome is not TriG (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-n3-extras-11.trig"
                 },
                 {
@@ -10780,21 +10780,21 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[97]",
                     "displayName": "trigsyntaxnsdots - Dots in namespace names [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-ns-dots.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[98]",
                     "displayName": "trigsyntaxbadn3extras13 - @keywords is not TriG (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-n3-extras-13.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[99]",
                     "displayName": "literal_with_form_feed - literal with FORM FEED [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_FORM_FEED.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_FORM_FEED.nq"
                 },
@@ -10802,7 +10802,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[100]",
                     "displayName": "trigsubm19 - positive integer, decimal and doubles [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-19.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-19.nq"
                 },
@@ -10824,7 +10824,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[103]",
                     "displayName": "bareword_integer - bareword integer [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/bareword_integer.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRIREF_datatype.nq"
                 },
@@ -10832,7 +10832,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[104]",
                     "displayName": "trigsyntaxbadstring04 - mismatching long string literal open/close (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-string-04.trig"
                 },
                 {
@@ -10847,7 +10847,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[106]",
                     "displayName": "trigsubm15 - simple long literal [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-15.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-15.nq"
                 },
@@ -10862,14 +10862,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[108]",
                     "displayName": "trigsyntaxbadstring02 - mismatching string literal open/close (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-string-02.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[109]",
                     "displayName": "trigsubm18 - empty literals, normal and long variant [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-18.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-18.nq"
                 },
@@ -10877,14 +10877,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[110]",
                     "displayName": "trigsyntaxbadstring03 - mismatching string literal long/short (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-string-03.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[111]",
                     "displayName": "trigsubm17 - floating point number [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-17.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-17.nq"
                 },
@@ -10921,21 +10921,21 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[116]",
                     "displayName": "trigsyntaxbadstruct15 - literal as predicate (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-struct-15.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[117]",
                     "displayName": "trigsyntaxbadstruct16 - bnode as predicate (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-struct-16.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[118]",
                     "displayName": "literal1_all_controls - LITERAL1_all_controls '\\x00\\x01\\x02\\x03\\x04...' [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL1_all_controls.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL1_all_controls.nq"
                 },
@@ -10943,14 +10943,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[119]",
                     "displayName": "trigsyntaxbadstruct10 - extra '.' (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-struct-10.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[120]",
                     "displayName": "hyphen_minus_in_localname - HYPHEN-MINUS in local name [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/HYPHEN_MINUS_in_localName.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/HYPHEN_MINUS_in_localName.nq"
                 },
@@ -11028,7 +11028,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[130]",
                     "displayName": "trigsubm21 - long literal ending in double quote [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-21.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-21.nq"
                 },
@@ -11044,7 +11044,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[132]",
                     "displayName": "literal_long2_ascii_boundaries - LITERAL_LONG2_ascii_boundaries '\\x00\\x21\\x23...' [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL_LONG2_ascii_boundaries.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL_LONG2_ascii_boundaries.nq"
                 },
@@ -11052,7 +11052,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[133]",
                     "displayName": "trigsubm27 - Repeating @base changes base for relative IRI lookup [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-27.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-27.nq"
                 },
@@ -11076,7 +11076,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[136]",
                     "displayName": "trigsyntaxbadstruct06 - Turtle does not allow bnodes-as-predicates (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-struct-06.trig"
                 },
                 {
@@ -11091,7 +11091,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[138]",
                     "displayName": "labeled_blank_node_graph - labeled blank node graph [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/labeled_blank_node_graph.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/labeled_blank_node_graph.nq"
                 },
@@ -11134,7 +11134,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[144]",
                     "displayName": "trigsyntaxbadstruct05 - Turtle does not allow literals-as-predicates (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-struct-05.trig"
                 },
                 {
@@ -11149,7 +11149,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[146]",
                     "displayName": "labeled_blank_node_with_leading_underscore - labeled blank node with_leading_underscore (_:_) [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/labeled_blank_node_with_leading_underscore.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/labeled_blank_node_object.nq"
                 },
@@ -11157,7 +11157,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[147]",
                     "displayName": "sparql_style_prefix - SPARQL-style prefix [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/SPARQL_style_prefix.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_spo.nq"
                 },
@@ -11165,7 +11165,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[148]",
                     "displayName": "collection_subject - collection subject [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/collection_subject.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/collection_subject.nq"
                 },
@@ -11173,7 +11173,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[149]",
                     "displayName": "localname_with_leading_underscore - localName with leading underscore (p:_) [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/localName_with_leading_underscore.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/localName_with_leading_underscore.nq"
                 },
@@ -11188,7 +11188,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[151]",
                     "displayName": "literal_long2_with_reverse_solidus - REVERSE SOLIDUS at end of LITERAL_LONG2 [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL_LONG2_with_REVERSE_SOLIDUS.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL_LONG2_with_REVERSE_SOLIDUS.nq"
                 },
@@ -11196,7 +11196,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[152]",
                     "displayName": "literal_long1_with_utf8_boundaries - LITERAL_LONG1_with_UTF8_boundaries '\\x80\\x7ff\\x800\\xfff...' [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL_LONG1_with_UTF8_boundaries.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL_with_UTF8_boundaries.nq"
                 },
@@ -11204,7 +11204,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[153]",
                     "displayName": "literal2 - LITERAL2 \"x\" [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL2.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL1.nq"
                 },
@@ -11212,7 +11212,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[154]",
                     "displayName": "prefixed_iri_predicate - prefixed IRI predicate [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/prefixed_IRI_predicate.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_spo.nq"
                 },
@@ -11227,14 +11227,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[156]",
                     "displayName": "trigsyntaxstresc03 - string literal with long Unicode escape [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-str-esc-03.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[157]",
                     "displayName": "anonymous_blank_node_object - anonymous blank node object [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/anonymous_blank_node_object.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/anonymous_blank_node_object.nq"
                 },
@@ -11242,7 +11242,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[158]",
                     "displayName": "sparql_style_base - SPARQL-style base [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/SPARQL_style_base.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_spo.nq"
                 },
@@ -11258,7 +11258,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[160]",
                     "displayName": "underscore_in_localname - underscore in local name [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/underscore_in_localName.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/underscore_in_localName.nq"
                 },
@@ -11266,14 +11266,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[161]",
                     "displayName": "trigsyntaxbadmissingnsdotstart - Prefix must not start with dot (error in triple, not prefix directive like trig-syntax-bad-ns-dot-end) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-missing-ns-dot-start.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[162]",
                     "displayName": "blanknodepropertylist_containing_collection - blankNodePropertyList containing collection [ <p1> ( \u2026 ) ] [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 3,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/blankNodePropertyList_containing_collection.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/blankNodePropertyList_containing_collection.nq"
                 },
@@ -11339,14 +11339,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[171]",
                     "displayName": "trigcollectiongraphbad01 - A graph may not be named with an empty collection [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-collection-graph-bad-01.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[172]",
                     "displayName": "literal1_all_punctuation - LITERAL1_all_punctuation '!\"#$%&()...' [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL1_all_punctuation.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL1_all_punctuation.nq"
                 },
@@ -11354,14 +11354,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[173]",
                     "displayName": "trigsyntaxdatatypes01 - xsd:byte literal [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-datatypes-01.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[174]",
                     "displayName": "trigturtlebad01 - Trailing dot required in Turtle block [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-turtle-bad-01.trig"
                 },
                 {
@@ -11376,14 +11376,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[176]",
                     "displayName": "trigturtlebad02 - TriG is not N-Quads [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-turtle-bad-02.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[177]",
                     "displayName": "iriref_datatype - IRIREF datatype \"\"^^<t> [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRIREF_datatype.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRIREF_datatype.nq"
                 },
@@ -11391,7 +11391,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[178]",
                     "displayName": "trigcollectiongraphbad02 - A graph may not be named with a collection [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-collection-graph-bad-02.trig"
                 },
                 {
@@ -11419,7 +11419,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[182]",
                     "displayName": "default_namespace_iri - default namespace IRI (:ln) [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/default_namespace_IRI.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_spo.nq"
                 },
@@ -11434,7 +11434,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[184]",
                     "displayName": "first - first, not last, non-empty nested collection [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/first.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/first.nq"
                 },
@@ -11449,14 +11449,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[186]",
                     "displayName": "trigsyntaxpnameesc01 - pname with back-slash escapes [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-pname-esc-01.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[187]",
                     "displayName": "trigsyntaxbase01 - @base [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-base-01.trig"
                 },
                 {
@@ -11470,7 +11470,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[189]",
                     "displayName": "triggraphbad03 - GRAPH needs {} [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-graph-bad-03.trig"
                 },
                 {
@@ -11484,7 +11484,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[191]",
                     "displayName": "triggraphbad01 - GRAPH but no name - GRAPH is not used with the default graph [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-graph-bad-01.trig"
                 },
                 {
@@ -11498,7 +11498,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[193]",
                     "displayName": "trigsyntaxbadprefix03 - @prefix without URI (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-prefix-03.trig"
                 },
                 {
@@ -11519,21 +11519,21 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[196]",
                     "displayName": "trigsyntaxbadprefix07 - PREFIX inside graph (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-prefix-07.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[197]",
                     "displayName": "trigsyntaxbadnumericescape01 - Surrogates not allowed in STRING_LITERAL_QUOTE [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-numeric-escape-01.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[198]",
                     "displayName": "literal_with_escaped_line_feed - literal with escaped LINE FEED [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_escaped_LINE_FEED.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_LINE_FEED.nq"
                 },
@@ -11541,7 +11541,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[199]",
                     "displayName": "negative_numeric - negative numeric [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/negative_numeric.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/negative_numeric.nq"
                 },
@@ -11549,21 +11549,21 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[200]",
                     "displayName": "trigsyntaxbadprefix02 - No prefix (2) (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-prefix-02.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[201]",
                     "displayName": "trigsyntaxbadprefix01 - No prefix (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-prefix-01.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[202]",
                     "displayName": "langtagged_long - langtagged LONG \"\"\"x\"\"\"@en [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/langtagged_LONG.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/langtagged_non_LONG.nq"
                 },
@@ -11592,7 +11592,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[206]",
                     "displayName": "triggraphbad05 - GRAPH and a name, not several [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-graph-bad-05.trig"
                 },
                 {
@@ -11636,7 +11636,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[212]",
                     "displayName": "trigsyntaxprefix04 - Empty @prefix with % escape [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-prefix-04.trig"
                 },
                 {
@@ -11650,7 +11650,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[214]",
                     "displayName": "trigsyntaxprefix09 - percents in pnames [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-prefix-09.trig"
                 },
                 {
@@ -11664,7 +11664,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[216]",
                     "displayName": "trigsyntaxprefix07 - dash is a legal pname character [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-prefix-07.trig"
                 },
                 {
@@ -11709,7 +11709,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[222]",
                     "displayName": "trigsyntaxprefix01 - @prefix [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-prefix-01.trig"
                 },
                 {
@@ -11753,7 +11753,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[228]",
                     "displayName": "trigsyntaxbadnumericescape04 - Surrogates not allowed in STRING_LITERAL_SINGLE_QUOTE [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-numeric-escape-04.trig"
                 },
                 {
@@ -11767,7 +11767,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[230]",
                     "displayName": "trigsyntaxbadnumericescape05 - Surrogates not allowed in STRING_LITERAL_LONG_SINGLE_QUOTE [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-numeric-escape-05.trig"
                 },
                 {
@@ -11781,7 +11781,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[232]",
                     "displayName": "trigsyntaxbadlist04 - Free-standing list of zero elements : bad syntax [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-list-04.trig"
                 },
                 {
@@ -11795,7 +11795,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[234]",
                     "displayName": "trigsyntaxbadnumericescape07 - Surrogates not allowed in STRING_LITERAL_LONG_QUOTE [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-numeric-escape-07.trig"
                 },
                 {
@@ -11831,7 +11831,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[239]",
                     "displayName": "literal_with_backspace - literal with BACKSPACE [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_BACKSPACE.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_BACKSPACE.nq"
                 },
@@ -12044,7 +12044,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[267]",
                     "displayName": "trigbnodeplistgraphbad01 - A graph may not be named with a blankNodePropertyList [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-bnodeplist-graph-bad-01.trig"
                 },
                 {
@@ -12072,7 +12072,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[271]",
                     "displayName": "alternating_iri_graphs - alternating graphs with IRI names [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/alternating_iri_graphs.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/alternating_iri_graphs.nq"
                 },
@@ -12143,7 +12143,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[280]",
                     "displayName": "trigevalstruct02 - triple with IRIs and embedded whitespace [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-eval-struct-02.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-eval-struct-02.nq"
                 },
@@ -12151,7 +12151,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[281]",
                     "displayName": "trigsubm10 - integer datatyped literal [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-10.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-subm-10.nq"
                 },
@@ -12159,7 +12159,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[282]",
                     "displayName": "literal_long1_with_2_squotes - LITERAL_LONG1 with 2 squotes '''a''b''' [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL_LONG1_with_2_squotes.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/LITERAL_LONG1_with_2_squotes.nq"
                 },
@@ -12167,7 +12167,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[283]",
                     "displayName": "prefix_with_non_leading_extras - prefix with_non_leading_extras (_:a\u00b7\u0300\u036f\u203f.\u2040) [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/prefix_with_non_leading_extras.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_spo.nq"
                 },
@@ -12182,7 +12182,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[285]",
                     "displayName": "trigsyntaxstruct06 - missing '.' [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-struct-06.trig"
                 },
                 {
@@ -12197,14 +12197,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[287]",
                     "displayName": "trigsyntaxbadnum01 - Bad number format (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-num-01.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[288]",
                     "displayName": "trigsyntaxstruct07 - trailing ';' no '.' [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-struct-07.trig"
                 },
                 {
@@ -12260,7 +12260,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[296]",
                     "displayName": "trigsyntaxstruct01 - object list [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-struct-01.trig"
                 },
                 {
@@ -12283,14 +12283,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[299]",
                     "displayName": "trigsyntaxbadbnode01 - Colon in bnode label not allowed (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-bnode-01.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[300]",
                     "displayName": "trigsyntaxbadbnode02 - Colon in bnode label not allowed (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-bnode-02.trig"
                 },
                 {
@@ -12305,7 +12305,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[302]",
                     "displayName": "alternating_bnode_graphs - alternating graphs with BNode names [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/alternating_bnode_graphs.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/alternating_bnode_graphs.nq"
                 },
@@ -12313,7 +12313,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[303]",
                     "displayName": "old_style_base - old-style base [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/old_style_base.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/IRI_spo.nq"
                 },
@@ -12321,7 +12321,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[304]",
                     "displayName": "literal_with_escaped_backspace - literal with escaped BACKSPACE [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_escaped_BACKSPACE.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_BACKSPACE.nq"
                 },
@@ -12329,7 +12329,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[305]",
                     "displayName": "positive_numeric - positive numeric [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/positive_numeric.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/positive_numeric.nq"
                 },
@@ -12377,7 +12377,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[311]",
                     "displayName": "literal_with_numeric_escape4 - literal with numeric escape4 \\u [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_numeric_escape4.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_numeric_escape4.nq"
                 },
@@ -12401,7 +12401,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[314]",
                     "displayName": "literal_with_numeric_escape8 - literal with numeric escape8 \\U [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_numeric_escape8.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/literal_with_numeric_escape4.nq"
                 },
@@ -12409,7 +12409,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[315]",
                     "displayName": "trigsyntaxlists03 - isomorphic list as subject and object [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-lists-03.trig"
                 },
                 {
@@ -12423,14 +12423,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[317]",
                     "displayName": "trigsyntaxlists05 - mixed lists with embedded lists [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-lists-05.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[318]",
                     "displayName": "trigsyntaxnumber01 - integer literal [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-number-01.trig"
                 },
                 {
@@ -12491,14 +12491,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[326]",
                     "displayName": "trigsyntaxbnode10 - mixed bnode property list and triple [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bnode-10.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[327]",
                     "displayName": "trigsyntaxbadpname02 - Bad %-sequence in pname (negative test) [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-pname-02.trig"
                 },
                 {
@@ -12519,7 +12519,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[330]",
                     "displayName": "bareword_decimal - bareword decimal [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/bareword_decimal.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/bareword_decimal.nq"
                 },
@@ -12535,7 +12535,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[332]",
                     "displayName": "repeated_semis_at_end - repeated semis at end <s> <p> <o> ;; <p2> <o2> . [Trig Trig positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/repeated_semis_at_end.trig",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/predicateObjectList_with_two_objectLists.nq"
                 },
@@ -12543,7 +12543,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[333]",
                     "displayName": "triggraphbad11 - A graph may not be named with a collection [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-graph-bad-11.trig"
                 },
                 {
@@ -12572,14 +12572,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[337]",
                     "displayName": "trigsyntaxnumber12 - double literal no leading zero [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-number-12.trig"
                 },
                 {
                     "name": "rdf11TrigTests()[338]",
                     "displayName": "trigsyntaxnumber11 - double literal no fraction [Trig Trig positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-number-11.trig"
                 },
                 {
@@ -12610,7 +12610,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TrigTests()[342]",
                     "displayName": "trigsyntaxbadnsdotend - Prefix must not end in dot [Trig Trig negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/trig-syntax-bad-ns-dot-end.trig"
                 },
                 {
@@ -12734,7 +12734,7 @@ window.__CORESE_W3C_DATA__ = {
             "failed": 0,
             "skipped": 0,
             "passRate": 100.0,
-            "durationMs": 121,
+            "durationMs": 119,
             "tests": [
                 {
                     "name": "rdf11TurtleTests()[1]",
@@ -12754,14 +12754,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[3]",
                     "displayName": "turtlesyntaxnumber13 - decimal literal no leading zero [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-number-13.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[4]",
                     "displayName": "blanknodepropertylist_as_object_containing_objectlist - blankNodePropertyList as object containing objectList <s> <p> [ <p2> <o>,<o2> ] . [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/blankNodePropertyList_as_object_containing_objectList.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/blankNodePropertyList_as_object_containing_objectList.nt"
                 },
@@ -12769,7 +12769,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[5]",
                     "displayName": "localname_with_leading_underscore - localName with leading underscore (p:_) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/localName_with_leading_underscore.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/localName_with_leading_underscore.nt"
                 },
@@ -12814,7 +12814,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[11]",
                     "displayName": "turtlesyntaxbadstruct11 - trailing ';' no '.' (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-struct-11.ttl"
                 },
                 {
@@ -12849,14 +12849,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[16]",
                     "displayName": "turtlesyntaxbadbnode02 - Colon in bnode label not allowed (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-bnode-02.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[17]",
                     "displayName": "turtlesyntaxbadstruct16 - bnode as predicate (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-struct-16.ttl"
                 },
                 {
@@ -12891,7 +12891,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[22]",
                     "displayName": "turtlesyntaxbadstring05 - Long literal with missing end (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-string-05.ttl"
                 },
                 {
@@ -12928,7 +12928,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[27]",
                     "displayName": "turtlesyntaxbadstruct14 - literal as subject (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-struct-14.ttl"
                 },
                 {
@@ -12942,7 +12942,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[29]",
                     "displayName": "turtlesyntaxbadkw03 - 'a' cannot be used as object (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-kw-03.ttl"
                 },
                 {
@@ -12963,7 +12963,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[32]",
                     "displayName": "turtlesyntaxbaduri04 - Bad IRI : character escapes not allowed (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-uri-04.ttl"
                 },
                 {
@@ -12977,7 +12977,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[34]",
                     "displayName": "turtlesyntaxbadstruct08 - missing '.' (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-struct-08.ttl"
                 },
                 {
@@ -12991,7 +12991,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[36]",
                     "displayName": "turtlesyntaxbadstruct07 - Turtle does not allow labeled bnodes-as-predicates (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-struct-07.ttl"
                 },
                 {
@@ -13012,14 +13012,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[39]",
                     "displayName": "turtlesyntaxbaduri05 - Bad IRI : character escapes not allowed (2) (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-uri-05.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[40]",
                     "displayName": "blanknodepropertylist_as_object - blankNodePropertyList as object <s> <p> [ \u2026 ] . [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/blankNodePropertyList_as_object.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/blankNodePropertyList_as_object.nt"
                 },
@@ -13027,7 +13027,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[41]",
                     "displayName": "literal_long1_with_utf8_boundaries - LITERAL_LONG1_with_UTF8_boundaries '\\x80\\x7ff\\x800\\xfff...' [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_LONG1_with_UTF8_boundaries.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_with_UTF8_boundaries.nt"
                 },
@@ -13035,7 +13035,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[42]",
                     "displayName": "repeated_semis_not_at_end - repeated semis not at end <s> <p> <o> ;;. [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/repeated_semis_not_at_end.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/repeated_semis_not_at_end.nt"
                 },
@@ -13043,7 +13043,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[43]",
                     "displayName": "labeled_blank_node_with_pn_chars_base_character_boundaries - labeled blank node with PN_CHARS_BASE character boundaries (_:AZaz\u00c0\u00d6\u00d8\u00f6\u00f8...) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/labeled_blank_node_with_PN_CHARS_BASE_character_boundaries.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/labeled_blank_node_object.nt"
                 },
@@ -13051,7 +13051,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[44]",
                     "displayName": "turtlesyntaxbadstruct01 - Turtle is not TriG (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-struct-01.ttl"
                 },
                 {
@@ -13065,14 +13065,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[46]",
                     "displayName": "turtlesyntaxbadstruct04 - Turtle does not allow literals-as-subjects (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-struct-04.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[47]",
                     "displayName": "old_style_base - old-style base [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/old_style_base.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI_spo.nt"
                 },
@@ -13094,14 +13094,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[50]",
                     "displayName": "turtlesyntaxbadn3extras03 - N3 paths not in Turtle (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-n3-extras-03.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[51]",
                     "displayName": "turtlesyntaxbadn3extras02 - = is not Turtle (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-n3-extras-02.ttl"
                 },
                 {
@@ -13145,7 +13145,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[57]",
                     "displayName": "turtlesyntaxbadn3extras05 - N3 is...of not in Turtle (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-n3-extras-05.ttl"
                 },
                 {
@@ -13217,7 +13217,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[67]",
                     "displayName": "turtleevallists05 - mixed lists with embedded lists [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 2,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-eval-lists-05.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-eval-lists-05.nt"
                 },
@@ -13241,7 +13241,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[70]",
                     "displayName": "turtleevallists03 - isomorphic list as subject and object [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-eval-lists-03.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-eval-lists-03.nt"
                 },
@@ -13257,7 +13257,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[72]",
                     "displayName": "blanknodepropertylist_with_multiple_triples - blankNodePropertyList with multiple triples [ <s> <p> ; <s2> <p2> ] [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/blankNodePropertyList_with_multiple_triples.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/blankNodePropertyList_with_multiple_triples.nt"
                 },
@@ -13265,14 +13265,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[73]",
                     "displayName": "turtlesyntaxlndots - Dots in pname local names [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-ln-dots.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[74]",
                     "displayName": "numeric_with_leading_0 - numeric with leading 0 [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/numeric_with_leading_0.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/numeric_with_leading_0.nt"
                 },
@@ -13280,7 +13280,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[75]",
                     "displayName": "collection_object - collection object [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/collection_object.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/collection_object.nt"
                 },
@@ -13288,7 +13288,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[76]",
                     "displayName": "anonymous_blank_node_object - anonymous blank node object [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/anonymous_blank_node_object.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/labeled_blank_node_object.nt"
                 },
@@ -13296,7 +13296,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[77]",
                     "displayName": "turtleevallists01 - empty list [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-eval-lists-01.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-eval-lists-01.nt"
                 },
@@ -13319,14 +13319,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[80]",
                     "displayName": "turtlesyntaxkw03 - 'a' as keyword [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-kw-03.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[81]",
                     "displayName": "turtlesyntaxkw02 - boolean literal (false) [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-kw-02.ttl"
                 },
                 {
@@ -13377,7 +13377,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[88]",
                     "displayName": "turtlesyntaxbadn3extras12 - @forAll is not Turtle (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-n3-extras-12.ttl"
                 },
                 {
@@ -13398,7 +13398,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[91]",
                     "displayName": "collection_subject - collection subject [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/collection_subject.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/collection_subject.nt"
                 },
@@ -13406,7 +13406,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[92]",
                     "displayName": "sparql_style_prefix - SPARQL-style prefix [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/SPARQL_style_prefix.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI_spo.nt"
                 },
@@ -13428,7 +13428,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[95]",
                     "displayName": "turtlesyntaxstring04 - squote string literal [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-string-04.ttl"
                 },
                 {
@@ -13456,7 +13456,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[99]",
                     "displayName": "turtlesyntaxpnameesc03 - pname with back-slash escapes (3) [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-pname-esc-03.ttl"
                 },
                 {
@@ -13531,14 +13531,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[109]",
                     "displayName": "turtlesyntaxbadn3extras10 - <= is not Turtle (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-n3-extras-10.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[110]",
                     "displayName": "negative_numeric - negative numeric [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/negative_numeric.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/negative_numeric.nt"
                 },
@@ -13546,7 +13546,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[111]",
                     "displayName": "bareword_integer - bareword integer [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/bareword_integer.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRIREF_datatype.nt"
                 },
@@ -13554,14 +13554,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[112]",
                     "displayName": "turtlesyntaxstring01 - string literal [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-string-01.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[113]",
                     "displayName": "iriresolution01 - IRI resolution (RFC3986 original cases) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 3,
+                    "durationMs": 2,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI-resolution-01.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI-resolution-01.nt"
                 },
@@ -13577,7 +13577,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[115]",
                     "displayName": "turtlesyntaxbadlndashstart - Local name must not begin with dash [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-ln-dash-start.ttl"
                 },
                 {
@@ -13678,7 +13678,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[129]",
                     "displayName": "localname_with_colon - localname with COLON [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/localname_with_COLON.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/localname_with_COLON.nt"
                 },
@@ -13686,7 +13686,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[130]",
                     "displayName": "turtlesyntaxfile02 - Only comment [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-file-02.ttl"
                 },
                 {
@@ -13708,14 +13708,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[133]",
                     "displayName": "turtlesyntaxfile03 - One comment, one empty line [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-file-03.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[134]",
                     "displayName": "literal_with_character_tabulation - literal with CHARACTER TABULATION [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_CHARACTER_TABULATION.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_CHARACTER_TABULATION.nt"
                 },
@@ -13730,7 +13730,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[136]",
                     "displayName": "turtlesyntaxbaduriescape03 - Bad IRI : hex 3E is  (negative evaluation test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-uri-escape-03.ttl"
                 },
                 {
@@ -13744,7 +13744,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[138]",
                     "displayName": "turtlesyntaxbaduriescape01 - Bad IRI : good escape, bad character (negative evaluation test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-uri-escape-01.ttl"
                 },
                 {
@@ -13774,14 +13774,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[142]",
                     "displayName": "turtlesyntaxbase03 - @base with relative IRIs [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-base-03.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[143]",
                     "displayName": "turtlesyntaxbase04 - base with relative IRIs [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-base-04.ttl"
                 },
                 {
@@ -13929,14 +13929,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[163]",
                     "displayName": "turtlesyntaxnumber11 - double literal no fraction [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-number-11.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[164]",
                     "displayName": "prefix_with_pn_chars_base_character_boundaries - prefix with PN CHARS BASE character boundaries (prefix: AZaz\u00c0\u00d6\u00d8\u00f6\u00f8...:) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/prefix_with_PN_CHARS_BASE_character_boundaries.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI_spo.nt"
                 },
@@ -13944,14 +13944,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[165]",
                     "displayName": "turtlesyntaxnumber12 - double literal no leading zero [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-number-12.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[166]",
                     "displayName": "nested_collection - nested collection (()) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/nested_collection.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/nested_collection.nt"
                 },
@@ -13959,7 +13959,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[167]",
                     "displayName": "turtlesyntaxbadnumericescape10 - Surrogates not allowed in IRIREF [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-numeric-escape-10.ttl"
                 },
                 {
@@ -13981,7 +13981,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[170]",
                     "displayName": "prefixed_name_datatype - prefixed name datatype \"\"^^p:t [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/prefixed_name_datatype.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRIREF_datatype.nt"
                 },
@@ -14005,7 +14005,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[173]",
                     "displayName": "literal_with_escaped_form_feed - literal with escaped FORM FEED [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_escaped_FORM_FEED.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_FORM_FEED.nt"
                 },
@@ -14013,7 +14013,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[174]",
                     "displayName": "turtlesubm17 - floating point number [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-17.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-17.nt"
                 },
@@ -14021,7 +14021,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[175]",
                     "displayName": "turtlesubm18 - empty literals, normal and long variant [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-18.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-18.nt"
                 },
@@ -14172,7 +14172,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[195]",
                     "displayName": "turtlesyntaxbadnumericescape03 - Surrogates not allowed in STRING_LITERAL_SINGLE_QUOTE [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-numeric-escape-03.ttl"
                 },
                 {
@@ -14200,14 +14200,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[199]",
                     "displayName": "turtlesyntaxnsdots - Dots in namespace names [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-ns-dots.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[200]",
                     "displayName": "turtlesyntaxbadnumericescape07 - Surrogates not allowed in STRING_LITERAL_LONG_QUOTE [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-numeric-escape-07.ttl"
                 },
                 {
@@ -14228,14 +14228,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[203]",
                     "displayName": "turtlesyntaxbadnumericescape09 - Surrogates not allowed in IRIREF [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-numeric-escape-09.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[204]",
                     "displayName": "literal_with_backspace - literal with BACKSPACE [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_BACKSPACE.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_BACKSPACE.nt"
                 },
@@ -14251,7 +14251,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[206]",
                     "displayName": "prefix_with_non_leading_extras - prefix with_non_leading_extras (_:a\u00b7\u0300\u036f\u203f.\u2040) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/prefix_with_non_leading_extras.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI_spo.nt"
                 },
@@ -14266,7 +14266,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[208]",
                     "displayName": "langtagged_long - langtagged LONG \"\"\"x\"\"\"@en [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/langtagged_LONG.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/langtagged_non_LONG.nt"
                 },
@@ -14311,7 +14311,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[214]",
                     "displayName": "turtlesyntaxprefix04 - Empty @prefix with % escape [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-prefix-04.ttl"
                 },
                 {
@@ -14325,7 +14325,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[216]",
                     "displayName": "bareword_decimal - bareword decimal [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/bareword_decimal.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/bareword_decimal.nt"
                 },
@@ -14333,7 +14333,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[217]",
                     "displayName": "turtlesyntaxprefix07 - dash is a legal pname character [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-prefix-07.ttl"
                 },
                 {
@@ -14347,7 +14347,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[219]",
                     "displayName": "objectlist_with_two_objects - objectList with two objects \u2026 <o1>,<o2> [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/objectList_with_two_objects.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/objectList_with_two_objects.nt"
                 },
@@ -14355,7 +14355,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[220]",
                     "displayName": "literal2 - LITERAL2 \"x\" [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL2.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL1.nt"
                 },
@@ -14370,14 +14370,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[222]",
                     "displayName": "turtlesyntaxprefix02 - PreFIX [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-prefix-02.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[223]",
                     "displayName": "literal_long2_ascii_boundaries - LITERAL_LONG2_ascii_boundaries '\\x00\\x21\\x23...' [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_LONG2_ascii_boundaries.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_LONG2_ascii_boundaries.nt"
                 },
@@ -14393,7 +14393,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[225]",
                     "displayName": "literal_with_escaped_character_tabulation - literal with escaped CHARACTER TABULATION [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_escaped_CHARACTER_TABULATION.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_CHARACTER_TABULATION.nt"
                 },
@@ -14408,7 +14408,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[227]",
                     "displayName": "predicateobjectlist_with_blanknodepropertylist_as_object - predicateObjectList_with_blankNodePropertyList_as_object <s> <p> [ <p2> <o> ] ; <p3> [ <p4> <o2> , <o3> ]  [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/predicateObjectList_with_blankNodePropertyList_as_object.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/predicateObjectList_with_blankNodePropertyList_as_object.nt"
                 },
@@ -14416,7 +14416,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[228]",
                     "displayName": "turtlesyntaxbadesc01 - Bad string escape (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-esc-01.ttl"
                 },
                 {
@@ -14430,14 +14430,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[230]",
                     "displayName": "turtlesyntaxbadesc03 - Bad string escape (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-esc-03.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[231]",
                     "displayName": "turtlesyntaxbadesc04 - Bad string escape (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-esc-04.ttl"
                 },
                 {
@@ -14498,21 +14498,21 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[239]",
                     "displayName": "turtlesyntaxlncolons - Colons in pname local names [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-ln-colons.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[240]",
                     "displayName": "turtlesyntaxbadnsdotend - Prefix must not end in dot [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-ns-dot-end.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[241]",
                     "displayName": "literal_long1_with_2_squotes - LITERAL_LONG1 with 2 squotes '''a''b''' [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_LONG1_with_2_squotes.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_LONG1_with_2_squotes.nt"
                 },
@@ -14520,7 +14520,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[242]",
                     "displayName": "positive_numeric - positive numeric [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/positive_numeric.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/positive_numeric.nt"
                 },
@@ -14536,7 +14536,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[244]",
                     "displayName": "labeled_blank_node_with_leading_digit - labeled blank node with_leading_digit (_:0) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/labeled_blank_node_with_leading_digit.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/labeled_blank_node_object.nt"
                 },
@@ -14558,7 +14558,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[247]",
                     "displayName": "turtlesyntaxbadprefix04 - @prefix without prefix name (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-prefix-04.ttl"
                 },
                 {
@@ -14572,7 +14572,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[249]",
                     "displayName": "literal_with_line_feed - literal with LINE FEED [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_LINE_FEED.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_LINE_FEED.nt"
                 },
@@ -14580,14 +14580,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[250]",
                     "displayName": "turtlesyntaxbadblanklabeldotend - Blank node label must not end in dot [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-blank-label-dot-end.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[251]",
                     "displayName": "literal_long1 - LITERAL_LONG1 '''x''' [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_LONG1.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL1.nt"
                 },
@@ -14651,14 +14651,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[259]",
                     "displayName": "turtlesyntaxbadprefix01 - No prefix (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-prefix-01.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[260]",
                     "displayName": "turtlesyntaxbadprefix02 - No prefix (2) (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-prefix-02.ttl"
                 },
                 {
@@ -14673,7 +14673,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[262]",
                     "displayName": "turtlesyntaxuri03 - IRIs with long Unicode escape [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-uri-03.ttl"
                 },
                 {
@@ -14701,7 +14701,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[266]",
                     "displayName": "literal_with_numeric_escape4 - literal with numeric escape4 \\u [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_numeric_escape4.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_numeric_escape4.nt"
                 },
@@ -14709,7 +14709,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[267]",
                     "displayName": "turtlesyntaxbadlnescape - Bad hex escape in local name [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-ln-escape.ttl"
                 },
                 {
@@ -14724,7 +14724,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[269]",
                     "displayName": "hyphen_minus_in_localname - HYPHEN-MINUS in local name [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/HYPHEN_MINUS_in_localName.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/HYPHEN_MINUS_in_localName.nt"
                 },
@@ -14732,7 +14732,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[270]",
                     "displayName": "literal_long1_ascii_boundaries - LITERAL_LONG1_ascii_boundaries '\\x00\\x26\\x28...' [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_LONG1_ascii_boundaries.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_LONG1_ascii_boundaries.nt"
                 },
@@ -14740,7 +14740,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[271]",
                     "displayName": "literal2_ascii_boundaries - LITERAL2_ascii_boundaries '\\x00\\x09\\x0b\\x0c\\x0e\\x21\\x23...' [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL2_ascii_boundaries.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL2_ascii_boundaries.nt"
                 },
@@ -14748,7 +14748,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[272]",
                     "displayName": "localname_with_assigned_nfc_bmp_pn_chars_base_character_boundaries - localName with assigned, NFC-normalized, basic-multilingual-plane PN CHARS BASE character boundaries (p:AZaz\u00c0\u00d6\u00d8\u00f6\u00f8...) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries.nt"
                 },
@@ -14756,7 +14756,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[273]",
                     "displayName": "old_style_prefix - old-style prefix [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/old_style_prefix.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI_spo.nt"
                 },
@@ -14764,7 +14764,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[274]",
                     "displayName": "sparql_style_base - SPARQL-style base [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/SPARQL_style_base.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI_spo.nt"
                 },
@@ -14772,14 +14772,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[275]",
                     "displayName": "turtlesyntaxblanklabel - Characters allowed in blank node labels [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-blank-label.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[276]",
                     "displayName": "literal_with_form_feed - literal with FORM FEED [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_FORM_FEED.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_FORM_FEED.nt"
                 },
@@ -14794,7 +14794,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[278]",
                     "displayName": "localname_with_non_leading_extras - localName with_non_leading_extras (_:a\u00b7\u0300\u036f\u203f.\u2040) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/localName_with_non_leading_extras.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/localName_with_non_leading_extras.nt"
                 },
@@ -14802,14 +14802,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[279]",
                     "displayName": "turtlesyntaxstresc03 - string literal with long Unicode escape [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-str-esc-03.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[280]",
                     "displayName": "turtlesyntaxbadbase02 - @base in wrong case (negative test) [Turtle Turtle negative syntax test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bad-base-02.ttl"
                 },
                 {
@@ -14830,7 +14830,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[283]",
                     "displayName": "literal1_all_punctuation - LITERAL1_all_punctuation '!\"#$%&()...' [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL1_all_punctuation.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL1_all_punctuation.nt"
                 },
@@ -14838,7 +14838,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[284]",
                     "displayName": "literal_with_escaped_line_feed - literal with escaped LINE FEED [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_escaped_LINE_FEED.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/literal_with_LINE_FEED.nt"
                 },
@@ -14854,7 +14854,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[286]",
                     "displayName": "turtlesubm03 - , operator [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-03.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-03.nt"
                 },
@@ -14869,7 +14869,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[288]",
                     "displayName": "turtlesubm01 - Blank subject [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-01.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-01.nt"
                 },
@@ -14877,7 +14877,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[289]",
                     "displayName": "predicateobjectlist_with_two_objectlists - predicateObjectList with two objectLists \u2026 <o1>,<o2> [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/predicateObjectList_with_two_objectLists.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/predicateObjectList_with_two_objectLists.nt"
                 },
@@ -14885,7 +14885,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[290]",
                     "displayName": "iriref_datatype - IRIREF datatype \"\"^^<t> [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRIREF_datatype.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRIREF_datatype.nt"
                 },
@@ -14893,7 +14893,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[291]",
                     "displayName": "number_sign_following_localname - number sign following localName [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/number_sign_following_localName.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/number_sign_following_localName.nt"
                 },
@@ -14901,7 +14901,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[292]",
                     "displayName": "langtagged_long_with_subtag - langtagged LONG with subtag \"\"\"Cheers\"\"\"@en-UK [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/langtagged_LONG_with_subtag.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/langtagged_LONG_with_subtag.nt"
                 },
@@ -14909,7 +14909,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[293]",
                     "displayName": "blanknodepropertylist_as_subject - blankNodePropertyList as subject [ \u2026 ] <p> <o> . [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/blankNodePropertyList_as_subject.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/blankNodePropertyList_as_subject.nt"
                 },
@@ -14917,7 +14917,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[294]",
                     "displayName": "number_sign_following_pname_ns - number sign following PNAME_NS [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/number_sign_following_PNAME_NS.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/number_sign_following_PNAME_NS.nt"
                 },
@@ -14925,7 +14925,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[295]",
                     "displayName": "literal1_with_utf8_boundaries - LITERAL1_with_UTF8_boundaries '\\x80\\x7ff\\x800\\xfff...' [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL1_with_UTF8_boundaries.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/LITERAL_with_UTF8_boundaries.nt"
                 },
@@ -14933,7 +14933,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[296]",
                     "displayName": "turtlesubm08 - simple collection [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-08.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-08.nt"
                 },
@@ -14941,7 +14941,7 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[297]",
                     "displayName": "default_namespace_iri - default namespace IRI (:ln) [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/default_namespace_IRI.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/IRI_spo.nt"
                 },
@@ -14957,14 +14957,14 @@ window.__CORESE_W3C_DATA__ = {
                     "name": "rdf11TurtleTests()[299]",
                     "displayName": "turtlesyntaxbnode10 - mixed bnode property list and triple [Turtle Turtle positive syntax test]",
                     "status": "PASSED",
-                    "durationMs": 0,
+                    "durationMs": 1,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-syntax-bnode-10.ttl"
                 },
                 {
                     "name": "rdf11TurtleTests()[300]",
                     "displayName": "turtlesubm06 - non-empty [] as subject and object [Turtle Turtle positive evaluation test]",
                     "status": "PASSED",
-                    "durationMs": 1,
+                    "durationMs": 0,
                     "actionUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-06.ttl",
                     "resultUri": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/turtle-subm-06.nt"
                 },
