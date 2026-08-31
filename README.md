@@ -22,6 +22,7 @@ The live interactive W3C conformance dashboard and benchmark reports are publish
 | **RDFa 1.1 (XHTML, XML, SVG)**        | [RDFa Test Suite](https://rdfa.info/test-suite/)                                    | XHTML, XML, and SVG Evaluation                                                |
 | **JSON-LD 1.1 (`toRdf` & `fromRdf`)** | [JSON-LD 1.1 Test Suite](https://json-ld.github.io/json-ld.org/test-suite/reports/) | `toRdf` and `fromRdf` Syntax and Evaluation                                   |
 | **SPARQL 1.0**                        | [SPARQL 1.0 Test Suite](https://w3c.github.io/rdf-tests/sparql/sparql10/)           | Query Evaluation (SELECT, ASK, CONSTRUCT, DESCRIBE), Positive/Negative Syntax |
+| **SPARQL 1.1**                        | [SPARQL 1.1 Test Suite](https://w3c.github.io/rdf-tests/sparql/sparql11/)           | Query Evaluation, Positive/Negative Syntax, Update Syntax, Update Evaluation, CSV Result Format |
 
 > **Documented Test Exclusions & Rationale**: All documented exclusions (e.g. non-standard Generalized RDF or upstream dependency edge-cases) are formally specified in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).
 
@@ -77,6 +78,9 @@ See [the EARL application profile](docs/EARL_REPORT.md) for the exact model, pro
 
 # SPARQL 1.0 tests
 ./gradlew test --tests "*Sparql10DynamicTest*"
+
+# SPARQL 1.1 tests
+./gradlew test --tests "*Sparql11DynamicTest*"
 ```
 
 ### Exclusions Policy
