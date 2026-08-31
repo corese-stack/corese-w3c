@@ -33,6 +33,12 @@ public class W3cTestCase {
         CONFORMITY("conformity"),
         // SPARQL test properties
         GRAPH_DATA("graphData"),
+        // SPARQL 1.1 Update test properties
+        REQUEST("request"),
+        UPDATE_DATA("updateData"),
+        RESULT_DATA("resultData"),
+        UPDATE_GRAPH_DATA("updateGraphData"),
+        RESULT_GRAPH_DATA("resultGraphData"),
         // Canonical test properties
         HASH_ALGORITHM("hashAlgorithm"),
         // JSON-LD test properties

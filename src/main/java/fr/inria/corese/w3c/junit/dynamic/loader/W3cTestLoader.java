@@ -49,8 +49,15 @@ public class W3cTestLoader {
     private static final String VAR_VALUE = "value";
     private static final String VAR_URI = "uri";
     private static final String MANIFEST_ACTION = "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>";
+    private static final String MANIFEST_RESULT = "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#result>";
     private static final String JSONLD_OPTION = "<https://w3c.github.io/json-ld-api/tests/vocab#option>";
     private static final String JSON_LD_API = "json-ld-api";
+    // SPARQL 1.1 Update test vocabulary (ut:)
+    private static final String UT_REQUEST    = "<http://www.w3.org/2009/sparql/tests/test-update#request>";
+    private static final String UT_DATA       = "<http://www.w3.org/2009/sparql/tests/test-update#data>";
+    private static final String UT_GRAPH_DATA = "<http://www.w3.org/2009/sparql/tests/test-update#graphData>";
+    private static final String UT_GRAPH      = "<http://www.w3.org/2009/sparql/tests/test-update#graph>";
+    private static final String RDFS_LABEL    = "<http://www.w3.org/2000/01/rdf-schema#label>";
     /**
      * Default constructor.
      * This constructor is intentionally empty as the class contains only static methods.
@@ -156,12 +163,30 @@ public class W3cTestLoader {
                     JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#useRdfType>", "useRdfType");
 
-            // Collect multi-valued properties (qt:graphData can appear more than once per test)
-            Map<String, List<String>> multiProps = new HashMap<>();
-            runMultiValue2HopPropQuery(conn, multiProps,
+            // SPARQL 1.1 Update properties (ut: vocab)
+            run2HopPropQuery(conn, props, MANIFEST_ACTION, UT_REQUEST,
+                    W3cTestCase.Property.REQUEST.getKey());
+            run2HopPropQuery(conn, props, MANIFEST_ACTION, UT_DATA,
+                    W3cTestCase.Property.UPDATE_DATA.getKey());
+            run2HopPropQuery(conn, props, MANIFEST_RESULT, UT_DATA,
+                    W3cTestCase.Property.RESULT_DATA.getKey());
+
+            // Collect multi-valued properties — each property gets its own map to avoid collisions
+            Map<String, List<String>> graphDataProp = new HashMap<>();
+            runMultiValue2HopPropQuery(conn, graphDataProp,
                     MANIFEST_ACTION,
                     "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#graphData>",
                     W3cTestCase.Property.GRAPH_DATA.getKey());
+
+            // SPARQL 1.1 Update named-graph data (3-hop: action/result → ut:graphData → ut:graph / rdfs:label)
+            Map<String, List<String>> updateGraphDataProp = new HashMap<>();
+            runUpdateGraphDataQuery(conn, updateGraphDataProp,
+                    MANIFEST_ACTION,
+                    W3cTestCase.Property.UPDATE_GRAPH_DATA.getKey());
+            Map<String, List<String>> resultGraphDataProp = new HashMap<>();
+            runUpdateGraphDataQuery(conn, resultGraphDataProp,
+                    MANIFEST_RESULT,
+                    W3cTestCase.Property.RESULT_GRAPH_DATA.getKey());
 
             // Step 3: build W3cTestCase objects
             for (Map.Entry<String, Set<String>> entry : uriToTypes.entrySet()) {
@@ -177,9 +202,17 @@ public class W3cTestLoader {
 
                     TestType testType = mapTestType(typeUris);
                     Map<String, Object> properties = buildPropertiesFromMap(p, action, result2);
-                    List<String> graphData = multiProps.getOrDefault(testUri, List.of());
+                    List<String> graphData = graphDataProp.getOrDefault(testUri, List.of());
                     if (!graphData.isEmpty()) {
                         properties.put(W3cTestCase.Property.GRAPH_DATA.getKey(), new ArrayList<>(graphData));
+                    }
+                    List<String> updateGraphData = updateGraphDataProp.getOrDefault(testUri, List.of());
+                    if (!updateGraphData.isEmpty()) {
+                        properties.put(W3cTestCase.Property.UPDATE_GRAPH_DATA.getKey(), new ArrayList<>(updateGraphData));
+                    }
+                    List<String> resultGraphData = resultGraphDataProp.getOrDefault(testUri, List.of());
+                    if (!resultGraphData.isEmpty()) {
+                        properties.put(W3cTestCase.Property.RESULT_GRAPH_DATA.getKey(), new ArrayList<>(resultGraphData));
                     }
                     String displayName = name != null
                             ? name.trim().toLowerCase(Locale.ROOT).replace("-", "").replace(" ", "_").replace("#", "").replace(".", "")
@@ -303,6 +336,42 @@ public class W3cTestLoader {
         }
     }
 
+    /**
+     * Collects SPARQL 1.1 Update named-graph entries for either the action or the result side.
+     * <p>
+     * Each entry is a blank node reachable via {@code mf:action/mf:result → ut:graphData} and
+     * carries two properties:
+     * <ul>
+     *   <li>{@code ut:graph}    – URI of the RDF file that holds the graph triples</li>
+     *   <li>{@code rdfs:label}  – URI used as the named-graph name in the dataset</li>
+     * </ul>
+     * Both pieces are needed together, so they are stored as a single
+     * {@code "graphNameUri|fileUri"} string in the list under {@code propKey}.
+     */
+    private static void runUpdateGraphDataQuery(RepositoryConnection conn,
+                                               Map<String, List<String>> multiProps,
+                                               String pred1, String propKey) {
+        String q = "SELECT ?uri ?graph ?label WHERE { "
+                + "?uri " + pred1 + " ?node . "
+                + "?node " + UT_GRAPH_DATA + " ?gd . "
+                + "?gd " + UT_GRAPH + " ?graph . "
+                + "?gd " + RDFS_LABEL + " ?label . }";
+        try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
+            while (r.hasNext()) {
+                BindingSet bs = r.next();
+                String uri   = getStringValue(bs, "uri");
+                String graph = getStringValue(bs, "graph");
+                String label = getStringValue(bs, "label");
+                if (uri != null && graph != null && label != null) {
+                    multiProps.computeIfAbsent(uri, k -> new ArrayList<>())
+                              .add(label + "|" + graph);
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Update graph-data query failed for {}: {}", propKey, e.getMessage());
+        }
+    }
+
     private static Map<String, Object> buildPropertiesFromMap(Map<String, String> p, String action, String result) {
         Map<String, Object> properties = new HashMap<>();
         // action and result come from merged alternatives; add them explicitly
@@ -418,7 +487,16 @@ public class W3cTestLoader {
         if (lowerUri.contains("rdfa-test#positiveevaluationtest")) return TestType.RDFA_POSITIVE_EVAL;
         if (lowerUri.contains("rdfa-test#negativeevaluationtest")) return TestType.RDFA_NEGATIVE_EVAL;
         // SPARQL 1.0 test types (test-manifest# prefix)
+        // Note: QueryEvaluationTest and UpdateEvaluationTest are matched before generic syntax tests
         if (lowerUri.contains("test-manifest#queryevaluationtest")) return TestType.SPARQL10_QUERY_EVAL;
+        if (lowerUri.contains("test-manifest#updateevaluationtest")) return TestType.SPARQL11_UPDATE_EVAL;
+        if (lowerUri.contains("test-manifest#csvresultformattest")) return TestType.SPARQL11_CSV_FORMAT;
+        // SPARQL 1.1 syntax tests (suffix "11") must be checked before the SPARQL 1.0 variants
+        if (lowerUri.contains("test-manifest#negativesyntaxtest11")) return TestType.SPARQL11_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("test-manifest#positivesyntaxtest11")) return TestType.SPARQL11_POSITIVE_SYNTAX;
+        if (lowerUri.contains("test-manifest#negativeupdatesyntaxtest11")) return TestType.SPARQL11_NEGATIVE_UPDATE_SYNTAX;
+        if (lowerUri.contains("test-manifest#positiveupdatesyntaxtest11")) return TestType.SPARQL11_POSITIVE_UPDATE_SYNTAX;
+        // SPARQL 1.0 syntax tests (no suffix)
         if (lowerUri.contains("test-manifest#negativesyntaxtest")) return TestType.SPARQL10_NEGATIVE_SYNTAX;
         if (lowerUri.contains("test-manifest#positivesyntaxtest")) return TestType.SPARQL10_POSITIVE_SYNTAX;
         return null;
