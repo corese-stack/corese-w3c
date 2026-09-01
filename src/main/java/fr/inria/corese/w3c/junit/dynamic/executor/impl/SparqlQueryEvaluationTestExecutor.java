@@ -148,7 +148,9 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         if ("srx".equals(ext) || "srj".equals(ext)) {
             SparqlResultParser.SparqlResults expected;
             try (FileInputStream fis = new FileInputStream(resultPath)) {
-                expected = SparqlResultParser.parse(fis);
+                expected = "srj".equals(ext)
+                        ? SparqlResultParser.parseJson(fis)
+                        : SparqlResultParser.parse(fis);
             }
             if (expected.isBoolean()) {
                 throw new AssertionError("Expected SELECT result file but got boolean result for: "
@@ -327,7 +329,9 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         if ("srx".equals(ext) || "srj".equals(ext)) {
             SparqlResultParser.SparqlResults expected;
             try (FileInputStream fis = new FileInputStream(resultPath)) {
-                expected = SparqlResultParser.parse(fis);
+                expected = "srj".equals(ext)
+                        ? SparqlResultParser.parseJson(fis)
+                        : SparqlResultParser.parse(fis);
             }
             if (!expected.isBoolean()) {
                 throw new AssertionError("Expected ASK result file but got tabular result for: "

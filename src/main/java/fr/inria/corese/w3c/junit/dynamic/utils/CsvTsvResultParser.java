@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Parser for SPARQL 1.1 CSV and TSV result format files.
@@ -40,8 +41,17 @@ import java.util.Map;
  */
 public final class CsvTsvResultParser {
 
-    private static final String XSD_STRING =
-            "http://www.w3.org/2001/XMLSchema#string";
+    private static final String XSD_STRING   = "http://www.w3.org/2001/XMLSchema#string";
+    private static final String XSD_INTEGER  = "http://www.w3.org/2001/XMLSchema#integer";
+    private static final String XSD_DECIMAL  = "http://www.w3.org/2001/XMLSchema#decimal";
+    private static final String XSD_DOUBLE   = "http://www.w3.org/2001/XMLSchema#double";
+    private static final String XSD_BOOLEAN  = "http://www.w3.org/2001/XMLSchema#boolean";
+
+    // SPARQL numeric / boolean bare-token patterns (per SPARQL 1.1 grammar)
+    private static final Pattern INTEGER_PAT = Pattern.compile("[+-]?[0-9]+");
+    private static final Pattern DECIMAL_PAT = Pattern.compile("[+-]?[0-9]*\\.[0-9]+");
+    private static final Pattern DOUBLE_PAT  = Pattern.compile(
+            "[+-]?([0-9]+\\.[0-9]*|\\.[0-9]+|[0-9]+)[eE][+-]?[0-9]+");
 
     private CsvTsvResultParser() {
     }
@@ -203,6 +213,10 @@ public final class CsvTsvResultParser {
             int dtIdx = cell.lastIndexOf("\"^^<");
             String label = unescape(cell.substring(1, dtIdx));
             String datatype = cell.substring(dtIdx + 4, cell.length() - 1);
+            // Normalize xsd:double exponent to uppercase E
+            if (XSD_DOUBLE.equals(datatype)) {
+                label = label.replace('e', 'E');
+            }
             return "\"" + escape(label) + "\"^^<" + datatype + ">";
         }
 
@@ -222,7 +236,21 @@ public final class CsvTsvResultParser {
             return "\"" + escape(label) + "\"^^<" + XSD_STRING + ">";
         }
 
-        // Bare token (e.g. numeric literal without quotes in TSV): treat as plain string
+        // Bare token: SPARQL numeric / boolean shorthand
+        if ("true".equals(cell) || "false".equals(cell)) {
+            return "\"" + cell + "\"^^<" + XSD_BOOLEAN + ">";
+        }
+        if (DOUBLE_PAT.matcher(cell).matches()) {
+            // XSD double: normalize exponent marker to uppercase E (e.g. 1.0e6 → 1.0E6)
+            return "\"" + cell.replace('e', 'E') + "\"^^<" + XSD_DOUBLE + ">";
+        }
+        if (DECIMAL_PAT.matcher(cell).matches()) {
+            return "\"" + cell + "\"^^<" + XSD_DECIMAL + ">";
+        }
+        if (INTEGER_PAT.matcher(cell).matches()) {
+            return "\"" + cell + "\"^^<" + XSD_INTEGER + ">";
+        }
+        // Unknown bare token — keep as plain string
         return "\"" + escape(cell) + "\"^^<" + XSD_STRING + ">";
     }
 
