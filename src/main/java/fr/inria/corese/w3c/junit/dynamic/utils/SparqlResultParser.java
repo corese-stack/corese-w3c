@@ -1,5 +1,7 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -11,13 +13,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
- * Parses SPARQL XML results files (.srx) as defined by
- * https://www.w3.org/TR/rdf-sparql-XMLres/
+ * Parses SPARQL result files in XML (.srx) and JSON (.srj) formats.
  */
 public class SparqlResultParser {
 
@@ -90,6 +92,69 @@ public class SparqlResultParser {
         }
 
         return new SparqlResults(false, false, variables, rows);
+    }
+
+    /**
+     * Parses a SPARQL JSON results stream (.srj) as defined by
+     * https://www.w3.org/TR/sparql11-results-json/
+     *
+     * @param input the input stream of a .srj file
+     * @return parsed results in the same canonical form as {@link #parse}
+     */
+    public static SparqlResults parseJson(InputStream input) throws Exception {
+        JsonNode root = new ObjectMapper().readTree(input);
+
+        // ASK result
+        JsonNode booleanNode = root.get("boolean");
+        if (booleanNode != null) {
+            return new SparqlResults(true, booleanNode.asBoolean(), List.of(), List.of());
+        }
+
+        // SELECT result
+        List<String> variables = new ArrayList<>();
+        JsonNode vars = root.path("head").path("vars");
+        for (JsonNode v : vars) {
+            variables.add(v.asText());
+        }
+
+        List<Map<String, String>> rows = new ArrayList<>();
+        for (JsonNode binding : root.path("results").path("bindings")) {
+            Map<String, String> row = new LinkedHashMap<>();
+            binding.fields().forEachRemaining(entry -> {
+                String canonical = jsonTermToCanonical(entry.getValue());
+                if (canonical != null) {
+                    row.put(entry.getKey(), canonical);
+                }
+            });
+            rows.add(row);
+        }
+
+        return new SparqlResults(false, false, variables, rows);
+    }
+
+    /**
+     * Converts a single JSON term node to its canonical string form,
+     * matching the output of {@code SparqlQueryEvaluationTestExecutor#valueToCanonical}.
+     */
+    private static String jsonTermToCanonical(JsonNode term) {
+        String type = term.path("type").asText();
+        String value = term.path("value").asText();
+        return switch (type) {
+            case "uri"   -> "<" + value + ">";
+            case "bnode" -> "_:b_" + value;
+            case "literal" -> {
+                String lang = term.path("xml:lang").asText(null);
+                if (lang != null && !lang.isEmpty()) {
+                    yield "\"" + value + "\"@" + lang.toLowerCase(Locale.ROOT);
+                }
+                String datatype = term.path("datatype").asText(null);
+                if (datatype != null && !datatype.isEmpty()) {
+                    yield "\"" + value + "\"^^<" + datatype + ">";
+                }
+                yield "\"" + value + "\"^^<http://www.w3.org/2001/XMLSchema#string>";
+            }
+            default -> null;
+        };
     }
 
     /**
