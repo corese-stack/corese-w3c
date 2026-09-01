@@ -3,43 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Corese - W3C Conformance</title>
-  <meta name="description" content="W3C standards conformance benchmarks and test reports for Corese.">
+  <title>Corese - W3C Conformance Dashboard</title>
+  <meta name="description" content="W3C RDF 1.1, RDF-Canon, and JSON-LD standards conformance benchmarks, test reports, and EARL 1.0 RDF export for Corese.">
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="app-wrapper">
     <header class="page-header">
-      <div class="header-content">
-        <div class="header-titles">
-          <div class="title-row">
-            <h1 class="main-title">Corese</h1>
-            <span class="badge-tag">W3C Conformance</span>
-          </div>
-          <p class="main-desc">Specification compliance reports and test suites execution results for <a href="https://github.com/corese-stack/corese-core" target="_blank" rel="noopener">Corese</a>.</p>
-        </div>
-
-        <div class="header-controls">
+      <div class="header-top-row">
+        <div class="brand-group">
+          <h1 class="main-title">Corese</h1>
+          <span class="badge-tag">W3C Conformance</span>
           <div class="version-control">
             <label for="version-select" class="sr-only">Benchmark Version</label>
             <select id="version-select" class="form-select select-sm" aria-label="Select benchmark version">
               <option value="latest">v5.0.0-SNAPSHOT (latest)</option>
             </select>
           </div>
+        </div>
 
+        <div class="header-controls">
           <div class="meta-tags" id="header-meta">
-            <a class="meta-tag meta-link" id="meta-commit" href="#" target="_blank" rel="noopener">Commit ...</a>
+            <a class="meta-tag meta-link" id="meta-commit" href="#" target="_blank" rel="noopener" title="View commit on GitHub">Commit ...</a>
             <span class="meta-tag" id="meta-date">...</span>
           </div>
 
+          <div class="download-group" aria-label="Download conformance reports">
+            <a class="btn-download" id="download-json" href="./data/w3c-report.json" download title="Download raw benchmark metrics in JSON format">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="12" y2="18"></line>
+                <line x1="15" y1="15" x2="12" y2="18"></line>
+              </svg>
+              <span>JSON</span>
+            </a>
+            <a class="btn-download" id="download-earl" href="./data/earl-report.ttl" download title="Download W3C EARL 1.0 + PROV-O RDF Turtle report">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              <span>EARL 1.0 (.ttl)</span>
+            </a>
+          </div>
+
           <button id="theme-toggle" class="theme-btn" title="Toggle theme" aria-label="Toggle theme">
-            <svg id="icon-moon" class="theme-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+            <svg id="icon-moon" class="theme-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
-            <svg id="icon-sun" class="theme-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" style="display: none;">
+            <svg id="icon-sun" class="theme-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" style="display: none;" aria-hidden="true">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -53,6 +72,8 @@
           </button>
         </div>
       </div>
+
+      <p class="main-desc">Specification compliance reports and test suites execution results for <a href="https://github.com/corese-stack/corese-core" target="_blank" rel="noopener">Corese Engine</a>.</p>
     </header>
 
     <main class="page-main">
@@ -70,14 +91,24 @@
             <span class="metric-note" id="val-pass-rate">-%</span>
           </div>
           <div class="metric-block">
-            <span class="metric-label">Documented Skips</span>
-            <span class="metric-num text-warning" id="val-skipped">-</span>
+            <span class="metric-label">Inapplicable</span>
+            <span class="metric-num text-inapplicable" id="val-inapplicable">-</span>
+            <span class="metric-note">Out of RDF 1.1 scope</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-label">Untested</span>
+            <span class="metric-num text-warning" id="val-untested">-</span>
             <span class="metric-note"><a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md" target="_blank" rel="noopener">See rationale</a></span>
           </div>
           <div class="metric-block">
             <span class="metric-label">Failures</span>
-            <span class="metric-num" id="val-failed">0</span>
-            <span class="metric-note">0 regressions</span>
+            <span class="metric-num text-danger" id="val-failed">0</span>
+            <span class="metric-note" id="val-failed-note">0 regressions</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-label">Cannot Tell</span>
+            <span class="metric-num text-cant-tell" id="val-cant-tell">0</span>
+            <span class="metric-note">Indeterminate</span>
           </div>
         </div>
       </section>
@@ -89,7 +120,7 @@
           <span class="section-hint">Select a suite to filter results</span>
         </div>
         <div class="suites-list" id="suites-grid">
-          <!-- Populated by JS -->
+          <!-- Populated dynamically by JS -->
         </div>
       </section>
 
@@ -97,16 +128,21 @@
       <section class="content-section">
         <div class="section-title-row">
           <h2 class="section-heading">Test Results</h2>
-          <span class="section-hint" id="explorer-count">0 tests</span>
+          <div class="section-heading-actions">
+            <span class="section-hint" id="explorer-count">0 tests</span>
+            <button class="btn-reset-filters" id="btn-reset-filters" style="display: none;">Reset Filters</button>
+          </div>
         </div>
 
         <div class="table-toolbar">
-          <div class="search-input-wrapper">
-            <label for="search-input" class="sr-only">Search tests</label>
-            <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
-              <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="search" id="search-input" placeholder="Search test name, ID, or description..." autocomplete="off" aria-label="Search test name, ID, or description">
+          <div class="search-group">
+            <label for="search-input" class="filter-label">Search</label>
+            <div class="search-input-wrapper">
+              <svg class="search-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" id="search-input" autocomplete="off" aria-label="Search tests">
+            </div>
           </div>
 
           <div class="filter-actions">
@@ -118,8 +154,10 @@
             <div class="filter-group" id="status-pills">
               <button class="filter-btn active" data-status="all">All</button>
               <button class="filter-btn" data-status="PASSED">Passed</button>
-              <button class="filter-btn" data-status="SKIPPED">Skipped</button>
               <button class="filter-btn" data-status="FAILED">Failed</button>
+              <button class="filter-btn" data-status="INAPPLICABLE">Inapplicable</button>
+              <button class="filter-btn" data-status="UNTESTED">Untested</button>
+              <button class="filter-btn" data-status="CANT_TELL">Cannot Tell</button>
             </div>
           </div>
         </div>
@@ -128,8 +166,8 @@
           <table class="report-table" id="tests-table">
             <thead>
               <tr>
-                <th style="width: 100px;">Status</th>
-                <th style="width: 170px;">Specification</th>
+                <th style="width: 105px;">Status</th>
+                <th style="width: 175px;">Specification</th>
                 <th>Test Case</th>
                 <th style="width: 90px; text-align: right;">Time</th>
                 <th style="width: 70px; text-align: center;">Details</th>
@@ -160,6 +198,8 @@
         <a href="https://team.inria.fr/wimmics/" target="_blank" rel="noopener">Inria Wimmics</a>
         <span>&bull;</span>
         <a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md" target="_blank" rel="noopener">Exclusions Policy</a>
+        <span>&bull;</span>
+        <a class="earl-spec-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/EARL_REPORT.md" target="_blank" rel="noopener">EARL Profile Spec</a>
         <span>&bull;</span>
         <a href="https://github.com/corese-stack/corese-w3c" target="_blank" rel="noopener">Repository</a>
       </div>
@@ -203,7 +243,7 @@
           <div class="info-links" id="modal-fixtures">-</div>
         </div>
         <div class="info-row">
-          <span class="info-label">Normative References & Source</span>
+          <span class="info-label">Normative References &amp; Source</span>
           <div class="info-links" id="modal-links">-</div>
         </div>
       </div>
