@@ -63,29 +63,26 @@ public class TestExecutorFactory {
             case JSON_LD_FROM_RDF_POSITIVE_EVAL -> JSONLD_FROM_RDF_EVALUATION_EXECUTOR;
             case JSON_LD_FROM_RDF_NEGATIVE_EVAL -> JSONLD_FROM_RDF_NEGATIVE_EXECUTOR;
 
-            // 3. SPARQL 1.0 tests
-            case SPARQL10_QUERY_EVAL     -> SPARQL_QUERY_EVALUATION_EXECUTOR;
-            case SPARQL10_POSITIVE_SYNTAX -> SPARQL_POSITIVE_SYNTAX_EXECUTOR;
-            case SPARQL10_NEGATIVE_SYNTAX -> SPARQL_NEGATIVE_SYNTAX_EXECUTOR;
+            // 3. SPARQL 1.0 + 1.1 query/CSV evaluation (same executor)
+            case SPARQL10_QUERY_EVAL, SPARQL11_CSV_FORMAT -> SPARQL_QUERY_EVALUATION_EXECUTOR;
 
-            // 4. SPARQL 1.1 tests
-            // Query syntax and evaluation reuse the SPARQL 1.0 executors (same engine)
-            case SPARQL11_POSITIVE_SYNTAX -> SPARQL_POSITIVE_SYNTAX_EXECUTOR;
-            case SPARQL11_NEGATIVE_SYNTAX -> SPARQL_NEGATIVE_SYNTAX_EXECUTOR;
+            // 4. SPARQL 1.0 + 1.1 syntax tests (same executors, same engine)
+            case SPARQL10_POSITIVE_SYNTAX, SPARQL11_POSITIVE_SYNTAX -> SPARQL_POSITIVE_SYNTAX_EXECUTOR;
+            case SPARQL10_NEGATIVE_SYNTAX, SPARQL11_NEGATIVE_SYNTAX -> SPARQL_NEGATIVE_SYNTAX_EXECUTOR;
+
+            // 5. SPARQL 1.1 update-specific tests
             case SPARQL11_POSITIVE_UPDATE_SYNTAX -> SPARQL_UPDATE_POSITIVE_SYNTAX_EXECUTOR;
             case SPARQL11_NEGATIVE_UPDATE_SYNTAX -> SPARQL_UPDATE_NEGATIVE_SYNTAX_EXECUTOR;
-            case SPARQL11_UPDATE_EVAL    -> SPARQL_UPDATE_EVALUATION_EXECUTOR;
-            // CSV format test: execute SELECT and compare results (same engine as query eval)
-            case SPARQL11_CSV_FORMAT     -> SPARQL_QUERY_EVALUATION_EXECUTOR;
+            case SPARQL11_UPDATE_EVAL            -> SPARQL_UPDATE_EVALUATION_EXECUTOR;
 
-            // 5. Negative tests expecting parsing/loading failures (negative syntax and negative evaluation for JSON-LD/Turtle/TriG)
+            // 6. Negative tests expecting parsing/loading failures (negative syntax and negative evaluation for JSON-LD/Turtle/TriG)
             case JSON_LD_NEGATIVE_EVAL, TURTLE_NEGATIVE_EVAL, TRIG_NEGATIVE_EVAL -> NEGATIVE_TEST_EXECUTOR;
             case TestType type when type.isSyntaxTest() && type.isNegativeTest() -> NEGATIVE_TEST_EXECUTOR;
 
-            // 6. Positive syntax tests (parsing succeeds without graph comparison)
+            // 7. Positive syntax tests (parsing succeeds without graph comparison)
             case TestType type when type.isSyntaxTest() && type.isPositiveTest() -> POSITIVE_SYNTAX_EXECUTOR;
 
-            // 7. Positive evaluation tests (graph isomorphism comparison with mf:result)
+            // 8. Positive evaluation tests (graph isomorphism comparison with mf:result)
             case TestType type when type.isEvaluationTest() -> POSITIVE_EVALUATION_EXECUTOR;
 
             default -> throw new IllegalArgumentException("No executor available for test type: " + testType);
