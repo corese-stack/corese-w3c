@@ -13,6 +13,7 @@ import fr.inria.corese.core.next.data.Values;
 import fr.inria.corese.core.next.io.CoreseIO;
 import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.core.next.storage.StorageModels;
+import fr.inria.corese.w3c.junit.dynamic.executor.InfrastructureException;
 
 /**
  * Utility class providing simple, reusable helper methods for test executors.
@@ -56,6 +57,26 @@ public class RDFTestUtils {
     }
 
     /**
+     * Resolves the RDFC hash algorithm strictly from the manifest property value.
+     *
+     * @param hashAlgoProp the property value from rdfc:hashAlgorithm (may be null)
+     * @return the resolved HashAlgorithm (defaults to SHA-256 if absent)
+     * @throws IllegalArgumentException if an unsupported algorithm is specified
+     */
+    public static fr.inria.corese.core.next.data.RdfCanonicalization.HashAlgorithm resolveRdfcHashAlgorithm(String hashAlgoProp) {
+        if (hashAlgoProp == null || hashAlgoProp.isBlank()
+                || "SHA256".equalsIgnoreCase(hashAlgoProp)
+                || "SHA-256".equalsIgnoreCase(hashAlgoProp)) {
+            return fr.inria.corese.core.next.data.RdfCanonicalization.HashAlgorithm.SHA_256;
+        }
+        if ("SHA384".equalsIgnoreCase(hashAlgoProp)
+                || "SHA-384".equalsIgnoreCase(hashAlgoProp)) {
+            return fr.inria.corese.core.next.data.RdfCanonicalization.HashAlgorithm.SHA_384;
+        }
+        throw new IllegalArgumentException("Unsupported RDFC hashAlgorithm: " + hashAlgoProp);
+    }
+
+    /**
      * Loads a file from URI and returns the local file path.
      * 
      * @param fileUri The file URI to load
@@ -63,9 +84,13 @@ public class RDFTestUtils {
      * @throws IOException if the file cannot be read
      * @throws NoSuchAlgorithmException if the hash algorithm is unavailable
      */
-    public static String loadFile(URI fileUri) throws NoSuchAlgorithmException, IOException {
-        TestFileManager.loadFile(fileUri);
-        return TestFileManager.getLocalFilePath(fileUri).toString();
+    public static String loadFile(URI fileUri) {
+        try {
+            TestFileManager.loadFile(fileUri);
+            return TestFileManager.getLocalFilePath(fileUri).toString();
+        } catch (IOException | NoSuchAlgorithmException exception) {
+            throw new InfrastructureException("Unable to obtain the official test fixture " + fileUri, exception);
+        }
     }
 
     /**

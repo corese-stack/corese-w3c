@@ -2,7 +2,9 @@ package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import java.io.FileReader;
 import java.net.URI;
+import java.util.Objects;
 
+import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.JsonLdVersion;
 import fr.inria.corese.core.next.data.api.exception.ParsingException;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
+import fr.inria.corese.w3c.junit.dynamic.executor.InfrastructureException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -19,19 +22,12 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 /**
  * Unified executor for negative RDF tests (both syntax and evaluation).
  * These tests should fail to parse and throw exceptions.
- * Process:
- * 1. Extract needed information from test case
- * 2. Attempt to parse the input file
- * 3. Expect parsing to fail with a ParsingErrorException
- * 4. If parsing succeeds, the test fails (AssertionError) else it passes
+ * For JSON-LD negative tests, validates that the thrown exception strictly matches the expected error code.
  */
 public class RdfNegativeTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfNegativeTestExecutor.class);
-    /**
-     * Default constructor.
-     * This constructor is intentionally empty as no initialization is required.
-     */
+
     public RdfNegativeTestExecutor() {
         // No initialization required
     }
@@ -62,9 +58,56 @@ public class RdfNegativeTestExecutor implements TestExecutor {
             logger.error(msg);
             throw new AssertionError(msg);
 
+        } catch (InfrastructureException | AssertionError e) {
+            throw e;
         } catch (ParsingException e) {
-            // Expected failure for negative tests
+            String expectedError = testCase.getProperty(W3cTestCase.Property.RESULT, String.class);
+            if (expectedError != null && !expectedError.isBlank() && !strictErrorMatches(e, expectedError)) {
+                String msg = String.format(
+                        "Negative test '%s' threw unexpected error code.%nExpected errorCode: %s%nGot error: %s",
+                        testName, expectedError, extractFullErrorMessage(e));
+                logger.error(msg, e);
+                throw new AssertionError(msg, e);
+            }
         }
+    }
+
+    private static boolean strictErrorMatches(Throwable root, String expectedErrorCode) {
+        Objects.requireNonNull(expectedErrorCode, "expectedErrorCode cannot be null");
+        String normExpected = normalizeCode(expectedErrorCode);
+        Throwable t = root;
+        while (t != null) {
+            if (t instanceof JsonLdError jsonLdError && jsonLdError.getCode() != null) {
+                String normActual = normalizeCode(jsonLdError.getCode().name());
+                return normActual.equals(normExpected);
+            }
+            if (t.getMessage() != null) {
+                String normActual = normalizeCode(t.getMessage());
+                if (normActual.equals(normExpected)) {
+                    return true;
+                }
+            }
+            t = t.getCause();
+        }
+        return false;
+    }
+
+    private static String extractFullErrorMessage(Throwable t) {
+        StringBuilder sb = new StringBuilder();
+        while (t != null) {
+            if (t.getMessage() != null) {
+                sb.append(t.getMessage()).append(" ");
+            }
+            t = t.getCause();
+        }
+        return sb.toString().trim();
+    }
+
+    private static String normalizeCode(String code) {
+        if (code == null) return "";
+        return code.toLowerCase()
+                .replaceAll("(?i)[@_\\s-]|keyword", "")
+                .replaceAll("[^a-z0-9]", "");
     }
 
     private JSONLDOptions jsonLdOptions(W3cTestCase testCase, String baseUri) {
