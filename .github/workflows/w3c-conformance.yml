@@ -6,6 +6,8 @@ on:
     tags: [ "v*" ]
   pull_request:
     branches: [ main, develop ]
+  release:
+    types: [ published ]
   schedule:
     - cron: '0 4 * * *' # Daily nightly benchmark at 4:00 AM UTC
   workflow_dispatch:
@@ -30,6 +32,9 @@ jobs:
   test-and-report:
     name: Execute W3C Conformance Suite
     runs-on: [self-hosted, corese-stack-ubuntu-24]
+    outputs:
+      pages-artifact-ready: ${{ steps.validate-earl.outcome == 'success' && steps.upload-pages.outcome == 'success' }}
+      report-artifact-ready: ${{ steps.validate-earl.outcome == 'success' && steps.upload-report-artifact.outcome == 'success' }}
 
     steps:
       - name: Checkout corese-w3c
@@ -47,8 +52,10 @@ jobs:
 
       - name: Select corese-core target branch
         working-directory: corese-core
+        env:
+          INPUT_CORESE_BRANCH: ${{ github.event.inputs.corese_branch }}
         run: |
-          TARGET="${{ github.event.inputs.corese_branch }}"
+          TARGET="${INPUT_CORESE_BRANCH:-}"
           if [ -n "$TARGET" ]; then
             echo "Using explicitly requested corese-core ref: $TARGET"
             git checkout "$TARGET"
@@ -78,62 +85,160 @@ jobs:
           restore-keys: |
             w3c-fixtures-
 
+      - name: Resolve report provenance
+        shell: bash
+        env:
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          HARNESS_SHA="$(git -C corese-w3c rev-parse HEAD)"
+          CORE_SHA="$(git -C corese-core rev-parse HEAD)"
+          CORE_VERSION="$(sed -nE 's/^[[:space:]]*const val version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' corese-core/build.gradle.kts | head -n 1)"
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+          [[ "$HARNESS_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "Invalid corese-w3c SHA: $HARNESS_SHA" >&2; exit 1; }
+          [[ "$CORE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "Invalid corese-core SHA: $CORE_SHA" >&2; exit 1; }
+          [ -n "$CORE_VERSION" ] && [ "$CORE_VERSION" != "unknown" ] || { echo "Invalid corese-core version" >&2; exit 1; }
+
+          echo "CORESE_W3C_COMMIT=$HARNESS_SHA" >> "$GITHUB_ENV"
+          echo "CORESE_CORE_COMMIT=$CORE_SHA" >> "$GITHUB_ENV"
+          echo "CORESE_CORE_VERSION=$CORE_VERSION" >> "$GITHUB_ENV"
+          echo "GITHUB_RUN_URL=$RUN_URL" >> "$GITHUB_ENV"
+
       - name: Run W3C Conformance Tests
+        id: w3c-tests
         working-directory: corese-w3c
         continue-on-error: true
         run: |
           chmod +x gradlew
           ./gradlew test --no-daemon
 
-      - name: Prepare Dashboard Artifact & Auto-Archive Releases
+      - name: Validate EARL report with Corese
+        id: validate-earl
         if: always()
         working-directory: corese-w3c
-        run: |
-          mkdir -p site/data/history
-          if [ -f build/reports/w3c-report.json ]; then
-            cp build/reports/w3c-report.json site/data/w3c-report.json
-          fi
+        run: ./gradlew validateEarlReport --no-daemon
 
-          # Automatically detect release tag and archive historical snapshot
-          if [ "${{ github.event_name }}" = "release" ] || [[ "${{ github.ref }}" == refs/tags/v* ]]; then
-            TAG="${GITHUB_REF_NAME}"
-            echo "Auto-archiving benchmark snapshot for release tag: $TAG"
-            if [ -f build/reports/w3c-report.json ]; then
-              cp build/reports/w3c-report.json "site/data/history/${TAG}.json"
-              python3 -c "
-          import json, os
+      - name: Prepare Dashboard Artifact & Auto-Archive Releases
+        if: ${{ always() && steps.validate-earl.outcome == 'success' }}
+        working-directory: corese-w3c
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_REF: ${{ github.ref }}
+          RELEASE_TAG_NAME: ${{ github.event.release.tag_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir -p site/data/history
+          test -s build/reports/w3c-report.json
+          test -s build/reports/earl-report.ttl
+          cp build/reports/w3c-report.json site/data/w3c-report.json
+          cp build/reports/earl-report.ttl site/data/earl-report.ttl
+
+          # Fetch past release assets and build dynamic versions registry
+          python3 -c "
+          import json, os, urllib.request, re, hashlib
+
+          def to_safe_filename(name):
+              if re.match(r'^[a-zA-Z0-9._-]+$', name):
+                  return name
+              return re.sub(r'[^a-zA-Z0-9._-]', '_', name) + '-' + hashlib.sha256(name.encode()).hexdigest()[:8]
+
           v_file = 'site/data/versions.json'
-          data = json.load(open(v_file)) if os.path.exists(v_file) else [{'id': 'latest', 'label': 'v5.0.0-SNAPSHOT (latest)', 'file': './data/w3c-report.json'}]
-          tag = '$TAG'
-          entry = {'id': tag, 'label': tag, 'file': f'./data/history/{tag}.json'}
-          if not any(x.get('id') == tag for x in data):
-              idx = 1 if len(data) > 0 and data[0].get('id') == 'latest' else 0
-              data.insert(idx, entry)
+          data = [{'id': 'latest', 'label': 'v5.0.0-SNAPSHOT (latest)', 'file': './data/w3c-report.json', 'earlFile': './data/earl-report.ttl'}]
+
+          repo = os.environ.get('GITHUB_REPOSITORY', 'corese-stack/corese-w3c')
+          token = os.environ.get('GITHUB_TOKEN', '')
+          headers = {'User-Agent': 'corese-ci', 'Accept': 'application/vnd.github+json'}
+          if token:
+              headers['Authorization'] = f'Bearer {token}'
+
+          try:
+              req = urllib.request.Request(f'https://api.github.com/repos/{repo}/releases', headers=headers)
+              with urllib.request.urlopen(req, timeout=10) as resp:
+                  releases = json.loads(resp.read().decode())
+                  for r in releases:
+                      tag = r.get('tag_name')
+                      if not tag or r.get('draft'):
+                          continue
+                      tag_safe = to_safe_filename(tag)
+                      json_asset = next((a for a in r.get('assets', []) if a['name'].endswith('.json') and 'w3c-report' in a['name']), None)
+                      ttl_asset = next((a for a in r.get('assets', []) if a['name'].endswith('.ttl') and 'earl-report' in a['name']), None)
+                      if json_asset:
+                          dest_json = f'site/data/history/{tag_safe}.json'
+                          os.makedirs(os.path.dirname(dest_json), exist_ok=True)
+                          urllib.request.urlretrieve(json_asset['browser_download_url'], dest_json)
+                          entry = {
+                              'id': tag,
+                              'label': tag,
+                              'file': f'./data/history/{tag_safe}.json'
+                          }
+                          if ttl_asset:
+                              dest_ttl = f'site/data/history/{tag_safe}.ttl'
+                              os.makedirs(os.path.dirname(dest_ttl), exist_ok=True)
+                              urllib.request.urlretrieve(ttl_asset['browser_download_url'], dest_ttl)
+                              entry['earlFile'] = f'./data/history/{tag_safe}.ttl'
+                          data.append(entry)
+          except Exception as e:
+              print(f'Note: Could not query past releases: {e}')
+
+          # If current run is a release, ensure current tag is in history and versions
+          event_name = os.environ.get('EVENT_NAME', '')
+          event_ref = os.environ.get('EVENT_REF', '')
+          tag = os.environ.get('RELEASE_TAG_NAME', '') or os.environ.get('GITHUB_REF_NAME', '')
+          if (event_name == 'release' or event_ref.startswith('refs/tags/v')) and tag:
+              import shutil
+              tag_safe = to_safe_filename(tag)
+              dest_json = f'site/data/history/{tag_safe}.json'
+              dest_ttl = f'site/data/history/{tag_safe}.ttl'
+              os.makedirs(os.path.dirname(dest_json), exist_ok=True)
+              os.makedirs(os.path.dirname(dest_ttl), exist_ok=True)
+              shutil.copyfile('site/data/w3c-report.json', dest_json)
+              shutil.copyfile('site/data/earl-report.ttl', dest_ttl)
+              if not any(x.get('id') == tag for x in data):
+                  idx = 1 if len(data) > 0 and data[0].get('id') == 'latest' else 0
+                  data.insert(idx, {
+                      'id': tag,
+                      'label': tag,
+                      'file': f'./data/history/{tag_safe}.json',
+                      'earlFile': f'./data/history/{tag_safe}.ttl'
+                  })
+
           with open(v_file, 'w', encoding='utf-8') as f:
               json.dump(data, f, indent=2)
           "
-            fi
-          fi
 
       - name: Upload Test Report Artifacts
+        id: upload-report-artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: w3c-conformance-report
           path: |
             corese-w3c/build/reports/w3c-report.json
+            corese-w3c/build/reports/earl-report.ttl
             corese-w3c/build/reports/tests/test/
           retention-days: 14
 
       - name: Upload GitHub Pages Artifact
+        id: upload-pages
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/corese-next' || github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-pages-artifact@v3
         with:
           path: corese-w3c/site/
 
+      - name: Enforce conformance test result
+        if: ${{ always() && steps.w3c-tests.outcome == 'failure' }}
+        run: |
+          echo "The W3C conformance test step failed; validated reports were retained when available." >&2
+          exit 1
+
   deploy-pages:
     name: Deploy to GitHub Pages
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/corese-next' || github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: always() && !cancelled() && needs.test-and-report.outputs.pages-artifact-ready == 'true'
     needs: test-and-report
     runs-on: ubuntu-latest
     environment:
@@ -143,3 +248,27 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  publish-release-assets:
+    name: Publish W3C Report Assets to GitHub Release
+    if: always() && !cancelled() && github.event_name == 'release' && needs.test-and-report.outputs.report-artifact-ready == 'true'
+    needs: test-and-report
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Test Report Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: w3c-conformance-report
+          path: reports
+
+      - name: Upload Assets to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          gh release upload "${RELEASE_TAG}" \
+            "reports/w3c-report.json#w3c-report-${RELEASE_TAG}.json" \
+            "reports/earl-report.ttl#earl-report-${RELEASE_TAG}.ttl" \
+            --clobber

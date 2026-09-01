@@ -32,47 +32,31 @@ The live interactive W3C conformance dashboard and benchmark reports are publish
 ./gradlew test
 ```
 
-Running `./gradlew test` executes all supported W3C suites and displays the consolidated terminal conformance summary table.
+Running `./gradlew test` executes all supported W3C suites and displays the consolidated terminal conformance summary table. It also generates and validates two reports from the same in-memory result model:
+
+- `build/reports/w3c-report.json`, the stable dashboard contract;
+- `build/reports/earl-report.ttl`, an RDF report based on the W3C EARL 1.0 vocabulary with PROV-O provenance.
+
+EARL 1.0 is a [W3C Working Group Note](https://www.w3.org/TR/EARL10-Schema/), not a W3C Recommendation. The Turtle graph is constructed and serialized with Corese, parsed again by Corese, and checked with Corese SPARQL queries. Run the standalone verification after the tests with:
+
+```bash
+./gradlew validateEarlReport --no-daemon
+```
+
+The dashboard's `passRate` is `passed / total official manifest entries`. `executedPassRate` is `passed / (passed + failed)` and is `null` when no test was executed. Inapplicable, untested, and cannot-tell outcomes are displayed separately and are never counted as passes.
+
+See [the EARL application profile](docs/EARL_REPORT.md) for the exact model, provenance, validation, and identifier rules.
 
 ### Execute a specific test suite
 
 ```bash
-# RDF 1.1 Turtle tests
-./gradlew test --tests "*Rdf11TurtleDynamicTest*"
+# Example: Run Turtle test suite only
+./gradlew test --tests "*TurtleDynamicTest*"
 
-# RDF 1.1 TriG tests
-./gradlew test --tests "*Rdf11TrigDynamicTest*"
-
-# RDF 1.1 RDF/XML tests
-./gradlew test --tests "*Rdf11XmlDynamicTest*"
-
-# RDF 1.1 N-Triples tests
-./gradlew test --tests "*Rdf11NTriplesDynamicTest*"
-
-# RDF 1.1 N-Quads tests
-./gradlew test --tests "*Rdf11NQuadsDynamicTest*"
-
-# RDFC-1.0 RDF Dataset Canonicalization tests
-./gradlew test --tests "*RdfCanonicalDynamicTest*"
-
-# JSON-LD 1.1 toRdf (JSON-LD to RDF) tests
-./gradlew test --tests "*Rdf11JsonldToRdfDynamicTest*"
-
-# JSON-LD 1.1 fromRdf (RDF to JSON-LD) tests
-./gradlew test --tests "*Rdf11JsonldFromRdfDynamicTest*"
-
-# All JSON-LD tests
-./gradlew test --tests "*Jsonld*"
-
-# RDFa 1.1 XHTML tests
-./gradlew test --tests "*Rdf11RDFaXHTMLDynamicTest*"
-
-# RDFa 1.1 XML tests
-./gradlew test --tests "*Rdf11RDFaXMLDynamicTest*"
-
-# RDFa 1.1 SVG tests
-./gradlew test --tests "*Rdf11RDFaSVGDynamicTest*"
-
-# All RDFa tests
-./gradlew test --tests "*RDFa*"
+# Example: Run Canonicalization test suite only
+./gradlew test --tests "*CanonicalDynamicTest*"
 ```
+
+### Exclusions Policy
+
+To ensure high scientific integrity and transparency, no test is skipped silently. All exclusions are documented with exact fragment identifiers and reactivation conditions in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).
