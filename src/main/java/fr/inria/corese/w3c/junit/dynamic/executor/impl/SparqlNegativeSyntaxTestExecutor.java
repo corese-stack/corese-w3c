@@ -7,6 +7,7 @@ import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
+import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -40,7 +41,7 @@ public class SparqlNegativeSyntaxTestExecutor implements TestExecutor {
             throw new AssertionError(String.format(
                     "Expected query to fail parsing but it succeeded for negative syntax test: '%s'",
                     testCase.getName()));
-        } catch (Exception e) {
+        } catch (QuerySyntaxException | IllegalArgumentException e) {
             // Expected: query parsing failed — negative syntax test passes
         }
     }
