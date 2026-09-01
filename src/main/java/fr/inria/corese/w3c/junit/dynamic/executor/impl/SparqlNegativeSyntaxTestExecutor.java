@@ -36,25 +36,13 @@ public class SparqlNegativeSyntaxTestExecutor implements TestExecutor {
 
         try (Repository repo = Repositories.create(Storages.create());
              RepositoryConnection conn = repo.getConnection()) {
-            prepareQuery(conn, queryText);
+            SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText);
             // If we reach here, the query was accepted — test must fail
             throw new AssertionError(String.format(
                     "Expected query to fail parsing but it succeeded for negative syntax test: '%s'",
                     testCase.getName()));
-        } catch (QuerySyntaxException | IllegalArgumentException e) {
+        } catch (QuerySyntaxException e) {
             // Expected: query parsing failed — negative syntax test passes
-        }
-    }
-
-    private static void prepareQuery(RepositoryConnection conn, String queryText) {
-        String queryType = SparqlQueryEvaluationTestExecutor.detectQueryType(queryText);
-        switch (queryType) {
-            case "SELECT"   -> conn.prepareTupleQuery(queryText);
-            case "ASK"      -> conn.prepareBooleanQuery(queryText);
-            case "CONSTRUCT", "DESCRIBE" -> conn.prepareGraphQuery(queryText);
-            // UNKNOWN type means the query text is too malformed to classify;
-            // treat as a parse failure (caught by the outer catch block)
-            default -> throw new IllegalArgumentException("Cannot determine query type — likely a syntax error");
         }
     }
 }

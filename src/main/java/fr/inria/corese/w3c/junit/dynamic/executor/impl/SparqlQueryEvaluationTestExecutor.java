@@ -10,6 +10,7 @@ import fr.inria.corese.core.next.data.api.term.IRI;
 import fr.inria.corese.core.next.data.api.term.Literal;
 import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
 import fr.inria.corese.core.next.query.api.result.BindingSet;
@@ -31,8 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -53,8 +52,7 @@ import java.util.stream.Collectors;
  */
 public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
 
-    private static final Pattern QUERY_TYPE_PATTERN =
-            Pattern.compile("(?i)\\b(SELECT|ASK|CONSTRUCT|DESCRIBE)\\b");
+    private enum QueryForm { SELECT, ASK, GRAPH }
 
     public SparqlQueryEvaluationTestExecutor() {
     }
@@ -94,15 +92,12 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         }
 
         // 5. Execute query and compare result
-        String queryType = detectQueryType(queryText);
         try (Repository repo = Repositories.create(storage);
              RepositoryConnection conn = repo.getConnection()) {
-            switch (queryType) {
-                case "SELECT" -> executeSelectTest(conn, queryText, resultUri, testCase);
-                case "ASK" -> executeAskTest(conn, queryText, resultUri, testCase);
-                case "CONSTRUCT", "DESCRIBE" -> executeGraphTest(conn, queryText, resultUri, testCase, storage);
-                default -> throw new AssertionError(
-                        "Cannot determine SPARQL query type for test: " + testCase.getName());
+            switch (queryForm(conn, queryText)) {
+                case SELECT -> executeSelectTest(conn, queryText, resultUri, testCase);
+                case ASK    -> executeAskTest(conn, queryText, resultUri, testCase);
+                case GRAPH  -> executeGraphTest(conn, queryText, resultUri, testCase, storage);
             }
         }
     }
@@ -315,17 +310,25 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     }
 
     /**
-     * Detects the SPARQL query form from the query text.
-     * Removes single-line comments before scanning for the first query keyword.
+     * Detects the SPARQL query form by trying to prepare the query with each form.
+     * Returns the first form that parses successfully, or throws {@link QuerySyntaxException}
+     * if none of them succeed.
      */
-    static String detectQueryType(String queryText) {
-        // Strip single-line comments so keywords inside them are ignored
-        String noComments = queryText.replaceAll("#[^\n]*", " ");
-        Matcher m = QUERY_TYPE_PATTERN.matcher(noComments);
-        if (m.find()) {
-            return m.group(1).toUpperCase(Locale.ROOT);
+    static QueryForm queryForm(RepositoryConnection conn, String queryText) throws QuerySyntaxException {
+        QuerySyntaxException last = null;
+        for (QueryForm form : QueryForm.values()) {
+            try {
+                switch (form) {
+                    case SELECT -> conn.prepareTupleQuery(queryText);
+                    case ASK    -> conn.prepareBooleanQuery(queryText);
+                    case GRAPH  -> conn.prepareGraphQuery(queryText);
+                }
+                return form;
+            } catch (QuerySyntaxException e) {
+                last = e;
+            }
         }
-        return "UNKNOWN";
+        throw last != null ? last : new QuerySyntaxException("Cannot determine SPARQL query form");
     }
 
     /**

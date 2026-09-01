@@ -36,27 +36,11 @@ public class SparqlPositiveSyntaxTestExecutor implements TestExecutor {
 
         try (Repository repo = Repositories.create(Storages.create());
              RepositoryConnection conn = repo.getConnection()) {
-            prepareQuery(conn, queryText, testCase.getName());
+            SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText);
         } catch (QuerySyntaxException e) {
             throw new AssertionError(String.format(
                     "Expected query to parse successfully but got syntax error in '%s': %s",
                     testCase.getName(), e.getMessage()), e);
-        }
-    }
-
-    /**
-     * Prepares the query using the appropriate method based on the detected query form.
-     * Throws {@link QuerySyntaxException} if the query is syntactically invalid.
-     */
-    private static void prepareQuery(RepositoryConnection conn, String queryText,
-            String testName) {
-        String queryType = SparqlQueryEvaluationTestExecutor.detectQueryType(queryText);
-        switch (queryType) {
-            case "SELECT"   -> conn.prepareTupleQuery(queryText);
-            case "ASK"      -> conn.prepareBooleanQuery(queryText);
-            case "CONSTRUCT", "DESCRIBE" -> conn.prepareGraphQuery(queryText);
-            default -> throw new AssertionError(
-                    "Cannot determine SPARQL query type for positive syntax test: " + testName);
         }
     }
 }
