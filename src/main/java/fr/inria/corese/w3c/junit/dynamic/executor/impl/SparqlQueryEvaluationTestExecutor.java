@@ -32,7 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -120,10 +119,10 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
 
         if ("csv".equals(ext)) {
             // CSV format: literals are serialized as bare lexical forms (no type info).
+            // Unbound variables (OPTIONAL) must appear as empty strings in every row.
             // Re-execute the query converting each Value to its CSV string representation
             // and compare directly against the raw CSV cells (no canonical conversion).
-            List<Map<String, String>> actualCsvRows = executeSelectWithFormatter(conn, queryText,
-                    SparqlQueryEvaluationTestExecutor::valueToCsvString);
+            List<Map<String, String>> actualCsvRows = executeSelectWithCsvFormatter(conn, queryText);
             List<Map<String, String>> expectedRows = CsvTsvResultParser.parseCsvRaw(resultPath);
             compareCsvTsvRows(expectedRows, actualCsvRows, testCase);
             return;
@@ -171,12 +170,13 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     }
 
     /**
-     * Executes the SELECT query and formats each result value using {@code formatter}.
-     * Returns only bindings that are non-null (unbound variables are omitted from the row).
+     * Executes the SELECT query in CSV format.
+     * Every variable from the header appears in every row: bound values are serialized
+     * with {@link #valueToCsvString}, unbound variables (OPTIONAL) appear as empty strings.
+     * This matches the W3C SPARQL 1.1 CSV result format specification.
      */
-    private static List<Map<String, String>> executeSelectWithFormatter(
-            RepositoryConnection conn, String queryText,
-            Function<Value, String> formatter) throws Exception {
+    private static List<Map<String, String>> executeSelectWithCsvFormatter(
+            RepositoryConnection conn, String queryText) throws Exception {
         List<Map<String, String>> rows = new ArrayList<>();
         try (TupleQueryResult result = conn.prepareTupleQuery(queryText).evaluate()) {
             List<String> vars = result.getBindingNames();
@@ -185,9 +185,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                 Map<String, String> row = new LinkedHashMap<>();
                 for (String var : vars) {
                     Value val = bs.getValue(var);
-                    if (val != null) {
-                        row.put(var, formatter.apply(val));
-                    }
+                    row.put(var, val != null ? valueToCsvString(val) : "");
                 }
                 rows.add(row);
             }
