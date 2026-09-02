@@ -1,9 +1,13 @@
 package fr.inria.corese.w3c.sparql10;
 
 import fr.inria.corese.w3c.BaseRdf11DynamicTest;
+import fr.inria.corese.w3c.report.model.Component;
+import fr.inria.corese.w3c.report.model.SuiteDefinition;
+import fr.inria.corese.w3c.report.model.Transport;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
+import java.net.URI;
 import java.util.stream.Stream;
 
 /**
@@ -21,17 +25,15 @@ import java.util.stream.Stream;
  */
 class Sparql10DynamicTest extends BaseRdf11DynamicTest {
 
-    private static final String MANIFEST_URL =
-            "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl";
+    private static final SuiteDefinition SUITE = new SuiteDefinition(
+            "sparql10", "SPARQL 1.0", Component.CORE,
+            URI.create("https://www.w3.org/TR/rdf-sparql-query/"),
+            URI.create("https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl"),
+            Transport.IN_MEMORY);
 
     @Override
-    protected String getManifestUrl() {
-        return MANIFEST_URL;
-    }
-
-    @Override
-    protected String getFormatName() {
-        return "SPARQL 1.0";
+    protected SuiteDefinition getSuiteDefinition() {
+        return SUITE;
     }
 
     @TestFactory
