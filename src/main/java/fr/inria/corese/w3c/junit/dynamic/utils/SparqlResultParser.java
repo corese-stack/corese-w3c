@@ -6,11 +6,14 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
  * Parses SPARQL XML results files (.srx) as defined by
@@ -40,9 +43,11 @@ public class SparqlResultParser {
      * @param input the input stream of a .srx file
      * @return parsed results
      */
-    public static SparqlResults parse(InputStream input) throws Exception {
+    public static SparqlResults parse(InputStream input) throws IOException, ParserConfigurationException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
+        factory.setXIncludeAware(false);
+        factory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
         // Disable external DTD/entity resolution for security
         factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
         factory.setFeature("http://xml.org/sax/features/external-general-entities", false);

@@ -9,6 +9,7 @@ import fr.inria.corese.core.next.data.api.factory.ValueFactory;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
+import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.data.Values;
 import fr.inria.corese.core.next.io.CoreseIO;
 import fr.inria.corese.core.next.storage.Storages;
@@ -206,5 +207,32 @@ public class RDFTestUtils {
     public static boolean isUriAFile(URI uri) {
         String extension = getFileExtension(uri.toString());
         return extension != null && !extension.isEmpty();
+    }
+
+    /**
+     * Converts an RDF Value to a canonical string representation for SPARQL result comparison.
+     *
+     * @param value the RDF Value
+     * @return canonical string representation
+     */
+    public static String toCanonical(Value value) {
+        if (value instanceof fr.inria.corese.core.next.data.api.term.IRI iri) {
+            return "<" + iri.stringValue() + ">";
+        }
+        if (value instanceof fr.inria.corese.core.next.data.api.term.BNode bNode) {
+            return "_:b_" + bNode.stringValue();
+        }
+        if (value instanceof fr.inria.corese.core.next.data.api.term.Literal literal) {
+            String label = literal.getLabel();
+            Optional<String> language = literal.getLanguage();
+            if (language.isPresent()) {
+                return "\"" + label + "\"@" + language.get().toLowerCase(java.util.Locale.ROOT);
+            }
+            if (literal.getDatatype() != null) {
+                return "\"" + label + "\"^^<" + literal.getDatatype().stringValue() + ">";
+            }
+            return "\"" + label + "\"^^<http://www.w3.org/2001/XMLSchema#string>";
+        }
+        return value != null ? value.stringValue() : "";
     }
 }
