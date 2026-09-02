@@ -230,11 +230,11 @@ jobs:
         with:
           path: corese-w3c/site/
 
-      - name: Enforce conformance test result
-        if: ${{ always() && steps.w3c-tests.outcome == 'failure' }}
-        run: |
-          echo "The W3C conformance test step failed; validated reports were retained when available." >&2
-          exit 1
+      - name: Enforce no W3C regressions against baseline
+        id: check-regressions
+        if: always() && steps.validate-earl.outcome == 'success'
+        working-directory: corese-w3c
+        run: ./gradlew enforceW3cRegressions --no-daemon
 
   deploy-pages:
     name: Deploy to GitHub Pages
