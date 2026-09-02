@@ -133,7 +133,7 @@
     if (savedTheme) {
       applyTheme(savedTheme);
     } else {
-      const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      const prefersLight = window.matchMedia?.("(prefers-color-scheme: light)")?.matches;
       applyTheme(prefersLight ? "light" : "dark");
     }
 
@@ -148,7 +148,7 @@
   }
 
   function applyTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.dataset.theme = theme;
     if (theme === "dark") {
       iconMoon.style.display = "block";
       iconSun.style.display = "none";
@@ -159,7 +159,7 @@
   }
 
   themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme") || "dark";
+    const current = document.documentElement.dataset.theme || "dark";
     const next = current === "dark" ? "light" : "dark";
     localStorage.setItem("corese-theme", next);
     applyTheme(next);
@@ -173,7 +173,8 @@
         versionsList = await res.json();
         populateVersionsSelect();
       }
-    } catch (_err) {
+    } catch (error_) {
+      console.debug("Failed to fetch versions manifest, using local snapshot:", error_);
       versionsList = [{
         id: "latest",
         label: "v5.0.0-SNAPSHOT (latest)",
@@ -190,7 +191,7 @@
     const versionControl = document.querySelector(".version-control");
     if (!versionsList || versionsList.length <= 1) {
       if (versionControl) {
-        const label = (versionsList[0] && versionsList[0].label) || "v5.0.0-SNAPSHOT";
+        const label = versionsList[0]?.label || "v5.0.0-SNAPSHOT";
         versionControl.replaceChildren();
         const versionLabel = document.createElement("span");
         versionLabel.className = "meta-tag font-mono";
@@ -304,7 +305,12 @@
     const failedCount = Number(summary.failed || 0);
     valFailed.textContent = failedCount.toLocaleString();
     if (valFailedNote) {
-      valFailedNote.textContent = failedCount === 0 ? "0 regressions" : `${failedCount} regression${failedCount > 1 ? "s" : ""}`;
+      if (failedCount === 0) {
+        valFailedNote.textContent = "0 regressions";
+      } else {
+        const suffix = failedCount > 1 ? "s" : "";
+        valFailedNote.textContent = `${failedCount} regression${suffix}`;
+      }
     }
     valCantTell.textContent = Number(summary.cantTell || 0).toLocaleString();
   }
@@ -521,18 +527,8 @@
     }
   });
 
-  // Modal View
-  window.__openModal = function(index) {
-    const test = filteredTests[index];
-    if (!test) return;
-
-    modalStatus.textContent = outcomeLabel(test.outcome);
-    modalStatus.className = "status-badge status-" + test.outcome.toLowerCase();
-    modalTitle.textContent = test.name || "Test Case Details";
-    modalSuite.textContent = test.suiteName;
-    modalDisplayName.textContent = test.displayName || test.name;
-    modalDuration.textContent = Math.max(0, numeric(test.durationMs) || 0) + " ms";
-
+  // Modal View Helpers
+  function buildFixtureLinks(test) {
     const fixtureLinks = [];
     if (test.actionUri) {
       const fileName = test.actionUri.split("/").pop() || "Input File";
@@ -553,16 +549,12 @@
         fixtureLinks.push(`<span>Expected: <code>${escapeHtml(test.resultUri)}</code></span>`);
       }
     }
+    return fixtureLinks;
+  }
 
-    if (fixtureLinks.length > 0) {
-      modalFixturesGroup.style.display = "flex";
-      modalFixtures.innerHTML = fixtureLinks.join(" &nbsp;&bull;&nbsp; ");
-    } else {
-      modalFixturesGroup.style.display = "none";
-    }
-
+  function buildSpecificationLinks(test) {
     const meta = SPEC_META[test.suiteId] || {};
-    const git = (reportData && reportData.metadata && reportData.metadata.git) || {};
+    const git = reportData?.metadata?.git || {};
     const gitRef = safeGitRef(git.commit, git.branch);
 
     const links = [];
@@ -578,31 +570,57 @@
         links.push(`<a href="${escapeHtml(sourceHref)}" target="_blank" rel="noopener">${escapeHtml(className)} ↗</a>`);
       }
     }
-    modalLinks.innerHTML = links.join(" &nbsp;&bull;&nbsp; ") || "-";
+    return links.join(" &nbsp;&bull;&nbsp; ") || "-";
+  }
 
-    if (test.skipReason) {
-      modalSkipReasonGroup.style.display = "flex";
-      let categoryBadge = "Documented Exclusion";
-      let rationaleText = test.skipReason;
-
-      if (test.skipReason.startsWith("OPTIONAL_UNSUPPORTED:")) {
-        categoryBadge = "Optional Feature (Non-Standard RDF 1.1 Extension)";
-        rationaleText = test.skipReason.replace("OPTIONAL_UNSUPPORTED:", "").trim();
-      } else if (test.skipReason.startsWith("UPSTREAM_TITANIUM_1_6:")) {
-        categoryBadge = "Upstream Dependency Edge-Case (Titanium JSON-LD 1.6.0)";
-        rationaleText = test.skipReason.replace("UPSTREAM_TITANIUM_1_6:", "").trim();
-      } else if (test.skipReason.startsWith("UPSTREAM_FIXTURE:")) {
-        categoryBadge = "Upstream Benchmark Fixture Glitch (RDFa 0295)";
-        rationaleText = test.skipReason.replace("UPSTREAM_FIXTURE:", "").trim();
-      }
-
-      modalSkipReason.innerHTML = `
-        <div class="callout-badge">${escapeHtml(categoryBadge)}</div>
-        <div class="callout-desc">${escapeHtml(rationaleText)}</div>
-      `;
-    } else {
+  function renderModalSkipSection(test) {
+    if (!test.skipReason) {
       modalSkipReasonGroup.style.display = "none";
+      return;
     }
+    modalSkipReasonGroup.style.display = "flex";
+    let categoryBadge = "Documented Exclusion";
+    let rationaleText = test.skipReason;
+
+    if (test.skipReason.startsWith("OPTIONAL_UNSUPPORTED:")) {
+      categoryBadge = "Optional Feature (Non-Standard RDF 1.1 Extension)";
+      rationaleText = test.skipReason.replace("OPTIONAL_UNSUPPORTED:", "").trim();
+    } else if (test.skipReason.startsWith("UPSTREAM_TITANIUM_1_6:")) {
+      categoryBadge = "Upstream Dependency Edge-Case (Titanium JSON-LD 1.6.0)";
+      rationaleText = test.skipReason.replace("UPSTREAM_TITANIUM_1_6:", "").trim();
+    } else if (test.skipReason.startsWith("UPSTREAM_FIXTURE:")) {
+      categoryBadge = "Upstream Benchmark Fixture Glitch (RDFa 0295)";
+      rationaleText = test.skipReason.replace("UPSTREAM_FIXTURE:", "").trim();
+    }
+
+    modalSkipReason.innerHTML = `
+      <div class="callout-badge">${escapeHtml(categoryBadge)}</div>
+      <div class="callout-desc">${escapeHtml(rationaleText)}</div>
+    `;
+  }
+
+  // Modal View
+  window.__openModal = function(index) {
+    const test = filteredTests[index];
+    if (!test) return;
+
+    modalStatus.textContent = outcomeLabel(test.outcome);
+    modalStatus.className = "status-badge status-" + test.outcome.toLowerCase();
+    modalTitle.textContent = test.name || "Test Case Details";
+    modalSuite.textContent = test.suiteName;
+    modalDisplayName.textContent = test.displayName || test.name;
+    modalDuration.textContent = Math.max(0, numeric(test.durationMs) || 0) + " ms";
+
+    const fixtureLinks = buildFixtureLinks(test);
+    if (fixtureLinks.length > 0) {
+      modalFixturesGroup.style.display = "flex";
+      modalFixtures.innerHTML = fixtureLinks.join(" &nbsp;&bull;&nbsp; ");
+    } else {
+      modalFixturesGroup.style.display = "none";
+    }
+
+    modalLinks.innerHTML = buildSpecificationLinks(test);
+    renderModalSkipSection(test);
 
     if (test.errorMessage) {
       modalErrorGroup.style.display = "flex";
@@ -635,11 +653,11 @@
   function escapeHtml(str) {
     if (!str) return "";
     return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
   }
 
   function normalizeOutcome(test) {
@@ -668,7 +686,8 @@
     try {
       const url = new URL(String(value));
       return url.protocol === "https:" || url.protocol === "http:" ? url.href : null;
-    } catch (_error) {
+    } catch (error_) {
+      console.debug("Invalid or unparseable external URL:", error_);
       return null;
     }
   }
