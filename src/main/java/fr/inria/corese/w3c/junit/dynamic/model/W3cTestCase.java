@@ -206,8 +206,7 @@ public class W3cTestCase {
             return null;
         }
         try {
-            URI uri = URI.create(value);
-            return uri.isAbsolute() ? uri : null;
+            return URI.create(value);
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -220,7 +219,14 @@ public class W3cTestCase {
      * @return The URI of the action file, or null if not present
      */
     public URI getActionFileUri() {
-        return getUriProperty(Property.ACTION.getKey());
+        URI uri = getUriProperty(Property.ACTION.getKey());
+        if (uri == null || uri.toString().startsWith("_:")) {
+            uri = getUriProperty(Property.QUERY.getKey());
+        }
+        if (uri != null && !uri.isAbsolute() && manifestUri != null) {
+            return manifestUri.resolve(uri);
+        }
+        return (uri != null && uri.isAbsolute()) ? uri : null;
     }
 
     /**
@@ -230,7 +236,11 @@ public class W3cTestCase {
      * @return The URI of the result file, or null if not present
      */
     public URI getResultFileUri() {
-        return getUriProperty(Property.RESULT.getKey());
+        URI uri = getUriProperty(Property.RESULT.getKey());
+        if (uri != null && !uri.isAbsolute() && manifestUri != null) {
+            return manifestUri.resolve(uri);
+        }
+        return (uri != null && uri.isAbsolute()) ? uri : null;
     }
 
     /**
