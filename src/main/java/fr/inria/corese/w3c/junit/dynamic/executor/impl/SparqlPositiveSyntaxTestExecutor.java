@@ -4,7 +4,6 @@ import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
-import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -22,6 +21,7 @@ import java.nio.file.Path;
 public class SparqlPositiveSyntaxTestExecutor implements TestExecutor {
 
     public SparqlPositiveSyntaxTestExecutor() {
+        // Default constructor for dynamic instantiation
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SparqlPositiveSyntaxTestExecutor implements TestExecutor {
         String queryPath = RDFTestUtils.loadFile(queryUri);
         String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
 
-        try (Repository repo = Repositories.create(Storages.create());
+        try (Repository repo = Repositories.create();
              RepositoryConnection conn = repo.getConnection()) {
             SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText);
         } catch (QuerySyntaxException e) {

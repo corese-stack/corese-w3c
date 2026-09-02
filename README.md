@@ -56,11 +56,7 @@ See [the EARL application profile](docs/EARL_REPORT.md) for the exact model, pro
 
 # Example: Run Canonicalization test suite only
 ./gradlew test --tests "*CanonicalDynamicTest*"
-```
 
-### Exclusions Policy
-
-To ensure high scientific integrity and transparency, no test is skipped silently. All exclusions are documented with exact fragment identifiers and reactivation conditions in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).
 # JSON-LD 1.1 fromRdf (RDF to JSON-LD) tests
 ./gradlew test --tests "*Rdf11JsonldFromRdfDynamicTest*"
 
@@ -82,3 +78,7 @@ To ensure high scientific integrity and transparency, no test is skipped silentl
 # SPARQL 1.0 tests
 ./gradlew test --tests "*Sparql10DynamicTest*"
 ```
+
+### Exclusions Policy
+
+To ensure high scientific integrity and transparency, no test is skipped silently. All exclusions are documented with exact fragment identifiers and reactivation conditions in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).

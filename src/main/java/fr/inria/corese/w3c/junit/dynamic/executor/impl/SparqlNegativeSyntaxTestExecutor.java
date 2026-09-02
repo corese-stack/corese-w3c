@@ -1,13 +1,12 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
-import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
-import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -22,6 +21,7 @@ import java.nio.file.Path;
 public class SparqlNegativeSyntaxTestExecutor implements TestExecutor {
 
     public SparqlNegativeSyntaxTestExecutor() {
+        // Default constructor for dynamic instantiation
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SparqlNegativeSyntaxTestExecutor implements TestExecutor {
         String queryPath = RDFTestUtils.loadFile(queryUri);
         String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
 
-        try (Repository repo = Repositories.create(Storages.create());
+        try (Repository repo = Repositories.create();
              RepositoryConnection conn = repo.getConnection()) {
             SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText);
             // If we reach here, the query was accepted — test must fail

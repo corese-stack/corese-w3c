@@ -44,6 +44,10 @@ public class W3cTestLoader {
     // as full angle-bracket IRIs to avoid any prefix-expansion dependency.
     private static final String TYPE_QUERY =
             "SELECT ?uri ?type WHERE { ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type . }";
+    private static final String SELECT_URI_VALUE_PREFIX = "SELECT ?uri ?value WHERE { ?uri ";
+    private static final String VALUE_PATTERN_SUFFIX = " ?value . }";
+    private static final String VAR_VALUE = "value";
+    private static final String VAR_URI = "uri";
     private static final String MANIFEST_ACTION = "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>";
     private static final String JSONLD_OPTION = "<https://w3c.github.io/json-ld-api/tests/vocab#option>";
     private static final String JSON_LD_API = "json-ld-api";
@@ -87,7 +91,7 @@ public class W3cTestLoader {
             try (TupleQueryResult r = conn.prepareTupleQuery(TYPE_QUERY).evaluate()) {
                 while (r.hasNext()) {
                     BindingSet bs = r.next();
-                    String uri = getStringValue(bs, "uri");
+                    String uri = getStringValue(bs, VAR_URI);
                     String type = getStringValue(bs, "type");
                     if (uri != null && type != null
                             && !type.equals("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#Manifest")) {
@@ -237,12 +241,12 @@ public class W3cTestLoader {
     private static void runPropQuery(RepositoryConnection conn,
                                      Map<String, Map<String, String>> props,
                                      String pred, String propKey) {
-        String q = "SELECT ?uri ?value WHERE { ?uri " + pred + " ?value . }";
+        String q = SELECT_URI_VALUE_PREFIX + pred + VALUE_PATTERN_SUFFIX;
         try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
             while (r.hasNext()) {
                 BindingSet bs = r.next();
-                String uri = getStringValue(bs, "uri");
-                String val = getStringValue(bs, "value");
+                String uri = getStringValue(bs, VAR_URI);
+                String val = getStringValue(bs, VAR_VALUE);
                 if (uri != null && val != null) {
                     props.computeIfAbsent(uri, k -> new HashMap<>()).putIfAbsent(propKey, val);
                 }
@@ -260,12 +264,12 @@ public class W3cTestLoader {
     private static void run2HopPropQuery(RepositoryConnection conn,
                                          Map<String, Map<String, String>> props,
                                          String pred1, String pred2, String propKey) {
-        String q = "SELECT ?uri ?value WHERE { ?uri " + pred1 + " ?node . ?node " + pred2 + " ?value . }";
+        String q = SELECT_URI_VALUE_PREFIX + pred1 + " ?node . ?node " + pred2 + VALUE_PATTERN_SUFFIX;
         try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
             while (r.hasNext()) {
                 BindingSet bs = r.next();
-                String uri = getStringValue(bs, "uri");
-                String val = getStringValue(bs, "value");
+                String uri = getStringValue(bs, VAR_URI);
+                String val = getStringValue(bs, VAR_VALUE);
                 if (uri != null && val != null) {
                     props.computeIfAbsent(uri, k -> new HashMap<>()).putIfAbsent(propKey, val);
                 }
@@ -283,12 +287,12 @@ public class W3cTestLoader {
     private static void runMultiValue2HopPropQuery(RepositoryConnection conn,
                                                    Map<String, List<String>> multiProps,
                                                    String pred1, String pred2, String propKey) {
-        String q = "SELECT ?uri ?value WHERE { ?uri " + pred1 + " ?node . ?node " + pred2 + " ?value . }";
+        String q = SELECT_URI_VALUE_PREFIX + pred1 + " ?node . ?node " + pred2 + VALUE_PATTERN_SUFFIX;
         try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
             while (r.hasNext()) {
                 BindingSet bs = r.next();
-                String uri = getStringValue(bs, "uri");
-                String val = getStringValue(bs, "value");
+                String uri = getStringValue(bs, VAR_URI);
+                String val = getStringValue(bs, VAR_VALUE);
                 if (uri != null && val != null) {
                     multiProps.computeIfAbsent(uri, k -> new ArrayList<>()).add(val);
                 }
@@ -503,18 +507,15 @@ public class W3cTestLoader {
         Set<String> inclusions = new LinkedHashSet<>();
 
         for (Statement stmt : model.filter(null, null, null)) {
-            // Only consider the default graph (context == null)
-            if (stmt.getContext() != null) continue;
-            if (!MF_INCLUDE.equals(stmt.getPredicate().stringValue())) continue;
-            if (!matchesManifest(stmt.getSubject(), manifestUriStr, manifestUriNoExt)) continue;
-
-            Value obj = stmt.getObject();
-            if (isIri(obj)) {
-                // Direct IRI inclusion (non-list)
-                inclusions.add(obj.stringValue());
-            } else if (obj instanceof BNode bnode) {
-                // RDF list — traverse all rdf:first / rdf:rest links
-                traverseRdfList(bnode, model, inclusions);
+            if (stmt.getContext() == null
+                    && MF_INCLUDE.equals(stmt.getPredicate().stringValue())
+                    && matchesManifest(stmt.getSubject(), manifestUriStr, manifestUriNoExt)) {
+                Value obj = stmt.getObject();
+                if (isIri(obj)) {
+                    inclusions.add(obj.stringValue());
+                } else if (obj instanceof BNode bnode) {
+                    traverseRdfList(bnode, model, inclusions);
+                }
             }
         }
 
@@ -529,10 +530,7 @@ public class W3cTestLoader {
         Resource current = listHead;
         Set<String> visited = new HashSet<>();
 
-        while (current != null) {
-            String nodeId = current.stringValue();
-            if (!visited.add(nodeId)) break; // cycle guard
-
+        while (current != null && visited.add(current.stringValue())) {
             Value next = null;
             for (Statement stmt : model.filter(current, null, null)) {
                 String pred = stmt.getPredicate().stringValue();
@@ -543,9 +541,7 @@ public class W3cTestLoader {
                     next = obj;
                 }
             }
-
-            if (next == null || RDF_NIL.equals(next.stringValue())) break;
-            current = (next instanceof Resource r) ? r : null;
+            current = (next instanceof Resource r && !RDF_NIL.equals(next.stringValue())) ? r : null;
         }
     }
 
