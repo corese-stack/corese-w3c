@@ -32,6 +32,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
  * Executor for SPARQL 1.0 query evaluation tests (mf:QueryEvaluationTest).
@@ -121,7 +123,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // -----------------------------------------------------------------------
 
     private void executeSelectTest(RepositoryConnection conn, String queryText,
-                                   URI resultUri, W3cTestCase testCase) throws Exception {
+                                   URI resultUri, W3cTestCase testCase)
+            throws IOException, ParsingException, QuerySyntaxException, ParserConfigurationException, SAXException {
         // Execute actual query
         List<Map<String, String>> actualRows = new ArrayList<>();
         try (TupleQueryResult result = conn.prepareTupleQuery(queryText).evaluate()) {
@@ -219,7 +222,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // -----------------------------------------------------------------------
 
     private void executeAskTest(RepositoryConnection conn, String queryText,
-                                URI resultUri, W3cTestCase testCase) throws Exception {
+                                 URI resultUri, W3cTestCase testCase)
+            throws IOException, ParsingException, QuerySyntaxException, ParserConfigurationException, SAXException {
         boolean actualResult = conn.prepareBooleanQuery(queryText).evaluate();
 
         String resultPath = RDFTestUtils.loadFile(resultUri);
