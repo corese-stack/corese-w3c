@@ -100,12 +100,15 @@ $RECYCLE.BIN/
 corese-core/
 
 # Runtime test cache & W3C manifests downloaded by test suite
-src/test/resources/
+src/test/resources/*
+!src/test/resources/log4j2.xml
+!src/test/resources/META-INF
+!src/test/resources/META-INF/**
 
 # Generated conformance dashboard data (produced dynamically during test execution)
 site/data/w3c-report.json
+site/data/earl-report.ttl
 site/data/report-data.js
-site/data/history/
 
 # Temporary directories
 bin/

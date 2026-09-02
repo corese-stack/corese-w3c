@@ -1,6 +1,9 @@
 package fr.inria.corese.w3c.rdfcanonical;
 
 import fr.inria.corese.w3c.BaseRdf11DynamicTest;
+import fr.inria.corese.w3c.report.model.Component;
+import fr.inria.corese.w3c.report.model.SuiteDefinition;
+import fr.inria.corese.w3c.report.model.Transport;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
@@ -14,16 +17,15 @@ import java.util.stream.Stream;
  */
 class RdfCanonicalDynamicTest extends BaseRdf11DynamicTest {
 
-    private static final String MANIFEST_URL = "https://w3c.github.io/rdf-canon/tests/manifest.ttl";
+    private static final SuiteDefinition SUITE = new SuiteDefinition(
+            "rdf-canonical", "RDFC-1.0 (Canonicalization)", Component.CORE,
+            java.net.URI.create("https://www.w3.org/TR/rdf-canon/"),
+            java.net.URI.create("https://w3c.github.io/rdf-canon/tests/manifest.ttl"),
+            Transport.IN_MEMORY);
 
     @Override
-    protected String getManifestUrl() {
-        return MANIFEST_URL;
-    }
-
-    @Override
-    protected String getFormatName() {
-        return "RDF-Canonical";
+    protected SuiteDefinition getSuiteDefinition() {
+        return SUITE;
     }
 
     @TestFactory

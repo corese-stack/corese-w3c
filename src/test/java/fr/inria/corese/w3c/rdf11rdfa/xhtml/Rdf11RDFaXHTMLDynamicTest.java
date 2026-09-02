@@ -2,6 +2,11 @@ package fr.inria.corese.w3c.rdf11rdfa.xhtml;
 
 import fr.inria.corese.w3c.BaseRdf11DynamicTest;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
+import fr.inria.corese.w3c.report.model.Component;
+import fr.inria.corese.w3c.report.model.SkipDecision;
+import fr.inria.corese.w3c.report.model.SkipKind;
+import fr.inria.corese.w3c.report.model.SuiteDefinition;
+import fr.inria.corese.w3c.report.model.Transport;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
@@ -13,24 +18,23 @@ import java.util.stream.Stream;
  */
 class Rdf11RDFaXHTMLDynamicTest extends BaseRdf11DynamicTest {
 
-    private static final String MANIFEST_URL =
-            "https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/manifest.ttl";
+    private static final SuiteDefinition SUITE = new SuiteDefinition(
+            "rdfa-xhtml", "RDFa 1.1 (XHTML)", Component.CORE,
+            URI.create("https://www.w3.org/TR/rdfa-core/"),
+            URI.create("https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/manifest.ttl"),
+            Transport.IN_MEMORY);
 
     @Override
-    protected String getManifestUrl() {
-        return MANIFEST_URL;
+    protected SuiteDefinition getSuiteDefinition() {
+        return SUITE;
     }
 
     @Override
-    protected String getFormatName() {
-        return "RDFa+XHTML";
-    }
-
-    @Override
-    protected String getSkipReason(W3cTestCase testCase) {
+    protected SkipDecision getSkipDecision(W3cTestCase testCase) {
         String testId = URI.create(testCase.getTestUri()).getFragment();
         return "0295".equals(testId)
-                ? "UPSTREAM_FIXTURE: benchmark concatenation changes RDFa list and context scope, while its expected graph is the union of isolated tests"
+                ? new SkipDecision(SkipKind.DEFERRED,
+                        "UPSTREAM_FIXTURE: benchmark concatenation changes RDFa list and context scope, while its expected graph is the union of isolated tests")
                 : null;
     }
 

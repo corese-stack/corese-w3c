@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
+import fr.inria.corese.w3c.junit.dynamic.executor.InfrastructureException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -90,18 +91,20 @@ public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
 
             // If we reach here, parsing succeeded as expected for positive syntax test
 
+        } catch (InfrastructureException | AssertionError e) {
+            throw e;
         } catch (ParsingException e) {
             // This should not happen for positive syntax tests
             String msg = RDFTestUtils.formatErrorMessage(
                     "Expected successful parsing but got parse error", testName, actionFileUri, null, e);
             logger.error(msg, e);
-            throw new AssertionError(msg);
+            throw new AssertionError(msg, e);
         } catch (Exception e) {
             // Any other unexpected error
             String msg = RDFTestUtils.formatErrorMessage(
                     "Unexpected error during positive syntax test", testName, actionFileUri, null, e);
             logger.error(msg, e);
-            throw new AssertionError(msg);
+            throw new AssertionError(msg, e);
         }
     }
 }

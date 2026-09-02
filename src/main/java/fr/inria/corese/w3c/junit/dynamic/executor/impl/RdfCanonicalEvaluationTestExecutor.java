@@ -16,7 +16,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -98,7 +97,6 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      * @param actual   The actual N-Quads output from canonicalization
      * @param expected The expected N-Quads from the test case
      */
-    @SuppressWarnings("null")
     private void compareNQuadsLoose(String testName, String actual, String expected) {
         Set<String> actualSet = Arrays.stream(actual.split("\n"))
                 .map(String::trim)
@@ -146,7 +144,6 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      * @param model The model to convert
      * @return A string containing all N-Quads sorted line by line
      */
-    @SuppressWarnings("null")
     private String toSortedNQuads(Model model) {
         return model.stream()
                 .map(RdfCanonicalization::toNQuad)
@@ -156,16 +153,14 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
     }
 
     /**
-     * Resolves a file URI and returns the path to the local file.
+     * Resolves and loads the content of a file specified by a URI.
      * Supports 'file', 'http', and 'https' schemes. Downloads remote files if necessary.
      *
      * @param fileUri The URI of the action or result file.
      * @return The local file path string.
-     * @throws IOException If the file cannot be loaded.
-     * @throws NoSuchAlgorithmException If file integrity verification cannot run.
      * @throws IllegalArgumentException If the URI scheme is unsupported.
      */
-    private String resolveAndLoadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
+    private String resolveAndLoadFile(URI fileUri) {
         // Handle local file URIs
         if ("file".equals(fileUri.getScheme())) {
             java.nio.file.Path filePath = java.nio.file.Paths.get(fileUri);
@@ -201,10 +196,8 @@ public class RdfCanonicalEvaluationTestExecutor implements TestExecutor {
      */
     private Model canonicalize(Model model, W3cTestCase testCase) {
         try {
-            RdfCanonicalization.HashAlgorithm algorithm = testCase.getName().contains("SHA-384")
-                    || (testCase.getComment() != null && testCase.getComment().contains("SHA-384"))
-                    ? RdfCanonicalization.HashAlgorithm.SHA_384
-                    : RdfCanonicalization.HashAlgorithm.SHA_256;
+            String hashAlgoProp = testCase.getProperty(W3cTestCase.Property.HASH_ALGORITHM, String.class);
+            RdfCanonicalization.HashAlgorithm algorithm = RDFTestUtils.resolveRdfcHashAlgorithm(hashAlgoProp);
 
             List<Statement> canonicalStatements = RdfCanonicalization.canonicalize(model, algorithm);
 

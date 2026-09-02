@@ -110,6 +110,15 @@ public class W3cTestCase {
     }
 
     /**
+     * Gets the official manifest identifier without deriving it from a JUnit name.
+     *
+     * @return the absolute test URI
+     */
+    public URI getTestUriObject() {
+        return URI.create(testUri);
+    }
+
+    /**
      * Gets the short name of the test case.
      * @return The short name of the test.
      */
@@ -158,7 +167,6 @@ public class W3cTestCase {
      * @return The property value, cast to the expected type, or null if not found.
      * @throws IllegalArgumentException if the property exists but is not of the expected type.
      */
-    @SuppressWarnings("null")
     public <T> T getProperty(String key, Class<T> type) {
         Object value = properties.get(key);
         if (value == null) {

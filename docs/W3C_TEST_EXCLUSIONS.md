@@ -1,27 +1,16 @@
 # W3C test exclusions
 
-W3C conformance tests are executed by default. An exclusion is allowed only
-when it uses the exact manifest fragment identifier, states the responsible
-component, and has an explicit reactivation condition. Display names and
-substring matching must never be used.
+W3C conformance tests are executed by default. An exclusion is allowed only when it uses the exact manifest fragment identifier, states the responsible component, and has an explicit reactivation condition. Display names and substring matching must never be used.
 
-Manifest entries must never disappear silently: an unsupported test type makes
-the suite fail during loading. Every reported manifest test is therefore either
-executed or listed below with an exact, documented exclusion.
+Manifest entries must never disappear silently: an unsupported test type makes the suite fail during loading. Every reported manifest test is therefore either executed or listed below with an exact, documented exclusion.
+
+In the EARL report, the two generalized-RDF exclusions are classified as `earl:inapplicable`. Every Titanium and RDFa 0295 exclusion remains applicable to Corese and is classified as `earl:untested`. A skipped JUnit result is never blindly converted to one EARL outcome.
 
 ## JSON-LD
 
-Corese delegates the JSON-LD algorithms to Titanium JSON-LD 1.6.0. Version
-1.7.0 was evaluated against the same 521 tests: it reduced some historical
-gaps, but introduced six `rdfDirection` failures and produced 20 failures in
-total, compared with 12 on 1.6.0. Corese therefore stays on 1.6.0 until that
-regression is resolved.
+Corese delegates the JSON-LD algorithms to Titanium JSON-LD 1.6.0. The exclusions below isolate specific behavior inside Titanium 1.6.0 that diverges from the W3C test suite. They must be retested individually on every Titanium upgrade; they are not waivers of W3C requirements.
 
-Two exclusions cover the optional generalized-RDF feature, which permits blank
-nodes as predicates and cannot be represented by the standard Corese RDF 1.1
-model. The other exclusions isolate behavior inside Titanium. They must be
-retested individually on every Titanium upgrade; they are not waivers of W3C
-requirements.
+Two exclusions cover the optional generalized-RDF feature, which permits blank nodes as predicates and cannot be represented by the standard Corese RDF 1.1 model. The other exclusions isolate behavior inside Titanium. They must be retested individually on every Titanium upgrade; they are not waivers of W3C requirements.
 
 | Direction | Test ID | Classification | Reason | Reactivation condition |
 | :--- | :--- | :--- | :--- | :--- |
@@ -35,30 +24,20 @@ requirements.
 | toRdf | `ter32` | Titanium 1.6.0 | A second list-of-lists form is accepted instead of failing. | Titanium reports the required error. |
 | toRdf | `te014` | Titanium 1.6.0 | A datatype compact IRI follows 1.1 expansion in a 1.0 case. | Titanium produces the expected datatype IRI. |
 | toRdf | `te026` | Titanium 1.6.0 | A valid 1.0 term mapping to `@type` is rejected. | Titanium accepts the W3C case. |
+| toRdf | `ter02` | Titanium 1.6.0 | Produces `LOADING_REMOTE_CONTEXT_FAILED` instead of `RECURSIVE_CONTEXT_INCLUSION` on recursive remote context. | Titanium reports recursive context inclusion. |
+| toRdf | `ter03` | Titanium 1.6.0 | Produces `LOADING_REMOTE_CONTEXT_FAILED` instead of `RECURSIVE_CONTEXT_INCLUSION` on indirect recursive remote context. | Titanium reports recursive context inclusion. |
 | fromRdf | `t0027` | Titanium 1.6.0 | `useNativeTypes` throws on a non-finite numeric lexical form. | The typed literal is preserved instead. |
 | fromRdf | `t0028` | Titanium 1.6.0 | `useNativeTypes` throws on a non-native numeric lexical form. | The typed literal is preserved instead. |
 | fromRdf | `tli01` | Titanium 1.6.0 | A nested empty list triggers a null dereference. | Titanium serializes the nested empty list. |
 | fromRdf | `t0008` | Titanium 1.6.0 | JSON-LD 1.1 nested-list conversion is applied to a 1.0 ordering case. | Titanium honors 1.0 list conversion. |
 
-`t0009` and `ter44` were previously hidden by broad display-name matching.
-Both pass and are intentionally active.
+`t0009` and `ter44` were previously hidden by broad display-name matching. Both pass and are intentionally active.
 
 ## RDFa
 
-The three exclusions below are the host-language variants of one generated
-benchmark. Test `0295` concatenates the bodies of many independent test
-documents, but its expected graph is the union of the results obtained when
-those documents are parsed separately. Concatenation is not semantics-neutral
-in RDFa: list mappings and initial contexts are scoped by the surrounding
-document. For example, the XHTML fixture contains one continuous list while
-the expected graph requires eight independent list heads. The XML and SVG
-variants also contain HTML-only `time/@datetime` expectations and ignore a
-valid XML `xml:base`.
+The three exclusions below are the host-language variants of one generated benchmark. Test `0295` concatenates the bodies of many independent test documents, but its expected graph is the union of the results obtained when those documents are parsed separately. Concatenation is not semantics-neutral in RDFa: list mappings and initial contexts are scoped by the surrounding document. For example, the XHTML fixture contains one continuous list while the expected graph requires eight independent list heads. The XML and SVG variants also contain HTML-only `time/@datetime` expectations and ignore a valid XML `xml:base`.
 
-The individual source tests remain active and pass. Corese fixes discovered
-through the benchmark (element-local incomplete triples, host-specific initial
-contexts, XHTML 1.x `xml:base`, HTML `time/@datetime`, and IRI dot-segment
-normalization) are covered by focused unit tests.
+The individual source tests remain active and pass. Corese fixes discovered through the benchmark (element-local incomplete triples, host-specific initial contexts, XHTML 1.x `xml:base`, HTML `time/@datetime`, and IRI dot-segment normalization) are covered by focused unit tests.
 
 | Host | Test ID | Classification | Reactivation condition |
 | :--- | :--- | :--- | :--- |
@@ -66,8 +45,4 @@ normalization) are covered by focused unit tests.
 | XML | `0295` | Upstream composite-fixture and host-rule mismatch | The fixture stops applying HTML-only rules and honors XML base processing. |
 | SVG | `0295` | Upstream composite-fixture and host-rule mismatch | The fixture stops applying HTML-only rules and honors XML base processing. |
 
-References: [JSON-LD 1.1 Processing Algorithms and API](https://www.w3.org/TR/json-ld11-api/),
-[W3C JSON-LD test suite](https://w3c.github.io/json-ld-api/tests/), and
-[Titanium JSON-LD](https://github.com/filip26/titanium-json-ld),
-[RDFa Core 1.1](https://www.w3.org/TR/rdfa-core/), and
-[HTML+RDFa 1.1](https://www.w3.org/TR/html-rdfa/).
+References: [JSON-LD 1.1 Processing Algorithms and API](https://www.w3.org/TR/json-ld11-api/), [W3C JSON-LD test suite](https://w3c.github.io/json-ld-api/tests/), [Titanium JSON-LD](https://github.com/filip26/titanium-json-ld), [RDFa Core 1.1](https://www.w3.org/TR/rdfa-core/), and [HTML+RDFa 1.1](https://www.w3.org/TR/html-rdfa/).

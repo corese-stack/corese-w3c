@@ -5,6 +5,7 @@ import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.RdfCanonicalization;
+import fr.inria.corese.w3c.junit.dynamic.executor.InfrastructureException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -12,12 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Executor for negative evaluation tests of RDF Canonicalization (RDFC10NegativeEvalTest).
@@ -54,6 +54,8 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
             Model actionModel = loadPoisonGraph(actionFileUri);
             executeCanonicalizeAndVerifyException(actionModel, testName, actionFileUri);
 
+        } catch (InfrastructureException | AssertionError e) {
+            throw e;
         } catch (Exception e) {
             String msg = String.format("""
                             RDF Canonical negative test FAILED with unexpected exception.
@@ -72,9 +74,8 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      * @param fileUri  The URI of the poison graph file
      * @return Parsed Model containing the poison graph
      * @throws IOException If file cannot be loaded or parsed
-     * @throws NoSuchAlgorithmException If file integrity verification cannot run
      */
-    private Model loadPoisonGraph(URI fileUri) throws IOException, NoSuchAlgorithmException {
+    private Model loadPoisonGraph(URI fileUri) throws IOException {
         String filePath = resolveAndLoadFile(fileUri);
 
         Model model = RDFTestUtils.createModel();
@@ -119,11 +120,13 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
                     e.getClass().getSimpleName(), e.getMessage());
         }
 
-        // Verify exception type
+        // Verify exception type strictly
         if (!isExpectedError(caughtException)) {
-            logger.warn("Exception thrown but type is not SerializationException. " +
-                            "Test: {}, Actual: {}",
+            String msg = String.format(
+                    "RDF Canonical negative test '%s' threw unexpected exception type: %s (expected SerializationException)",
                     testName, caughtException.getClass().getSimpleName());
+            logger.error(msg, caughtException);
+            throw new AssertionError(msg, caughtException);
         }
     }
 
@@ -134,10 +137,8 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      *
      * @param fileUri The URI to resolve
      * @return The absolute local file path
-     * @throws IOException If a file cannot be loaded
-     * @throws NoSuchAlgorithmException If file integrity verification cannot run
      */
-    private String resolveAndLoadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
+    private String resolveAndLoadFile(URI fileUri) {
         String scheme = fileUri.getScheme();
 
         if ("file".equals(scheme)) {
@@ -158,10 +159,8 @@ public class RdfCanonicalNegativeTestExecutor implements TestExecutor {
      *
      * @param fileUri The file:// URI
      * @return The absolute local file path
-     * @throws IOException If file cannot be loaded
-     * @throws NoSuchAlgorithmException If file integrity verification cannot run
      */
-    private String resolveLocalOrRemoteFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
+    private String resolveLocalOrRemoteFile(URI fileUri) {
         Path filePath = Paths.get(fileUri);
 
         if (Files.exists(filePath)) {

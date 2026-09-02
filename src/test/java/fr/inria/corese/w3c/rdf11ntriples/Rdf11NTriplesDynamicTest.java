@@ -1,6 +1,9 @@
 package fr.inria.corese.w3c.rdf11ntriples;
 
 import fr.inria.corese.w3c.BaseRdf11DynamicTest;
+import fr.inria.corese.w3c.report.model.Component;
+import fr.inria.corese.w3c.report.model.SuiteDefinition;
+import fr.inria.corese.w3c.report.model.Transport;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
@@ -11,17 +14,15 @@ import java.util.stream.Stream;
  */
 class Rdf11NTriplesDynamicTest extends BaseRdf11DynamicTest {
 
-    private static final String MANIFEST_URL =
-            "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl";
+    private static final SuiteDefinition SUITE = new SuiteDefinition(
+            "ntriples", "N-Triples (RDF 1.1)", Component.CORE,
+            java.net.URI.create("https://www.w3.org/TR/n-triples/"),
+            java.net.URI.create("https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl"),
+            Transport.IN_MEMORY);
 
     @Override
-    protected String getManifestUrl() {
-        return MANIFEST_URL;
-    }
-
-    @Override
-    protected String getFormatName() {
-        return "N-Triples";
+    protected SuiteDefinition getSuiteDefinition() {
+        return SUITE;
     }
 
     @TestFactory
