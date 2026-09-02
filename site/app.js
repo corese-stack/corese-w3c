@@ -57,6 +57,11 @@
       specUrl: "https://www.w3.org/TR/SVG11/",
       testSuiteUrl: "https://rdfa.info/test-suite/",
       javaPath: "src/test/java/fr/inria/corese/w3c/rdf11rdfa/svg/Rdf11RDFaSVGDynamicTest.java"
+    },
+    "sparql10": {
+      specUrl: "https://www.w3.org/TR/rdf-sparql-query/",
+      testSuiteUrl: "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl",
+      javaPath: "src/test/java/fr/inria/corese/w3c/sparql10/Sparql10DynamicTest.java"
     }
   };
 
