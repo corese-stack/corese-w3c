@@ -115,6 +115,7 @@ public class W3cTestLoader {
             runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceResults>", "resultAlt");
             runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#expectedResults>", "expectedBoolean");
             runPropQuery(conn, props, "<https://w3c.github.io/rdf-canon/tests/vocab#hashAlgorithm>", "hashAlgorithm");
+            runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#resultCardinality>", "resultCardinality");
             run2HopPropQuery(conn, props,
                     MANIFEST_ACTION,
                     "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#query>", "query");

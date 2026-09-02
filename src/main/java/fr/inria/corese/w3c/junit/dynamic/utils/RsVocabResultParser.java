@@ -1,5 +1,6 @@
 package fr.inria.corese.w3c.junit.dynamic.utils;
 
+import fr.inria.corese.core.next.data.Values;
 import fr.inria.corese.core.next.data.api.exception.ParsingException;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.model.Model;
@@ -8,7 +9,6 @@ import fr.inria.corese.core.next.data.api.term.IRI;
 import fr.inria.corese.core.next.data.api.term.Literal;
 import fr.inria.corese.core.next.data.api.term.Resource;
 import fr.inria.corese.core.next.data.api.term.Value;
-import fr.inria.corese.core.next.data.Values;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,6 +28,7 @@ public class RsVocabResultParser {
 
     private static final String RS = "http://www.w3.org/2001/sw/DataAccess/tests/result-set#";
     private static final String RS_RESULT_SET      = RS + "ResultSet";
+    private static final String RS_RESULT_VARIABLE = RS + "resultVariable";
     private static final String RS_SOLUTION        = RS + "solution";
     private static final String RS_BINDING         = RS + "binding";
     private static final String RS_VARIABLE        = RS + "variable";
@@ -69,9 +70,9 @@ public class RsVocabResultParser {
      * Parses a SELECT result encoded in Turtle or RDF/XML using the rs: vocabulary.
      *
      * @param resultUri URI of the result file
-     * @return list of result rows; each row maps variable names to canonical value strings
+     * @return parsed SPARQL results with declared variables and rows
      */
-    public static List<Map<String, String>> parse(URI resultUri) throws IOException, ParsingException {
+    public static SparqlResultParser.SparqlResults parse(URI resultUri) throws IOException, ParsingException {
         Model model = RDFTestUtils.createModel();
         String filePath = RDFTestUtils.loadFile(resultUri);
         String ext = RDFTestUtils.getFileExtension(resultUri.toString()).toLowerCase(Locale.ROOT);
@@ -89,6 +90,14 @@ public class RsVocabResultParser {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("No rs:ResultSet node found in result file: " + resultUri));
 
+        IRI resultVarIri = Values.factory().createIRI(RS_RESULT_VARIABLE);
+        List<String> variables = new ArrayList<>();
+        for (Statement varStmt : model.filter(resultSetNode, resultVarIri, null)) {
+            if (varStmt.getObject() instanceof Literal lit) {
+                variables.add(lit.getLabel());
+            }
+        }
+
         IRI solutionIri = Values.factory().createIRI(RS_SOLUTION);
         List<Map.Entry<Integer, Map<String, String>>> indexedRows = new ArrayList<>();
 
@@ -103,7 +112,7 @@ public class RsVocabResultParser {
         for (Map.Entry<Integer, Map<String, String>> e : indexedRows) {
             rows.add(e.getValue());
         }
-        return rows;
+        return new SparqlResultParser.SparqlResults(false, false, variables, rows);
     }
 
     private static Map.Entry<Integer, Map<String, String>> parseSolution(Model model, Resource solRes) {

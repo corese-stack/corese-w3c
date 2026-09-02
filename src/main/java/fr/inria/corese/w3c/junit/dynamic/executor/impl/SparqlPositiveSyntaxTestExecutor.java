@@ -32,7 +32,8 @@ public class SparqlPositiveSyntaxTestExecutor implements TestExecutor {
         }
 
         String queryPath = RDFTestUtils.loadFile(queryUri);
-        String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
+        String rawQueryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
+        String queryText = SparqlQueryEvaluationTestExecutor.prepareQueryText(rawQueryText, queryUri);
 
         try (Repository repo = Repositories.create();
              RepositoryConnection conn = repo.getConnection()) {

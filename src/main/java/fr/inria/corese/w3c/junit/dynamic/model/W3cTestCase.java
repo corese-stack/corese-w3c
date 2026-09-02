@@ -44,6 +44,7 @@ public class W3cTestCase {
         EXPAND_CONTEXT("expandContext"),
         USE_NATIVE_TYPES("useNativeTypes"),
         USE_RDF_TYPES("useRdfType"),
+        RESULT_CARDINALITY("resultCardinality"),
         ;
 
         private final String key;
@@ -309,6 +310,11 @@ public class W3cTestCase {
         if (manifestPath.toLowerCase().contains("rdfa"))
             return RDFFormat.RDFA.getName();
         return "RDF"; // Default fallback
+    }
+
+    public boolean isLaxCardinality() {
+        String card = getProperty(Property.RESULT_CARDINALITY, String.class);
+        return card != null && card.contains("LaxCardinality");
     }
 
     @Override
