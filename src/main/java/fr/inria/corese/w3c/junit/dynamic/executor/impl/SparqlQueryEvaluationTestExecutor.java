@@ -10,6 +10,7 @@ import fr.inria.corese.core.next.data.api.term.IRI;
 import fr.inria.corese.core.next.data.api.term.Literal;
 import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
 import fr.inria.corese.core.next.query.api.result.BindingSet;
@@ -71,6 +72,9 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             throw new AssertionError("No query file found for test: " + testCase.getName());
         }
         URI queryUri = URI.create(queryUriStr);
+        if (!queryUri.isAbsolute() && testCase.getManifestUri() != null) {
+            queryUri = testCase.getManifestUri().resolve(queryUri);
+        }
 
         // 2. Resolve data file URI (qt:data → data property; may be absent)
         String dataUriStr = testCase.getProperty(W3cTestCase.Property.DATA, String.class);
@@ -79,6 +83,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         // 3. Read query text
         String queryPath = RDFTestUtils.loadFile(queryUri);
         String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
+        // Expand relative FROM / FROM NAMED URIs against the query file's own base URI
+        queryText = prepareQueryText(queryText, queryUri);
 
         // 4. Build in-memory dataset (default graph + named graphs)
         StorageManager storage = Storages.create();
@@ -159,8 +165,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             compareSelectResults(expected.rows(), actualRows, testCase);
         } else if ("ttl".equals(ext) || "rdf".equals(ext)) {
             // rs: vocabulary result format (Turtle or RDF/XML)
-            List<Map<String, String>> expectedRows = RsVocabResultParser.parse(resultUri);
-            compareSelectResults(expectedRows, actualRows, testCase);
+            SparqlResultParser.SparqlResults rsExpected = RsVocabResultParser.parse(resultUri);
+            compareSelectResults(rsExpected.rows(), actualRows, testCase);
         } else if ("tsv".equals(ext)) {
             // TSV uses SPARQL notation → convert to canonical form, compare normally.
             List<Map<String, String>> expectedRows = CsvTsvResultParser.parseTsvToCanonical(resultPath);
@@ -426,6 +432,54 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         String ext = RDFTestUtils.getFileExtension(uri.toString()).toLowerCase(Locale.ROOT);
         if ("n3".equals(ext)) return RDFFormat.TURTLE;
         return RDFTestUtils.guessFileFormat(uri);
+    }
+
+    // -----------------------------------------------------------------------
+    // Static helpers used by syntax test executors
+    // -----------------------------------------------------------------------
+
+    private static final Pattern FROM_URI_PATTERN =
+            Pattern.compile("(?i)(FROM(?:\\s+NAMED)?)\\s+<([^>]+)>");
+
+    /**
+     * Expands relative URIs in FROM and FROM NAMED clauses against the query file's base URI
+     * and returns the modified query text. Absolute URIs are left unchanged.
+     */
+    static String prepareQueryText(String rawQueryText, URI queryBaseUri) {
+        String base = queryBaseUri.toString();
+        int lastSlash = base.lastIndexOf('/');
+        if (lastSlash < 0) return rawQueryText;
+        URI dirUri = URI.create(base.substring(0, lastSlash + 1));
+
+        Matcher m = FROM_URI_PATTERN.matcher(rawQueryText);
+        StringBuilder sb = new StringBuilder();
+        while (m.find()) {
+            String keyword = m.group(1);
+            String uriStr  = m.group(2);
+            URI resolved;
+            try {
+                URI raw = URI.create(uriStr);
+                resolved = raw.isAbsolute() ? raw : dirUri.resolve(raw);
+            } catch (IllegalArgumentException e) {
+                resolved = dirUri.resolve(uriStr);
+            }
+            m.appendReplacement(sb, Matcher.quoteReplacement(keyword + " <" + resolved + ">"));
+        }
+        m.appendTail(sb);
+        return sb.toString();
+    }
+
+    /**
+     * Validates that the query text parses successfully by attempting to prepare it with
+     * each SPARQL query form. Throws {@link QuerySyntaxException} if all forms fail.
+     * Used by positive- and negative-syntax test executors.
+     */
+    static void queryForm(RepositoryConnection conn, String queryText) throws QuerySyntaxException {
+        QuerySyntaxException last = null;
+        try { conn.prepareTupleQuery(queryText); return; } catch (QuerySyntaxException e) { last = e; }
+        try { conn.prepareBooleanQuery(queryText); return; } catch (QuerySyntaxException e) { last = e; }
+        try { conn.prepareGraphQuery(queryText); return; } catch (QuerySyntaxException e) { last = e; }
+        throw last != null ? last : new QuerySyntaxException("Cannot determine SPARQL query form");
     }
 
     /**
