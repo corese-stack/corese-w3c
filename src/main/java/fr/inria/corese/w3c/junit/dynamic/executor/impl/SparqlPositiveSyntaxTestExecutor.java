@@ -1,0 +1,47 @@
+package fr.inria.corese.w3c.junit.dynamic.executor.impl;
+
+import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
+import fr.inria.corese.core.next.query.api.repository.Repository;
+import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
+import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
+import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
+import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+/**
+ * Executor for SPARQL 1.0 positive syntax tests (mf:PositiveSyntaxTest).
+ * <p>
+ * The action file is a SPARQL query (.rq) that must parse without a syntax error.
+ * The test fails if a {@link QuerySyntaxException} is thrown.
+ */
+public class SparqlPositiveSyntaxTestExecutor implements TestExecutor {
+
+    public SparqlPositiveSyntaxTestExecutor() {
+        // Default constructor for dynamic instantiation
+    }
+
+    @Override
+    public void execute(W3cTestCase testCase) throws Exception {
+        URI queryUri = testCase.getActionFileUri();
+        if (queryUri == null) {
+            throw new AssertionError("No action file found for positive syntax test: " + testCase.getName());
+        }
+
+        String queryPath = RDFTestUtils.loadFile(queryUri);
+        String rawQueryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
+        String queryText = SparqlQueryEvaluationTestExecutor.prepareQueryText(rawQueryText, queryUri);
+
+        try (Repository repo = Repositories.create();
+             RepositoryConnection conn = repo.getConnection()) {
+            SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText);
+        } catch (QuerySyntaxException e) {
+            throw new AssertionError(String.format(
+                    "Expected query to parse successfully but got syntax error in '%s': %s",
+                    testCase.getName(), e.getMessage()), e);
+        }
+    }
+}

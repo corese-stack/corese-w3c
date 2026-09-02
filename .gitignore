@@ -115,3 +115,6 @@ bin/
 logs/
 tmp/
 .temp/
+
+# ANTLR generated files
+gen/

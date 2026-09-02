@@ -31,6 +31,8 @@ public class W3cTestCase {
         DATA_GRAPH("dataGraph"),
         SHAPES_GRAPH("shapesGraph"),
         CONFORMITY("conformity"),
+        // SPARQL test properties
+        GRAPH_DATA("graphData"),
         // Canonical test properties
         HASH_ALGORITHM("hashAlgorithm"),
         // JSON-LD test properties
@@ -42,6 +44,7 @@ public class W3cTestCase {
         EXPAND_CONTEXT("expandContext"),
         USE_NATIVE_TYPES("useNativeTypes"),
         USE_RDF_TYPES("useRdfType"),
+        RESULT_CARDINALITY("resultCardinality"),
         ;
 
         private final String key;
@@ -217,7 +220,14 @@ public class W3cTestCase {
      * @return The URI of the action file, or null if not present
      */
     public URI getActionFileUri() {
-        return getUriProperty(Property.ACTION.getKey());
+        URI uri = getUriProperty(Property.ACTION.getKey());
+        if (uri == null || uri.toString().startsWith("_:")) {
+            uri = getUriProperty(Property.QUERY.getKey());
+        }
+        if (uri != null && !uri.isAbsolute() && manifestUri != null) {
+            return manifestUri.resolve(uri);
+        }
+        return (uri != null && uri.isAbsolute()) ? uri : null;
     }
 
     /**
@@ -227,7 +237,11 @@ public class W3cTestCase {
      * @return The URI of the result file, or null if not present
      */
     public URI getResultFileUri() {
-        return getUriProperty(Property.RESULT.getKey());
+        URI uri = getUriProperty(Property.RESULT.getKey());
+        if (uri != null && !uri.isAbsolute() && manifestUri != null) {
+            return manifestUri.resolve(uri);
+        }
+        return (uri != null && uri.isAbsolute()) ? uri : null;
     }
 
     /**
@@ -296,6 +310,11 @@ public class W3cTestCase {
         if (manifestPath.toLowerCase().contains("rdfa"))
             return RDFFormat.RDFA.getName();
         return "RDF"; // Default fallback
+    }
+
+    public boolean isLaxCardinality() {
+        String card = getProperty(Property.RESULT_CARDINALITY, String.class);
+        return card != null && card.contains("LaxCardinality");
     }
 
     @Override

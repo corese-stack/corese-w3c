@@ -11,16 +11,17 @@ The live interactive W3C conformance dashboard and benchmark reports are publish
 
 ## Supported W3C Specifications
 
-| Specification | W3C Test Suite Manifest | Test Types Covered |
-| :--- | :--- | :--- |
-| **Turtle (RDF 1.1)** | [Turtle Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/) | Positive/Negative Syntax, Positive Evaluation |
-| **TriG (RDF 1.1)** | [TriG Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/) | Positive/Negative Syntax, Positive Evaluation |
-| **RDF/XML (RDF 1.1)** | [RDF/XML Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/) | Positive/Negative Syntax, Positive Evaluation |
-| **N-Triples (RDF 1.1)** | [N-Triples Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/) | Positive/Negative Syntax, Positive Evaluation |
-| **N-Quads (RDF 1.1)** | [N-Quads Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/) | Positive/Negative Syntax, Positive Evaluation |
-| **RDFC-1.0 (Canonicalization)** | [RDF-Canon Test Suite](https://w3c.github.io/rdf-canon/tests/) | Canonical Evaluation, Map Tests, Negative Evaluation |
-| **RDFa 1.1 (XHTML, XML, SVG)** | [RDFa Test Suite](https://rdfa.info/test-suite/) | XHTML, XML, and SVG Evaluation |
-| **JSON-LD 1.1 (`toRdf` & `fromRdf`)** | [JSON-LD 1.1 Test Suite](https://json-ld.github.io/json-ld.org/test-suite/reports/) | `toRdf` and `fromRdf` Syntax and Evaluation |
+| Specification                         | W3C Test Suite Manifest                                                             | Test Types Covered                                                            |
+|:--------------------------------------|:------------------------------------------------------------------------------------|:------------------------------------------------------------------------------|
+| **Turtle (RDF 1.1)**                  | [Turtle Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/)          | Positive/Negative Syntax, Positive Evaluation                                 |
+| **TriG (RDF 1.1)**                    | [TriG Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/)              | Positive/Negative Syntax, Positive Evaluation                                 |
+| **RDF/XML (RDF 1.1)**                 | [RDF/XML Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/)            | Positive/Negative Syntax, Positive Evaluation                                 |
+| **N-Triples (RDF 1.1)**               | [N-Triples Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/)    | Positive/Negative Syntax, Positive Evaluation                                 |
+| **N-Quads (RDF 1.1)**                 | [N-Quads Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)        | Positive/Negative Syntax, Positive Evaluation                                 |
+| **RDFC-1.0 (Canonicalization)**       | [RDF-Canon Test Suite](https://w3c.github.io/rdf-canon/tests/)                      | Canonical Evaluation, Map Tests, Negative Evaluation                          |
+| **RDFa 1.1 (XHTML, XML, SVG)**        | [RDFa Test Suite](https://rdfa.info/test-suite/)                                    | XHTML, XML, and SVG Evaluation                                                |
+| **JSON-LD 1.1 (`toRdf` & `fromRdf`)** | [JSON-LD 1.1 Test Suite](https://json-ld.github.io/json-ld.org/test-suite/reports/) | `toRdf` and `fromRdf` Syntax and Evaluation                                   |
+| **SPARQL 1.0**                        | [SPARQL 1.0 Test Suite](https://w3c.github.io/rdf-tests/sparql/sparql10/)           | Query Evaluation (SELECT, ASK, CONSTRUCT, DESCRIBE), Positive/Negative Syntax |
 
 > **Documented Test Exclusions & Rationale**: All documented exclusions (e.g. non-standard Generalized RDF or upstream dependency edge-cases) are formally specified in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).
 
@@ -55,6 +56,27 @@ See [the EARL application profile](docs/EARL_REPORT.md) for the exact model, pro
 
 # Example: Run Canonicalization test suite only
 ./gradlew test --tests "*CanonicalDynamicTest*"
+
+# JSON-LD 1.1 fromRdf (RDF to JSON-LD) tests
+./gradlew test --tests "*Rdf11JsonldFromRdfDynamicTest*"
+
+# All JSON-LD tests
+./gradlew test --tests "*Jsonld*"
+
+# RDFa 1.1 XHTML tests
+./gradlew test --tests "*Rdf11RDFaXHTMLDynamicTest*"
+
+# RDFa 1.1 XML tests
+./gradlew test --tests "*Rdf11RDFaXMLDynamicTest*"
+
+# RDFa 1.1 SVG tests
+./gradlew test --tests "*Rdf11RDFaSVGDynamicTest*"
+
+# All RDFa tests
+./gradlew test --tests "*RDFa*"
+
+# SPARQL 1.0 tests
+./gradlew test --tests "*Sparql10DynamicTest*"
 ```
 
 ### Exclusions Policy

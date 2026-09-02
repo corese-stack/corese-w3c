@@ -147,4 +147,29 @@ tasks.register<JavaExec>("validateEarlReport") {
     )
 }
 
+tasks.register<JavaExec>("enforceW3cRegressions") {
+    group = "verification"
+    description = "Enforces that no previously passing W3C conformance test has regressed."
+    dependsOn(tasks.classes)
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass.set("fr.inria.corese.w3c.report.W3cRegressionDetector")
+    args(
+        layout.buildDirectory.file("reports/w3c-report.json").get().asFile.absolutePath,
+        layout.projectDirectory.file("conformance/baseline-report.json").asFile.absolutePath
+    )
+}
+
+tasks.register<JavaExec>("updateBaseline") {
+    group = "verification"
+    description = "Updates the reference W3C conformance baseline from a verified complete test run."
+    dependsOn(tasks.classes)
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass.set("fr.inria.corese.w3c.report.W3cRegressionDetector")
+    args(
+        "--update-baseline",
+        layout.buildDirectory.file("reports/w3c-report.json").get().asFile.absolutePath,
+        layout.projectDirectory.file("conformance/baseline-report.json").asFile.absolutePath
+    )
+}
+
 apply(from = "gradle/test-reporter.gradle.kts")

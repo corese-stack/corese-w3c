@@ -57,6 +57,11 @@
       specUrl: "https://www.w3.org/TR/SVG11/",
       testSuiteUrl: "https://rdfa.info/test-suite/",
       javaPath: "src/test/java/fr/inria/corese/w3c/rdf11rdfa/svg/Rdf11RDFaSVGDynamicTest.java"
+    },
+    "sparql10": {
+      specUrl: "https://www.w3.org/TR/rdf-sparql-query/",
+      testSuiteUrl: "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl",
+      javaPath: "src/test/java/fr/inria/corese/w3c/sparql10/Sparql10DynamicTest.java"
     }
   };
 
@@ -92,6 +97,7 @@
   const valFailed = document.getElementById("val-failed");
   const valFailedNote = document.getElementById("val-failed-note");
   const valCantTell = document.getElementById("val-cant-tell");
+  const globalMeter = document.getElementById("global-meter");
 
   const suitesGrid = document.getElementById("suites-grid");
   const suiteSelect = document.getElementById("suite-select");
@@ -128,7 +134,7 @@
     if (savedTheme) {
       applyTheme(savedTheme);
     } else {
-      const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      const prefersLight = window.matchMedia?.("(prefers-color-scheme: light)")?.matches;
       applyTheme(prefersLight ? "light" : "dark");
     }
 
@@ -143,7 +149,7 @@
   }
 
   function applyTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.dataset.theme = theme;
     if (theme === "dark") {
       iconMoon.style.display = "block";
       iconSun.style.display = "none";
@@ -154,7 +160,7 @@
   }
 
   themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme") || "dark";
+    const current = document.documentElement.dataset.theme || "dark";
     const next = current === "dark" ? "light" : "dark";
     localStorage.setItem("corese-theme", next);
     applyTheme(next);
@@ -168,7 +174,8 @@
         versionsList = await res.json();
         populateVersionsSelect();
       }
-    } catch (_err) {
+    } catch (error_) {
+      console.debug("Failed to fetch versions manifest, using local snapshot:", error_);
       versionsList = [{
         id: "latest",
         label: "v5.0.0-SNAPSHOT (latest)",
@@ -185,7 +192,7 @@
     const versionControl = document.querySelector(".version-control");
     if (!versionsList || versionsList.length <= 1) {
       if (versionControl) {
-        const label = (versionsList[0] && versionsList[0].label) || "v5.0.0-SNAPSHOT";
+        const label = versionsList[0]?.label || "v5.0.0-SNAPSHOT";
         versionControl.replaceChildren();
         const versionLabel = document.createElement("span");
         versionLabel.className = "meta-tag font-mono";
@@ -299,9 +306,78 @@
     const failedCount = Number(summary.failed || 0);
     valFailed.textContent = failedCount.toLocaleString();
     if (valFailedNote) {
-      valFailedNote.textContent = failedCount === 0 ? "0 regressions" : `${failedCount} regression${failedCount > 1 ? "s" : ""}`;
+      if (failedCount === 0) {
+        valFailedNote.textContent = "0 regressions";
+      } else {
+        const suffix = failedCount > 1 ? "s" : "";
+        valFailedNote.textContent = `${failedCount} regression${suffix}`;
+      }
     }
     valCantTell.textContent = Number(summary.cantTell || 0).toLocaleString();
+
+    if (globalMeter) {
+      globalMeter.innerHTML = buildMeterSegments(summary, Number(summary.total || 0));
+    }
+  }
+
+  function buildMeterSegments(stats, total) {
+    if (!total || total <= 0) return '<div class="meter-segment pass" style="width: 0%;"></div>';
+
+    const pass = numeric(stats.passed) || 0;
+    const fail = numeric(stats.failed) || 0;
+    const skip = numeric(stats.untested == null ? stats.skipped : stats.untested) || 0;
+    const inapp = numeric(stats.inapplicable) || 0;
+    const cant = numeric(stats.cantTell) || 0;
+
+    const pPass = (pass / total) * 100;
+    const pFail = (fail / total) * 100;
+    const pSkip = (skip / total) * 100;
+    const pInapp = (inapp / total) * 100;
+    const pCant = (cant / total) * 100;
+
+    const segments = [];
+    if (pPass > 0) {
+      segments.push(`<div class="meter-segment pass" style="width: ${pPass.toFixed(2)}%;" title="Passed: ${pass.toLocaleString()} (${pPass.toFixed(1)}%)"></div>`);
+    }
+    if (pFail > 0) {
+      segments.push(`<div class="meter-segment fail" style="width: ${pFail.toFixed(2)}%;" title="Failed: ${fail.toLocaleString()} (${pFail.toFixed(1)}%)"></div>`);
+    }
+    if (pSkip > 0) {
+      segments.push(`<div class="meter-segment skip" style="width: ${pSkip.toFixed(2)}%;" title="Untested / Not Run: ${skip.toLocaleString()} (${pSkip.toFixed(1)}%)"></div>`);
+    }
+    if (pInapp > 0) {
+      segments.push(`<div class="meter-segment inapplicable" style="width: ${pInapp.toFixed(2)}%;" title="Inapplicable: ${inapp.toLocaleString()} (${pInapp.toFixed(1)}%)"></div>`);
+    }
+    if (pCant > 0) {
+      segments.push(`<div class="meter-segment cant-tell" style="width: ${pCant.toFixed(2)}%;" title="Cannot Tell: ${cant.toLocaleString()} (${pCant.toFixed(1)}%)"></div>`);
+    }
+    return segments.join("");
+  }
+
+  function buildSuiteCountsHtml(suite) {
+    const passed = numeric(suite.passed) || 0;
+    const total = numeric(suite.total) || 0;
+    const failed = numeric(suite.failed) || 0;
+    const untested = numeric(suite.untested == null ? suite.skipped : suite.untested) || 0;
+    const inapplicable = numeric(suite.inapplicable) || 0;
+    const cantTell = numeric(suite.cantTell) || 0;
+
+    const items = [];
+    items.push(`<span class="suite-count-item suite-pass-count">${passed.toLocaleString()}/${total.toLocaleString()} passed</span>`);
+    if (failed > 0) {
+      items.push(`<span class="suite-count-item suite-fail-count">${failed.toLocaleString()} failed</span>`);
+    }
+    if (untested > 0) {
+      items.push(`<span class="suite-count-item suite-skip-count">${untested.toLocaleString()} not run</span>`);
+    }
+    if (inapplicable > 0) {
+      items.push(`<span class="suite-count-item suite-inapplicable-count">${inapplicable.toLocaleString()} inapp</span>`);
+    }
+    if (cantTell > 0) {
+      items.push(`<span class="suite-count-item suite-cant-tell-count">${cantTell.toLocaleString()} cant tell</span>`);
+    }
+
+    return `<div class="suite-breakdown">${items.join("")}</div>`;
   }
 
   function flattenTests() {
@@ -336,22 +412,21 @@
       const suiteLink = manifestHref ? `<a href="${escapeHtml(manifestHref)}" target="_blank" rel="noopener" class="link-discrete" onclick="event.stopPropagation()">Suite</a>` : "";
       const linksHtml = (specLink || suiteLink) ? `<span class="suite-ext-links">${specLink} ${suiteLink}</span>` : "";
       const passRate = numeric(suite.passRate);
-      const passed = numeric(suite.passed);
       const total = numeric(suite.total);
-      const skipped = numeric(suite.skipped);
 
       item.innerHTML = `
         <div class="suite-header-line">
-          <span class="suite-title">${escapeHtml(suite.name)}</span>
+          <div class="suite-title-group">
+            <span class="suite-title" title="${escapeHtml(suite.name)}">${escapeHtml(suite.name)}</span>
+            ${linksHtml}
+          </div>
           <span class="suite-percent">${passRate == null ? "—" : passRate.toFixed(1) + "%"}</span>
         </div>
         <div class="suite-meter">
-          <div class="suite-meter-bar" style="width: ${Math.min(100, passRate || 0)}%;"></div>
+          ${buildMeterSegments(suite, total)}
         </div>
         <div class="suite-counts">
-          <span>${passed || 0} / ${total || 0} passed</span>
-          ${linksHtml}
-          ${skipped > 0 ? `<span class="suite-skip-count">${skipped} not run</span>` : `<span>0 not run</span>`}
+          ${buildSuiteCountsHtml(suite)}
         </div>
       `;
 
@@ -516,18 +591,8 @@
     }
   });
 
-  // Modal View
-  window.__openModal = function(index) {
-    const test = filteredTests[index];
-    if (!test) return;
-
-    modalStatus.textContent = outcomeLabel(test.outcome);
-    modalStatus.className = "status-badge status-" + test.outcome.toLowerCase();
-    modalTitle.textContent = test.name || "Test Case Details";
-    modalSuite.textContent = test.suiteName;
-    modalDisplayName.textContent = test.displayName || test.name;
-    modalDuration.textContent = Math.max(0, numeric(test.durationMs) || 0) + " ms";
-
+  // Modal View Helpers
+  function buildFixtureLinks(test) {
     const fixtureLinks = [];
     if (test.actionUri) {
       const fileName = test.actionUri.split("/").pop() || "Input File";
@@ -548,16 +613,12 @@
         fixtureLinks.push(`<span>Expected: <code>${escapeHtml(test.resultUri)}</code></span>`);
       }
     }
+    return fixtureLinks;
+  }
 
-    if (fixtureLinks.length > 0) {
-      modalFixturesGroup.style.display = "flex";
-      modalFixtures.innerHTML = fixtureLinks.join(" &nbsp;&bull;&nbsp; ");
-    } else {
-      modalFixturesGroup.style.display = "none";
-    }
-
+  function buildSpecificationLinks(test) {
     const meta = SPEC_META[test.suiteId] || {};
-    const git = (reportData && reportData.metadata && reportData.metadata.git) || {};
+    const git = reportData?.metadata?.git || {};
     const gitRef = safeGitRef(git.commit, git.branch);
 
     const links = [];
@@ -573,31 +634,57 @@
         links.push(`<a href="${escapeHtml(sourceHref)}" target="_blank" rel="noopener">${escapeHtml(className)} ↗</a>`);
       }
     }
-    modalLinks.innerHTML = links.join(" &nbsp;&bull;&nbsp; ") || "-";
+    return links.join(" &nbsp;&bull;&nbsp; ") || "-";
+  }
 
-    if (test.skipReason) {
-      modalSkipReasonGroup.style.display = "flex";
-      let categoryBadge = "Documented Exclusion";
-      let rationaleText = test.skipReason;
-
-      if (test.skipReason.startsWith("OPTIONAL_UNSUPPORTED:")) {
-        categoryBadge = "Optional Feature (Non-Standard RDF 1.1 Extension)";
-        rationaleText = test.skipReason.replace("OPTIONAL_UNSUPPORTED:", "").trim();
-      } else if (test.skipReason.startsWith("UPSTREAM_TITANIUM_1_6:")) {
-        categoryBadge = "Upstream Dependency Edge-Case (Titanium JSON-LD 1.6.0)";
-        rationaleText = test.skipReason.replace("UPSTREAM_TITANIUM_1_6:", "").trim();
-      } else if (test.skipReason.startsWith("UPSTREAM_FIXTURE:")) {
-        categoryBadge = "Upstream Benchmark Fixture Glitch (RDFa 0295)";
-        rationaleText = test.skipReason.replace("UPSTREAM_FIXTURE:", "").trim();
-      }
-
-      modalSkipReason.innerHTML = `
-        <div class="callout-badge">${escapeHtml(categoryBadge)}</div>
-        <div class="callout-desc">${escapeHtml(rationaleText)}</div>
-      `;
-    } else {
+  function renderModalSkipSection(test) {
+    if (!test.skipReason) {
       modalSkipReasonGroup.style.display = "none";
+      return;
     }
+    modalSkipReasonGroup.style.display = "flex";
+    let categoryBadge = "Documented Exclusion";
+    let rationaleText = test.skipReason;
+
+    if (test.skipReason.startsWith("OPTIONAL_UNSUPPORTED:")) {
+      categoryBadge = "Optional Feature (Non-Standard RDF 1.1 Extension)";
+      rationaleText = test.skipReason.replace("OPTIONAL_UNSUPPORTED:", "").trim();
+    } else if (test.skipReason.startsWith("UPSTREAM_TITANIUM_1_6:")) {
+      categoryBadge = "Upstream Dependency Edge-Case (Titanium JSON-LD 1.6.0)";
+      rationaleText = test.skipReason.replace("UPSTREAM_TITANIUM_1_6:", "").trim();
+    } else if (test.skipReason.startsWith("UPSTREAM_FIXTURE:")) {
+      categoryBadge = "Upstream Benchmark Fixture Glitch (RDFa 0295)";
+      rationaleText = test.skipReason.replace("UPSTREAM_FIXTURE:", "").trim();
+    }
+
+    modalSkipReason.innerHTML = `
+      <div class="callout-badge">${escapeHtml(categoryBadge)}</div>
+      <div class="callout-desc">${escapeHtml(rationaleText)}</div>
+    `;
+  }
+
+  // Modal View
+  window.__openModal = function(index) {
+    const test = filteredTests[index];
+    if (!test) return;
+
+    modalStatus.textContent = outcomeLabel(test.outcome);
+    modalStatus.className = "status-badge status-" + test.outcome.toLowerCase();
+    modalTitle.textContent = test.name || "Test Case Details";
+    modalSuite.textContent = test.suiteName;
+    modalDisplayName.textContent = test.displayName || test.name;
+    modalDuration.textContent = Math.max(0, numeric(test.durationMs) || 0) + " ms";
+
+    const fixtureLinks = buildFixtureLinks(test);
+    if (fixtureLinks.length > 0) {
+      modalFixturesGroup.style.display = "flex";
+      modalFixtures.innerHTML = fixtureLinks.join(" &nbsp;&bull;&nbsp; ");
+    } else {
+      modalFixturesGroup.style.display = "none";
+    }
+
+    modalLinks.innerHTML = buildSpecificationLinks(test);
+    renderModalSkipSection(test);
 
     if (test.errorMessage) {
       modalErrorGroup.style.display = "flex";
@@ -630,11 +717,11 @@
   function escapeHtml(str) {
     if (!str) return "";
     return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
   }
 
   function normalizeOutcome(test) {
@@ -663,7 +750,8 @@
     try {
       const url = new URL(String(value));
       return url.protocol === "https:" || url.protocol === "http:" ? url.href : null;
-    } catch (_error) {
+    } catch (error_) {
+      console.debug("Invalid or unparseable external URL:", error_);
       return null;
     }
   }

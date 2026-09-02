@@ -24,6 +24,11 @@ public class TestExecutorFactory {
     private static final JsonLdFromRdfEvaluationTestExecutor JSONLD_FROM_RDF_EVALUATION_EXECUTOR = new JsonLdFromRdfEvaluationTestExecutor();
     private static final JsonLdFromRdfNegativeTestExecutor JSONLD_FROM_RDF_NEGATIVE_EXECUTOR = new JsonLdFromRdfNegativeTestExecutor();
 
+    // Singleton instances for SPARQL 1.0 test executors
+    private static final SparqlQueryEvaluationTestExecutor SPARQL_QUERY_EVALUATION_EXECUTOR = new SparqlQueryEvaluationTestExecutor();
+    private static final SparqlPositiveSyntaxTestExecutor SPARQL_POSITIVE_SYNTAX_EXECUTOR = new SparqlPositiveSyntaxTestExecutor();
+    private static final SparqlNegativeSyntaxTestExecutor SPARQL_NEGATIVE_SYNTAX_EXECUTOR = new SparqlNegativeSyntaxTestExecutor();
+
     /**
      * Private constructor to prevent instantiation of utility class.
      */
@@ -53,14 +58,19 @@ public class TestExecutorFactory {
             case JSON_LD_FROM_RDF_POSITIVE_EVAL -> JSONLD_FROM_RDF_EVALUATION_EXECUTOR;
             case JSON_LD_FROM_RDF_NEGATIVE_EVAL -> JSONLD_FROM_RDF_NEGATIVE_EXECUTOR;
 
-            // 3. Negative tests expecting parsing/loading failures (negative syntax and negative evaluation for JSON-LD/Turtle/TriG)
+            // 3. SPARQL 1.0 tests
+            case SPARQL10_QUERY_EVAL     -> SPARQL_QUERY_EVALUATION_EXECUTOR;
+            case SPARQL10_POSITIVE_SYNTAX -> SPARQL_POSITIVE_SYNTAX_EXECUTOR;
+            case SPARQL10_NEGATIVE_SYNTAX -> SPARQL_NEGATIVE_SYNTAX_EXECUTOR;
+
+            // 4. Negative tests expecting parsing/loading failures (negative syntax and negative evaluation for JSON-LD/Turtle/TriG)
             case JSON_LD_NEGATIVE_EVAL, TURTLE_NEGATIVE_EVAL, TRIG_NEGATIVE_EVAL -> NEGATIVE_TEST_EXECUTOR;
             case TestType type when type.isSyntaxTest() && type.isNegativeTest() -> NEGATIVE_TEST_EXECUTOR;
 
-            // 4. Positive syntax tests (parsing succeeds without graph comparison)
+            // 5. Positive syntax tests (parsing succeeds without graph comparison)
             case TestType type when type.isSyntaxTest() && type.isPositiveTest() -> POSITIVE_SYNTAX_EXECUTOR;
 
-            // 5. Positive evaluation tests (graph isomorphism comparison with mf:result)
+            // 6. Positive evaluation tests (graph isomorphism comparison with mf:result)
             case TestType type when type.isEvaluationTest() -> POSITIVE_EVALUATION_EXECUTOR;
 
             default -> throw new IllegalArgumentException("No executor available for test type: " + testType);

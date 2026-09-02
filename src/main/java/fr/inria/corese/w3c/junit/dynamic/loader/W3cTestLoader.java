@@ -5,6 +5,9 @@ import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
 import fr.inria.corese.core.next.data.api.model.Model;
+import fr.inria.corese.core.next.data.api.model.Statement;
+import fr.inria.corese.core.next.data.api.term.BNode;
+import fr.inria.corese.core.next.data.api.term.Resource;
 import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
@@ -41,6 +44,10 @@ public class W3cTestLoader {
     // as full angle-bracket IRIs to avoid any prefix-expansion dependency.
     private static final String TYPE_QUERY =
             "SELECT ?uri ?type WHERE { ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type . }";
+    private static final String SELECT_URI_VALUE_PREFIX = "SELECT ?uri ?value WHERE { ?uri ";
+    private static final String VALUE_PATTERN_SUFFIX = " ?value . }";
+    private static final String VAR_VALUE = "value";
+    private static final String VAR_URI = "uri";
     private static final String MANIFEST_ACTION = "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>";
     private static final String JSONLD_OPTION = "<https://w3c.github.io/json-ld-api/tests/vocab#option>";
     private static final String JSON_LD_API = "json-ld-api";
@@ -84,7 +91,7 @@ public class W3cTestLoader {
             try (TupleQueryResult r = conn.prepareTupleQuery(TYPE_QUERY).evaluate()) {
                 while (r.hasNext()) {
                     BindingSet bs = r.next();
-                    String uri = getStringValue(bs, "uri");
+                    String uri = getStringValue(bs, VAR_URI);
                     String type = getStringValue(bs, "type");
                     if (uri != null && type != null
                             && !type.equals("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#Manifest")) {
@@ -108,6 +115,7 @@ public class W3cTestLoader {
             runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceResults>", "resultAlt");
             runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#expectedResults>", "expectedBoolean");
             runPropQuery(conn, props, "<https://w3c.github.io/rdf-canon/tests/vocab#hashAlgorithm>", "hashAlgorithm");
+            runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#resultCardinality>", "resultCardinality");
             run2HopPropQuery(conn, props,
                     MANIFEST_ACTION,
                     "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#query>", "query");
@@ -148,6 +156,13 @@ public class W3cTestLoader {
                     JSONLD_OPTION,
                     "<https://w3c.github.io/json-ld-api/tests/vocab#useRdfType>", "useRdfType");
 
+            // Collect multi-valued properties (qt:graphData can appear more than once per test)
+            Map<String, List<String>> multiProps = new HashMap<>();
+            runMultiValue2HopPropQuery(conn, multiProps,
+                    MANIFEST_ACTION,
+                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#graphData>",
+                    W3cTestCase.Property.GRAPH_DATA.getKey());
+
             // Step 3: build W3cTestCase objects
             for (Map.Entry<String, Set<String>> entry : uriToTypes.entrySet()) {
                 String testUri = entry.getKey();
@@ -162,6 +177,10 @@ public class W3cTestLoader {
 
                     TestType testType = mapTestType(typeUris);
                     Map<String, Object> properties = buildPropertiesFromMap(p, action, result2);
+                    List<String> graphData = multiProps.getOrDefault(testUri, List.of());
+                    if (!graphData.isEmpty()) {
+                        properties.put(W3cTestCase.Property.GRAPH_DATA.getKey(), new ArrayList<>(graphData));
+                    }
                     String displayName = name != null
                             ? name.trim().toLowerCase(Locale.ROOT).replace("-", "").replace(" ", "_").replace("#", "").replace(".", "")
                             : "unknown_test";
@@ -223,12 +242,12 @@ public class W3cTestLoader {
     private static void runPropQuery(RepositoryConnection conn,
                                      Map<String, Map<String, String>> props,
                                      String pred, String propKey) {
-        String q = "SELECT ?uri ?value WHERE { ?uri " + pred + " ?value . }";
+        String q = SELECT_URI_VALUE_PREFIX + pred + VALUE_PATTERN_SUFFIX;
         try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
             while (r.hasNext()) {
                 BindingSet bs = r.next();
-                String uri = getStringValue(bs, "uri");
-                String val = getStringValue(bs, "value");
+                String uri = getStringValue(bs, VAR_URI);
+                String val = getStringValue(bs, VAR_VALUE);
                 if (uri != null && val != null) {
                     props.computeIfAbsent(uri, k -> new HashMap<>()).putIfAbsent(propKey, val);
                 }
@@ -246,18 +265,41 @@ public class W3cTestLoader {
     private static void run2HopPropQuery(RepositoryConnection conn,
                                          Map<String, Map<String, String>> props,
                                          String pred1, String pred2, String propKey) {
-        String q = "SELECT ?uri ?value WHERE { ?uri " + pred1 + " ?node . ?node " + pred2 + " ?value . }";
+        String q = SELECT_URI_VALUE_PREFIX + pred1 + " ?node . ?node " + pred2 + VALUE_PATTERN_SUFFIX;
         try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
             while (r.hasNext()) {
                 BindingSet bs = r.next();
-                String uri = getStringValue(bs, "uri");
-                String val = getStringValue(bs, "value");
+                String uri = getStringValue(bs, VAR_URI);
+                String val = getStringValue(bs, VAR_VALUE);
                 if (uri != null && val != null) {
                     props.computeIfAbsent(uri, k -> new HashMap<>()).putIfAbsent(propKey, val);
                 }
             }
         } catch (Exception e) {
             logger.warn("2-hop property query failed for {}: {}", propKey, e.getMessage());
+        }
+    }
+
+    /**
+     * Runs a two-hop query and collects ALL values per URI into a list (no deduplication).
+     * Used for multi-valued properties such as {@code qt:graphData}, which can appear
+     * more than once in a single test's action blank node.
+     */
+    private static void runMultiValue2HopPropQuery(RepositoryConnection conn,
+                                                   Map<String, List<String>> multiProps,
+                                                   String pred1, String pred2, String propKey) {
+        String q = SELECT_URI_VALUE_PREFIX + pred1 + " ?node . ?node " + pred2 + VALUE_PATTERN_SUFFIX;
+        try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
+            while (r.hasNext()) {
+                BindingSet bs = r.next();
+                String uri = getStringValue(bs, VAR_URI);
+                String val = getStringValue(bs, VAR_VALUE);
+                if (uri != null && val != null) {
+                    multiProps.computeIfAbsent(uri, k -> new ArrayList<>()).add(val);
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Multi-value 2-hop property query failed for {}: {}", propKey, e.getMessage());
         }
     }
 
@@ -375,6 +417,10 @@ public class W3cTestLoader {
         if (lowerUri.contains("rdfc10evaltest")) return TestType.RDFC10_EVAL_TEST;
         if (lowerUri.contains("rdfa-test#positiveevaluationtest")) return TestType.RDFA_POSITIVE_EVAL;
         if (lowerUri.contains("rdfa-test#negativeevaluationtest")) return TestType.RDFA_NEGATIVE_EVAL;
+        // SPARQL 1.0 test types (test-manifest# prefix)
+        if (lowerUri.contains("test-manifest#queryevaluationtest")) return TestType.SPARQL10_QUERY_EVAL;
+        if (lowerUri.contains("test-manifest#negativesyntaxtest")) return TestType.SPARQL10_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("test-manifest#positivesyntaxtest")) return TestType.SPARQL10_POSITIVE_SYNTAX;
         return null;
     }
 
@@ -418,7 +464,7 @@ public class W3cTestLoader {
             // Collect inclusion URIs before recursing (avoids open cursor during model mutation).
             // FILTER expressions are not supported by the next pipeline, so manifest URI and
             // IRI filtering is done here in Java.
-            List<String> inclusions = findInclusions(repo, manifestUri);
+            List<String> inclusions = findInclusions(model, manifestUri);
 
             for (String inclusion : inclusions) {
                 URI inclusionUri = URI.create(inclusion);
@@ -435,34 +481,69 @@ public class W3cTestLoader {
 
     }
 
-    private static final String[] INCLUSION_QUERIES = {
-            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?inclusion . }",
-            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?list1 . ?list1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?inclusion . }",
-            "SELECT ?manifest ?inclusion WHERE { ?manifest <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include> ?list1 . ?list1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> ?list2 . ?list2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?inclusion . }"
-    };
+    private static final String MF_INCLUDE =
+            "http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#include";
+    private static final String RDF_FIRST =
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#first";
+    private static final String RDF_REST =
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest";
+    private static final String RDF_NIL =
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil";
 
-    private static List<String> findInclusions(Repository repo, URI manifestUri) {
+    /**
+     * Finds all sub-manifest URIs declared via {@code mf:include} for the given
+     * manifest URI.
+     * <p>
+     * The manifest vocabulary allows both a direct IRI value and an RDF list
+     * (the Turtle {@code ( ... )} shorthand). SPARQL-based traversal cannot
+     * handle arbitrary-depth lists using plain BGPs, so we walk the model
+     * directly, following {@code rdf:first} / {@code rdf:rest} links for as
+     * many levels as needed.
+     */
+    private static List<String> findInclusions(Model model, URI manifestUri) {
         String manifestUriStr = manifestUri.toString();
         String manifestUriNoExt = manifestUriStr.replace(
                 "." + RDFTestUtils.guessFileFormat(manifestUri).getDefaultExtension(), "");
+
         Set<String> inclusions = new LinkedHashSet<>();
-        try (RepositoryConnection conn = repo.getConnection()) {
-            for (String query : INCLUSION_QUERIES) {
-                try (TupleQueryResult result = conn.prepareTupleQuery(query).evaluate()) {
-                    while (result.hasNext()) {
-                        BindingSet binding = result.next();
-                        Value manifest = binding.getValue("manifest");
-                        Value inclusion = binding.getValue("inclusion");
-                        if (matchesManifest(manifest, manifestUriStr, manifestUriNoExt) && isIri(inclusion)) {
-                            inclusions.add(inclusion.stringValue());
-                        }
-                    }
+
+        for (Statement stmt : model.filter(null, null, null)) {
+            if (stmt.getContext() == null
+                    && MF_INCLUDE.equals(stmt.getPredicate().stringValue())
+                    && matchesManifest(stmt.getSubject(), manifestUriStr, manifestUriNoExt)) {
+                Value obj = stmt.getObject();
+                if (isIri(obj)) {
+                    inclusions.add(obj.stringValue());
+                } else if (obj instanceof BNode bnode) {
+                    traverseRdfList(bnode, model, inclusions);
                 }
             }
-        } catch (RuntimeException exception) {
-            logger.error("Error executing inclusion queries.", exception);
         }
+
         return new ArrayList<>(inclusions);
+    }
+
+    /**
+     * Walks an RDF list rooted at {@code listHead} and adds every IRI-valued
+     * {@code rdf:first} element to {@code items}.
+     */
+    private static void traverseRdfList(BNode listHead, Model model, Set<String> items) {
+        Resource current = listHead;
+        Set<String> visited = new HashSet<>();
+
+        while (current != null && visited.add(current.stringValue())) {
+            Value next = null;
+            for (Statement stmt : model.filter(current, null, null)) {
+                String pred = stmt.getPredicate().stringValue();
+                Value obj = stmt.getObject();
+                if (RDF_FIRST.equals(pred) && isIri(obj)) {
+                    items.add(obj.stringValue());
+                } else if (RDF_REST.equals(pred)) {
+                    next = obj;
+                }
+            }
+            current = (next instanceof Resource r && !RDF_NIL.equals(next.stringValue())) ? r : null;
+        }
     }
 
     private static boolean matchesManifest(Value manifest, String uri, String uriWithoutExtension) {
