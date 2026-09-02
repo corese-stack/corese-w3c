@@ -206,7 +206,8 @@ public class W3cTestCase {
             return null;
         }
         try {
-            return URI.create(value);
+            URI uri = URI.create(value);
+            return uri.isAbsolute() ? uri : null;
         } catch (IllegalArgumentException e) {
             return null;
         }
