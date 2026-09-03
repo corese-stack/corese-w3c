@@ -36,6 +36,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Executor for SPARQL 1.0 query evaluation tests (mf:QueryEvaluationTest).
@@ -54,6 +56,8 @@ import java.util.stream.Collectors;
  * </ul>
  */
 public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
+
+    private static final Logger logger = LoggerFactory.getLogger(SparqlQueryEvaluationTestExecutor.class);
 
     private static final Pattern QUERY_TYPE_PATTERN =
             Pattern.compile("(?i)\\b(SELECT|ASK|CONSTRUCT|DESCRIBE)\\b");
@@ -102,6 +106,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
 
         // 5. Execute query and compare result
         String queryType = detectQueryType(queryText);
+        logger.debug("Executing SPARQL {} test: {}", queryType, testCase.getName());
         try (Repository repo = Repositories.create(storage);
              RepositoryConnection conn = repo.getConnection()) {
             switch (queryType) {
@@ -111,6 +116,11 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                 default -> throw new AssertionError(
                         "Cannot determine SPARQL query type for test: " + testCase.getName());
             }
+        } catch (QuerySyntaxException e) {
+            logger.error("Syntax error in SPARQL query for test '{}' ({}): {}",
+                    testCase.getName(), queryUri, e.getMessage());
+            logger.debug("Query text:\n{}", queryText);
+            throw e;
         }
     }
 
@@ -184,7 +194,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
      * This matches the W3C SPARQL 1.1 CSV result format specification.
      */
     private static List<Map<String, String>> executeSelectWithCsvFormatter(
-            RepositoryConnection conn, String queryText) throws Exception {
+            RepositoryConnection conn, String queryText) {
         List<Map<String, String>> rows = new ArrayList<>();
         try (TupleQueryResult result = conn.prepareTupleQuery(queryText).evaluate()) {
             List<String> vars = result.getBindingNames();
@@ -476,9 +486,10 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
      */
     static void queryForm(RepositoryConnection conn, String queryText) throws QuerySyntaxException {
         QuerySyntaxException last = null;
-        try { conn.prepareTupleQuery(queryText); return; } catch (QuerySyntaxException e) { last = e; }
-        try { conn.prepareBooleanQuery(queryText); return; } catch (QuerySyntaxException e) { last = e; }
-        try { conn.prepareGraphQuery(queryText); return; } catch (QuerySyntaxException e) { last = e; }
+        try { conn.prepareTupleQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not a SELECT query: {}", e.getMessage()); last = e; } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
+        try { conn.prepareBooleanQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not an ASK query: {}", e.getMessage()); last = e; } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
+        try { conn.prepareGraphQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not a CONSTRUCT/DESCRIBE query: {}", e.getMessage()); last = e; } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
+        logger.error("Failed to parse SPARQL query in any form. Query text:\n{}", queryText);
         throw last != null ? last : new QuerySyntaxException("Cannot determine SPARQL query form");
     }
 
