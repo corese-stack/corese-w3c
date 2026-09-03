@@ -161,28 +161,31 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             }
         }
 
-        if ("srx".equals(ext) || "srj".equals(ext)) {
-            SparqlResultParser.SparqlResults expected;
-            try (FileInputStream fis = new FileInputStream(resultPath)) {
-                expected = "srj".equals(ext)
-                        ? SparqlResultParser.parseJson(fis)
-                        : SparqlResultParser.parse(fis);
+        switch (ext) {
+            case "srx", "srj" -> {
+                SparqlResultParser.SparqlResults expected;
+                try (FileInputStream fis = new FileInputStream(resultPath)) {
+                    expected = "srj".equals(ext)
+                            ? SparqlResultParser.parseJson(fis)
+                            : SparqlResultParser.parse(fis);
+                }
+                if (expected.isBoolean()) {
+                    throw new AssertionError("Expected SELECT result file but got boolean result for: "
+                            + testCase.getName());
+                }
+                compareSelectResults(expected.rows(), actualRows, testCase);
             }
-            if (expected.isBoolean()) {
-                throw new AssertionError("Expected SELECT result file but got boolean result for: "
-                        + testCase.getName());
+            case "ttl", "rdf" -> {
+                // rs: vocabulary result format (Turtle or RDF/XML)
+                SparqlResultParser.SparqlResults rsExpected = RsVocabResultParser.parse(resultUri);
+                compareSelectResults(rsExpected.rows(), actualRows, testCase);
             }
-            compareSelectResults(expected.rows(), actualRows, testCase);
-        } else if ("ttl".equals(ext) || "rdf".equals(ext)) {
-            // rs: vocabulary result format (Turtle or RDF/XML)
-            SparqlResultParser.SparqlResults rsExpected = RsVocabResultParser.parse(resultUri);
-            compareSelectResults(rsExpected.rows(), actualRows, testCase);
-        } else if ("tsv".equals(ext)) {
-            // TSV uses SPARQL notation → convert to canonical form, compare normally.
-            List<Map<String, String>> expectedRows = CsvTsvResultParser.parseTsvToCanonical(resultPath);
-            compareSelectResults(expectedRows, actualRows, testCase);
-        } else {
-            throw new AssertionError("Unsupported result file format '" + ext
+            case "tsv" -> {
+                // TSV uses SPARQL notation → convert to canonical form, compare normally.
+                List<Map<String, String>> expectedRows = CsvTsvResultParser.parseTsvToCanonical(resultPath);
+                compareSelectResults(expectedRows, actualRows, testCase);
+            }
+            default -> throw new AssertionError("Unsupported result file format '" + ext
                     + "' for SELECT test: " + testCase.getName());
         }
     }
@@ -486,8 +489,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
      */
     static void queryForm(RepositoryConnection conn, String queryText) throws QuerySyntaxException {
         QuerySyntaxException last = null;
-        try { conn.prepareTupleQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not a SELECT query: {}", e.getMessage()); last = e; } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
-        try { conn.prepareBooleanQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not an ASK query: {}", e.getMessage()); last = e; } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
+        try { conn.prepareTupleQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not a SELECT query: {}", e.getMessage()); } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
+        try { conn.prepareBooleanQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not an ASK query: {}", e.getMessage()); } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
         try { conn.prepareGraphQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not a CONSTRUCT/DESCRIBE query: {}", e.getMessage()); last = e; } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
         logger.error("Failed to parse SPARQL query in any form. Query text:\n{}", queryText);
         throw last != null ? last : new QuerySyntaxException("Cannot determine SPARQL query form");
