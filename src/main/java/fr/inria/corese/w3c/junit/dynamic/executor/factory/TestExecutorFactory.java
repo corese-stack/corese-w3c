@@ -64,7 +64,7 @@ public class TestExecutorFactory {
             case JSON_LD_FROM_RDF_NEGATIVE_EVAL -> JSONLD_FROM_RDF_NEGATIVE_EXECUTOR;
 
             // 3. SPARQL 1.0 + 1.1 query/CSV evaluation (same executor)
-            case SPARQL10_QUERY_EVAL, SPARQL11_CSV_FORMAT -> SPARQL_QUERY_EVALUATION_EXECUTOR;
+            case SPARQL10_QUERY_EVAL, SPARQL11_QUERY_EVAL, SPARQL11_CSV_FORMAT -> SPARQL_QUERY_EVALUATION_EXECUTOR;
 
             // 4. SPARQL 1.0 + 1.1 syntax tests (same executors, same engine)
             case SPARQL10_POSITIVE_SYNTAX, SPARQL11_POSITIVE_SYNTAX -> SPARQL_POSITIVE_SYNTAX_EXECUTOR;

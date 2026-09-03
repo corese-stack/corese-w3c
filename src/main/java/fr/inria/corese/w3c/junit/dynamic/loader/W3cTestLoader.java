@@ -200,7 +200,7 @@ public class W3cTestLoader {
                     String action = coalesce(p.get("action"), p.get("actionAlt"));
                     String result2 = coalesce(p.get("result"), p.get("resultAlt"));
 
-                    TestType testType = mapTestType(typeUris);
+                    TestType testType = mapTestType(typeUris, testUri);
                     Map<String, Object> properties = buildPropertiesFromMap(p, action, result2);
                     List<String> graphData = graphDataProp.getOrDefault(testUri, List.of());
                     if (!graphData.isEmpty()) {
@@ -397,6 +397,10 @@ public class W3cTestLoader {
      * Maps a set of W3C test type URIs to the local {@link TestType} enum.
      */
     static TestType mapTestType(Set<String> typeUris) {
+        return mapTestType(typeUris, null);
+    }
+
+    static TestType mapTestType(Set<String> typeUris, String testUri) {
         boolean isFromRdf = typeUris.stream().anyMatch(t -> t.toLowerCase(Locale.ROOT).contains("fromrdftest"));
         boolean isToRdf = typeUris.stream().anyMatch(t -> t.toLowerCase(Locale.ROOT).contains("tordftest"));
 
@@ -406,7 +410,7 @@ public class W3cTestLoader {
             if (mapped != null) {
                 return mapped;
             }
-            mapped = mapStandardRdfTestType(typeUri, lowerUri);
+            mapped = mapStandardRdfTestType(typeUri, lowerUri, testUri);
             if (mapped != null) {
                 return mapped;
             }
@@ -451,7 +455,7 @@ public class W3cTestLoader {
         return null;
     }
 
-    private static TestType mapStandardRdfTestType(String typeUri, String lowerUri) {
+    private static TestType mapStandardRdfTestType(String typeUri, String lowerUri, String testUri) {
         if ("http://www.w3.org/2006/03/test-description#TestCase".equalsIgnoreCase(typeUri)) {
             return TestType.ASK_BASED_EVAL;
         }
@@ -459,7 +463,7 @@ public class W3cTestLoader {
         if (type != null) {
             return type;
         }
-        return mapOtherRdfTestType(lowerUri);
+        return mapOtherRdfTestType(lowerUri, testUri);
     }
 
     private static TestType mapTurtleOrTrigTestType(String lowerUri) {
@@ -474,7 +478,7 @@ public class W3cTestLoader {
         return null;
     }
 
-    private static TestType mapOtherRdfTestType(String lowerUri) {
+    private static TestType mapOtherRdfTestType(String lowerUri, String testUri) {
         if (lowerUri.contains("testntriplesnegativesyntax")) return TestType.NTRIPLES_NEGATIVE_SYNTAX;
         if (lowerUri.contains("testntriplespositivesyntax")) return TestType.NTRIPLES_POSITIVE_SYNTAX;
         if (lowerUri.contains("testnquadsnegativesyntax")) return TestType.NQUADS_NEGATIVE_SYNTAX;
@@ -486,9 +490,12 @@ public class W3cTestLoader {
         if (lowerUri.contains("rdfc10evaltest")) return TestType.RDFC10_EVAL_TEST;
         if (lowerUri.contains("rdfa-test#positiveevaluationtest")) return TestType.RDFA_POSITIVE_EVAL;
         if (lowerUri.contains("rdfa-test#negativeevaluationtest")) return TestType.RDFA_NEGATIVE_EVAL;
-        // SPARQL 1.0 test types (test-manifest# prefix)
-        // Note: QueryEvaluationTest and UpdateEvaluationTest are matched before generic syntax tests
-        if (lowerUri.contains("test-manifest#queryevaluationtest")) return TestType.SPARQL10_QUERY_EVAL;
+        // mf:QueryEvaluationTest is shared by SPARQL 1.0 and 1.1 — use the test URI to distinguish.
+        if (lowerUri.contains("test-manifest#queryevaluationtest")) {
+            return testUri != null && testUri.contains("sparql11")
+                    ? TestType.SPARQL11_QUERY_EVAL
+                    : TestType.SPARQL10_QUERY_EVAL;
+        }
         if (lowerUri.contains("test-manifest#updateevaluationtest")) return TestType.SPARQL11_UPDATE_EVAL;
         if (lowerUri.contains("test-manifest#csvresultformattest")) return TestType.SPARQL11_CSV_FORMAT;
         // SPARQL 1.1 syntax tests (suffix "11") must be checked before the SPARQL 1.0 variants

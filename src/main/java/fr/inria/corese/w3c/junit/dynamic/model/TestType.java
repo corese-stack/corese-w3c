@@ -92,6 +92,8 @@ public enum TestType {
     SPARQL11_POSITIVE_UPDATE_SYNTAX("SPARQL 1.1 Positive Update Syntax Test"),
     /** SPARQL 1.1 Update Negative Syntax Test (update request should fail to parse) */
     SPARQL11_NEGATIVE_UPDATE_SYNTAX("SPARQL 1.1 Negative Update Syntax Test"),
+    /** SPARQL 1.1 Query Evaluation Test (SELECT, ASK, CONSTRUCT, DESCRIBE) */
+    SPARQL11_QUERY_EVAL("SPARQL 1.1 Query Evaluation Test"),
     /** SPARQL 1.1 Update Evaluation Test (execute update and compare resulting graph) */
     SPARQL11_UPDATE_EVAL("SPARQL 1.1 Update Evaluation Test"),
     /** SPARQL 1.1 CSV Result Format Test (SELECT query result compared as CSV/TSV) */
