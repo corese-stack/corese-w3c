@@ -142,7 +142,7 @@ public class SparqlResultParser {
         return switch (type) {
             case "uri"   -> "<" + value + ">";
             case "bnode" -> "_:b_" + value;
-            case "literal" -> {
+            case "literal", "typed-literal" -> {
                 String lang = term.path("xml:lang").asText(null);
                 if (lang != null && !lang.isEmpty()) {
                     yield "\"" + value + "\"@" + lang.toLowerCase(Locale.ROOT);
