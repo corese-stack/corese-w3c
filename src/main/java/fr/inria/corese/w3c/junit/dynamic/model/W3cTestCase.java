@@ -284,7 +284,7 @@ public class W3cTestCase {
      * Generates a comprehensive test display name with auto-detected format from
      * manifest URI.
      * Extracts the format name from the manifest path for automatic formatting.
-     * 
+     *
      * @return A formatted display name for the test
      */
     public String getFormattedDisplayName() {

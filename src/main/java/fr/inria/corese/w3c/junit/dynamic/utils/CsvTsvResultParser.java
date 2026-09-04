@@ -47,11 +47,13 @@ public final class CsvTsvResultParser {
     private static final String XSD_DOUBLE   = "http://www.w3.org/2001/XMLSchema#double";
     private static final String XSD_BOOLEAN  = "http://www.w3.org/2001/XMLSchema#boolean";
 
+    private static final String DATATYPE_SEPARATOR = "\"^^<";
+
     // SPARQL numeric / boolean bare-token patterns (per SPARQL 1.1 grammar)
-    private static final Pattern INTEGER_PAT = Pattern.compile("[+-]?[0-9]+");
-    private static final Pattern DECIMAL_PAT = Pattern.compile("[+-]?[0-9]*\\.[0-9]+");
+    private static final Pattern INTEGER_PAT = Pattern.compile("[+-]?\\d+");
+    private static final Pattern DECIMAL_PAT = Pattern.compile("[+-]?\\d*\\.\\d+");
     private static final Pattern DOUBLE_PAT  = Pattern.compile(
-            "[+-]?([0-9]+\\.[0-9]*|\\.[0-9]+|[0-9]+)[eE][+-]?[0-9]+");
+            "[+-]?(\\d+(\\.\\d*)?|\\.\\d+)[eE][+-]?\\d+");
 
     private CsvTsvResultParser() {
     }
@@ -78,12 +80,13 @@ public final class CsvTsvResultParser {
                 new FileReader(filePath, StandardCharsets.UTF_8))) {
 
             String headerLine = reader.readLine();
-            if (headerLine == null) return rows;
+            if (headerLine == null) {
+                return rows;
+            }
             List<String> vars = parseCsvLine(headerLine);
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.isBlank()) continue;
                 List<String> cells = parseCsvLine(line);
                 Map<String, String> row = new LinkedHashMap<>();
                 for (int i = 0; i < vars.size(); i++) {
@@ -109,34 +112,36 @@ public final class CsvTsvResultParser {
         while (i < line.length()) {
             char c = line.charAt(i);
             if (inQuotes) {
-                if (c == '"') {
-                    if (i + 1 < line.length() && line.charAt(i + 1) == '"') {
-                        sb.append('"');
-                        i += 2;
-                    } else {
-                        inQuotes = false;
-                        i++;
-                    }
+                if (c == '"' && i + 1 < line.length() && line.charAt(i + 1) == '"') {
+                    sb.append('"');
+                    i += 2;
+                } else if (c == '"') {
+                    inQuotes = false;
+                    i++;
                 } else {
                     sb.append(c);
                     i++;
                 }
             } else {
-                if (c == '"') {
-                    inQuotes = true;
-                    i++;
-                } else if (c == ',') {
-                    fields.add(sb.toString());
-                    sb.setLength(0);
-                    i++;
-                } else {
-                    sb.append(c);
-                    i++;
-                }
+                inQuotes = handleUnquotedChar(c, sb, fields);
+                i++;
             }
         }
         fields.add(sb.toString());
         return fields;
+    }
+
+    private static boolean handleUnquotedChar(char c, StringBuilder sb, List<String> fields) {
+        if (c == '"') {
+            return true;
+        }
+        if (c == ',') {
+            fields.add(sb.toString());
+            sb.setLength(0);
+        } else {
+            sb.append(c);
+        }
+        return false;
     }
 
     // -----------------------------------------------------------------------
@@ -166,7 +171,9 @@ public final class CsvTsvResultParser {
                 new FileReader(filePath, StandardCharsets.UTF_8))) {
 
             String headerLine = reader.readLine();
-            if (headerLine == null) return rows;
+            if (headerLine == null) {
+                return rows;
+            }
             String[] headers = headerLine.split("\t", -1);
             List<String> vars = new ArrayList<>();
             for (String h : headers) {
@@ -175,11 +182,10 @@ public final class CsvTsvResultParser {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.isBlank()) continue;
                 String[] cells = line.split("\t", -1);
                 Map<String, String> row = new LinkedHashMap<>();
                 for (int i = 0; i < vars.size(); i++) {
-                    String cell = i < cells.length ? cells[i].trim() : "";
+                    String cell = i < cells.length ? cells[i] : "";
                     String canonical = tsvCellToCanonical(cell);
                     if (canonical != null) {
                         row.put(vars.get(i), canonical);
@@ -196,7 +202,9 @@ public final class CsvTsvResultParser {
      * Returns {@code null} for unbound (empty) cells.
      */
     static String tsvCellToCanonical(String cell) {
-        if (cell == null || cell.isEmpty()) return null;
+        if (cell == null || cell.isEmpty()) {
+            return null;
+        }
 
         // IRI: <http://...>
         if (cell.startsWith("<") && cell.endsWith(">")) {
@@ -208,20 +216,27 @@ public final class CsvTsvResultParser {
             return "_:b_" + cell.substring(2);
         }
 
+        if (cell.startsWith("\"")) {
+            return parseQuotedTsvCell(cell);
+        }
+
+        return parseBareTokenTsvCell(cell);
+    }
+
+    private static String parseQuotedTsvCell(String cell) {
         // Typed literal: "label"^^<datatype>
-        if (cell.startsWith("\"") && cell.contains("\"^^<") && cell.endsWith(">")) {
-            int dtIdx = cell.lastIndexOf("\"^^<");
+        if (cell.contains(DATATYPE_SEPARATOR) && cell.endsWith(">")) {
+            int dtIdx = cell.lastIndexOf(DATATYPE_SEPARATOR);
             String label = unescape(cell.substring(1, dtIdx));
-            String datatype = cell.substring(dtIdx + 4, cell.length() - 1);
-            // Normalize xsd:double exponent to uppercase E
+            String datatype = cell.substring(dtIdx + DATATYPE_SEPARATOR.length(), cell.length() - 1);
             if (XSD_DOUBLE.equals(datatype)) {
                 label = label.replace('e', 'E');
             }
-            return "\"" + escape(label) + "\"^^<" + datatype + ">";
+            return toTypedLiteral(escape(label), datatype);
         }
 
         // Language-tagged literal: "label"@lang
-        if (cell.startsWith("\"") && cell.contains("\"@")) {
+        if (cell.contains("\"@")) {
             int atIdx = cell.lastIndexOf("\"@");
             if (atIdx > 0) {
                 String label = unescape(cell.substring(1, atIdx));
@@ -231,27 +246,35 @@ public final class CsvTsvResultParser {
         }
 
         // Plain quoted literal: "label"  →  "label"^^<xsd:string>
-        if (cell.startsWith("\"") && cell.endsWith("\"") && cell.length() >= 2) {
+        if (cell.endsWith("\"") && cell.length() >= 2) {
             String label = unescape(cell.substring(1, cell.length() - 1));
-            return "\"" + escape(label) + "\"^^<" + XSD_STRING + ">";
+            return toTypedLiteral(escape(label), XSD_STRING);
         }
 
+        return toTypedLiteral(escape(cell), XSD_STRING);
+    }
+
+    private static String parseBareTokenTsvCell(String cell) {
         // Bare token: SPARQL numeric / boolean shorthand
         if ("true".equals(cell) || "false".equals(cell)) {
-            return "\"" + cell + "\"^^<" + XSD_BOOLEAN + ">";
+            return toTypedLiteral(cell, XSD_BOOLEAN);
         }
         if (DOUBLE_PAT.matcher(cell).matches()) {
             // XSD double: normalize exponent marker to uppercase E (e.g. 1.0e6 → 1.0E6)
-            return "\"" + cell.replace('e', 'E') + "\"^^<" + XSD_DOUBLE + ">";
+            return toTypedLiteral(cell.replace('e', 'E'), XSD_DOUBLE);
         }
         if (DECIMAL_PAT.matcher(cell).matches()) {
-            return "\"" + cell + "\"^^<" + XSD_DECIMAL + ">";
+            return toTypedLiteral(cell, XSD_DECIMAL);
         }
         if (INTEGER_PAT.matcher(cell).matches()) {
-            return "\"" + cell + "\"^^<" + XSD_INTEGER + ">";
+            return toTypedLiteral(cell, XSD_INTEGER);
         }
         // Unknown bare token — keep as plain string
-        return "\"" + escape(cell) + "\"^^<" + XSD_STRING + ">";
+        return toTypedLiteral(escape(cell), XSD_STRING);
+    }
+
+    private static String toTypedLiteral(String lexicalValue, String datatype) {
+        return "\"" + lexicalValue + DATATYPE_SEPARATOR + datatype + ">";
     }
 
     // -----------------------------------------------------------------------

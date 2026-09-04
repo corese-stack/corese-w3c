@@ -103,7 +103,7 @@ public enum TestType {
 
     /**
      * Constructor for TestType enum.
-     * 
+     *
      * @param description A human-readable description of the test type
      */
     TestType(String description) {
@@ -112,7 +112,7 @@ public enum TestType {
 
     /**
      * Gets the description of this test type.
-     * 
+     *
      * @return The test type description
      */
     public String getDescription() {

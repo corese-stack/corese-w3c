@@ -68,15 +68,15 @@
   let versionsList = [];
   let currentVersionFile = "./data/w3c-report.json";
   let currentVersionEarlFile = "./data/earl-report.ttl";
-  
+
   let reportData = null;
   let allTests = [];
   let filteredTests = [];
-  
+
   let currentSuite = "all";
   let currentStatus = "all";
   let searchQuery = "";
-  
+
   let currentPage = 1;
   const PAGE_SIZE = 50;
 
@@ -106,7 +106,7 @@
   const explorerCount = document.getElementById("explorer-count");
   const btnResetFilters = document.getElementById("btn-reset-filters");
   const tableBody = document.getElementById("tests-table-body");
-  
+
   const pageInfo = document.getElementById("page-info");
   const btnPrev = document.getElementById("btn-prev");
   const btnNext = document.getElementById("btn-next");
@@ -264,7 +264,7 @@
   function renderMetadata() {
     const meta = reportData.metadata || {};
     const git = meta.git || {};
-    
+
     if (git.commit && git.commit !== "unknown") {
       const shortCommit = git.commit.length >= 7 ? git.commit.substring(0, 7) : git.commit;
       metaCommit.textContent = "Commit #" + shortCommit;
@@ -523,7 +523,7 @@
   statusPills.addEventListener("click", (e) => {
     const btn = e.target.closest(".filter-btn");
     if (!btn) return;
-    
+
     document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     currentStatus = btn.dataset.status;
@@ -559,7 +559,7 @@
       const outcome = test.outcome;
       const statusClass = "status-" + outcome.toLowerCase();
       const durationMs = Math.max(0, numeric(test.durationMs) || 0);
-      
+
       return `
         <tr>
           <td><span class="status-badge ${statusClass}">${escapeHtml(outcomeLabel(outcome))}</span></td>

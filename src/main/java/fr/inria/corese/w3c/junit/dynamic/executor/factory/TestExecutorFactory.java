@@ -9,7 +9,7 @@ import fr.inria.corese.w3c.junit.dynamic.model.TestType;
  * This centralizes the logic for selecting the right executor implementation.
  */
 public class TestExecutorFactory {
-    
+
     // Singleton instances
     private static final RdfPositiveEvaluationTestExecutor POSITIVE_EVALUATION_EXECUTOR = new RdfPositiveEvaluationTestExecutor();
     private static final RdfPositiveSyntaxTestExecutor POSITIVE_SYNTAX_EXECUTOR = new RdfPositiveSyntaxTestExecutor();
@@ -43,7 +43,7 @@ public class TestExecutorFactory {
 
     /**
      * Creates the appropriate test executor for the given test type.
-     * 
+     *
      * @param testType The type of test to execute
      * @return The appropriate test executor
      * @throws IllegalArgumentException if no executor supports the given test type

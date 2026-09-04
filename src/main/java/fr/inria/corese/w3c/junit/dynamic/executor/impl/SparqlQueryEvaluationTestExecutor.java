@@ -35,9 +35,10 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import javax.xml.parsers.ParserConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 /**
  * Executor for SPARQL 1.0 query evaluation tests (mf:QueryEvaluationTest).
@@ -61,9 +62,6 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
 
     private static final Pattern QUERY_TYPE_PATTERN =
             Pattern.compile("(?i)\\b(SELECT|ASK|CONSTRUCT|DESCRIBE)\\b");
-
-    public SparqlQueryEvaluationTestExecutor() {
-    }
 
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
@@ -112,15 +110,10 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             switch (queryType) {
                 case "SELECT" -> executeSelectTest(conn, queryText, resultUri, testCase);
                 case "ASK" -> executeAskTest(conn, queryText, resultUri, testCase);
-                case "CONSTRUCT", "DESCRIBE" -> executeGraphTest(conn, queryText, resultUri, testCase, storage);
+                case "CONSTRUCT", "DESCRIBE" -> executeGraphTest(conn, queryText, resultUri, testCase);
                 default -> throw new AssertionError(
                         "Cannot determine SPARQL query type for test: " + testCase.getName());
             }
-        } catch (QuerySyntaxException e) {
-            logger.error("Syntax error in SPARQL query for test '{}' ({}): {}",
-                    testCase.getName(), queryUri, e.getMessage());
-            logger.debug("Query text:\n{}", queryText);
-            throw e;
         }
     }
 
@@ -129,7 +122,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // -----------------------------------------------------------------------
 
     private void executeSelectTest(RepositoryConnection conn, String queryText,
-                                   URI resultUri, W3cTestCase testCase) throws Exception {
+                                   URI resultUri, W3cTestCase testCase)
+            throws java.io.IOException, ParserConfigurationException, SAXException {
         String resultPath = RDFTestUtils.loadFile(resultUri);
         String ext = RDFTestUtils.getFileExtension(resultUri.toString()).toLowerCase(Locale.ROOT);
 
@@ -151,10 +145,10 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             while (result.hasNext()) {
                 BindingSet bs = result.next();
                 Map<String, String> row = new LinkedHashMap<>();
-                for (String var : vars) {
-                    Value val = bs.getValue(var);
+                for (String bindingName : vars) {
+                    Value val = bs.getValue(bindingName);
                     if (val != null) {
-                        row.put(var, valueToCanonical(val));
+                        row.put(bindingName, valueToCanonical(val));
                     }
                 }
                 actualRows.add(row);
@@ -204,9 +198,9 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             while (result.hasNext()) {
                 BindingSet bs = result.next();
                 Map<String, String> row = new LinkedHashMap<>();
-                for (String var : vars) {
-                    Value val = bs.getValue(var);
-                    row.put(var, val != null ? valueToCsvString(val) : "");
+                for (String bindingName : vars) {
+                    Value val = bs.getValue(bindingName);
+                    row.put(bindingName, val != null ? valueToCsvString(val) : "");
                 }
                 rows.add(row);
             }
@@ -248,11 +242,11 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         List<String> expectedNorm = expected.stream()
                 .map(SparqlQueryEvaluationTestExecutor::normalizeCsvRow)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
         List<String> actualNorm = actual.stream()
                 .map(SparqlQueryEvaluationTestExecutor::normalizeCsvRow)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
 
         if (!expectedNorm.equals(actualNorm)) {
             throw new AssertionError(String.format(
@@ -295,11 +289,11 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         List<String> expectedNorm = expected.stream()
                 .map(SparqlQueryEvaluationTestExecutor::normalizeRow)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
         List<String> actualNorm = actual.stream()
                 .map(SparqlQueryEvaluationTestExecutor::normalizeRow)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
 
         if (!expectedNorm.equals(actualNorm)) {
             throw new AssertionError(String.format(
@@ -338,7 +332,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // -----------------------------------------------------------------------
 
     private void executeAskTest(RepositoryConnection conn, String queryText,
-                                URI resultUri, W3cTestCase testCase) throws Exception {
+                                URI resultUri, W3cTestCase testCase)
+            throws java.io.IOException, ParserConfigurationException, SAXException {
         boolean actualResult = conn.prepareBooleanQuery(queryText).evaluate();
 
         String resultPath = RDFTestUtils.loadFile(resultUri);
@@ -375,7 +370,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // -----------------------------------------------------------------------
 
     private void executeGraphTest(RepositoryConnection conn, String queryText,
-                                  URI resultUri, W3cTestCase testCase, StorageManager storage) throws Exception {
+                                  URI resultUri, W3cTestCase testCase) throws java.io.IOException {
         // Collect actual triples from the graph query result
         Model actualModel = StorageModels.create(Storages.create());
         try (GraphQueryResult result = conn.prepareGraphQuery(queryText).evaluate()) {
@@ -410,7 +405,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     /**
      * Loads an RDF file into the given model, mapping .n3 to Turtle.
      */
-    private static void loadRdfFile(URI fileUri, Model model) throws Exception {
+    private static void loadRdfFile(URI fileUri, Model model) throws java.io.IOException {
         String filePath = RDFTestUtils.loadFile(fileUri);
         RDFFormat fmt = guessRdfOrFallback(fileUri);
         RDFParser parser = RDFTestUtils.createParser(fmt, model);
@@ -424,7 +419,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
      * The graph name is the original URI of the file as declared in the manifest
      * (i.e., the remote URL used as {@code qt:graphData} value).
      */
-    private static void loadRdfFileAsNamedGraph(URI fileUri, Model model, String graphName) throws Exception {
+    private static void loadRdfFileAsNamedGraph(URI fileUri, Model model, String graphName)
+            throws java.io.IOException {
         String filePath = RDFTestUtils.loadFile(fileUri);
         RDFFormat fmt = guessRdfOrFallback(fileUri);
         Model tempModel = RDFTestUtils.createModel();
@@ -489,11 +485,36 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
      */
     static void queryForm(RepositoryConnection conn, String queryText) throws QuerySyntaxException {
         QuerySyntaxException last = null;
-        try { conn.prepareTupleQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not a SELECT query: {}", e.getMessage()); } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
-        try { conn.prepareBooleanQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not an ASK query: {}", e.getMessage()); } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
-        try { conn.prepareGraphQuery(queryText); return; } catch (QuerySyntaxException e) { logger.debug("Not a CONSTRUCT/DESCRIBE query: {}", e.getMessage()); last = e; } catch (IllegalStateException e) { throw new QuerySyntaxException(e.getMessage(), e); }
+        try {
+            conn.prepareTupleQuery(queryText);
+            return;
+        } catch (QuerySyntaxException e) {
+            logger.debug("Not a SELECT query: {}", e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new QuerySyntaxException(e.getMessage(), e);
+        }
+
+        try {
+            conn.prepareBooleanQuery(queryText);
+            return;
+        } catch (QuerySyntaxException e) {
+            logger.debug("Not an ASK query: {}", e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new QuerySyntaxException(e.getMessage(), e);
+        }
+
+        try {
+            conn.prepareGraphQuery(queryText);
+            return;
+        } catch (QuerySyntaxException e) {
+            logger.debug("Not a CONSTRUCT/DESCRIBE query: {}", e.getMessage());
+            last = e;
+        } catch (IllegalStateException e) {
+            throw new QuerySyntaxException(e.getMessage(), e);
+        }
+
         logger.error("Failed to parse SPARQL query in any form. Query text:\n{}", queryText);
-        throw last != null ? last : new QuerySyntaxException("Cannot determine SPARQL query form");
+        throw last;
     }
 
     /**
@@ -523,8 +544,9 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         }
         if (value instanceof Literal literal) {
             String label = literal.getLabel();
-            if (literal.getLanguage().isPresent()) {
-                return "\"" + label + "\"@" + literal.getLanguage().get().toLowerCase(Locale.ROOT);
+            Optional<String> language = literal.getLanguage();
+            if (language.isPresent()) {
+                return "\"" + label + "\"@" + language.orElseThrow().toLowerCase(Locale.ROOT);
             }
             if (literal.getDatatype() != null) {
                 return "\"" + label + "\"^^<" + literal.getDatatype().stringValue() + ">";

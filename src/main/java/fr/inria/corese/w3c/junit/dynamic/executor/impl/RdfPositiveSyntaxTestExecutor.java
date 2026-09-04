@@ -29,7 +29,7 @@ import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RdfPositiveSyntaxTestExecutor.class);
-    
+
     /**
      * Default constructor.
      * This constructor is intentionally empty as no initialization is required.
@@ -37,7 +37,7 @@ public class RdfPositiveSyntaxTestExecutor implements TestExecutor {
     public RdfPositiveSyntaxTestExecutor() {
         // No initialization required
     }
-    
+
     @Override
     @SuppressWarnings("java:S3776") // Cognitive complexity acceptable for test executor logic
     public void execute(W3cTestCase testCase) throws Exception {

@@ -101,7 +101,7 @@ public class SparqlResultParser {
      * @param input the input stream of a .srj file
      * @return parsed results in the same canonical form as {@link #parse}
      */
-    public static SparqlResults parseJson(InputStream input) throws Exception {
+    public static SparqlResults parseJson(InputStream input) throws IOException {
         JsonNode root = new ObjectMapper().readTree(input);
 
         // ASK result

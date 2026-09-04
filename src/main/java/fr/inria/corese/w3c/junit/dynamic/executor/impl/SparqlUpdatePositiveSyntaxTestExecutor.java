@@ -1,6 +1,7 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.exception.QueryException;
 import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
@@ -22,9 +23,6 @@ import java.nio.file.Path;
  */
 public class SparqlUpdatePositiveSyntaxTestExecutor implements TestExecutor {
 
-    public SparqlUpdatePositiveSyntaxTestExecutor() {
-    }
-
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
         URI updateUri = testCase.getActionFileUri();
@@ -38,7 +36,7 @@ public class SparqlUpdatePositiveSyntaxTestExecutor implements TestExecutor {
         try (Repository repo = Repositories.create(Storages.create());
              RepositoryConnection conn = repo.getConnection()) {
             conn.prepareUpdate(updateText);
-        } catch (QuerySyntaxException e) {
+        } catch (QueryException e) {
             throw new AssertionError(String.format(
                     "Expected update request to parse successfully but got syntax error in '%s': %s",
                     testCase.getName(), e.getMessage()), e);

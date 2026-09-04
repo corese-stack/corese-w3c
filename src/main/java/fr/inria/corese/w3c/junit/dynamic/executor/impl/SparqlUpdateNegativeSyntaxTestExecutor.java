@@ -1,9 +1,11 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.exception.QueryValidationException;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
 import fr.inria.corese.core.next.storage.Storages;
+import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -20,9 +22,6 @@ import java.nio.file.Path;
  * The test fails if the update request is accepted without a syntax error.
  */
 public class SparqlUpdateNegativeSyntaxTestExecutor implements TestExecutor {
-
-    public SparqlUpdateNegativeSyntaxTestExecutor() {
-    }
 
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
@@ -41,8 +40,8 @@ public class SparqlUpdateNegativeSyntaxTestExecutor implements TestExecutor {
             throw new AssertionError(String.format(
                     "Expected update request to fail parsing but it succeeded for negative update syntax test: '%s'",
                     testCase.getName()));
-        } catch (Exception e) {
-            // Expected: update parsing failed — negative syntax test passes
+        } catch (QuerySyntaxException | QueryValidationException e) {
+            // Expected: the request was rejected during parsing or static validation.
         }
     }
 }

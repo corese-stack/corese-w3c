@@ -18,6 +18,7 @@ import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -42,9 +43,6 @@ import java.util.Locale;
  */
 public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
 
-    public SparqlUpdateEvaluationTestExecutor() {
-    }
-
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
         // 1. Resolve the update request file (ut:request)
@@ -59,23 +57,7 @@ public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
         StorageManager storage = Storages.create();
         Model model = StorageModels.create(storage);
 
-        // Default graph (ut:data from action side)
-        String updateDataUriStr = testCase.getProperty(W3cTestCase.Property.UPDATE_DATA, String.class);
-        if (updateDataUriStr != null) {
-            loadRdfFile(URI.create(updateDataUriStr), model);
-        }
-
-        // Named graphs (ut:graphData from action side — "graphNameUri|fileUri" entries)
-        @SuppressWarnings("unchecked")
-        List<String> updateGraphData = testCase.getProperty(W3cTestCase.Property.UPDATE_GRAPH_DATA, List.class);
-        if (updateGraphData != null) {
-            for (String entry : updateGraphData) {
-                String[] parts = entry.split("\\|", 2);
-                if (parts.length == 2) {
-                    loadRdfFileAsNamedGraph(URI.create(parts[1]), model, parts[0]);
-                }
-            }
-        }
+        loadInitialDataset(testCase, model);
 
         // 3. Execute the SPARQL Update
         try (Repository repo = Repositories.create(storage);
@@ -83,42 +65,49 @@ public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
             conn.prepareUpdate(updateText).execute();
         }
 
-        // 4. Compare resulting default graph with expected (ut:data from result side)
-        String resultDataUriStr = testCase.getProperty(W3cTestCase.Property.RESULT_DATA, String.class);
-        if (resultDataUriStr != null) {
-            Model expectedModel = RDFTestUtils.createModel();
-            loadRdfFile(URI.create(resultDataUriStr), expectedModel);
-            Model actualDefaultGraph = extractDefaultGraph(model);
-            if (!ModelIsomorphism.areModelsIsomorphic(actualDefaultGraph, expectedModel)) {
-                throw new AssertionError(String.format(
-                        "Update evaluation default-graph mismatch for '%s'%nActual:%n%s%nExpected:%n%s",
-                        testCase.getName(),
-                        ModelIsomorphism.canonicalize(actualDefaultGraph),
-                        ModelIsomorphism.canonicalize(expectedModel)));
-            }
+        verifyExpectedDataset(testCase, model);
+    }
+
+    private static void loadInitialDataset(W3cTestCase testCase, Model model) throws IOException {
+        String updateDataUri = testCase.getProperty(W3cTestCase.Property.UPDATE_DATA, String.class);
+        if (updateDataUri != null) {
+            loadRdfFile(URI.create(updateDataUri), model);
+        }
+        @SuppressWarnings("unchecked")
+        List<String> graphData = testCase.getProperty(W3cTestCase.Property.UPDATE_GRAPH_DATA, List.class);
+        loadNamedGraphs(graphData, model);
+    }
+
+    private static void verifyExpectedDataset(W3cTestCase testCase, Model actualDataset) throws IOException {
+        Model expectedDataset = RDFTestUtils.createModel();
+        String resultDataUri = testCase.getProperty(W3cTestCase.Property.RESULT_DATA, String.class);
+        if (resultDataUri != null) {
+            loadRdfFile(URI.create(resultDataUri), expectedDataset);
         }
 
-        // 5. Compare expected named graphs (ut:graphData from result side)
         @SuppressWarnings("unchecked")
         List<String> resultGraphData = testCase.getProperty(W3cTestCase.Property.RESULT_GRAPH_DATA, List.class);
-        if (resultGraphData != null) {
-            for (String entry : resultGraphData) {
-                String[] parts = entry.split("\\|", 2);
-                if (parts.length != 2) continue;
-                String graphName = parts[0];
-                URI graphFileUri = URI.create(parts[1]);
+        loadNamedGraphs(resultGraphData, expectedDataset);
 
-                Model expectedGraph = RDFTestUtils.createModel();
-                loadRdfFile(graphFileUri, expectedGraph);
-                Model actualGraph = extractNamedGraph(model, graphName);
-                if (!ModelIsomorphism.areModelsIsomorphic(actualGraph, expectedGraph)) {
-                    throw new AssertionError(String.format(
-                            "Update evaluation named-graph <%s> mismatch for '%s'%nActual:%n%s%nExpected:%n%s",
-                            graphName, testCase.getName(),
-                            ModelIsomorphism.canonicalize(actualGraph),
-                            ModelIsomorphism.canonicalize(expectedGraph)));
-                }
+        if (!ModelIsomorphism.areModelsIsomorphic(actualDataset, expectedDataset)) {
+            throw new AssertionError(String.format(
+                    "Update evaluation dataset mismatch for '%s'%nActual:%n%s%nExpected:%n%s",
+                    testCase.getName(),
+                    ModelIsomorphism.canonicalize(actualDataset),
+                    ModelIsomorphism.canonicalize(expectedDataset)));
+        }
+    }
+
+    private static void loadNamedGraphs(List<String> graphData, Model model) throws IOException {
+        if (graphData == null) {
+            return;
+        }
+        for (String entry : graphData) {
+            String[] parts = entry.split("\\|", 2);
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("Invalid update graph-data entry: " + entry);
             }
+            loadRdfFileAsNamedGraph(URI.create(parts[1]), model, parts[0]);
         }
     }
 
@@ -126,7 +115,7 @@ public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
     // Helpers
     // -----------------------------------------------------------------------
 
-    private static void loadRdfFile(URI fileUri, Model model) throws Exception {
+    private static void loadRdfFile(URI fileUri, Model model) throws IOException {
         String filePath = RDFTestUtils.loadFile(fileUri);
         RDFFormat fmt = guessRdfOrFallback(fileUri);
         RDFParser parser = RDFTestUtils.createParser(fmt, model);
@@ -135,7 +124,8 @@ public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
         }
     }
 
-    private static void loadRdfFileAsNamedGraph(URI fileUri, Model model, String graphName) throws Exception {
+    private static void loadRdfFileAsNamedGraph(URI fileUri, Model model, String graphName)
+            throws IOException {
         String filePath = RDFTestUtils.loadFile(fileUri);
         RDFFormat fmt = guessRdfOrFallback(fileUri);
         Model tempModel = RDFTestUtils.createModel();
@@ -149,31 +139,11 @@ public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
         }
     }
 
-    /** Extracts only the triples that belong to the default graph (context == null). */
-    private static Model extractDefaultGraph(Model model) {
-        Model defaultGraph = RDFTestUtils.createModel();
-        for (Statement stmt : model) {
-            if (stmt.getContext() == null) {
-                defaultGraph.add(stmt);
-            }
-        }
-        return defaultGraph;
-    }
-
-    /** Extracts only the triples that belong to the named graph identified by {@code graphName}. */
-    private static Model extractNamedGraph(Model model, String graphName) {
-        Model namedGraph = RDFTestUtils.createModel();
-        for (Statement stmt : model) {
-            if (stmt.getContext() != null && graphName.equals(stmt.getContext().stringValue())) {
-                namedGraph.add(stmt.getSubject(), stmt.getPredicate(), stmt.getObject());
-            }
-        }
-        return namedGraph;
-    }
-
     private static RDFFormat guessRdfOrFallback(URI uri) {
         String ext = RDFTestUtils.getFileExtension(uri.toString()).toLowerCase(Locale.ROOT);
-        if ("n3".equals(ext)) return RDFFormat.TURTLE;
+        if ("n3".equals(ext)) {
+            return RDFFormat.TURTLE;
+        }
         return RDFTestUtils.guessFileFormat(uri);
     }
 }
