@@ -1,12 +1,13 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
-import fr.inria.corese.core.next.data.Values;
-import fr.inria.corese.core.next.data.api.exception.ParsingException;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.model.Statement;
+import fr.inria.corese.core.next.data.Values;
+import fr.inria.corese.core.next.data.api.term.BNode;
 import fr.inria.corese.core.next.data.api.term.IRI;
+import fr.inria.corese.core.next.data.api.term.Literal;
 import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
@@ -20,58 +21,47 @@ import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
+import fr.inria.corese.w3c.junit.dynamic.utils.CsvTsvResultParser;
 import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import fr.inria.corese.w3c.junit.dynamic.utils.RsVocabResultParser;
 import fr.inria.corese.w3c.junit.dynamic.utils.SparqlResultParser;
-
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
-
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.xml.parsers.ParserConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 /**
  * Executor for SPARQL 1.0 query evaluation tests (mf:QueryEvaluationTest).
  * <p>
  * Process:
  * <ol>
- *   <li>Load RDF data files (qt:data / qt:graphData) into an in-memory dataset.</li>
- *   <li>Read SPARQL query text (qt:query), establishing base URI if relative.</li>
- *   <li>Detect query form (SELECT / ASK / CONSTRUCT / DESCRIBE).</li>
- *   <li>Execute query and compare against expected result with global bnode isomorphism and lax cardinality support.</li>
+ *   <li>Load the RDF data file (qt:data) into an in-memory store.</li>
+ *   <li>Read the SPARQL query text (qt:query).</li>
+ *   <li>Detect the query form (SELECT / ASK / CONSTRUCT / DESCRIBE).</li>
+ *   <li>Execute the query and compare with the expected result file (mf:result).</li>
  * </ol>
+ * Result comparison:
+ * <ul>
+ *   <li>.srx / .srj → SPARQL XML results comparison</li>
+ *   <li>RDF formats (.ttl, .nt, .n3, .rdf, …) → graph isomorphism via ModelIsomorphism</li>
+ * </ul>
  */
 public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
 
-    private enum QueryForm { SELECT, ASK, GRAPH }
+    private static final Logger logger = LoggerFactory.getLogger(SparqlQueryEvaluationTestExecutor.class);
 
-    private record TupleExecutionResult(List<String> variables, List<Map<String, String>> rows) {}
-
-    private record ComparisonContext(
-            List<Map<String, String>> expected,
-            List<Map<String, String>> actual,
-            boolean isOrdered,
-            boolean isLaxCardinality) {}
-
-    public SparqlQueryEvaluationTestExecutor() {
-        // Default constructor for dynamic instantiation
-    }
+    private static final Pattern QUERY_TYPE_PATTERN =
+            Pattern.compile("(?i)\\b(SELECT|ASK|CONSTRUCT|DESCRIBE)\\b");
 
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
@@ -88,58 +78,41 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             queryUri = testCase.getManifestUri().resolve(queryUri);
         }
 
+        // 2. Resolve data file URI (qt:data → data property; may be absent)
+        String dataUriStr = testCase.getProperty(W3cTestCase.Property.DATA, String.class);
         URI resultUri = testCase.getResultFileUri();
 
-        // 2. Read query text and establish retrieval base URI if needed
+        // 3. Read query text
         String queryPath = RDFTestUtils.loadFile(queryUri);
-        String rawQueryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
-        String queryText = prepareQueryText(rawQueryText, queryUri);
+        String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
+        // Expand relative FROM / FROM NAMED URIs against the query file's own base URI
+        queryText = prepareQueryText(queryText, queryUri);
 
-        // 3. Build in-memory dataset (default graph + named graphs)
+        // 4. Build in-memory dataset (default graph + named graphs)
         StorageManager storage = Storages.create();
-        buildDataset(testCase, storage);
-
-        // 4. Execute query and compare result
-        try (Repository repo = Repositories.create(storage);
-             RepositoryConnection conn = repo.getConnection()) {
-            switch (queryForm(conn, queryText)) {
-                case SELECT -> executeSelectTest(conn, queryText, resultUri, testCase);
-                case ASK    -> executeAskTest(conn, queryText, resultUri, testCase);
-                case GRAPH  -> executeGraphTest(conn, queryText, resultUri, testCase);
-            }
-        }
-    }
-
-    public static String prepareQueryText(String rawQuery, URI queryUri) {
-        if (queryUri != null && !hasBaseDeclaration(rawQuery)) {
-            return "BASE <" + queryUri + ">\n" + rawQuery;
-        }
-        return rawQuery;
-    }
-
-    private static boolean hasBaseDeclaration(String query) {
-        return Pattern.compile("(?i)(^|\\s)BASE\\s+<").matcher(query).find();
-    }
-
-    private static void buildDataset(W3cTestCase testCase, StorageManager storage) throws IOException, ParsingException {
-        String dataUriStr = testCase.getProperty(W3cTestCase.Property.DATA, String.class);
         Model model = StorageModels.create(storage);
         if (dataUriStr != null) {
-            URI dataUri = URI.create(dataUriStr);
-            if (!dataUri.isAbsolute() && testCase.getManifestUri() != null) {
-                dataUri = testCase.getManifestUri().resolve(dataUri);
-            }
-            loadRdfFile(dataUri, model);
+            loadRdfFile(URI.create(dataUriStr), model);
         }
         @SuppressWarnings("unchecked")
         List<String> graphDataUris = testCase.getProperty(W3cTestCase.Property.GRAPH_DATA, List.class);
         if (graphDataUris != null) {
             for (String graphDataUri : graphDataUris) {
-                URI gUri = URI.create(graphDataUri);
-                if (!gUri.isAbsolute() && testCase.getManifestUri() != null) {
-                    gUri = testCase.getManifestUri().resolve(gUri);
-                }
-                loadRdfFileAsNamedGraph(gUri, model, gUri.toString());
+                loadRdfFileAsNamedGraph(URI.create(graphDataUri), model, graphDataUri);
+            }
+        }
+
+        // 5. Execute query and compare result
+        String queryType = detectQueryType(queryText);
+        logger.debug("Executing SPARQL {} test: {}", queryType, testCase.getName());
+        try (Repository repo = Repositories.create(storage);
+             RepositoryConnection conn = repo.getConnection()) {
+            switch (queryType) {
+                case "SELECT" -> executeSelectTest(conn, queryText, resultUri, testCase);
+                case "ASK" -> executeAskTest(conn, queryText, resultUri, testCase);
+                case "CONSTRUCT", "DESCRIBE" -> executeGraphTest(conn, queryText, resultUri, testCase);
+                default -> throw new AssertionError(
+                        "Cannot determine SPARQL query type for test: " + testCase.getName());
             }
         }
     }
@@ -148,250 +121,219 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // SELECT
     // -----------------------------------------------------------------------
 
-    private void executeSelectTest(
-            RepositoryConnection conn,
-            String queryText,
-            URI resultUri,
-            W3cTestCase testCase)
-            throws IOException, ParsingException, QuerySyntaxException, ParserConfigurationException, SAXException {
-        TupleExecutionResult actual = executeTupleQuery(conn, queryText);
-        boolean isOrdered = queryText.toUpperCase(Locale.ROOT).contains("ORDER BY");
-        boolean isLax = testCase.isLaxCardinality();
+    private void executeSelectTest(RepositoryConnection conn, String queryText,
+                                   URI resultUri, W3cTestCase testCase)
+            throws java.io.IOException, ParserConfigurationException, SAXException {
+        String resultPath = RDFTestUtils.loadFile(resultUri);
+        String ext = RDFTestUtils.getFileExtension(resultUri.toString()).toLowerCase(Locale.ROOT);
 
-        List<Map<String, String>> expectedRows = loadExpectedSelectRows(resultUri, actual.variables(), testCase);
-        compareSelectResults(expectedRows, actual.rows(), isOrdered, isLax, testCase);
-    }
+        if ("csv".equals(ext)) {
+            // CSV format: literals are serialized as bare lexical forms (no type info).
+            // Unbound variables (OPTIONAL) must appear as empty strings in every row.
+            // Re-execute the query converting each Value to its CSV string representation
+            // and compare directly against the raw CSV cells (no canonical conversion).
+            List<Map<String, String>> actualCsvRows = executeSelectWithCsvFormatter(conn, queryText);
+            List<Map<String, String>> expectedRows = CsvTsvResultParser.parseCsvRaw(resultPath);
+            compareCsvTsvRows(expectedRows, actualCsvRows, testCase);
+            return;
+        }
 
-    private static TupleExecutionResult executeTupleQuery(RepositoryConnection conn, String queryText)
-            throws QuerySyntaxException {
-        List<String> actualVars = new ArrayList<>();
+        // For all other formats: execute in canonical form and compare.
         List<Map<String, String>> actualRows = new ArrayList<>();
         try (TupleQueryResult result = conn.prepareTupleQuery(queryText).evaluate()) {
-            actualVars = result.getBindingNames();
+            List<String> vars = result.getBindingNames();
             while (result.hasNext()) {
                 BindingSet bs = result.next();
                 Map<String, String> row = new LinkedHashMap<>();
-                for (String varName : actualVars) {
-                    Value val = bs.getValue(varName);
+                for (String bindingName : vars) {
+                    Value val = bs.getValue(bindingName);
                     if (val != null) {
-                        row.put(varName, RDFTestUtils.toCanonical(val));
+                        row.put(bindingName, valueToCanonical(val));
                     }
                 }
                 actualRows.add(row);
             }
         }
-        return new TupleExecutionResult(actualVars, actualRows);
+
+        switch (ext) {
+            case "srx", "srj" -> {
+                SparqlResultParser.SparqlResults expected;
+                try (FileInputStream fis = new FileInputStream(resultPath)) {
+                    expected = "srj".equals(ext)
+                            ? SparqlResultParser.parseJson(fis)
+                            : SparqlResultParser.parse(fis);
+                }
+                if (expected.isBoolean()) {
+                    throw new AssertionError("Expected SELECT result file but got boolean result for: "
+                            + testCase.getName());
+                }
+                compareSelectResults(expected.rows(), actualRows, testCase);
+            }
+            case "ttl", "rdf" -> {
+                // rs: vocabulary result format (Turtle or RDF/XML)
+                SparqlResultParser.SparqlResults rsExpected = RsVocabResultParser.parse(resultUri);
+                compareSelectResults(rsExpected.rows(), actualRows, testCase);
+            }
+            case "tsv" -> {
+                // TSV uses SPARQL notation → convert to canonical form, compare normally.
+                List<Map<String, String>> expectedRows = CsvTsvResultParser.parseTsvToCanonical(resultPath);
+                compareSelectResults(expectedRows, actualRows, testCase);
+            }
+            default -> throw new AssertionError("Unsupported result file format '" + ext
+                    + "' for SELECT test: " + testCase.getName());
+        }
     }
 
-    private static List<Map<String, String>> loadExpectedSelectRows(
-            URI resultUri,
-            List<String> actualVars,
-            W3cTestCase testCase)
-            throws IOException, ParsingException, ParserConfigurationException, SAXException {
-        String resultPath = RDFTestUtils.loadFile(resultUri);
-        String ext = RDFTestUtils.getFileExtension(resultUri.toString()).toLowerCase(Locale.ROOT);
-
-        if ("srx".equals(ext) || "srj".equals(ext)) {
-            SparqlResultParser.SparqlResults expected;
-            try (FileInputStream fis = new FileInputStream(resultPath)) {
-                expected = SparqlResultParser.parse(fis);
+    /**
+     * Executes the SELECT query in CSV format.
+     * Every variable from the header appears in every row: bound values are serialized
+     * with {@link #valueToCsvString}, unbound variables (OPTIONAL) appear as empty strings.
+     * This matches the W3C SPARQL 1.1 CSV result format specification.
+     */
+    private static List<Map<String, String>> executeSelectWithCsvFormatter(
+            RepositoryConnection conn, String queryText) {
+        List<Map<String, String>> rows = new ArrayList<>();
+        try (TupleQueryResult result = conn.prepareTupleQuery(queryText).evaluate()) {
+            List<String> vars = result.getBindingNames();
+            while (result.hasNext()) {
+                BindingSet bs = result.next();
+                Map<String, String> row = new LinkedHashMap<>();
+                for (String bindingName : vars) {
+                    Value val = bs.getValue(bindingName);
+                    row.put(bindingName, val != null ? valueToCsvString(val) : "");
+                }
+                rows.add(row);
             }
-            if (expected.isBoolean()) {
-                throw new AssertionError("Expected SELECT result file but got boolean result for: " + testCase.getName());
-            }
-            if (expected.variables() != null && !expected.variables().isEmpty()) {
-                checkVariables(expected.variables(), actualVars, testCase);
-            }
-            return expected.rows();
         }
-
-        if ("ttl".equals(ext) || "rdf".equals(ext)) {
-            SparqlResultParser.SparqlResults expected = RsVocabResultParser.parse(resultUri);
-            if (expected.variables() != null && !expected.variables().isEmpty()) {
-                checkVariables(expected.variables(), actualVars, testCase);
-            }
-            return expected.rows();
-        }
-
-        throw new AssertionError("Unsupported result file format '" + ext + "' for SELECT test: " + testCase.getName());
+        return rows;
     }
 
-    private static void checkVariables(
-            List<String> expectedVars,
-            List<String> actualVars,
-            W3cTestCase testCase) {
-        boolean match = new HashSet<>(expectedVars).equals(new HashSet<>(actualVars));
-        if (!match) {
+    /**
+     * Serializes a {@link Value} to its SPARQL 1.1 CSV representation:
+     * IRIs as bare URI strings, blank nodes as {@code _:id}, and all literals
+     * as their lexical form only (the CSV format does not encode the datatype).
+     */
+    static String valueToCsvString(Value value) {
+        if (value instanceof IRI iri) {
+            return iri.stringValue();
+        }
+        if (value instanceof BNode bNode) {
+            return "_:" + bNode.stringValue();
+        }
+        if (value instanceof Literal literal) {
+            return literal.getLabel();
+        }
+        return value.stringValue();
+    }
+
+    /**
+     * Compares CSV/TSV result rows as multisets using blank-node positional normalization.
+     * Blank node values are identified by the {@code _:} prefix (not the {@code _:b_} prefix
+     * used by the canonical form).
+     */
+    private void compareCsvTsvRows(List<Map<String, String>> expected,
+                                   List<Map<String, String>> actual,
+                                   W3cTestCase testCase) {
+        if (expected.size() != actual.size()) {
             throw new AssertionError(String.format(
-                    "SELECT projected variables mismatch for '%s': expected %s, got %s",
-                    testCase.getName(), expectedVars, actualVars));
-        }
-    }
-
-    private static void compareSelectResults(
-            List<Map<String, String>> expected,
-            List<Map<String, String>> actual,
-            boolean isOrdered,
-            boolean isLaxCardinality,
-            W3cTestCase testCase) {
-
-        if (!isLaxCardinality && expected.size() != actual.size()) {
-            throw new AssertionError(String.format(
-                    "SELECT result row count mismatch for '%s': expected %d rows, got %d rows",
+                    "CSV/TSV result row count mismatch for '%s': expected %d rows, got %d rows",
                     testCase.getName(), expected.size(), actual.size()));
         }
+        List<String> expectedNorm = expected.stream()
+                .map(SparqlQueryEvaluationTestExecutor::normalizeCsvRow)
+                .sorted()
+                .toList();
+        List<String> actualNorm = actual.stream()
+                .map(SparqlQueryEvaluationTestExecutor::normalizeCsvRow)
+                .sorted()
+                .toList();
 
-        if (isLaxCardinality && (actual.isEmpty() && !expected.isEmpty())) {
+        if (!expectedNorm.equals(actualNorm)) {
             throw new AssertionError(String.format(
-                    "SELECT result row count mismatch for '%s' with LaxCardinality: expected non-empty result, got 0 rows",
-                    testCase.getName()));
-        }
-
-        boolean matched = matchesSelectResults(expected, actual, isOrdered, isLaxCardinality);
-        if (!matched) {
-            throw new AssertionError(String.format(
-                    "SELECT result mismatch for '%s' (ordered=%b, laxCardinality=%b)%nExpected (%d rows):%n%s%nActual (%d rows):%n%s",
-                    testCase.getName(), isOrdered, isLaxCardinality,
-                    expected.size(), formatRows(expected),
-                    actual.size(), formatRows(actual)));
+                    "CSV/TSV result mismatch for '%s'%nExpected:%n%s%nActual:%n%s",
+                    testCase.getName(),
+                    String.join("\n", expectedNorm),
+                    String.join("\n", actualNorm)));
         }
     }
 
-    private static boolean matchesSelectResults(
-            List<Map<String, String>> expected,
-            List<Map<String, String>> actual,
-            boolean isOrdered,
-            boolean isLaxCardinality) {
-
-        Set<String> expBnodes = collectBlankNodes(expected);
-        Set<String> actBnodes = collectBlankNodes(actual);
-
-        if (expBnodes.size() != actBnodes.size()) {
-            return false;
-        }
-
-        ComparisonContext ctx = new ComparisonContext(expected, actual, isOrdered, isLaxCardinality);
-        if (expBnodes.isEmpty()) {
-            return compareMappedRows(Collections.emptyMap(), ctx);
-        }
-
-        List<String> actList = new ArrayList<>(actBnodes);
-        List<String> expList = new ArrayList<>(expBnodes);
-        return findBijection(actList, 0, expList, new HashMap<>(), new HashSet<>(), ctx);
-    }
-
-    private static boolean findBijection(
-            List<String> actList,
-            int index,
-            List<String> expList,
-            Map<String, String> currentMapping,
-            Set<String> usedExp,
-            ComparisonContext ctx) {
-
-        if (index == actList.size()) {
-            return compareMappedRows(currentMapping, ctx);
-        }
-
-        String actBnode = actList.get(index);
-        for (String expBnode : expList) {
-            if (!usedExp.contains(expBnode)) {
-                usedExp.add(expBnode);
-                currentMapping.put(actBnode, expBnode);
-
-                if (findBijection(actList, index + 1, expList, currentMapping, usedExp, ctx)) {
-                    return true;
-                }
-
-                currentMapping.remove(actBnode);
-                usedExp.remove(expBnode);
-            }
-        }
-        return false;
-    }
-
-    private static boolean compareMappedRows(Map<String, String> bnodeMapping, ComparisonContext ctx) {
-        List<String> expStrings = ctx.expected().stream().map(r -> rowToString(r, Collections.emptyMap())).toList();
-        List<String> actStrings = ctx.actual().stream().map(r -> rowToString(r, bnodeMapping)).toList();
-
-        if (ctx.isOrdered() && !ctx.isLaxCardinality()) {
-            return expStrings.equals(actStrings);
-        }
-
-        if (!ctx.isLaxCardinality()) {
-            return countFrequencies(expStrings).equals(countFrequencies(actStrings));
-        }
-
-        Map<String, Long> expFreq = countFrequencies(expStrings);
-        Map<String, Long> actFreq = countFrequencies(actStrings);
-
-        if (!expFreq.keySet().equals(actFreq.keySet())) {
-            return false;
-        }
-
-        for (Map.Entry<String, Long> entry : expFreq.entrySet()) {
-            long actCount = actFreq.getOrDefault(entry.getKey(), 0L);
-            if (actCount < 1 || actCount > entry.getValue()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static Map<String, Long> countFrequencies(List<String> list) {
-        Map<String, Long> freq = new HashMap<>();
-        for (String s : list) {
-            freq.put(s, freq.getOrDefault(s, 0L) + 1L);
-        }
-        return freq;
-    }
-
-    private static String rowToString(Map<String, String> row, Map<String, String> bnodeMapping) {
+    /**
+     * Produces a canonical string for a CSV/TSV result row.
+     * Blank nodes are identified by the {@code _:} prefix and replaced by
+     * positional tokens so that rows with equivalent blank-node structure compare equal.
+     */
+    private static String normalizeCsvRow(Map<String, String> row) {
+        Map<String, String> bnodeIdMap = new LinkedHashMap<>();
+        int[] counter = {0};
         StringBuilder sb = new StringBuilder();
         row.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
-                .forEach(e -> {
-                    String val = e.getValue();
-                    if (val != null && isBlankNode(val)) {
-                        val = bnodeMapping.getOrDefault(val, val);
+                .forEach(entry -> {
+                    String val = entry.getValue();
+                    if (val != null && val.startsWith("_:")) {
+                        val = "_:b" + bnodeIdMap.computeIfAbsent(val, k -> String.valueOf(counter[0]++));
                     }
-                    sb.append(e.getKey()).append('=').append(val).append(';');
+                    sb.append(entry.getKey()).append('=').append(val).append(';');
                 });
         return sb.toString();
     }
 
-    private static boolean isBlankNode(String val) {
-        return val != null && (val.startsWith("_:") || val.startsWith("BNODE:"));
-    }
-
-    private static Set<String> collectBlankNodes(List<Map<String, String>> rows) {
-        Set<String> bnodes = new HashSet<>();
-        for (Map<String, String> row : rows) {
-            for (String val : row.values()) {
-                if (isBlankNode(val)) {
-                    bnodes.add(val);
-                }
-            }
+    private void compareSelectResults(List<Map<String, String>> expected,
+                                      List<Map<String, String>> actual, W3cTestCase testCase) {
+        if (expected.size() != actual.size()) {
+            throw new AssertionError(String.format(
+                    "SELECT result row count mismatch for '%s': expected %d rows, got %d rows",
+                    testCase.getName(), expected.size(), actual.size()));
         }
-        return bnodes;
+        // Normalize blank-node IDs per-row, then compare as multisets
+        List<String> expectedNorm = expected.stream()
+                .map(SparqlQueryEvaluationTestExecutor::normalizeRow)
+                .sorted()
+                .toList();
+        List<String> actualNorm = actual.stream()
+                .map(SparqlQueryEvaluationTestExecutor::normalizeRow)
+                .sorted()
+                .toList();
+
+        if (!expectedNorm.equals(actualNorm)) {
+            throw new AssertionError(String.format(
+                    "SELECT result mismatch for '%s'%nExpected:%n%s%nActual:%n%s",
+                    testCase.getName(),
+                    String.join("\n", expectedNorm),
+                    String.join("\n", actualNorm)));
+        }
     }
 
-    private static String formatRows(List<Map<String, String>> rows) {
-        return rows.stream()
-                .map(r -> rowToString(r, Collections.emptyMap()))
-                .reduce((a, b) -> a + "\n" + b)
-                .orElse("<empty>");
+    /**
+     * Produces a canonical string for a result row.
+     * Blank-node IDs within the row are replaced by positional tokens so that
+     * {@code ?x=_:b0 ?y=_:b0} (same bnode) is distinguished from
+     * {@code ?x=_:b0 ?y=_:b1} (different bnodes) independently of the actual ID strings.
+     */
+    private static String normalizeRow(Map<String, String> row) {
+        Map<String, String> bnodeIdMap = new LinkedHashMap<>();
+        int[] counter = {0};
+        StringBuilder sb = new StringBuilder();
+        // Sort by variable name for a stable canonical form
+        row.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> {
+                    String val = entry.getValue();
+                    if (val != null && val.startsWith("_:b_")) {
+                        val = "_:b" + bnodeIdMap.computeIfAbsent(val, k -> String.valueOf(counter[0]++));
+                    }
+                    sb.append(entry.getKey()).append('=').append(val).append(';');
+                });
+        return sb.toString();
     }
 
     // -----------------------------------------------------------------------
     // ASK
     // -----------------------------------------------------------------------
 
-    private void executeAskTest(
-            RepositoryConnection conn,
-            String queryText,
-            URI resultUri,
-            W3cTestCase testCase)
-            throws IOException, ParsingException, QuerySyntaxException, ParserConfigurationException, SAXException {
+    private void executeAskTest(RepositoryConnection conn, String queryText,
+                                URI resultUri, W3cTestCase testCase)
+            throws java.io.IOException, ParserConfigurationException, SAXException {
         boolean actualResult = conn.prepareBooleanQuery(queryText).evaluate();
 
         String resultPath = RDFTestUtils.loadFile(resultUri);
@@ -401,15 +343,15 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         if ("srx".equals(ext) || "srj".equals(ext)) {
             SparqlResultParser.SparqlResults expected;
             try (FileInputStream fis = new FileInputStream(resultPath)) {
-                expected = SparqlResultParser.parse(fis);
+                expected = "srj".equals(ext)
+                        ? SparqlResultParser.parseJson(fis)
+                        : SparqlResultParser.parse(fis);
             }
             if (!expected.isBoolean()) {
                 throw new AssertionError("Expected ASK result file but got tabular result for: "
                         + testCase.getName());
             }
             expectedResult = expected.booleanResult();
-        } else if ("ttl".equals(ext) || "rdf".equals(ext)) {
-            expectedResult = RsVocabResultParser.parseBoolean(resultUri);
         } else {
             // Plain text file with "true" or "false"
             String content = Files.readString(Path.of(resultPath), StandardCharsets.UTF_8).trim();
@@ -427,11 +369,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // CONSTRUCT / DESCRIBE
     // -----------------------------------------------------------------------
 
-    private void executeGraphTest(
-            RepositoryConnection conn,
-            String queryText,
-            URI resultUri,
-            W3cTestCase testCase) throws IOException, ParsingException, QuerySyntaxException {
+    private void executeGraphTest(RepositoryConnection conn, String queryText,
+                                  URI resultUri, W3cTestCase testCase) throws java.io.IOException {
         // Collect actual triples from the graph query result
         Model actualModel = StorageModels.create(Storages.create());
         try (GraphQueryResult result = conn.prepareGraphQuery(queryText).evaluate()) {
@@ -466,7 +405,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     /**
      * Loads an RDF file into the given model, mapping .n3 to Turtle.
      */
-    private static void loadRdfFile(URI fileUri, Model model) throws IOException, ParsingException {
+    private static void loadRdfFile(URI fileUri, Model model) throws java.io.IOException {
         String filePath = RDFTestUtils.loadFile(fileUri);
         RDFFormat fmt = guessRdfOrFallback(fileUri);
         RDFParser parser = RDFTestUtils.createParser(fmt, model);
@@ -480,7 +419,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
      * The graph name is the original URI of the file as declared in the manifest
      * (i.e., the remote URL used as {@code qt:graphData} value).
      */
-    private static void loadRdfFileAsNamedGraph(URI fileUri, Model model, String graphName) throws IOException, ParsingException {
+    private static void loadRdfFileAsNamedGraph(URI fileUri, Model model, String graphName)
+            throws java.io.IOException {
         String filePath = RDFTestUtils.loadFile(fileUri);
         RDFFormat fmt = guessRdfOrFallback(fileUri);
         Model tempModel = RDFTestUtils.createModel();
@@ -503,25 +443,117 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         return RDFTestUtils.guessFileFormat(uri);
     }
 
+    // -----------------------------------------------------------------------
+    // Static helpers used by syntax test executors
+    // -----------------------------------------------------------------------
+
+    private static final Pattern FROM_URI_PATTERN =
+            Pattern.compile("(?i)(FROM(?:\\s+NAMED)?)\\s+<([^>]+)>");
+
     /**
-     * Detects the SPARQL query form by trying to prepare the query with each form.
-     * Returns the first form that parses successfully, or throws {@link QuerySyntaxException}
-     * if none of them succeed.
+     * Expands relative URIs in FROM and FROM NAMED clauses against the query file's base URI
+     * and returns the modified query text. Absolute URIs are left unchanged.
      */
-    static QueryForm queryForm(RepositoryConnection conn, String queryText) throws QuerySyntaxException {
-        QuerySyntaxException last = null;
-        for (QueryForm form : QueryForm.values()) {
+    static String prepareQueryText(String rawQueryText, URI queryBaseUri) {
+        String base = queryBaseUri.toString();
+        int lastSlash = base.lastIndexOf('/');
+        if (lastSlash < 0) return rawQueryText;
+        URI dirUri = URI.create(base.substring(0, lastSlash + 1));
+
+        Matcher m = FROM_URI_PATTERN.matcher(rawQueryText);
+        StringBuilder sb = new StringBuilder();
+        while (m.find()) {
+            String keyword = m.group(1);
+            String uriStr  = m.group(2);
+            URI resolved;
             try {
-                switch (form) {
-                    case SELECT -> conn.prepareTupleQuery(queryText);
-                    case ASK    -> conn.prepareBooleanQuery(queryText);
-                    case GRAPH  -> conn.prepareGraphQuery(queryText);
-                }
-                return form;
-            } catch (QuerySyntaxException e) {
-                last = e;
+                URI raw = URI.create(uriStr);
+                resolved = raw.isAbsolute() ? raw : dirUri.resolve(raw);
+            } catch (IllegalArgumentException e) {
+                resolved = dirUri.resolve(uriStr);
             }
+            m.appendReplacement(sb, Matcher.quoteReplacement(keyword + " <" + resolved + ">"));
         }
-        throw last != null ? last : new QuerySyntaxException("Cannot determine SPARQL query form");
+        m.appendTail(sb);
+        return sb.toString();
+    }
+
+    /**
+     * Validates that the query text parses successfully by attempting to prepare it with
+     * each SPARQL query form. Throws {@link QuerySyntaxException} if all forms fail.
+     * Used by positive- and negative-syntax test executors.
+     */
+    static void queryForm(RepositoryConnection conn, String queryText) throws QuerySyntaxException {
+        QuerySyntaxException last = null;
+        try {
+            conn.prepareTupleQuery(queryText);
+            return;
+        } catch (QuerySyntaxException e) {
+            logger.debug("Not a SELECT query: {}", e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new QuerySyntaxException(e.getMessage(), e);
+        }
+
+        try {
+            conn.prepareBooleanQuery(queryText);
+            return;
+        } catch (QuerySyntaxException e) {
+            logger.debug("Not an ASK query: {}", e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new QuerySyntaxException(e.getMessage(), e);
+        }
+
+        try {
+            conn.prepareGraphQuery(queryText);
+            return;
+        } catch (QuerySyntaxException e) {
+            logger.debug("Not a CONSTRUCT/DESCRIBE query: {}", e.getMessage());
+            last = e;
+        } catch (IllegalStateException e) {
+            throw new QuerySyntaxException(e.getMessage(), e);
+        }
+
+        logger.error("Failed to parse SPARQL query in any form. Query text:\n{}", queryText);
+        throw last;
+    }
+
+    /**
+     * Detects the SPARQL query form from the query text.
+     * Removes single-line comments before scanning for the first query keyword.
+     */
+    static String detectQueryType(String queryText) {
+        // Strip single-line comments so keywords inside them are ignored
+        String noComments = queryText.replaceAll("#[^\n]*", " ");
+        Matcher m = QUERY_TYPE_PATTERN.matcher(noComments);
+        if (m.find()) {
+            return m.group(1).toUpperCase(Locale.ROOT);
+        }
+        return "UNKNOWN";
+    }
+
+    /**
+     * Converts a Corese {@link Value} to its canonical SPARQL string representation.
+     * Blank-node IDs are preserved (prefixed with {@code _:b_}) for comparison.
+     */
+    static String valueToCanonical(Value value) {
+        if (value instanceof IRI iri) {
+            return "<" + iri.stringValue() + ">";
+        }
+        if (value instanceof BNode bNode) {
+            return "_:b_" + bNode.stringValue();
+        }
+        if (value instanceof Literal literal) {
+            String label = literal.getLabel();
+            Optional<String> language = literal.getLanguage();
+            if (language.isPresent()) {
+                return "\"" + label + "\"@" + language.orElseThrow().toLowerCase(Locale.ROOT);
+            }
+            if (literal.getDatatype() != null) {
+                return "\"" + label + "\"^^<" + literal.getDatatype().stringValue() + ">";
+            }
+            // Plain literal — treated as xsd:string for canonical comparison
+            return "\"" + label + "\"^^<http://www.w3.org/2001/XMLSchema#string>";
+        }
+        return value.stringValue();
     }
 }

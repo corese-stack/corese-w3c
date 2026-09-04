@@ -7,10 +7,10 @@ import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
  * Each executor implements the logic for executing one type of test.
  */
 public interface TestExecutor {
-    
+
     /**
      * Executes the given W3C test case.
-     * 
+     *
      * @param testCase The test case to execute
      * @throws Exception If the test execution fails
      */

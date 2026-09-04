@@ -81,13 +81,29 @@ public enum TestType {
     /** SPARQL 1.0 Positive Syntax Test (query should parse without error) */
     SPARQL10_POSITIVE_SYNTAX("SPARQL 1.0 Positive Syntax Test"),
     /** SPARQL 1.0 Negative Syntax Test (query should fail to parse) */
-    SPARQL10_NEGATIVE_SYNTAX("SPARQL 1.0 Negative Syntax Test");
+    SPARQL10_NEGATIVE_SYNTAX("SPARQL 1.0 Negative Syntax Test"),
+
+    // SPARQL 1.1 Tests
+    /** SPARQL 1.1 Positive Syntax Test (query should parse without error) */
+    SPARQL11_POSITIVE_SYNTAX("SPARQL 1.1 Positive Syntax Test"),
+    /** SPARQL 1.1 Negative Syntax Test (query should fail to parse) */
+    SPARQL11_NEGATIVE_SYNTAX("SPARQL 1.1 Negative Syntax Test"),
+    /** SPARQL 1.1 Update Positive Syntax Test (update request should parse without error) */
+    SPARQL11_POSITIVE_UPDATE_SYNTAX("SPARQL 1.1 Positive Update Syntax Test"),
+    /** SPARQL 1.1 Update Negative Syntax Test (update request should fail to parse) */
+    SPARQL11_NEGATIVE_UPDATE_SYNTAX("SPARQL 1.1 Negative Update Syntax Test"),
+    /** SPARQL 1.1 Query Evaluation Test (SELECT, ASK, CONSTRUCT, DESCRIBE) */
+    SPARQL11_QUERY_EVAL("SPARQL 1.1 Query Evaluation Test"),
+    /** SPARQL 1.1 Update Evaluation Test (execute update and compare resulting graph) */
+    SPARQL11_UPDATE_EVAL("SPARQL 1.1 Update Evaluation Test"),
+    /** SPARQL 1.1 CSV Result Format Test (SELECT query result compared as CSV/TSV) */
+    SPARQL11_CSV_FORMAT("SPARQL 1.1 CSV Result Format Test");
 
     private final String description;
 
     /**
      * Constructor for TestType enum.
-     * 
+     *
      * @param description A human-readable description of the test type
      */
     TestType(String description) {
@@ -96,7 +112,7 @@ public enum TestType {
 
     /**
      * Gets the description of this test type.
-     * 
+     *
      * @return The test type description
      */
     public String getDescription() {

@@ -33,6 +33,12 @@ public class W3cTestCase {
         CONFORMITY("conformity"),
         // SPARQL test properties
         GRAPH_DATA("graphData"),
+        // SPARQL 1.1 Update test properties
+        REQUEST("request"),
+        UPDATE_DATA("updateData"),
+        RESULT_DATA("resultData"),
+        UPDATE_GRAPH_DATA("updateGraphData"),
+        RESULT_GRAPH_DATA("resultGraphData"),
         // Canonical test properties
         HASH_ALGORITHM("hashAlgorithm"),
         // JSON-LD test properties
@@ -278,7 +284,7 @@ public class W3cTestCase {
      * Generates a comprehensive test display name with auto-detected format from
      * manifest URI.
      * Extracts the format name from the manifest path for automatic formatting.
-     * 
+     *
      * @return A formatted display name for the test
      */
     public String getFormattedDisplayName() {

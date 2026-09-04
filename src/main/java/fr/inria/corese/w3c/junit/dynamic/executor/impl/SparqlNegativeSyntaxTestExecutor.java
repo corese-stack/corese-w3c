@@ -2,6 +2,7 @@ package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
+import fr.inria.corese.core.next.query.api.exception.QueryValidationException;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
@@ -41,8 +42,8 @@ public class SparqlNegativeSyntaxTestExecutor implements TestExecutor {
             throw new AssertionError(String.format(
                     "Expected query to fail parsing but it succeeded for negative syntax test: '%s'",
                     testCase.getName()));
-        } catch (QuerySyntaxException e) {
-            // Expected: query parsing failed — negative syntax test passes
+        } catch (QuerySyntaxException | QueryValidationException e) {
+            // Expected: the query was rejected during parsing or static validation.
         }
     }
 }

@@ -1,6 +1,7 @@
 package fr.inria.corese.w3c.junit.dynamic.loader;
 
 import com.apicatalog.jsonld.document.JsonDocument;
+import com.apicatalog.jsonld.JsonLdError;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.io.JSONLDOptions;
@@ -49,8 +50,15 @@ public class W3cTestLoader {
     private static final String VAR_VALUE = "value";
     private static final String VAR_URI = "uri";
     private static final String MANIFEST_ACTION = "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#action>";
+    private static final String MANIFEST_RESULT = "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#result>";
     private static final String JSONLD_OPTION = "<https://w3c.github.io/json-ld-api/tests/vocab#option>";
     private static final String JSON_LD_API = "json-ld-api";
+    // SPARQL 1.1 Update test vocabulary (ut:)
+    private static final String UT_REQUEST    = "<http://www.w3.org/2009/sparql/tests/test-update#request>";
+    private static final String UT_DATA       = "<http://www.w3.org/2009/sparql/tests/test-update#data>";
+    private static final String UT_GRAPH_DATA = "<http://www.w3.org/2009/sparql/tests/test-update#graphData>";
+    private static final String UT_GRAPH      = "<http://www.w3.org/2009/sparql/tests/test-update#graph>";
+    private static final String RDFS_LABEL    = "<http://www.w3.org/2000/01/rdf-schema#label>";
     /**
      * Default constructor.
      * This constructor is intentionally empty as the class contains only static methods.
@@ -65,146 +73,152 @@ public class W3cTestLoader {
      * @param manifestUri The URI of the manifest file
      * @return A list of W3cTestCase objects loaded from the manifest
      */
-    @SuppressWarnings({"java:S1141", "java:S112", "java:S2589"})
     public static List<W3cTestCase> loadTestsFromManifest(URI manifestUri) {
-
-        // Create storage + model (pure next API, no legacy Graph)
         StorageManager storage = Storages.create();
         Model model = StorageModels.create(storage);
-
-        Repository repo = Repositories.create(storage);
-
-        // Load manifest (and sub-manifests) into the model
-        loadManifestInto(manifestUri, model, repo);
-
-        List<W3cTestCase> testCases = new ArrayList<>();
-
-        try (RepositoryConnection conn = repo.getConnection()) {
-
-            // Step 1: collect all (uri → type) pairs via a plain BGP.
-            // The "next" pipeline crashes on OPTIONAL, UNION, FILTER, and VALUES;
-            // only simple triple-pattern queries are safe.
-            logger.info("Loading test types");
-            // Step 1: find all test URIs and their rdf:type(s).
-            // A single test may have multiple types (e.g. jld:PositiveEvaluationTest and jld:FromRDFTest).
-            Map<String, Set<String>> uriToTypes = new HashMap<>();
-            try (TupleQueryResult r = conn.prepareTupleQuery(TYPE_QUERY).evaluate()) {
-                while (r.hasNext()) {
-                    BindingSet bs = r.next();
-                    String uri = getStringValue(bs, VAR_URI);
-                    String type = getStringValue(bs, "type");
-                    if (uri != null && type != null
-                            && !type.equals("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#Manifest")) {
-                        uriToTypes.computeIfAbsent(uri, k -> new HashSet<>()).add(type);
-                    }
-                }
-            }
-            logger.info("Found {} test URIs", uriToTypes.size());
-
-            // Step 2: load each property via a separate plain-BGP query.
-            // Predicates are full angle-bracket IRIs — no PREFIX declarations needed.
-            // putIfAbsent keeps the first value per URI.
-            Map<String, Map<String, String>> props = new HashMap<>();
-            runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#name>", "name");
-            runPropQuery(conn, props, "<http://purl.org/dc/elements/1.1/title>", "nameAlt");
-            runPropQuery(conn, props, "<http://www.w3.org/2000/01/rdf-schema#comment>", "comment");
-            runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#purpose>", "commentAlt");
-            runPropQuery(conn, props, MANIFEST_ACTION, "action");
-            runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceInput>", "actionAlt");
-            runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#result>", "result");
-            runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceResults>", "resultAlt");
-            runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#expectedResults>", "expectedBoolean");
-            runPropQuery(conn, props, "<https://w3c.github.io/rdf-canon/tests/vocab#hashAlgorithm>", "hashAlgorithm");
-            runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#resultCardinality>", "resultCardinality");
-            run2HopPropQuery(conn, props,
-                    MANIFEST_ACTION,
-                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#query>", "query");
-            run2HopPropQuery(conn, props,
-                    MANIFEST_ACTION,
-                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#data>", "data");
-            run2HopPropQuery(conn, props,
-                    MANIFEST_ACTION,
-                    "<http://www.w3.org/ns/shacl-test#dataGraph>", "dataGraph");
-            run2HopPropQuery(conn, props,
-                    MANIFEST_ACTION,
-                    "<http://www.w3.org/ns/shacl-test#shapesGraph>", "shapesGraph");
-            run2HopPropQuery(conn, props,
-                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#result>",
-                    "<http://www.w3.org/ns/shacl#conforms>", "conformity");
-            run2HopPropQuery(conn, props,
-                    JSONLD_OPTION,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#base>", "baseUri");
-            run2HopPropQuery(conn, props,
-                    JSONLD_OPTION,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#specVersion>", "specVersion");
-            run2HopPropQuery(conn, props,
-                    JSONLD_OPTION,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#processingMode>", "processingMode");
-            run2HopPropQuery(conn, props,
-                    JSONLD_OPTION,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#produceGeneralizedRdf>", "produceGeneralizedRdf");
-            run2HopPropQuery(conn, props,
-                    JSONLD_OPTION,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#rdfDirection>", "rdfDirection");
-            run2HopPropQuery(conn, props,
-                    JSONLD_OPTION,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#expandContext>", "expandContext");
-            run2HopPropQuery(conn, props,
-                    JSONLD_OPTION,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#useNativeTypes>", "useNativeTypes");
-            run2HopPropQuery(conn, props,
-                    JSONLD_OPTION,
-                    "<https://w3c.github.io/json-ld-api/tests/vocab#useRdfType>", "useRdfType");
-
-            // Collect multi-valued properties (qt:graphData can appear more than once per test)
-            Map<String, List<String>> multiProps = new HashMap<>();
-            runMultiValue2HopPropQuery(conn, multiProps,
-                    MANIFEST_ACTION,
-                    "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#graphData>",
-                    W3cTestCase.Property.GRAPH_DATA.getKey());
-
-            // Step 3: build W3cTestCase objects
-            for (Map.Entry<String, Set<String>> entry : uriToTypes.entrySet()) {
-                String testUri = entry.getKey();
-                Set<String> typeUris = entry.getValue();
-                try {
-                    Map<String, String> p = props.getOrDefault(testUri, Map.of());
-
-                    String name = coalesce(p.get("name"), p.get("nameAlt"));
-                    String comment = coalesce(p.get("comment"), p.get("commentAlt"));
-                    String action = coalesce(p.get("action"), p.get("actionAlt"));
-                    String result2 = coalesce(p.get("result"), p.get("resultAlt"));
-
-                    TestType testType = mapTestType(typeUris);
-                    Map<String, Object> properties = buildPropertiesFromMap(p, action, result2);
-                    List<String> graphData = multiProps.getOrDefault(testUri, List.of());
-                    if (!graphData.isEmpty()) {
-                        properties.put(W3cTestCase.Property.GRAPH_DATA.getKey(), new ArrayList<>(graphData));
-                    }
-                    String displayName = name != null
-                            ? name.trim().toLowerCase(Locale.ROOT).replace("-", "").replace(" ", "_").replace("#", "").replace(".", "")
-                            : "unknown_test";
-
-                    testCases.add(new W3cTestCase(
-                            testUri,
-                            name != null ? name : testUri,
-                            displayName,
-                            comment,
-                            testType,
-                            manifestUri,
-                            properties));
-                } catch (Exception e) {
-                    throw new IllegalStateException("Failed to create test case for " + testUri, e);
-                }
-            }
+        try (Repository repo = Repositories.create(storage);
+                RepositoryConnection conn = repo.getConnection()) {
+            loadManifestInto(manifestUri, model);
+            Map<String, Set<String>> uriToTypes = collectTestTypes(conn);
+            ManifestProperties properties = loadManifestProperties(conn);
+            List<W3cTestCase> testCases = createTestCases(uriToTypes, properties, manifestUri);
             logger.info("Loaded {} test cases", testCases.size());
-
-        } catch (Exception e) {
+            return testCases;
+        } catch (RuntimeException e) {
             throw new RuntimeException("Failed to load tests from manifest " + manifestUri, e);
         }
+    }
 
-        logger.debug("Loaded {} test cases from manifest {}", testCases.size(), manifestUri);
-        return testCases;
+    private static Map<String, Set<String>> collectTestTypes(RepositoryConnection conn) {
+        logger.info("Loading test types");
+        Map<String, Set<String>> uriToTypes = new HashMap<>();
+        try (TupleQueryResult result = conn.prepareTupleQuery(TYPE_QUERY).evaluate()) {
+            while (result.hasNext()) {
+                BindingSet binding = result.next();
+                String uri = getStringValue(binding, VAR_URI);
+                String type = getStringValue(binding, "type");
+                if (isTestType(uri, type)) {
+                    uriToTypes.computeIfAbsent(uri, key -> new HashSet<>()).add(type);
+                }
+            }
+        }
+        logger.info("Found {} test URIs", uriToTypes.size());
+        return uriToTypes;
+    }
+
+    private static boolean isTestType(String uri, String type) {
+        return uri != null && type != null
+                && !type.equals("http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#Manifest");
+    }
+
+    private static ManifestProperties loadManifestProperties(RepositoryConnection conn) {
+        Map<String, Map<String, String>> props = new HashMap<>();
+        loadSingleValueProperties(conn, props);
+        loadTwoHopProperties(conn, props);
+
+        Map<String, List<String>> graphData = new HashMap<>();
+        runMultiValue2HopPropQuery(conn, graphData, MANIFEST_ACTION,
+                "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#graphData>",
+                W3cTestCase.Property.GRAPH_DATA.getKey());
+
+        Map<String, List<String>> updateGraphData = new HashMap<>();
+        runUpdateGraphDataQuery(conn, updateGraphData, MANIFEST_ACTION,
+                W3cTestCase.Property.UPDATE_GRAPH_DATA.getKey());
+        Map<String, List<String>> resultGraphData = new HashMap<>();
+        runUpdateGraphDataQuery(conn, resultGraphData, MANIFEST_RESULT,
+                W3cTestCase.Property.RESULT_GRAPH_DATA.getKey());
+        return new ManifestProperties(props, graphData, updateGraphData, resultGraphData);
+    }
+
+    private static void loadSingleValueProperties(RepositoryConnection conn, Map<String, Map<String, String>> props) {
+        runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#name>", "name");
+        runPropQuery(conn, props, "<http://purl.org/dc/elements/1.1/title>", "nameAlt");
+        runPropQuery(conn, props, "<http://www.w3.org/2000/01/rdf-schema#comment>", "comment");
+        runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#purpose>", "commentAlt");
+        runPropQuery(conn, props, MANIFEST_ACTION, "action");
+        runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceInput>", "actionAlt");
+        runPropQuery(conn, props, MANIFEST_RESULT, "result");
+        runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceResults>", "resultAlt");
+        runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#expectedResults>", "expectedBoolean");
+        runPropQuery(conn, props, "<https://w3c.github.io/rdf-canon/tests/vocab#hashAlgorithm>", "hashAlgorithm");
+        runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#resultCardinality>", "resultCardinality");
+    }
+
+    private static void loadTwoHopProperties(RepositoryConnection conn, Map<String, Map<String, String>> props) {
+        run2HopPropQuery(conn, props, MANIFEST_ACTION,
+                "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#query>", "query");
+        run2HopPropQuery(conn, props, MANIFEST_ACTION,
+                "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#data>", "data");
+        run2HopPropQuery(conn, props, MANIFEST_ACTION,
+                "<http://www.w3.org/ns/shacl-test#dataGraph>", "dataGraph");
+        run2HopPropQuery(conn, props, MANIFEST_ACTION,
+                "<http://www.w3.org/ns/shacl-test#shapesGraph>", "shapesGraph");
+        run2HopPropQuery(conn, props, MANIFEST_RESULT,
+                "<http://www.w3.org/ns/shacl#conforms>", "conformity");
+        run2HopPropQuery(conn, props, JSONLD_OPTION,
+                "<https://w3c.github.io/json-ld-api/tests/vocab#base>", "baseUri");
+        run2HopPropQuery(conn, props, JSONLD_OPTION,
+                "<https://w3c.github.io/json-ld-api/tests/vocab#specVersion>", "specVersion");
+        run2HopPropQuery(conn, props, JSONLD_OPTION,
+                "<https://w3c.github.io/json-ld-api/tests/vocab#processingMode>", "processingMode");
+        run2HopPropQuery(conn, props, JSONLD_OPTION,
+                "<https://w3c.github.io/json-ld-api/tests/vocab#produceGeneralizedRdf>", "produceGeneralizedRdf");
+        run2HopPropQuery(conn, props, JSONLD_OPTION,
+                "<https://w3c.github.io/json-ld-api/tests/vocab#rdfDirection>", "rdfDirection");
+        run2HopPropQuery(conn, props, JSONLD_OPTION,
+                "<https://w3c.github.io/json-ld-api/tests/vocab#expandContext>", "expandContext");
+        run2HopPropQuery(conn, props, JSONLD_OPTION,
+                "<https://w3c.github.io/json-ld-api/tests/vocab#useNativeTypes>", "useNativeTypes");
+        run2HopPropQuery(conn, props, JSONLD_OPTION,
+                "<https://w3c.github.io/json-ld-api/tests/vocab#useRdfType>", "useRdfType");
+        run2HopPropQuery(conn, props, MANIFEST_ACTION, UT_REQUEST, W3cTestCase.Property.REQUEST.getKey());
+        run2HopPropQuery(conn, props, MANIFEST_ACTION, UT_DATA, W3cTestCase.Property.UPDATE_DATA.getKey());
+        run2HopPropQuery(conn, props, MANIFEST_RESULT, UT_DATA, W3cTestCase.Property.RESULT_DATA.getKey());
+    }
+
+    private static List<W3cTestCase> createTestCases(Map<String, Set<String>> uriToTypes,
+                                                       ManifestProperties manifestProperties, URI manifestUri) {
+        return uriToTypes.entrySet().stream()
+                .map(entry -> createTestCase(entry, manifestProperties, manifestUri))
+                .toList();
+    }
+
+    private static W3cTestCase createTestCase(Map.Entry<String, Set<String>> entry,
+                                               ManifestProperties manifestProperties, URI manifestUri) {
+        String testUri = entry.getKey();
+        Map<String, String> props = manifestProperties.properties().getOrDefault(testUri, Map.of());
+        String name = coalesce(props.get("name"), props.get("nameAlt"));
+        String comment = coalesce(props.get("comment"), props.get("commentAlt"));
+        String action = coalesce(props.get("action"), props.get("actionAlt"));
+        String result = coalesce(props.get("result"), props.get("resultAlt"));
+        Map<String, Object> properties = buildPropertiesFromMap(props, action, result);
+        addMultiValueProperty(properties, W3cTestCase.Property.GRAPH_DATA, manifestProperties.graphData().get(testUri));
+        addMultiValueProperty(properties, W3cTestCase.Property.UPDATE_GRAPH_DATA,
+                manifestProperties.updateGraphData().get(testUri));
+        addMultiValueProperty(properties, W3cTestCase.Property.RESULT_GRAPH_DATA,
+                manifestProperties.resultGraphData().get(testUri));
+
+        String displayName = name == null ? "unknown_test" : normalizedDisplayName(name);
+        return new W3cTestCase(testUri, name == null ? testUri : name, displayName, comment,
+                mapTestType(entry.getValue(), testUri), manifestUri, properties);
+    }
+
+    private static void addMultiValueProperty(Map<String, Object> properties, W3cTestCase.Property property,
+                                              List<String> values) {
+        if (values != null && !values.isEmpty()) {
+            properties.put(property.getKey(), new ArrayList<>(values));
+        }
+    }
+
+    private static String normalizedDisplayName(String name) {
+        return name.trim().toLowerCase(Locale.ROOT)
+                .replace("-", "").replace(" ", "_").replace("#", "").replace(".", "");
+    }
+
+    private record ManifestProperties(Map<String, Map<String, String>> properties,
+                                      Map<String, List<String>> graphData,
+                                      Map<String, List<String>> updateGraphData,
+                                      Map<String, List<String>> resultGraphData) {
     }
 
     /**
@@ -303,6 +317,42 @@ public class W3cTestLoader {
         }
     }
 
+    /**
+     * Collects SPARQL 1.1 Update named-graph entries for either the action or the result side.
+     * <p>
+     * Each entry is a blank node reachable via {@code mf:action/mf:result → ut:graphData} and
+     * carries two properties:
+     * <ul>
+     *   <li>{@code ut:graph}    – URI of the RDF file that holds the graph triples</li>
+     *   <li>{@code rdfs:label}  – URI used as the named-graph name in the dataset</li>
+     * </ul>
+     * Both pieces are needed together, so they are stored as a single
+     * {@code "graphNameUri|fileUri"} string in the list under {@code propKey}.
+     */
+    private static void runUpdateGraphDataQuery(RepositoryConnection conn,
+                                               Map<String, List<String>> multiProps,
+                                               String pred1, String propKey) {
+        String q = "SELECT ?uri ?graph ?label WHERE { "
+                + "?uri " + pred1 + " ?node . "
+                + "?node " + UT_GRAPH_DATA + " ?gd . "
+                + "?gd " + UT_GRAPH + " ?graph . "
+                + "?gd " + RDFS_LABEL + " ?label . }";
+        try (TupleQueryResult r = conn.prepareTupleQuery(q).evaluate()) {
+            while (r.hasNext()) {
+                BindingSet bs = r.next();
+                String uri   = getStringValue(bs, "uri");
+                String graph = getStringValue(bs, "graph");
+                String label = getStringValue(bs, "label");
+                if (uri != null && graph != null && label != null) {
+                    multiProps.computeIfAbsent(uri, k -> new ArrayList<>())
+                              .add(label + "|" + graph);
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Update graph-data query failed for {}: {}", propKey, e.getMessage());
+        }
+    }
+
     private static Map<String, Object> buildPropertiesFromMap(Map<String, String> p, String action, String result) {
         Map<String, Object> properties = new HashMap<>();
         // action and result come from merged alternatives; add them explicitly
@@ -328,6 +378,10 @@ public class W3cTestLoader {
      * Maps a set of W3C test type URIs to the local {@link TestType} enum.
      */
     static TestType mapTestType(Set<String> typeUris) {
+        return mapTestType(typeUris, null);
+    }
+
+    static TestType mapTestType(Set<String> typeUris, String testUri) {
         boolean isFromRdf = typeUris.stream().anyMatch(t -> t.toLowerCase(Locale.ROOT).contains("fromrdftest"));
         boolean isToRdf = typeUris.stream().anyMatch(t -> t.toLowerCase(Locale.ROOT).contains("tordftest"));
 
@@ -337,7 +391,7 @@ public class W3cTestLoader {
             if (mapped != null) {
                 return mapped;
             }
-            mapped = mapStandardRdfTestType(typeUri, lowerUri);
+            mapped = mapStandardRdfTestType(typeUri, lowerUri, testUri);
             if (mapped != null) {
                 return mapped;
             }
@@ -382,7 +436,7 @@ public class W3cTestLoader {
         return null;
     }
 
-    private static TestType mapStandardRdfTestType(String typeUri, String lowerUri) {
+    private static TestType mapStandardRdfTestType(String typeUri, String lowerUri, String testUri) {
         if ("http://www.w3.org/2006/03/test-description#TestCase".equalsIgnoreCase(typeUri)) {
             return TestType.ASK_BASED_EVAL;
         }
@@ -390,7 +444,7 @@ public class W3cTestLoader {
         if (type != null) {
             return type;
         }
-        return mapOtherRdfTestType(lowerUri);
+        return mapOtherRdfTestType(lowerUri, testUri);
     }
 
     private static TestType mapTurtleOrTrigTestType(String lowerUri) {
@@ -405,20 +459,52 @@ public class W3cTestLoader {
         return null;
     }
 
-    private static TestType mapOtherRdfTestType(String lowerUri) {
+    private static TestType mapOtherRdfTestType(String lowerUri, String testUri) {
+        TestType type = mapNTriplesNQuadsOrRdfXmlTestType(lowerUri);
+        if (type != null) {
+            return type;
+        }
+        type = mapRdfCanonicalizationOrRdfaTestType(lowerUri);
+        if (type != null) {
+            return type;
+        }
+        return mapSparqlTestType(lowerUri, testUri);
+    }
+
+    private static TestType mapNTriplesNQuadsOrRdfXmlTestType(String lowerUri) {
         if (lowerUri.contains("testntriplesnegativesyntax")) return TestType.NTRIPLES_NEGATIVE_SYNTAX;
         if (lowerUri.contains("testntriplespositivesyntax")) return TestType.NTRIPLES_POSITIVE_SYNTAX;
         if (lowerUri.contains("testnquadsnegativesyntax")) return TestType.NQUADS_NEGATIVE_SYNTAX;
         if (lowerUri.contains("testnquadspositivesyntax")) return TestType.NQUADS_POSITIVE_SYNTAX;
         if (lowerUri.contains("testxmlnegativesyntax")) return TestType.RDF_XML_NEGATIVE_SYNTAX;
         if (lowerUri.contains("testxmleval")) return TestType.RDF_XML_POSITIVE_EVAL;
+        return null;
+    }
+
+    private static TestType mapRdfCanonicalizationOrRdfaTestType(String lowerUri) {
         if (lowerUri.contains("rdfc10negativeevaltest")) return TestType.RDFC10_NEGATIVE_EVAL_TEST;
         if (lowerUri.contains("rdfc10maptest")) return TestType.RDFC10_MAP_TEST;
         if (lowerUri.contains("rdfc10evaltest")) return TestType.RDFC10_EVAL_TEST;
         if (lowerUri.contains("rdfa-test#positiveevaluationtest")) return TestType.RDFA_POSITIVE_EVAL;
         if (lowerUri.contains("rdfa-test#negativeevaluationtest")) return TestType.RDFA_NEGATIVE_EVAL;
-        // SPARQL 1.0 test types (test-manifest# prefix)
-        if (lowerUri.contains("test-manifest#queryevaluationtest")) return TestType.SPARQL10_QUERY_EVAL;
+        return null;
+    }
+
+    private static TestType mapSparqlTestType(String lowerUri, String testUri) {
+        // mf:QueryEvaluationTest is shared by SPARQL 1.0 and 1.1 — use the test URI to distinguish.
+        if (lowerUri.contains("test-manifest#queryevaluationtest")) {
+            return testUri != null && testUri.contains("sparql11")
+                    ? TestType.SPARQL11_QUERY_EVAL
+                    : TestType.SPARQL10_QUERY_EVAL;
+        }
+        if (lowerUri.contains("test-manifest#updateevaluationtest")) return TestType.SPARQL11_UPDATE_EVAL;
+        if (lowerUri.contains("test-manifest#csvresultformattest")) return TestType.SPARQL11_CSV_FORMAT;
+        // SPARQL 1.1 syntax tests (suffix "11") must be checked before the SPARQL 1.0 variants
+        if (lowerUri.contains("test-manifest#negativesyntaxtest11")) return TestType.SPARQL11_NEGATIVE_SYNTAX;
+        if (lowerUri.contains("test-manifest#positivesyntaxtest11")) return TestType.SPARQL11_POSITIVE_SYNTAX;
+        if (lowerUri.contains("test-manifest#negativeupdatesyntaxtest11")) return TestType.SPARQL11_NEGATIVE_UPDATE_SYNTAX;
+        if (lowerUri.contains("test-manifest#positiveupdatesyntaxtest11")) return TestType.SPARQL11_POSITIVE_UPDATE_SYNTAX;
+        // SPARQL 1.0 syntax tests (no suffix)
         if (lowerUri.contains("test-manifest#negativesyntaxtest")) return TestType.SPARQL10_NEGATIVE_SYNTAX;
         if (lowerUri.contains("test-manifest#positivesyntaxtest")) return TestType.SPARQL10_POSITIVE_SYNTAX;
         return null;
@@ -430,55 +516,66 @@ public class W3cTestLoader {
      *
      * @param manifestUri The URI of the manifest file to load.
      * @param model       Model to load into.
-     * @param repo        Repository backed by the same storage as {@code model}.
      */
-    @SuppressWarnings({"java:S1141", "java:S2589"})
-    private static void loadManifestInto(URI manifestUri, Model model, Repository repo) {
+    private static void loadManifestInto(URI manifestUri, Model model) {
         URI baseUri = RDFTestUtils.getBaseUri(manifestUri);
-
         try {
             URI localManifestUri = resolveManifestUri(manifestUri);
-            RDFFormat format = RDFTestUtils.guessFileFormat(localManifestUri);
-            RDFParser parser = RDFTestUtils.createParser(format, model);
-            Path localManifestPath = Path.of(localManifestUri);
-
-            try (FileInputStream fileInputStream = new FileInputStream(localManifestPath.toFile())) {
-                if (format == RDFFormat.JSONLD) {
-                    try (FileInputStream documentInputStream = new FileInputStream(localManifestPath.toFile())) {
-                        JsonDocument document = JsonDocument.of(documentInputStream);
-                        if (document.getJsonContent().isPresent()) {
-                            @SuppressWarnings("java:S3655")
-                            String contextString = document.getJsonContent().get().getValue("/@context").asJsonArray().getFirst().toString().replace("\"", "");
-                            if (!localManifestPath.resolve("./" + contextString).toFile().exists()) {
-                                URI contextRemoteUri = baseUri.resolve(contextString);
-                                TestFileManager.loadFile(contextRemoteUri);
-                            }
-                        }
-                    }
-                    JSONLDOptions option = new JSONLDOptions.Builder().base(baseUri.toString()).build();
-                    parser.setConfig(option);
-                }
-                parser.parse(fileInputStream, manifestUri.toString());
-            }
-
-            // Collect inclusion URIs before recursing (avoids open cursor during model mutation).
-            // FILTER expressions are not supported by the next pipeline, so manifest URI and
-            // IRI filtering is done here in Java.
-            List<String> inclusions = findInclusions(model, manifestUri);
-
-            for (String inclusion : inclusions) {
-                URI inclusionUri = URI.create(inclusion);
-                if (RDFTestUtils.isUriLocal(inclusionUri) && !RDFTestUtils.isUriLocal(baseUri) && !Path.of(inclusionUri).toFile().exists()) {
-                    inclusionUri = RDFTestUtils.swapBaseUri(inclusionUri, baseUri);
-                }
-                if (RDFTestUtils.isUriAFile(inclusionUri)) {
-                    loadManifestInto(inclusionUri, model, repo);
-                }
-            }
+            parseManifest(localManifestUri, manifestUri, baseUri, model);
+            loadIncludedManifests(findInclusions(model, manifestUri), baseUri, model);
         } catch (Exception e) {
             throw new RuntimeException("Error loading manifest file: " + manifestUri, e);
         }
+    }
 
+    private static void parseManifest(URI localManifestUri, URI manifestUri, URI baseUri, Model model)
+            throws IOException, NoSuchAlgorithmException, JsonLdError {
+        RDFFormat format = RDFTestUtils.guessFileFormat(localManifestUri);
+        RDFParser parser = RDFTestUtils.createParser(format, model);
+        Path localManifestPath = Path.of(localManifestUri);
+        configureJsonLdParser(format, parser, localManifestPath, baseUri);
+        try (FileInputStream inputStream = new FileInputStream(localManifestPath.toFile())) {
+            parser.parse(inputStream, manifestUri.toString());
+        }
+    }
+
+    private static void configureJsonLdParser(RDFFormat format, RDFParser parser, Path manifestPath, URI baseUri)
+            throws IOException, NoSuchAlgorithmException, JsonLdError {
+        if (format != RDFFormat.JSONLD) {
+            return;
+        }
+        cacheJsonLdContext(manifestPath, baseUri);
+        parser.setConfig(new JSONLDOptions.Builder().base(baseUri.toString()).build());
+    }
+
+    private static void cacheJsonLdContext(Path manifestPath, URI baseUri)
+            throws IOException, NoSuchAlgorithmException, JsonLdError {
+        try (FileInputStream inputStream = new FileInputStream(manifestPath.toFile())) {
+            JsonDocument document = JsonDocument.of(inputStream);
+            Optional<String> context = document.getJsonContent()
+                    .map(content -> content.getValue("/@context").asJsonArray().getFirst().toString().replace("\"", ""));
+            if (context.isPresent() && !manifestPath.resolve(context.orElseThrow()).toFile().exists()) {
+                TestFileManager.loadFile(baseUri.resolve(context.orElseThrow()));
+            }
+        }
+    }
+
+    private static void loadIncludedManifests(List<String> inclusions, URI baseUri, Model model) {
+        for (String inclusion : inclusions) {
+            URI inclusionUri = resolveInclusionUri(URI.create(inclusion), baseUri);
+            if (RDFTestUtils.isUriAFile(inclusionUri)) {
+                loadManifestInto(inclusionUri, model);
+            }
+        }
+    }
+
+    private static URI resolveInclusionUri(URI inclusionUri, URI baseUri) {
+        if (RDFTestUtils.isUriLocal(inclusionUri)
+                && !RDFTestUtils.isUriLocal(baseUri)
+                && !Path.of(inclusionUri).toFile().exists()) {
+            return RDFTestUtils.swapBaseUri(inclusionUri, baseUri);
+        }
+        return inclusionUri;
     }
 
     private static final String MF_INCLUDE =

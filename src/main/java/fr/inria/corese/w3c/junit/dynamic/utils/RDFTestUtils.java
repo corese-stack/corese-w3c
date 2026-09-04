@@ -29,7 +29,7 @@ public class RDFTestUtils {
 
     /**
      * Creates a new Model for parsing.
-     * 
+     *
      * @return A new Model ready for parsing
      */
     public static Model createModel() {
@@ -39,7 +39,7 @@ public class RDFTestUtils {
     /**
      * Creates a parser for the given format and model.
      * Simple and focused - takes only what's needed.
-     * 
+     *
      * @param format The RDF format
      * @param model  The model to parse into
      * @return A configured RDFParser
@@ -79,7 +79,7 @@ public class RDFTestUtils {
 
     /**
      * Loads a file from URI and returns the local file path.
-     * 
+     *
      * @param fileUri The file URI to load
      * @return The local file path
      * @throws IOException if the file cannot be read
@@ -96,7 +96,7 @@ public class RDFTestUtils {
 
     /**
      * Creates a formatted error message for test failures.
-     * 
+     *
      * @param message    The error message
      * @param testName   The test name
      * @param actionFile The action file URI
