@@ -252,11 +252,11 @@ public class TestFileManager {
         String path = uri.getPath(); // Get the path of the URI
         String[] segments = path.split("/"); // Split the path by slashes
 
-        // Special handling for rdf11 test patterns
-        // Look for rdf11 in the path and extract accordingly
+        // Special handling for rdf11 and sparql test patterns
+        // Look for rdf11 or sparql in the path and extract accordingly
         for (int i = 0; i < segments.length - 2; i++) {
-            if ("rdf11".equals(segments[i])) {
-                // Found rdf11, extract from this point to the end (excluding filename)
+            if ("rdf11".equals(segments[i]) || "sparql".equals(segments[i])) {
+                // Found rdf11 or sparql, extract from this point to the end (excluding filename)
                 StringBuilder result = new StringBuilder();
                 for (int j = i; j < segments.length - 1; j++) {
                     if (!result.isEmpty()) {
