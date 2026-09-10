@@ -37,7 +37,7 @@ public class SparqlNegativeSyntaxTestExecutor implements TestExecutor {
 
         try (Repository repo = Repositories.create();
              RepositoryConnection conn = repo.getConnection()) {
-            SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText);
+            SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText, queryUri.toString());
             // If we reach here, the query was accepted — test must fail
             throw new AssertionError(String.format(
                     "Expected query to fail parsing but it succeeded for negative syntax test: '%s'",

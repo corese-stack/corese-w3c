@@ -32,12 +32,11 @@ public class SparqlPositiveSyntaxTestExecutor implements TestExecutor {
         }
 
         String queryPath = RDFTestUtils.loadFile(queryUri);
-        String rawQueryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
-        String queryText = SparqlQueryEvaluationTestExecutor.prepareQueryText(rawQueryText, queryUri);
+        String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
 
         try (Repository repo = Repositories.create();
              RepositoryConnection conn = repo.getConnection()) {
-            SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText);
+            SparqlQueryEvaluationTestExecutor.queryForm(conn, queryText, queryUri.toString());
         } catch (QuerySyntaxException e) {
             throw new AssertionError(String.format(
                     "Expected query to parse successfully but got syntax error in '%s': %s",

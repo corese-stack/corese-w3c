@@ -85,8 +85,6 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         // 3. Read query text
         String queryPath = RDFTestUtils.loadFile(queryUri);
         String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
-        // Expand relative FROM / FROM NAMED URIs against the query file's own base URI
-        queryText = prepareQueryText(queryText, queryUri);
 
         // 4. Build in-memory dataset (default graph + named graphs)
         StorageManager storage = Storages.create();
@@ -108,9 +106,9 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         try (Repository repo = Repositories.create(storage);
              RepositoryConnection conn = repo.getConnection()) {
             switch (queryType) {
-                case "SELECT" -> executeSelectTest(conn, queryText, resultUri, testCase);
-                case "ASK" -> executeAskTest(conn, queryText, resultUri, testCase);
-                case "CONSTRUCT", "DESCRIBE" -> executeGraphTest(conn, queryText, resultUri, testCase);
+                case "SELECT" -> executeSelectTest(conn, queryText, queryUri.toString(), resultUri, testCase);
+                case "ASK" -> executeAskTest(conn, queryText, queryUri.toString(), resultUri, testCase);
+                case "CONSTRUCT", "DESCRIBE" -> executeGraphTest(conn, queryText, queryUri.toString(), resultUri, testCase);
                 default -> throw new AssertionError(
                         "Cannot determine SPARQL query type for test: " + testCase.getName());
             }
@@ -121,7 +119,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // SELECT
     // -----------------------------------------------------------------------
 
-    private void executeSelectTest(RepositoryConnection conn, String queryText,
+    private void executeSelectTest(RepositoryConnection conn, String queryText, String baseIRI,
                                    URI resultUri, W3cTestCase testCase)
             throws java.io.IOException, ParserConfigurationException, SAXException {
         String resultPath = RDFTestUtils.loadFile(resultUri);
@@ -132,7 +130,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             // Unbound variables (OPTIONAL) must appear as empty strings in every row.
             // Re-execute the query converting each Value to its CSV string representation
             // and compare directly against the raw CSV cells (no canonical conversion).
-            List<Map<String, String>> actualCsvRows = executeSelectWithCsvFormatter(conn, queryText);
+            List<Map<String, String>> actualCsvRows = executeSelectWithCsvFormatter(conn, queryText, baseIRI);
             List<Map<String, String>> expectedRows = CsvTsvResultParser.parseCsvRaw(resultPath);
             compareCsvTsvRows(expectedRows, actualCsvRows, testCase);
             return;
@@ -140,7 +138,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
 
         // For all other formats: execute in canonical form and compare.
         List<Map<String, String>> actualRows = new ArrayList<>();
-        try (TupleQueryResult result = conn.prepareTupleQuery(queryText).evaluate()) {
+        try (TupleQueryResult result = conn.prepareTupleQuery(queryText, baseIRI).evaluate()) {
             List<String> vars = result.getBindingNames();
             while (result.hasNext()) {
                 BindingSet bs = result.next();
@@ -191,9 +189,9 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
      * This matches the W3C SPARQL 1.1 CSV result format specification.
      */
     private static List<Map<String, String>> executeSelectWithCsvFormatter(
-            RepositoryConnection conn, String queryText) {
+            RepositoryConnection conn, String queryText, String baseIRI) {
         List<Map<String, String>> rows = new ArrayList<>();
-        try (TupleQueryResult result = conn.prepareTupleQuery(queryText).evaluate()) {
+        try (TupleQueryResult result = conn.prepareTupleQuery(queryText, baseIRI).evaluate()) {
             List<String> vars = result.getBindingNames();
             while (result.hasNext()) {
                 BindingSet bs = result.next();
@@ -331,10 +329,10 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // ASK
     // -----------------------------------------------------------------------
 
-    private void executeAskTest(RepositoryConnection conn, String queryText,
+    private void executeAskTest(RepositoryConnection conn, String queryText, String baseIRI,
                                 URI resultUri, W3cTestCase testCase)
             throws java.io.IOException, ParserConfigurationException, SAXException {
-        boolean actualResult = conn.prepareBooleanQuery(queryText).evaluate();
+        boolean actualResult = conn.prepareBooleanQuery(queryText, baseIRI).evaluate();
 
         String resultPath = RDFTestUtils.loadFile(resultUri);
         String ext = RDFTestUtils.getFileExtension(resultUri.toString()).toLowerCase(Locale.ROOT);
@@ -369,11 +367,11 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // CONSTRUCT / DESCRIBE
     // -----------------------------------------------------------------------
 
-    private void executeGraphTest(RepositoryConnection conn, String queryText,
+    private void executeGraphTest(RepositoryConnection conn, String queryText, String baseIRI,
                                   URI resultUri, W3cTestCase testCase) throws java.io.IOException {
         // Collect actual triples from the graph query result
         Model actualModel = StorageModels.create(Storages.create());
-        try (GraphQueryResult result = conn.prepareGraphQuery(queryText).evaluate()) {
+        try (GraphQueryResult result = conn.prepareGraphQuery(queryText, baseIRI).evaluate()) {
             while (result.hasNext()) {
                 Statement stmt = result.next();
                 actualModel.add(stmt);
@@ -447,46 +445,15 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     // Static helpers used by syntax test executors
     // -----------------------------------------------------------------------
 
-    private static final Pattern FROM_URI_PATTERN =
-            Pattern.compile("(?i)(FROM(?:\\s+NAMED)?)\\s+<([^>]+)>");
-
-    /**
-     * Expands relative URIs in FROM and FROM NAMED clauses against the query file's base URI
-     * and returns the modified query text. Absolute URIs are left unchanged.
-     */
-    static String prepareQueryText(String rawQueryText, URI queryBaseUri) {
-        String base = queryBaseUri.toString();
-        int lastSlash = base.lastIndexOf('/');
-        if (lastSlash < 0) return rawQueryText;
-        URI dirUri = URI.create(base.substring(0, lastSlash + 1));
-
-        Matcher m = FROM_URI_PATTERN.matcher(rawQueryText);
-        StringBuilder sb = new StringBuilder();
-        while (m.find()) {
-            String keyword = m.group(1);
-            String uriStr  = m.group(2);
-            URI resolved;
-            try {
-                URI raw = URI.create(uriStr);
-                resolved = raw.isAbsolute() ? raw : dirUri.resolve(raw);
-            } catch (IllegalArgumentException e) {
-                resolved = dirUri.resolve(uriStr);
-            }
-            m.appendReplacement(sb, Matcher.quoteReplacement(keyword + " <" + resolved + ">"));
-        }
-        m.appendTail(sb);
-        return sb.toString();
-    }
-
     /**
      * Validates that the query text parses successfully by attempting to prepare it with
      * each SPARQL query form. Throws {@link QuerySyntaxException} if all forms fail.
      * Used by positive- and negative-syntax test executors.
      */
-    static void queryForm(RepositoryConnection conn, String queryText) throws QuerySyntaxException {
+    static void queryForm(RepositoryConnection conn, String queryText, String baseIRI) throws QuerySyntaxException {
         QuerySyntaxException last = null;
         try {
-            conn.prepareTupleQuery(queryText);
+            conn.prepareTupleQuery(queryText, baseIRI);
             return;
         } catch (QuerySyntaxException e) {
             logger.debug("Not a SELECT query: {}", e.getMessage());
@@ -495,7 +462,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         }
 
         try {
-            conn.prepareBooleanQuery(queryText);
+            conn.prepareBooleanQuery(queryText, baseIRI);
             return;
         } catch (QuerySyntaxException e) {
             logger.debug("Not an ASK query: {}", e.getMessage());
@@ -504,7 +471,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         }
 
         try {
-            conn.prepareGraphQuery(queryText);
+            conn.prepareGraphQuery(queryText, baseIRI);
             return;
         } catch (QuerySyntaxException e) {
             logger.debug("Not a CONSTRUCT/DESCRIBE query: {}", e.getMessage());
