@@ -704,6 +704,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
 .status-passed { background-color: var(--color-pass-bg); color: var(--color-pass); }
