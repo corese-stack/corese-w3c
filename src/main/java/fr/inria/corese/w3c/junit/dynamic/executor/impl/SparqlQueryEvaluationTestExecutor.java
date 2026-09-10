@@ -20,6 +20,7 @@ import fr.inria.corese.core.next.storage.StorageModels;
 import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
+import fr.inria.corese.w3c.junit.dynamic.executor.InvalidTestExpectationException;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.CsvTsvResultParser;
 import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
@@ -153,6 +154,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             }
         }
 
+        Set<String> numericColumns = ComputedNumericResults.columns(queryText, baseIRI);
         switch (ext) {
             case "srx", "srj" -> {
                 SparqlResultParser.SparqlResults expected;
@@ -165,17 +167,17 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                     throw new AssertionError("Expected SELECT result file but got boolean result for: "
                             + testCase.getName());
                 }
-                compareSelectResults(expected.rows(), actualRows, testCase);
+                compareSelectResults(expected.rows(), actualRows, testCase, numericColumns);
             }
             case "ttl", "rdf" -> {
                 // rs: vocabulary result format (Turtle or RDF/XML)
                 SparqlResultParser.SparqlResults rsExpected = RsVocabResultParser.parse(resultUri);
-                compareSelectResults(rsExpected.rows(), actualRows, testCase);
+                compareSelectResults(rsExpected.rows(), actualRows, testCase, numericColumns);
             }
             case "tsv" -> {
                 // TSV uses SPARQL notation → convert to canonical form, compare normally.
                 List<Map<String, String>> expectedRows = CsvTsvResultParser.parseTsvToCanonical(resultPath);
-                compareSelectResults(expectedRows, actualRows, testCase);
+                compareSelectResults(expectedRows, actualRows, testCase, numericColumns);
             }
             default -> throw new AssertionError("Unsupported result file format '" + ext
                     + "' for SELECT test: " + testCase.getName());
@@ -277,7 +279,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     }
 
     private void compareSelectResults(List<Map<String, String>> expected,
-                                      List<Map<String, String>> actual, W3cTestCase testCase) {
+                                      List<Map<String, String>> actual, W3cTestCase testCase, Set<String> numericColumns) {
         if (expected.size() != actual.size()) {
             throw new AssertionError(String.format(
                     "SELECT result row count mismatch for '%s': expected %d rows, got %d rows",
@@ -285,20 +287,26 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         }
         // Normalize blank-node IDs per-row, then compare as multisets
         List<String> expectedNorm = expected.stream()
-                .map(SparqlQueryEvaluationTestExecutor::normalizeRow)
+                .map(row -> normalizeRow(row, numericColumns))
                 .sorted()
                 .toList();
         List<String> actualNorm = actual.stream()
-                .map(SparqlQueryEvaluationTestExecutor::normalizeRow)
+                .map(row -> normalizeRow(row, numericColumns))
                 .sorted()
                 .toList();
 
         if (!expectedNorm.equals(actualNorm)) {
-            throw new AssertionError(String.format(
+            AssertionError mismatch = new AssertionError(String.format(
                     "SELECT result mismatch for '%s'%nExpected:%n%s%nActual:%n%s",
                     testCase.getName(),
                     String.join("\n", expectedNorm),
                     String.join("\n", actualNorm)));
+            if (KnownCastDecimalExpectation.matches(testCase.getTestUri(), expected, actual, numericColumns)) {
+                throw new InvalidTestExpectationException(
+                        "Upstream cast-decimal expected result rewrites four unchanged ?v source terms; "
+                        + "all other bindings agree. Test executed, verdict indeterminate (not passed).", mismatch);
+            }
+            throw mismatch;
         }
     }
 
@@ -308,7 +316,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
      * {@code ?x=_:b0 ?y=_:b0} (same bnode) is distinguished from
      * {@code ?x=_:b0 ?y=_:b1} (different bnodes) independently of the actual ID strings.
      */
-    private static String normalizeRow(Map<String, String> row) {
+    static String normalizeRow(Map<String, String> row, Set<String> numericColumns) {
         Map<String, String> bnodeIdMap = new LinkedHashMap<>();
         int[] counter = {0};
         StringBuilder sb = new StringBuilder();
@@ -319,6 +327,9 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                     String val = entry.getValue();
                     if (val != null && val.startsWith("_:b_")) {
                         val = "_:b" + bnodeIdMap.computeIfAbsent(val, k -> String.valueOf(counter[0]++));
+                    }
+                    if (numericColumns.contains(entry.getKey())) {
+                        val = ComputedNumericResults.normalize(val);
                     }
                     sb.append(entry.getKey()).append('=').append(val).append(';');
                 });

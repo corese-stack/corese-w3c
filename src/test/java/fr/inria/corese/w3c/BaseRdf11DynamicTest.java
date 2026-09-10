@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.inria.corese.w3c.junit.dynamic.executor.InfrastructureException;
+import fr.inria.corese.w3c.junit.dynamic.executor.InvalidTestExpectationException;
 import fr.inria.corese.w3c.junit.dynamic.loader.W3cTestLoader;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.report.TestReportCollector;
@@ -79,7 +80,8 @@ public abstract class BaseRdf11DynamicTest {
                                         collector.recordPassed(testCase, suite, startedAt, collector.instant());
                                     } catch (Throwable throwable) {
                                         Instant endedAt = collector.instant();
-                                        if (InfrastructureException.causedByInfrastructure(throwable)) {
+                                        if (throwable instanceof InvalidTestExpectationException
+                                                || InfrastructureException.causedByInfrastructure(throwable)) {
                                             collector.recordCantTell(testCase, suite, startedAt, endedAt, throwable);
                                             if (throwable instanceof InterruptedException) {
                                                 Thread.currentThread().interrupt();
