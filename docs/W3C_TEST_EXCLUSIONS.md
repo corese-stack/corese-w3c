@@ -33,6 +33,23 @@ Two exclusions cover the optional generalized-RDF feature, which permits blank n
 
 `t0009` and `ter44` were previously hidden by broad display-name matching. Both pass and are intentionally active.
 
+## Executed tests with an indeterminate verdict
+
+`http://www.w3.org/2009/sparql/docs/tests/data-sparql11/cast/manifest#cast-decimal`
+remains active. Its expected result rewrites the unmodified source binding `?v`
+for `n07`–`n10` from `0E1`/`1E0` to `0.0`/`1.0` (double and float).
+Only this exact four-binding discrepancy is reported as EARL `cantTell`, not
+`passed`, `inapplicable`, or `untested`. The original mismatch remains in the
+failure log; JUnit still reports a failure. All 31 rows and every other binding
+must agree, including the calculated decimal values. Any additional discrepancy
+is a normal failure. No upstream fixture is modified.
+
+Remove this recognition when the upstream expected result preserves those source
+terms. A corrected expected result already passes the ordinary comparison without
+this classification. This differs from comparing *computed* numeric results by
+value, discussed in [W3C rdf-tests #58](https://github.com/w3c/rdf-tests/issues/58);
+directly projected RDF terms still require their original lexical form.
+
 ## RDFa
 
 The three exclusions below are the host-language variants of one generated benchmark. Test `0295` concatenates the bodies of many independent test documents, but its expected graph is the union of the results obtained when those documents are parsed separately. Concatenation is not semantics-neutral in RDFa: list mappings and initial contexts are scoped by the surrounding document. For example, the XHTML fixture contains one continuous list while the expected graph requires eight independent list heads. The XML and SVG variants also contain HTML-only `time/@datetime` expectations and ignore a valid XML `xml:base`.
