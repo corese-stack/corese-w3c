@@ -45,23 +45,28 @@
     },
     "rdfa-xhtml": {
       specUrl: "https://www.w3.org/TR/rdfa-core/",
-      testSuiteUrl: "https://rdfa.info/test-suite/",
+      testSuiteUrl: "https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/manifest.ttl",
       javaPath: "src/test/java/fr/inria/corese/w3c/rdf11rdfa/xhtml/Rdf11RDFaXHTMLDynamicTest.java"
     },
     "rdfa-xml": {
       specUrl: "https://www.w3.org/TR/rdfa-core/",
-      testSuiteUrl: "https://rdfa.info/test-suite/",
+      testSuiteUrl: "https://rdfa.info/test-suite/test-cases/rdfa1.1/xml/manifest.ttl",
       javaPath: "src/test/java/fr/inria/corese/w3c/rdf11rdfa/xml/Rdf11RDFaXMLDynamicTest.java"
     },
     "rdfa-svg": {
       specUrl: "https://www.w3.org/TR/SVG11/",
-      testSuiteUrl: "https://rdfa.info/test-suite/",
+      testSuiteUrl: "https://rdfa.info/test-suite/test-cases/rdfa1.1/svg/manifest.ttl",
       javaPath: "src/test/java/fr/inria/corese/w3c/rdf11rdfa/svg/Rdf11RDFaSVGDynamicTest.java"
     },
     "sparql10": {
       specUrl: "https://www.w3.org/TR/rdf-sparql-query/",
       testSuiteUrl: "https://w3c.github.io/rdf-tests/sparql/sparql10/manifest.ttl",
       javaPath: "src/test/java/fr/inria/corese/w3c/sparql10/Sparql10DynamicTest.java"
+    },
+    "sparql11": {
+      specUrl: "https://www.w3.org/TR/sparql11-query/",
+      testSuiteUrl: "https://w3c.github.io/rdf-tests/sparql/sparql11/manifest.ttl",
+      javaPath: "src/test/java/fr/inria/corese/w3c/sparql11/Sparql11DynamicTest.java"
     }
   };
 
@@ -127,6 +132,10 @@
   const modalErrorGroup = document.getElementById("modal-error-group");
   const modalError = document.getElementById("modal-error");
   const modalDuration = document.getElementById("modal-duration");
+  const modalTestUriGroup = document.getElementById("modal-test-uri-group");
+  const modalTestUri = document.getElementById("modal-test-uri");
+  const modalCopyUriBtn = document.getElementById("modal-copy-uri-btn");
+  let currentModalTest = null;
 
   // Theme Management (Automatic OS detection + Manual override with Monochrome SVG Icons)
   function initTheme() {
@@ -561,7 +570,7 @@
       const durationMs = Math.max(0, numeric(test.durationMs) || 0);
 
       return `
-        <tr>
+        <tr class="clickable-row" onclick="window.__openModal(${globalIndex})">
           <td><span class="status-badge ${statusClass}">${escapeHtml(outcomeLabel(outcome))}</span></td>
           <td><span class="spec-tag">${escapeHtml(test.suiteName)}</span></td>
           <td>
@@ -569,7 +578,7 @@
           </td>
           <td style="text-align: right;"><span class="font-mono">${durationMs}ms</span></td>
           <td style="text-align: center;">
-            <button class="btn-view" onclick="window.__openModal(${globalIndex})">View</button>
+            <button class="btn-view" onclick="event.stopPropagation(); window.__openModal(${globalIndex})">View</button>
           </td>
         </tr>
       `;
@@ -592,26 +601,52 @@
   });
 
   // Modal View Helpers
+  function getActionLabel(fileName) {
+    if (fileName.endsWith(".rq")) return "Query File";
+    if (fileName.endsWith(".ru")) return "Update File";
+    return "Input";
+  }
+
+  function buildResultFixtureLink(resultUri) {
+    if (!resultUri) return null;
+    const isHttp = resultUri.startsWith("https://") || resultUri.startsWith("http://");
+    const fileName = resultUri.split("/").pop() || "Expected Result";
+    if (!isHttp) {
+      return `<span>Expected: <code>${escapeHtml(resultUri)}</code></span>`;
+    }
+    const resultHref = safeExternalHref(resultUri);
+    return resultHref
+      ? `<span>Expected: <a href="${escapeHtml(resultHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a></span>`
+      : null;
+  }
+
+  function buildTestDefFixtureLink(testUri) {
+    if (!testUri) return null;
+    const testIriHref = safeExternalHref(testUri);
+    if (!testIriHref) return null;
+    const testName = testUri.includes("#")
+      ? testUri.split("#").pop()
+      : (testUri.split("/").pop() || "IRI");
+    return `<span>Test Definition: <a href="${escapeHtml(testIriHref)}" target="_blank" rel="noopener"><code>${escapeHtml(testName)}</code> ↗</a></span>`;
+  }
+
   function buildFixtureLinks(test) {
     const fixtureLinks = [];
     if (test.actionUri) {
       const fileName = test.actionUri.split("/").pop() || "Input File";
       const actionHref = safeExternalHref(test.actionUri);
       if (actionHref) {
-        fixtureLinks.push(`<span>Input: <a href="${escapeHtml(actionHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a></span>`);
+        const label = getActionLabel(fileName);
+        fixtureLinks.push(`<span>${label}: <a href="${escapeHtml(actionHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a></span>`);
       }
     }
-    if (test.resultUri) {
-      const isHttp = test.resultUri.startsWith("http://") || test.resultUri.startsWith("https://");
-      const fileName = test.resultUri.split("/").pop() || "Expected Result";
-      if (isHttp) {
-        const resultHref = safeExternalHref(test.resultUri);
-        if (resultHref) {
-          fixtureLinks.push(`<span>Expected: <a href="${escapeHtml(resultHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a></span>`);
-        }
-      } else {
-        fixtureLinks.push(`<span>Expected: <code>${escapeHtml(test.resultUri)}</code></span>`);
-      }
+    const resultLink = buildResultFixtureLink(test.resultUri);
+    if (resultLink) {
+      fixtureLinks.push(resultLink);
+    }
+    const testDefLink = buildTestDefFixtureLink(test.testUri);
+    if (testDefLink) {
+      fixtureLinks.push(testDefLink);
     }
     return fixtureLinks;
   }
@@ -626,6 +661,12 @@
     const suiteHref = safeExternalHref(test.manifest || meta.testSuiteUrl);
     if (specificationHref) links.push(`<a href="${escapeHtml(specificationHref)}" target="_blank" rel="noopener">W3C Specification ↗</a>`);
     if (suiteHref) links.push(`<a href="${escapeHtml(suiteHref)}" target="_blank" rel="noopener">Official Suite Manifest ↗</a>`);
+    if (test.manifestUri && test.manifestUri !== (test.manifest || meta.testSuiteUrl)) {
+      const testManifestHref = safeExternalHref(test.manifestUri);
+      if (testManifestHref) {
+        links.push(`<a href="${escapeHtml(testManifestHref)}" target="_blank" rel="noopener">Test Manifest ↗</a>`);
+      }
+    }
     if (meta.javaPath) {
       const className = meta.javaPath.split("/").pop() || "Test Runner";
       const sourceHref = safeExternalHref("https://github.com/corese-stack/corese-w3c/blob/"
@@ -663,10 +704,52 @@
     `;
   }
 
+  function renderModalTestUri(testUri) {
+    if (!modalTestUri || !modalTestUriGroup) return;
+    if (!testUri) {
+      modalTestUriGroup.style.display = "none";
+      return;
+    }
+    modalTestUriGroup.style.display = "flex";
+    const testHref = safeExternalHref(testUri);
+    modalTestUri.innerHTML = testHref
+      ? `<a href="${escapeHtml(testHref)}" target="_blank" rel="noopener" class="link-discrete">${escapeHtml(testUri)} ↗</a>`
+      : escapeHtml(testUri);
+  }
+
+  function renderModalFixtures(fixtureLinks) {
+    if (!modalFixturesGroup || !modalFixtures) return;
+    if (fixtureLinks.length > 0) {
+      modalFixturesGroup.style.display = "flex";
+      modalFixtures.innerHTML = fixtureLinks.join(" &nbsp;&bull;&nbsp; ");
+    } else {
+      modalFixturesGroup.style.display = "none";
+    }
+  }
+
+  function renderModalError(errorMessage) {
+    if (!modalErrorGroup || !modalError) return;
+    if (errorMessage) {
+      modalErrorGroup.style.display = "flex";
+      modalError.textContent = errorMessage;
+    } else {
+      modalErrorGroup.style.display = "none";
+    }
+  }
+
+  function openModalDialog() {
+    if (typeof modal.showModal === "function") {
+      modal.showModal();
+    } else {
+      modal.setAttribute("open", "");
+    }
+  }
+
   // Modal View
   window.__openModal = function(index) {
     const test = filteredTests[index];
     if (!test) return;
+    currentModalTest = test;
 
     modalStatus.textContent = outcomeLabel(test.outcome);
     modalStatus.className = "status-badge status-" + test.outcome.toLowerCase();
@@ -675,29 +758,15 @@
     modalDisplayName.textContent = test.displayName || test.name;
     modalDuration.textContent = Math.max(0, numeric(test.durationMs) || 0) + " ms";
 
-    const fixtureLinks = buildFixtureLinks(test);
-    if (fixtureLinks.length > 0) {
-      modalFixturesGroup.style.display = "flex";
-      modalFixtures.innerHTML = fixtureLinks.join(" &nbsp;&bull;&nbsp; ");
-    } else {
-      modalFixturesGroup.style.display = "none";
+    renderModalTestUri(test.testUri);
+    if (modalCopyUriBtn) {
+      modalCopyUriBtn.textContent = "Copy Test IRI";
     }
-
+    renderModalFixtures(buildFixtureLinks(test));
     modalLinks.innerHTML = buildSpecificationLinks(test);
     renderModalSkipSection(test);
-
-    if (test.errorMessage) {
-      modalErrorGroup.style.display = "flex";
-      modalError.textContent = test.errorMessage;
-    } else {
-      modalErrorGroup.style.display = "none";
-    }
-
-    if (typeof modal.showModal === "function") {
-      modal.showModal();
-    } else {
-      modal.setAttribute("open", "");
-    }
+    renderModalError(test.errorMessage);
+    openModalDialog();
   };
 
   function closeModal() {
@@ -710,6 +779,21 @@
 
   modalCloseBtn.addEventListener("click", closeModal);
   modalOkBtn.addEventListener("click", closeModal);
+  if (modalCopyUriBtn) {
+    modalCopyUriBtn.addEventListener("click", () => {
+      const textToCopy = currentModalTest?.testUri || "";
+      if (textToCopy && navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          modalCopyUriBtn.textContent = "Copied!";
+          setTimeout(() => {
+            modalCopyUriBtn.textContent = "Copy Test IRI";
+          }, 1800);
+        }).catch(() => {
+          modalCopyUriBtn.textContent = "Error copying";
+        });
+      }
+    });
+  }
   modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModal();
   });
@@ -745,10 +829,70 @@
     return Number.isFinite(number) ? number : null;
   }
 
+  function resolveSparqlUrl(parsed) {
+    if (parsed.hostname !== "www.w3.org") return null;
+
+    const pathname = parsed.pathname;
+    const sparql11Prefix = "/2009/sparql/docs/tests/data-sparql11/";
+    const sparql10Prefix = "/2001/sw/DataAccess/tests/data-r2/";
+
+    let targetSuite = null;
+    let remainder = null;
+
+    if (pathname.startsWith(sparql11Prefix)) {
+      targetSuite = "sparql11";
+      remainder = pathname.slice(sparql11Prefix.length);
+    } else if (pathname.startsWith(sparql10Prefix)) {
+      targetSuite = "sparql10";
+      remainder = pathname.slice(sparql10Prefix.length);
+    } else {
+      return null;
+    }
+
+    let subPath = remainder;
+    if (subPath.endsWith("/manifest")) {
+      subPath += ".ttl";
+    } else if (subPath === "manifest") {
+      subPath = "manifest.ttl";
+    }
+
+    const search = parsed.search || "";
+    const anchor = parsed.hash || "";
+    return `https://w3c.github.io/rdf-tests/sparql/${targetSuite}/${subPath}${search}${anchor}`;
+  }
+
+  function resolveRdfaUrl(parsed) {
+    if (parsed.hostname !== "rdfa.info") return null;
+
+    let path = parsed.pathname;
+    if (path.endsWith("/manifest")) {
+      path += ".ttl";
+    }
+    return `https://rdfa.info${path}${parsed.hash || ""}`;
+  }
+
+  function resolveWebUrl(rawUri) {
+    if (!rawUri) return null;
+    const uriStr = String(rawUri).trim();
+    try {
+      const parsed = new URL(uriStr);
+      const sparqlUrl = resolveSparqlUrl(parsed);
+      if (sparqlUrl) return sparqlUrl;
+
+      const rdfaUrl = resolveRdfaUrl(parsed);
+      if (rdfaUrl) return rdfaUrl;
+
+      return parsed.href;
+    } catch {
+      return uriStr;
+    }
+  }
+
   function safeExternalHref(value) {
     if (!value) return null;
     try {
-      const url = new URL(String(value));
+      const resolved = resolveWebUrl(value);
+      const url = new URL(String(resolved || value));
       return url.protocol === "https:" || url.protocol === "http:" ? url.href : null;
     } catch (error_) {
       console.debug("Invalid or unparseable external URL:", error_);

@@ -229,6 +229,10 @@
           <span class="info-label">Full Display Name</span>
           <div class="info-code" id="modal-display-name">-</div>
         </div>
+        <div class="info-row" id="modal-test-uri-group">
+          <span class="info-label">Test Case IRI</span>
+          <div class="info-code font-mono" id="modal-test-uri" style="word-break: break-all;">-</div>
+        </div>
         <div class="info-row" id="modal-skip-reason-group" style="display: none;">
           <span class="info-label">Exclusion Rationale</span>
           <div class="info-callout warning" id="modal-skip-reason">-</div>
@@ -237,7 +241,7 @@
           <span class="info-label">Failure Message</span>
           <div class="info-callout danger" id="modal-error">-</div>
         </div>
-        <div class="info-row">
+        <div class="info-row" id="modal-duration-group">
           <span class="info-label">Duration</span>
           <span class="info-value font-mono" id="modal-duration">-</span>
         </div>
@@ -245,13 +249,14 @@
           <span class="info-label">W3C Test Fixtures</span>
           <div class="info-links" id="modal-fixtures">-</div>
         </div>
-        <div class="info-row">
+        <div class="info-row" id="modal-links-group">
           <span class="info-label">Normative References &amp; Source</span>
           <div class="info-links" id="modal-links">-</div>
         </div>
       </div>
 
-      <div class="modal-bottom">
+      <div class="modal-bottom" style="display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-sm" id="modal-copy-uri-btn" type="button">Copy Test IRI</button>
         <button class="btn btn-sm" id="modal-ok-btn">Close</button>
       </div>
     </div>
