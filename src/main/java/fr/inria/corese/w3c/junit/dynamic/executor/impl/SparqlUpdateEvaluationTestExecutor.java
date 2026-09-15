@@ -13,6 +13,7 @@ import fr.inria.corese.core.next.storage.StorageModels;
 import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
+import fr.inria.corese.w3c.junit.dynamic.model.NamedGraphData;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -103,11 +104,11 @@ public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
             return;
         }
         for (String entry : graphData) {
-            String[] parts = entry.split("\\|", 2);
-            if (parts.length != 2) {
+            NamedGraphData ngd = NamedGraphData.parse(entry);
+            if (ngd == null) {
                 throw new IllegalArgumentException("Invalid update graph-data entry: " + entry);
             }
-            loadRdfFileAsNamedGraph(URI.create(parts[1]), model, parts[0]);
+            loadRdfFileAsNamedGraph(ngd.file(), model, ngd.name().toString());
         }
     }
 

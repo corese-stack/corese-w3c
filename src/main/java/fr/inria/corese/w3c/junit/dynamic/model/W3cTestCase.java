@@ -1,6 +1,7 @@
 package fr.inria.corese.w3c.junit.dynamic.model;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -219,35 +220,84 @@ public class W3cTestCase {
         }
     }
 
+    private static boolean isUsableFileUri(URI uri) {
+        return uri != null && !uri.toString().startsWith("_:");
+    }
+
+    private URI resolveManifestRelativeUri(URI uri) {
+        if (!isUsableFileUri(uri)) {
+            return null;
+        }
+        return uri.isAbsolute() ? uri : manifestUri.resolve(uri);
+    }
+
+    private URI extractFirstGraphDataUri(Property property) {
+        List<?> list = getProperty(property, List.class);
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+        Object first = list.get(0);
+        if (first instanceof NamedGraphData ngd) {
+            return ngd.file();
+        }
+        NamedGraphData parsed = NamedGraphData.parse(String.valueOf(first));
+        return parsed != null ? parsed.file() : null;
+    }
+
     /**
      * Gets the action file URI for this test case.
-     * This is a convenience method for getUriProperty("action").
+     * This is a convenience method that resolves the query/action file for the test.
      *
      * @return The URI of the action file, or null if not present
      */
     public URI getActionFileUri() {
         URI uri = getUriProperty(Property.ACTION.getKey());
-        if (uri == null || uri.toString().startsWith("_:")) {
+        if (!isUsableFileUri(uri)) {
             uri = getUriProperty(Property.QUERY.getKey());
         }
-        if (uri != null && !uri.isAbsolute() && manifestUri != null) {
-            return manifestUri.resolve(uri);
+        if (!isUsableFileUri(uri)) {
+            uri = getUriProperty(Property.REQUEST.getKey());
         }
-        return (uri != null && uri.isAbsolute()) ? uri : null;
+        if (!isUsableFileUri(uri)) {
+            uri = getUriProperty(Property.DATA.getKey());
+        }
+        return resolveManifestRelativeUri(uri);
     }
 
     /**
      * Gets the result file URI for this test case.
-     * This is a convenience method for getUriProperty("result").
+     * This is a convenience method that resolves the expected result file for the test.
      *
      * @return The URI of the result file, or null if not present
      */
     public URI getResultFileUri() {
         URI uri = getUriProperty(Property.RESULT.getKey());
-        if (uri != null && !uri.isAbsolute() && manifestUri != null) {
-            return manifestUri.resolve(uri);
+        if (!isUsableFileUri(uri)) {
+            uri = getUriProperty(Property.RESULT_DATA.getKey());
         }
-        return (uri != null && uri.isAbsolute()) ? uri : null;
+        if (!isUsableFileUri(uri)) {
+            uri = extractFirstGraphDataUri(Property.RESULT_GRAPH_DATA);
+        }
+        return resolveManifestRelativeUri(uri);
+    }
+
+    /**
+     * Gets the input data file URI for this test case if applicable.
+     *
+     * @return The URI of the data file, or null if not present
+     */
+    public URI getDataFileUri() {
+        URI uri = getUriProperty(Property.DATA.getKey());
+        if (!isUsableFileUri(uri)) {
+            uri = getUriProperty(Property.UPDATE_DATA.getKey());
+        }
+        if (!isUsableFileUri(uri)) {
+            uri = getUriProperty(Property.DATA_GRAPH.getKey());
+        }
+        if (!isUsableFileUri(uri)) {
+            uri = extractFirstGraphDataUri(Property.UPDATE_GRAPH_DATA);
+        }
+        return resolveManifestRelativeUri(uri);
     }
 
     /**

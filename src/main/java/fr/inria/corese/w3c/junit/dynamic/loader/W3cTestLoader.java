@@ -59,12 +59,10 @@ public class W3cTestLoader {
     private static final String UT_GRAPH_DATA = "<http://www.w3.org/2009/sparql/tests/test-update#graphData>";
     private static final String UT_GRAPH      = "<http://www.w3.org/2009/sparql/tests/test-update#graph>";
     private static final String RDFS_LABEL    = "<http://www.w3.org/2000/01/rdf-schema#label>";
-    /**
-     * Default constructor.
-     * This constructor is intentionally empty as the class contains only static methods.
-     */
+    private static final String PROP_ACTION   = "action";
+    private static final String PROP_RESULT   = "result";
+
     private W3cTestLoader() {
-        // Utility class - private constructor to prevent instantiation
     }
 
     /**
@@ -81,12 +79,36 @@ public class W3cTestLoader {
             loadManifestInto(manifestUri, model);
             Map<String, Set<String>> uriToTypes = collectTestTypes(conn);
             ManifestProperties properties = loadManifestProperties(conn);
-            List<W3cTestCase> testCases = createTestCases(uriToTypes, properties, manifestUri);
+            Map<String, String> testToManifest = collectTestManifests(model);
+            List<W3cTestCase> testCases = createTestCases(uriToTypes, properties, testToManifest, manifestUri);
             logger.info("Loaded {} test cases", testCases.size());
             return testCases;
         } catch (RuntimeException e) {
             throw new RuntimeException("Failed to load tests from manifest " + manifestUri, e);
         }
+    }
+
+    private static final String MF_ENTRIES =
+            "http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#entries";
+
+    private static Map<String, String> collectTestManifests(Model model) {
+        Map<String, String> testToManifest = new HashMap<>();
+        for (Statement stmt : model.filter(null, null, null)) {
+            if (MF_ENTRIES.equals(stmt.getPredicate().stringValue()) && isIri(stmt.getSubject())) {
+                String manifestIri = stmt.getSubject().stringValue();
+                Value obj = stmt.getObject();
+                Set<String> entries = new LinkedHashSet<>();
+                if (isIri(obj)) {
+                    entries.add(obj.stringValue());
+                } else if (obj instanceof BNode bnode) {
+                    traverseRdfList(bnode, model, entries);
+                }
+                for (String entry : entries) {
+                    testToManifest.put(entry, manifestIri);
+                }
+            }
+        }
+        return testToManifest;
     }
 
     private static Map<String, Set<String>> collectTestTypes(RepositoryConnection conn) {
@@ -135,13 +157,22 @@ public class W3cTestLoader {
         runPropQuery(conn, props, "<http://purl.org/dc/elements/1.1/title>", "nameAlt");
         runPropQuery(conn, props, "<http://www.w3.org/2000/01/rdf-schema#comment>", "comment");
         runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#purpose>", "commentAlt");
-        runPropQuery(conn, props, MANIFEST_ACTION, "action");
+        runPropQuery(conn, props, MANIFEST_ACTION, PROP_ACTION);
         runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceInput>", "actionAlt");
-        runPropQuery(conn, props, MANIFEST_RESULT, "result");
+        runPropQuery(conn, props, MANIFEST_RESULT, PROP_RESULT);
         runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#informationResourceResults>", "resultAlt");
         runPropQuery(conn, props, "<http://www.w3.org/2006/03/test-description#expectedResults>", "expectedBoolean");
         runPropQuery(conn, props, "<https://w3c.github.io/rdf-canon/tests/vocab#hashAlgorithm>", "hashAlgorithm");
         runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#resultCardinality>", "resultCardinality");
+        runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#actionEntry>", PROP_ACTION);
+        runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#resultEntry>", PROP_RESULT);
+        runPropQuery(conn, props, "<http://www.w3.org/2001/sw/DataAccess/tests/test-query#query>", "query");
+        runPropQuery(conn, props, "<http://www.w3.org/ns/shacl-test#dataGraph>", "dataGraph");
+        runPropQuery(conn, props, "<http://www.w3.org/ns/shacl-test#shapesGraph>", "shapesGraph");
+        runPropQuery(conn, props, "<http://www.w3.org/ns/shacl#conforms>", "conformity");
+        runPropQuery(conn, props, "<https://w3c.github.io/json-ld-api/tests/vocab#input>", PROP_ACTION);
+        runPropQuery(conn, props, "<https://w3c.github.io/json-ld-api/tests/vocab#expect>", PROP_RESULT);
+        runPropQuery(conn, props, "<https://w3c.github.io/json-ld-api/tests/vocab#expectErrorCode>", PROP_RESULT);
     }
 
     private static void loadTwoHopProperties(RepositoryConnection conn, Map<String, Map<String, String>> props) {
@@ -177,20 +208,26 @@ public class W3cTestLoader {
     }
 
     private static List<W3cTestCase> createTestCases(Map<String, Set<String>> uriToTypes,
-                                                       ManifestProperties manifestProperties, URI manifestUri) {
+                                                       ManifestProperties manifestProperties,
+                                                       Map<String, String> testToManifest,
+                                                       URI defaultManifestUri) {
         return uriToTypes.entrySet().stream()
-                .map(entry -> createTestCase(entry, manifestProperties, manifestUri))
+                .map(entry -> createTestCase(entry, manifestProperties, testToManifest, defaultManifestUri))
                 .toList();
     }
 
     private static W3cTestCase createTestCase(Map.Entry<String, Set<String>> entry,
-                                               ManifestProperties manifestProperties, URI manifestUri) {
+                                               ManifestProperties manifestProperties,
+                                               Map<String, String> testToManifest,
+                                               URI defaultManifestUri) {
         String testUri = entry.getKey();
+        String specificManifest = testToManifest.get(testUri);
+        URI manifestUri = specificManifest != null ? URI.create(specificManifest) : defaultManifestUri;
         Map<String, String> props = manifestProperties.properties().getOrDefault(testUri, Map.of());
         String name = coalesce(props.get("name"), props.get("nameAlt"));
         String comment = coalesce(props.get("comment"), props.get("commentAlt"));
-        String action = coalesce(props.get("action"), props.get("actionAlt"));
-        String result = coalesce(props.get("result"), props.get("resultAlt"));
+        String action = coalesce(props.get(PROP_ACTION), props.get("actionAlt"));
+        String result = coalesce(props.get(PROP_RESULT), props.get("resultAlt"));
         Map<String, Object> properties = buildPropertiesFromMap(props, action, result);
         addMultiValueProperty(properties, W3cTestCase.Property.GRAPH_DATA, manifestProperties.graphData().get(testUri));
         addMultiValueProperty(properties, W3cTestCase.Property.UPDATE_GRAPH_DATA,
@@ -266,8 +303,8 @@ public class W3cTestLoader {
                     props.computeIfAbsent(uri, k -> new HashMap<>()).putIfAbsent(propKey, val);
                 }
             }
-        } catch (Exception e) {
-            logger.warn("Property query failed for {}: {}", propKey, e.getMessage());
+        } catch (RuntimeException e) {
+            throw new IllegalStateException("Property query failed for " + propKey, e);
         }
     }
 
@@ -289,8 +326,8 @@ public class W3cTestLoader {
                     props.computeIfAbsent(uri, k -> new HashMap<>()).putIfAbsent(propKey, val);
                 }
             }
-        } catch (Exception e) {
-            logger.warn("2-hop property query failed for {}: {}", propKey, e.getMessage());
+        } catch (RuntimeException e) {
+            throw new IllegalStateException("2-hop property query failed for " + propKey, e);
         }
     }
 
@@ -312,8 +349,8 @@ public class W3cTestLoader {
                     multiProps.computeIfAbsent(uri, k -> new ArrayList<>()).add(val);
                 }
             }
-        } catch (Exception e) {
-            logger.warn("Multi-value 2-hop property query failed for {}: {}", propKey, e.getMessage());
+        } catch (RuntimeException e) {
+            throw new IllegalStateException("Multi-value 2-hop property query failed for " + propKey, e);
         }
     }
 
@@ -348,8 +385,8 @@ public class W3cTestLoader {
                               .add(label + "|" + graph);
                 }
             }
-        } catch (Exception e) {
-            logger.warn("Update graph-data query failed for {}: {}", propKey, e.getMessage());
+        } catch (RuntimeException e) {
+            throw new IllegalStateException("Update graph-data query failed for " + propKey, e);
         }
     }
 
@@ -371,7 +408,13 @@ public class W3cTestLoader {
 
     private static String getStringValue(BindingSet binding, String variable) {
         Value value = binding.getValue(variable);
-        return value != null ? value.stringValue() : null;
+        if (value == null) {
+            return null;
+        }
+        if (value.isBNode()) {
+            return "_:" + value.stringValue();
+        }
+        return value.stringValue();
     }
 
     /**
