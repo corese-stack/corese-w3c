@@ -2,6 +2,7 @@ package fr.inria.corese.w3c.junit.dynamic.utils;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
@@ -86,6 +87,9 @@ public class RDFTestUtils {
      * @throws NoSuchAlgorithmException if the hash algorithm is unavailable
      */
     public static String loadFile(URI fileUri) {
+        if ("file".equalsIgnoreCase(fileUri.getScheme())) {
+            return Path.of(fileUri).toString();
+        }
         try {
             TestFileManager.loadFile(fileUri);
             return TestFileManager.getLocalFilePath(fileUri).toString();

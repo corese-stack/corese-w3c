@@ -366,6 +366,8 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                         + testCase.getName());
             }
             expectedResult = expected.booleanResult();
+        } else if ("ttl".equals(ext) || "rdf".equals(ext) || "nt".equals(ext)) {
+            expectedResult = RsVocabResultParser.parseBoolean(resultUri);
         } else {
             // Plain text file with "true" or "false"
             String content = Files.readString(Path.of(resultPath), StandardCharsets.UTF_8).trim();
