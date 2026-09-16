@@ -109,6 +109,7 @@ public final class JsonReportWriter {
         test.put("testType", entry.testType().name());
         putIfNotNull(test, "description", entry.description());
         putIfNotNull(test, "actionUri", ascii(entry.actionUri()));
+        putIfNotNull(test, "dataUri", ascii(entry.dataUri()));
         putIfNotNull(test, "resultUri", ascii(entry.expectedResultUri()));
         putIfNotNull(test, "startedAt", entry.startedAt() == null ? null : entry.startedAt().toString());
         test.put("endedAt", entry.endedAt().toString());

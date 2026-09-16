@@ -65,7 +65,10 @@ public final class ReportTestFixtures {
                 URI.create("https://w3c.github.io/rdf-canon/tests/manifest#test001c"),
                 RDFC_SUITE.manifestUri(),
                 "test001c", "Official RDFC regression identifier",
-                TestType.RDFC10_EVAL_TEST, null, null,
+                TestType.RDFC10_EVAL_TEST,
+                URI.create("https://w3c.github.io/rdf-canon/tests/test001c-in.nq"),
+                URI.create("https://w3c.github.io/rdf-canon/tests/test001c-data.nq"),
+                URI.create("https://w3c.github.io/rdf-canon/tests/test001c-out.nq"),
                 ExecutionOutcome.PASSED, START, START.plusSeconds(2), 2_000,
                 null, null));
         return new TestReportData(metadata(), entries);

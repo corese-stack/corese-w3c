@@ -221,14 +221,25 @@ public class W3cTestCase {
     }
 
     private static boolean isUsableFileUri(URI uri) {
-        return uri != null && !uri.toString().startsWith("_:");
+        if (uri == null) {
+            return false;
+        }
+        String str = uri.toString().trim();
+        return !str.isEmpty() && !str.equals(".") && !str.startsWith("_:");
     }
 
     private URI resolveManifestRelativeUri(URI uri) {
         if (!isUsableFileUri(uri)) {
             return null;
         }
-        return uri.isAbsolute() ? uri : manifestUri.resolve(uri);
+        URI resolved = uri;
+        if (!uri.isAbsolute() && manifestUri != null) {
+            resolved = manifestUri.resolve(uri);
+        }
+        if (resolved == null || Objects.equals(resolved, manifestUri)) {
+            return null;
+        }
+        return resolved;
     }
 
     private URI extractFirstGraphDataUri(Property property) {
@@ -237,11 +248,26 @@ public class W3cTestCase {
             return null;
         }
         Object first = list.get(0);
-        if (first instanceof NamedGraphData ngd) {
-            return ngd.file();
+        if (first == null) {
+            return null;
         }
-        NamedGraphData parsed = NamedGraphData.parse(String.valueOf(first));
-        return parsed != null ? parsed.file() : null;
+        if (first instanceof NamedGraphData ngd) {
+            return isUsableFileUri(ngd.file()) ? ngd.file() : null;
+        }
+        String str = String.valueOf(first).trim();
+        if (str.isEmpty() || str.startsWith("_:")) {
+            return null;
+        }
+        NamedGraphData parsed = NamedGraphData.parse(str);
+        if (parsed != null) {
+            return isUsableFileUri(parsed.file()) ? parsed.file() : null;
+        }
+        try {
+            URI parsedUri = URI.create(str);
+            return isUsableFileUri(parsedUri) ? parsedUri : null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /**
@@ -257,6 +283,9 @@ public class W3cTestCase {
         }
         if (!isUsableFileUri(uri)) {
             uri = getUriProperty(Property.REQUEST.getKey());
+        }
+        if (!isUsableFileUri(uri)) {
+            uri = getUriProperty(Property.SHAPES_GRAPH.getKey());
         }
         if (!isUsableFileUri(uri)) {
             uri = getUriProperty(Property.DATA.getKey());
@@ -296,6 +325,9 @@ public class W3cTestCase {
         }
         if (!isUsableFileUri(uri)) {
             uri = extractFirstGraphDataUri(Property.UPDATE_GRAPH_DATA);
+        }
+        if (!isUsableFileUri(uri)) {
+            uri = extractFirstGraphDataUri(Property.GRAPH_DATA);
         }
         return resolveManifestRelativeUri(uri);
     }

@@ -127,6 +127,10 @@
   const modalFixtures = document.getElementById("modal-fixtures");
   const modalLinks = document.getElementById("modal-links");
   const modalDisplayName = document.getElementById("modal-display-name");
+  const modalDescriptionGroup = document.getElementById("modal-description-group");
+  const modalDescription = document.getElementById("modal-description");
+  const modalTestTypeGroup = document.getElementById("modal-test-type-group");
+  const modalTestType = document.getElementById("modal-test-type");
   const modalSkipReasonGroup = document.getElementById("modal-skip-reason-group");
   const modalSkipReason = document.getElementById("modal-skip-reason");
   const modalErrorGroup = document.getElementById("modal-error-group");
@@ -607,6 +611,27 @@
     return "Input";
   }
 
+  function getDataLabel(test) {
+    if (test.testType?.includes("UPDATE") || test.actionUri?.endsWith(".ru")) {
+      return "Initial Data";
+    }
+    return "Data File";
+  }
+
+  function buildDataFixtureLink(test) {
+    if (!test.dataUri || test.dataUri === test.actionUri) return null;
+    const isHttp = test.dataUri.startsWith("https://") || test.dataUri.startsWith("http://");
+    const fileName = test.dataUri.split("/").pop() || "Data File";
+    const label = getDataLabel(test);
+    if (!isHttp) {
+      return `<span>${label}: <code>${escapeHtml(test.dataUri)}</code></span>`;
+    }
+    const dataHref = safeExternalHref(test.dataUri);
+    return dataHref
+      ? `<span>${label}: <a href="${escapeHtml(dataHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a></span>`
+      : null;
+  }
+
   function buildResultFixtureLink(resultUri) {
     if (!resultUri) return null;
     const isHttp = resultUri.startsWith("https://") || resultUri.startsWith("http://");
@@ -639,6 +664,10 @@
         const label = getActionLabel(fileName);
         fixtureLinks.push(`<span>${label}: <a href="${escapeHtml(actionHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a></span>`);
       }
+    }
+    const dataLink = buildDataFixtureLink(test);
+    if (dataLink) {
+      fixtureLinks.push(dataLink);
     }
     const resultLink = buildResultFixtureLink(test.resultUri);
     if (resultLink) {
@@ -745,6 +774,26 @@
     }
   }
 
+  function renderModalDescription(description) {
+    if (!modalDescriptionGroup || !modalDescription) return;
+    if (description) {
+      modalDescriptionGroup.style.display = "flex";
+      modalDescription.textContent = description;
+    } else {
+      modalDescriptionGroup.style.display = "none";
+    }
+  }
+
+  function renderModalTestType(testType) {
+    if (!modalTestTypeGroup || !modalTestType) return;
+    if (testType) {
+      modalTestTypeGroup.style.display = "flex";
+      modalTestType.textContent = testType;
+    } else {
+      modalTestTypeGroup.style.display = "none";
+    }
+  }
+
   // Modal View
   window.__openModal = function(index) {
     const test = filteredTests[index];
@@ -756,6 +805,8 @@
     modalTitle.textContent = test.name || "Test Case Details";
     modalSuite.textContent = test.suiteName;
     modalDisplayName.textContent = test.displayName || test.name;
+    renderModalDescription(test.description);
+    renderModalTestType(test.testType);
     modalDuration.textContent = Math.max(0, numeric(test.durationMs) || 0) + " ms";
 
     renderModalTestUri(test.testUri);

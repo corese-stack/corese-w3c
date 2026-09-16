@@ -151,6 +151,7 @@ public final class TestReportCollector {
                 testCase.getComment(),
                 testCase.getType(),
                 testCase.getActionFileUri(),
+                testCase.getDataFileUri(),
                 testCase.getResultFileUri(),
                 outcome,
                 startedAt,

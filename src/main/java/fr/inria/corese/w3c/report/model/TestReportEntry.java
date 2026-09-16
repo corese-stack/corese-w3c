@@ -15,6 +15,7 @@ public record TestReportEntry(
         String description,
         TestType testType,
         URI actionUri,
+        URI dataUri,
         URI expectedResultUri,
         ExecutionOutcome outcome,
         Instant startedAt,
@@ -22,6 +23,25 @@ public record TestReportEntry(
         long durationMs,
         String information,
         URI logUri) {
+
+    public TestReportEntry(
+            SuiteDefinition suite,
+            URI testUri,
+            URI manifestUri,
+            String title,
+            String description,
+            TestType testType,
+            URI actionUri,
+            URI expectedResultUri,
+            ExecutionOutcome outcome,
+            Instant startedAt,
+            Instant endedAt,
+            long durationMs,
+            String information,
+            URI logUri) {
+        this(suite, testUri, manifestUri, title, description, testType, actionUri, null, expectedResultUri, outcome,
+                startedAt, endedAt, durationMs, information, logUri);
+    }
 
     public TestReportEntry {
         Objects.requireNonNull(suite, "suite");
@@ -31,6 +51,7 @@ public record TestReportEntry(
         description = normalizeOptional(description);
         Objects.requireNonNull(testType, "testType");
         requireOptionalAbsolute(actionUri, "actionUri");
+        requireOptionalAbsolute(dataUri, "dataUri");
         requireOptionalAbsolute(expectedResultUri, "expectedResultUri");
         Objects.requireNonNull(outcome, "outcome");
         Objects.requireNonNull(endedAt, "endedAt");
