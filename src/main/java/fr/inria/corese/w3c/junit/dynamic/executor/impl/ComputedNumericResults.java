@@ -1,7 +1,9 @@
 package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
-import fr.inria.corese.core.next.query.impl.sparql.ast.LiteralAst;
+import fr.inria.corese.core.next.query.impl.sparql.ast.AggregateAst;
+import fr.inria.corese.core.next.query.impl.sparql.ast.AggregateFunction;
 import fr.inria.corese.core.next.query.impl.sparql.ast.IriAst;
+import fr.inria.corese.core.next.query.impl.sparql.ast.LiteralAst;
 import fr.inria.corese.core.next.query.impl.sparql.ast.SelectQueryAst;
 import fr.inria.corese.core.next.query.impl.sparql.ast.TermAst;
 import fr.inria.corese.core.next.query.impl.sparql.ast.constraint.CoalesceAst;
@@ -42,6 +44,9 @@ final class ComputedNumericResults {
     private static boolean computed(TermAst expression, SparqlTermResolver resolver) {
         if (expression instanceof UnaryPlusAst) return false; // May return the original RDF term.
         if (expression instanceof NumericExpressionAst) return true;
+        if (expression instanceof AggregateAst agg) {
+            return agg.function() == AggregateFunction.SUM || agg.function() == AggregateFunction.AVG;
+        }
         if (expression instanceof FunctionCallAst function) {
             return function.functionName() instanceof IriAst(var iri) && TYPES.contains(resolver.resolveIri(iri));
         }

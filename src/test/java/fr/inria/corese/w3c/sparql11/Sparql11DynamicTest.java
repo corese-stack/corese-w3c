@@ -1,13 +1,17 @@
 package fr.inria.corese.w3c.sparql11;
 
 import fr.inria.corese.w3c.BaseRdf11DynamicTest;
+import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
 import fr.inria.corese.w3c.report.model.Component;
+import fr.inria.corese.w3c.report.model.SkipDecision;
+import fr.inria.corese.w3c.report.model.SkipKind;
 import fr.inria.corese.w3c.report.model.SuiteDefinition;
 import fr.inria.corese.w3c.report.model.Transport;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -29,6 +33,12 @@ import java.util.stream.Stream;
  */
 class Sparql11DynamicTest extends BaseRdf11DynamicTest {
 
+    private static final Map<String, SkipDecision> KNOWN_EXCLUSIONS_BY_URI = Map.of(
+            "http://www.w3.org/2009/sparql/docs/tests/data-sparql11/aggregates/manifest#agg-avg-03",
+            new SkipDecision(SkipKind.NOT_APPLICABLE,
+                    "OBSOLETE_UNAPPROVED_DRAFT: test lacks dawgt:approval and contradicts SPARQL 1.1 §18.5.1.3 (AVG of empty group is an error / undef, not 0)")
+    );
+
     private static final SuiteDefinition SUITE = new SuiteDefinition(
             "sparql11", "SPARQL 1.1", Component.CORE,
             URI.create("https://www.w3.org/TR/sparql11-query/"),
@@ -38,6 +48,13 @@ class Sparql11DynamicTest extends BaseRdf11DynamicTest {
     @Override
     protected SuiteDefinition getSuiteDefinition() {
         return SUITE;
+    }
+
+    @Override
+    protected SkipDecision getSkipDecision(W3cTestCase testCase) {
+        return testCase == null || testCase.getTestUri() == null
+                ? null
+                : KNOWN_EXCLUSIONS_BY_URI.get(testCase.getTestUri());
     }
 
     @TestFactory
