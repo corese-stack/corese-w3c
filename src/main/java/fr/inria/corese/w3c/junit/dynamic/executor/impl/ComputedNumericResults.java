@@ -45,7 +45,10 @@ final class ComputedNumericResults {
         if (expression instanceof UnaryPlusAst) return false; // May return the original RDF term.
         if (expression instanceof NumericExpressionAst) return true;
         if (expression instanceof AggregateAst agg) {
-            return agg.function() == AggregateFunction.SUM || agg.function() == AggregateFunction.AVG;
+            return agg.function() == AggregateFunction.SUM
+                    || agg.function() == AggregateFunction.AVG
+                    || agg.function() == AggregateFunction.MIN
+                    || agg.function() == AggregateFunction.MAX;
         }
         if (expression instanceof FunctionCallAst function) {
             return function.functionName() instanceof IriAst(var iri) && TYPES.contains(resolver.resolveIri(iri));
