@@ -306,11 +306,6 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                         "Upstream cast-decimal expected result rewrites four unchanged ?v source terms; "
                         + "all other bindings agree. Test executed, verdict indeterminate (not passed).", mismatch);
             }
-            if (KnownAggregateMinExpectation.matches(testCase.getTestUri(), expected, actual, numericColumns)) {
-                throw new InvalidTestExpectationException(
-                        "Upstream agg-min-02 expected result rewrites unchanged ?min source term from '2E-1' to '2.0E-1'; "
-                        + "all other bindings agree. Test executed, verdict indeterminate (not passed).", mismatch);
-            }
             throw mismatch;
         }
     }

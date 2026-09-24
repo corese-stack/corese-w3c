@@ -54,7 +54,8 @@ class ComputedNumericResultsTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"?a / ?b", "SECONDS(NOW())", "xsd:decimal(?value)",
-            "xsd:double(?value)", "xsd:float(?value)", "COALESCE(?a / ?b, -2)"})
+            "xsd:double(?value)", "xsd:float(?value)", "COALESCE(?a / ?b, -2)",
+            "SUM(?value)", "AVG(?value)", "MIN(?value)", "MAX(?value)"})
     void recognizesComputedNumericProjections(String expression) {
         assertEquals(Set.of("result"), columns(expression));
     }
