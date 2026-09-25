@@ -1,6 +1,5 @@
 plugins {
     `java-library`
-    signing
 }
 
 repositories {
@@ -36,7 +35,12 @@ dependencies {
 group = "fr.inria.corese"
 version = "5.0.0-SNAPSHOT"
 description = "corese-w3c"
-java.sourceCompatibility = JavaVersion.VERSION_21
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
@@ -50,6 +54,23 @@ tasks.test {
     useJUnitPlatform()
     maxHeapSize = "2g"
     jvmArgs("--enable-native-access=ALL-UNNAMED")
+    outputs.upToDateWhen { false }
+
+    val verbose = project.hasProperty("verboseTests")
+        || project.gradle.startParameter.logLevel == LogLevel.INFO
+    testLogging {
+        if (verbose) {
+            events("started", "passed", "skipped", "failed")
+            showStandardStreams = true
+        } else {
+            events("failed")
+            showStandardStreams = false
+        }
+        showExceptions = true
+        showCauses = true
+        showStackTraces = false
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
+    }
 
     fun commandOutput(vararg command: String): String {
         val process = ProcessBuilder(command.toList())
@@ -171,5 +192,3 @@ tasks.register<JavaExec>("updateBaseline") {
         layout.projectDirectory.file("conformance/baseline-report.json").asFile.absolutePath
     )
 }
-
-apply(from = "gradle/test-reporter.gradle.kts")
