@@ -73,6 +73,7 @@
   let versionsList = [];
   let currentVersionFile = "./data/w3c-report.json";
   let currentVersionEarlFile = "./data/earl-report.ttl";
+  let currentVersion = null;
 
   let reportData = null;
   let allTests = [];
@@ -280,6 +281,7 @@
   }
 
   function selectVersion(version) {
+    currentVersion = version;
     currentVersionFile = safeDataPath(version.file, "./data/w3c-report.json");
     downloadJson.href = currentVersionFile;
     if (version.earlFile) {
@@ -336,7 +338,8 @@
       metaCommit.removeAttribute("href");
     }
 
-    const gitRef = safeGitRef(git.commit, git.branch);
+    const targetBranch = currentVersion?.branch || git.branch;
+    const gitRef = safeGitRef(targetBranch, git.commit);
     document.querySelectorAll(".exclusions-link").forEach(a => {
       const href = a.getAttribute("href") || "";
       const hashIndex = href.indexOf("#");
@@ -992,9 +995,9 @@
       : fallback;
   }
 
-  function safeGitRef(commit, branch) {
-    if (/^[0-9a-f]{40}$/.test(String(commit || ""))) return commit;
+  function safeGitRef(branch, commit) {
     if (/^[A-Za-z0-9._/-]+$/.test(String(branch || "")) && !String(branch).includes("..")) return branch;
+    if (/^[0-9a-f]{40}$/.test(String(commit || ""))) return commit;
     return "develop";
   }
 
