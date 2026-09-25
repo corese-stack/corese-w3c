@@ -58,14 +58,14 @@ Test `0295` concatenates bodies of independent test documents, but its expected 
 | XML | `0295` | Composite-fixture host mismatch | Fixture stops applying HTML-only rules and honors XML base. |
 | SVG | `0295` | Composite-fixture host mismatch | Fixture stops applying HTML-only rules and honors XML base. |
 
-## Indeterminate Tests
+## Cannot Tell Tests
 
 Actively executed tests producing an indeterminate verdict due to documented discrepancies in upstream manifest expectations (`earl:cantTell`).
 
-### SPARQL 1.1: cast-decimal
+### SPARQL 1.1: Upstream Manifest Expectation Discrepancies
 
-- **Test IRI**: `http://www.w3.org/2009/sparql/docs/tests/data-sparql11/cast/manifest#cast-decimal`
-- **Specification Reference**: SPARQL 1.1 Query Language §17.4.3.1 (`xsd:decimal`)
-- **Reason**: The official manifest expected result table rewrites the unmodified source binding `?v` for `n07`–`n10` from `0E1`/`1E0` to `0.0`/`1.0` (double and float).
-- **Classification**: Only this exact four-binding discrepancy is reported as EARL `cantTell`, not `passed`, `inapplicable`, or `untested`. All 31 rows and every other binding agree.
-- **Reactivation condition**: Upstream manifest preserves the source lexical forms or clarifies the comparison rule.
+Under SPARQL 1.1 Query Language (§17.4.3.1), unmodified source terms projected in query solutions must preserve their original lexical forms. In `cast-decimal`, the upstream manifest expected results rewrite the unmodified source binding `?v` for rows `n07`–`n10` from `0E1`/`1E0` to `0.0`/`1.0` (double and float). All 31 rows and every other binding agree, including all computed decimal values.
+
+| Test ID | Feature | Specification Reference | Reason | Reactivation condition |
+| :--- | :--- | :--- | :--- | :--- |
+| `cast-decimal` | Oracle source term rewriting | SPARQL 1.1 Query §17.4.3.1 | Upstream manifest expected results rewrite unmodified source binding `?v` from `0E1`/`1E0` to `0.0`/`1.0`. Only this exact 4-binding discrepancy is reported as `cantTell`. | Upstream manifest preserves source lexical forms or clarifies comparison rule. |

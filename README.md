@@ -97,4 +97,4 @@ To ensure high scientific integrity and transparency, no test is skipped silentl
 
 - [Inapplicable Tests](docs/W3C_TEST_EXCLUSIONS.md#inapplicable-tests): features outside the RDF 1.1 profile (e.g. generalized RDF blank nodes, unapproved SPARQL 1.1 draft tests).
 - [Untested Tests](docs/W3C_TEST_EXCLUSIONS.md#untested-tests): isolated upstream dependency edge-cases (Titanium JSON-LD 1.6.0, composite RDFa fixtures).
-- [Indeterminate Tests (Cannot Tell)](docs/W3C_TEST_EXCLUSIONS.md#indeterminate-tests): actively executed tests with upstream manifest expectation discrepancies (`cast-decimal`).
+- [Cannot Tell Tests](docs/W3C_TEST_EXCLUSIONS.md#cannot-tell-tests): actively executed tests with upstream manifest expectation discrepancies (`cast-decimal`).
