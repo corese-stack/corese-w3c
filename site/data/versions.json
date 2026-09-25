@@ -4,6 +4,6 @@
     "label": "v5.0.0-SNAPSHOT (latest)",
     "file": "./data/w3c-report.json",
     "earlFile": "./data/earl-report.ttl",
-    "branch": "feature/corese-next"
+    "branch": "develop"
   }
 ]
