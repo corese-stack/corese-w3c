@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corese - W3C Conformance Dashboard</title>
+  <meta name="description" content="W3C RDF 1.1, RDF-Canon, and JSON-LD standards conformance benchmarks, test reports, and EARL 1.0 RDF export for Corese.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-wrapper">
+    <header class="page-header">
+      <div class="header-top-row">
+        <div class="brand-group">
+          <h1 class="main-title">Corese</h1>
+          <span class="badge-tag">W3C Conformance</span>
+          <div class="version-control">
+            <label for="version-select" class="sr-only">Benchmark Version</label>
+            <select id="version-select" class="form-select select-sm" aria-label="Select benchmark version">
+              <option value="latest">v5.0.0-SNAPSHOT (latest)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="header-controls">
+          <div class="meta-tags" id="header-meta">
+            <a class="meta-tag meta-link" id="meta-commit" href="#" target="_blank" rel="noopener" title="View commit on GitHub">Commit ...</a>
+            <span class="meta-tag" id="meta-date">...</span>
+          </div>
+
+          <div class="download-group" aria-label="Download conformance reports">
+            <a class="btn-download" id="download-json" href="./data/w3c-report.json" download title="Download raw benchmark metrics in JSON format">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="12" y2="18"></line>
+                <line x1="15" y1="15" x2="12" y2="18"></line>
+              </svg>
+              <span>JSON</span>
+            </a>
+            <a class="btn-download" id="download-earl" href="./data/earl-report.ttl" download title="Download W3C EARL 1.0 + PROV-O RDF Turtle report">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              <span>EARL 1.0 (.ttl)</span>
+            </a>
+          </div>
+
+          <button id="theme-toggle" class="theme-btn" title="Theme: Auto (System) - Click to toggle" aria-label="Toggle color theme (Auto, Light, Dark)">
+            <svg id="icon-auto" class="theme-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <svg id="icon-moon" class="theme-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" style="display: none;" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="icon-sun" class="theme-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" style="display: none;" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="main-desc">Specification compliance reports and test suites execution results for <a href="https://github.com/corese-stack/corese-core" target="_blank" rel="noopener">Corese Engine</a>.</p>
+    </header>
+
+    <main class="page-main">
+      <!-- High Level Metrics Overview -->
+      <section class="summary-section">
+        <div class="metrics-grid">
+          <div class="metric-block" data-status="all">
+            <button type="button" class="metric-filter-btn" data-status="all" title="Filter by All Tests" aria-pressed="false">
+              <span class="metric-label">Total Tests</span>
+              <span class="metric-num" id="val-total">-</span>
+            </button>
+            <span class="metric-note">11 standard suites</span>
+          </div>
+          <div class="metric-block" data-status="PASSED">
+            <button type="button" class="metric-filter-btn" data-status="PASSED" title="Filter by Passed Tests" aria-pressed="false">
+              <span class="metric-label">Passed</span>
+              <span class="metric-num text-success" id="val-passed">-</span>
+            </button>
+            <span class="metric-note" id="val-pass-rate">-%</span>
+          </div>
+          <div class="metric-block" data-status="FAILED">
+            <button type="button" class="metric-filter-btn" data-status="FAILED" title="Filter by Failures" aria-pressed="false">
+              <span class="metric-label">Failures</span>
+              <span class="metric-num text-danger" id="val-failed">0</span>
+            </button>
+            <span class="metric-note" id="val-failed-note">0 regressions</span>
+          </div>
+          <div class="metric-block" data-status="UNTESTED">
+            <button type="button" class="metric-filter-btn" data-status="UNTESTED" title="Filter by Untested Tests" aria-pressed="false">
+              <span class="metric-label">Untested</span>
+              <span class="metric-num text-warning" id="val-untested">-</span>
+            </button>
+            <span class="metric-note"><a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md#untested-tests" target="_blank" rel="noopener">See rationale</a></span>
+          </div>
+          <div class="metric-block" data-status="INAPPLICABLE">
+            <button type="button" class="metric-filter-btn" data-status="INAPPLICABLE" title="Filter by Inapplicable Tests" aria-pressed="false">
+              <span class="metric-label">Inapplicable</span>
+              <span class="metric-num text-inapplicable" id="val-inapplicable">-</span>
+            </button>
+            <span class="metric-note"><a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md#inapplicable-tests" target="_blank" rel="noopener">See rationale</a></span>
+          </div>
+          <div class="metric-block" data-status="CANT_TELL">
+            <button type="button" class="metric-filter-btn" data-status="CANT_TELL" title="Filter by Cannot Tell Tests" aria-pressed="false">
+              <span class="metric-label">Cannot Tell</span>
+              <span class="metric-num text-cant-tell" id="val-cant-tell">0</span>
+            </button>
+            <span class="metric-note"><a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md#cannot-tell-tests" target="_blank" rel="noopener">See rationale</a></span>
+          </div>
+        </div>
+        <div class="global-meter" id="global-meter" title="Overall Conformance Breakdown">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </section>
+
+      <!-- Specifications Grid -->
+      <section class="content-section">
+        <div class="section-title-row">
+          <h2 class="section-heading">Supported Specifications</h2>
+          <span class="section-hint">Select a suite to filter results</span>
+        </div>
+        <div class="suites-list" id="suites-grid">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </section>
+
+      <!-- Tests Table Explorer -->
+      <section class="content-section">
+        <div class="section-title-row">
+          <h2 class="section-heading">Test Results</h2>
+          <div class="section-heading-actions">
+            <span class="section-hint" id="explorer-count">0 tests</span>
+            <button class="btn-reset-filters" id="btn-reset-filters" style="display: none;">Reset Filters</button>
+          </div>
+        </div>
+
+        <div class="table-toolbar">
+          <div class="search-group">
+            <label for="search-input" class="filter-label">Search</label>
+            <div class="search-input-wrapper">
+              <svg class="search-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" id="search-input" autocomplete="off" placeholder="Filter tests..." aria-label="Search tests (Press / to focus)">
+              <kbd class="search-kbd" aria-hidden="true" title="Press / to focus search">/</kbd>
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <label for="suite-select" class="sr-only">Filter by specification</label>
+            <select id="suite-select" class="form-select" aria-label="Filter by specification">
+              <option value="all">All Specifications</option>
+            </select>
+
+            <div class="filter-group" id="status-pills">
+              <button class="filter-btn active" data-status="all">All</button>
+              <button class="filter-btn" data-status="PASSED">Passed</button>
+              <button class="filter-btn" data-status="FAILED">Failed</button>
+              <button class="filter-btn" data-status="UNTESTED">Untested</button>
+              <button class="filter-btn" data-status="INAPPLICABLE">Inapplicable</button>
+              <button class="filter-btn" data-status="CANT_TELL">Cannot Tell</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="report-table" id="tests-table">
+            <thead>
+              <tr>
+                <th style="width: 120px;">Status</th>
+                <th style="width: 175px;">Specification</th>
+                <th>Test Case</th>
+                <th style="width: 90px; text-align: right;">Time</th>
+                <th style="width: 70px; text-align: center;">Details</th>
+              </tr>
+            </thead>
+            <tbody id="tests-table-body">
+              <tr>
+                <td colspan="5" class="empty-state">Loading test results...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <div class="footer-links">
+        <a href="https://project.inria.fr/corese/" target="_blank" rel="noopener">Corese Project</a>
+        <span>&bull;</span>
+        <a href="https://team.inria.fr/wimmics/" target="_blank" rel="noopener">Inria Wimmics</a>
+        <span>&bull;</span>
+        <a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md" target="_blank" rel="noopener">Exclusions Policy</a>
+        <span>&bull;</span>
+        <a class="earl-spec-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/EARL_REPORT.md" target="_blank" rel="noopener">EARL Profile Spec</a>
+        <span>&bull;</span>
+        <button type="button" class="btn-footer-link" id="legal-btn">Legal &amp; Privacy</button>
+        <span>&bull;</span>
+        <a href="https://github.com/corese-stack/corese-w3c" target="_blank" rel="noopener">Repository</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Test Detail Modal -->
+  <dialog id="test-modal" class="modal-window" aria-labelledby="modal-title">
+    <div class="modal-inner">
+      <div class="modal-top">
+        <div class="modal-title-box">
+          <span class="status-badge" id="modal-status">PASSED</span>
+          <h3 id="modal-title">Test Details</h3>
+        </div>
+        <button class="modal-close-icon" id="modal-close-btn" type="button" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <div class="modal-content-body">
+        <div class="info-row">
+          <span class="info-label">Specification Suite</span>
+          <span class="info-value" id="modal-suite">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Full Display Name</span>
+          <div class="info-code" id="modal-display-name">-</div>
+        </div>
+        <div class="info-row" id="modal-description-group" style="display: none;">
+          <span class="info-label">Description</span>
+          <div class="info-value" id="modal-description">-</div>
+        </div>
+        <div class="info-row" id="modal-test-type-group" style="display: none;">
+          <span class="info-label">Test Type</span>
+          <span class="info-value font-mono" id="modal-test-type">-</span>
+        </div>
+        <div class="info-row" id="modal-test-uri-group">
+          <span class="info-label">Test Case IRI</span>
+          <div class="info-code font-mono" id="modal-test-uri" style="word-break: break-all;">-</div>
+        </div>
+        <div class="info-row" id="modal-skip-reason-group" style="display: none;">
+          <span class="info-label">Exclusion Rationale</span>
+          <div class="info-callout warning" id="modal-skip-reason">-</div>
+        </div>
+        <div class="info-row" id="modal-error-group" style="display: none;">
+          <span class="info-label">Failure Message</span>
+          <div class="info-callout danger" id="modal-error">-</div>
+        </div>
+        <div class="info-row" id="modal-duration-group">
+          <span class="info-label">Duration</span>
+          <span class="info-value font-mono" id="modal-duration">-</span>
+        </div>
+        <div class="info-row" id="modal-fixtures-group">
+          <span class="info-label">W3C Test Fixtures</span>
+          <div class="info-links" id="modal-fixtures">-</div>
+        </div>
+        <div class="info-row" id="modal-fixture-preview-group" style="display: none;">
+          <span class="info-label" id="modal-fixture-preview-title">Fixture Preview</span>
+          <pre class="info-code modal-preview-code" id="modal-fixture-preview-content"></pre>
+        </div>
+        <div class="info-row" id="modal-links-group">
+          <span class="info-label">Normative References &amp; Source</span>
+          <div class="info-links" id="modal-links">-</div>
+        </div>
+      </div>
+
+      <div class="modal-bottom split">
+        <button class="btn btn-sm" id="modal-copy-uri-btn" type="button">Copy Test IRI</button>
+        <button class="btn btn-sm" id="modal-ok-btn" type="button">Close</button>
+      </div>
+    </div>
+  </dialog>
+ 
+  <!-- Legal & Privacy Modal -->
+  <dialog id="legal-modal" class="modal-window" aria-labelledby="legal-title">
+    <div class="modal-inner">
+      <div class="modal-top">
+        <div class="modal-title-box">
+          <h3 id="legal-title">Legal Notice &amp; Privacy Policy</h3>
+         </div>
+         <button class="modal-close-icon" id="legal-close-btn" type="button" aria-label="Close dialog">&times;</button>
+       </div>
+ 
+       <div class="modal-content-body">
+         <div class="info-row">
+           <span class="info-label">Éditeur / Publisher</span>
+           <div class="info-value">
+             <strong>Inria</strong> (Institut National de Recherche en Sciences et Technologies du Numérique)<br>
+             Centre Inria d'Université Côte d'Azur &mdash; Équipe-projet commune <strong>Wimmics</strong> (Inria, CNRS, Université Côte d'Azur / I3S)<br>
+             2004 route des Lucioles, BP 93, 06902 Sophia Antipolis Cedex, France<br>
+             Contact : <a href="https://team.inria.fr/wimmics/contact/" target="_blank" rel="noopener">team.inria.fr/wimmics/contact</a>
+           </div>
+         </div>
+         <div class="info-row">
+           <span class="info-label">Directeur de publication</span>
+           <div class="info-value">
+             Le représentant légal d'Inria &mdash; <em>Responsable d'équipe-projet :</em> Catherine Faron
+           </div>
+         </div>
+         <div class="info-row">
+           <span class="info-label">Hébergement / Hosting</span>
+           <div class="info-value">
+             <strong>GitHub Pages</strong> &mdash; GitHub Inc.<br>
+             88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA
+           </div>
+         </div>
+         <div class="info-row">
+           <span class="info-label">Données personnelles &amp; Cookies (RGPD / CNIL)</span>
+           <div class="info-callout info">
+             Ce site statique ne collecte aucune donnée personnelle, ne dépose aucun cookie traceur ou publicitaire, et n'utilise aucun service tiers d'analyse d'audience.<br>
+             Le stockage local de votre navigateur (<code>localStorage</code>) est employé exclusivement pour mémoriser votre préférence de thème d'affichage (Clair, Sombre ou Automatique).
+           </div>
+         </div>
+         <div class="info-row">
+           <span class="info-label">Propriété intellectuelle &amp; Licences</span>
+           <div class="info-value">
+             Le moteur <strong>Corese</strong> est un logiciel libre distribué sous licence <strong>CeCILL-C</strong>.<br>
+             Les suites de tests et spécifications normatives associées sont la propriété du <strong>W3C&reg;</strong> (World Wide Web Consortium) sous licence <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" target="_blank" rel="noopener">W3C Software and Document Notice and License</a>.
+           </div>
+         </div>
+         <div class="info-row">
+           <span class="info-label">Accessibilité numérique (RGAA)</span>
+           <div class="info-value">
+             Ce site est conçu conformément aux standards du web moderne (HTML5 sémantique, WCAG 2.1 / RGAA) avec gestion du contraste, navigation clavier et support des lecteurs d'écran.
+           </div>
+         </div>
+       </div>
+ 
+       <div class="modal-bottom">
+         <button class="btn btn-sm btn-primary" id="legal-ok-btn" type="button">Close</button>
+       </div>
+    </div>
+  </dialog>
+
+  <script src="data/report-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

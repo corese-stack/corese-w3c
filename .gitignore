@@ -1,7 +1,11 @@
-# Compiled class file
+# ==========================================
+# Java & JVM
+# ==========================================
+
+# Compiled class files
 *.class
 
-# Log file
+# Log files
 *.log
 
 # BlueJ files
@@ -10,7 +14,7 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.nar
@@ -19,23 +23,98 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# JVM crash logs
 hs_err_pid*
 replay_pid*
 
-# Ignore Gradle project-specific cache directory
-.gradle
+# ==========================================
+# Gradle
+# ==========================================
 
-# Ignore Gradle build output directory
-build
+# Gradle project-specific cache directory
+.gradle/
 
+# Gradle build output directory
+build/
+
+# Gradle wrapper (keep the wrapper, ignore downloaded files)
+!gradle/wrapper/gradle-wrapper.jar
+
+# ==========================================
+# IDEs & Editors
+# ==========================================
+
+# Visual Studio Code
 .vscode/
 
+# IntelliJ IDEA
 .idea/
+*.iml
+*.iws
+*.ipr
+out/
 
-bin/**/*.nt
-bin/**/*.nq
-bin/**/*.ttl
-bin/**/*.rdf
+# Eclipse
+.classpath
+.project
+.settings/
 
-src/test/resources/*.xml
+# ==========================================
+# Python & Scripts
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# ==========================================
+# OS Generated
+# ==========================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ==========================================
+# Project Specific
+# ==========================================
+
+# External Corese repository clone
+corese-core/
+
+# Runtime test cache & W3C manifests downloaded by test suite
+src/test/resources/*
+!src/test/resources/log4j2.xml
+!src/test/resources/META-INF
+!src/test/resources/META-INF/**
+
+# Generated conformance dashboard data (produced dynamically during test execution)
+site/data/w3c-report.json
+site/data/earl-report.ttl
+site/data/report-data.js
+
+# Temporary directories
+bin/
+logs/
+tmp/
+.temp/
+
+# ANTLR generated files
+gen/

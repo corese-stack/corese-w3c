@@ -1,52 +1,100 @@
 # corese-w3c
 
-Test of W3C standards tests suites against Corese. Contains a generation application to generate JUnit tests from W3C tests suites manifest and a report generator from the JUnit test results.
+W3C standards conformance test suite and dynamic execution harness for [Corese](https://github.com/corese-stack/corese-core).
 
-Tested files and manifests are in the `src/test/resources` directory.
+Tests are dynamically loaded from official W3C manifests and executed against Corese using JUnit 5 Dynamic Tests.
 
-## Implemented tests
+## Conformance Dashboard
 
-- RDF tests
-  - [RDF Canonical](https://w3c.github.io/rdf-canon/tests/)
-  - RDF 1.1 tests
-    - [N-Quads tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)
-    - [N-Triples tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/)
-    - [RDF/XML Syntax tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/)
-    - [TriG Syntax tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/)
-    - [Turtle tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/)
-- SPARQL tests
-  - [SPARQL 1.0 tests](https://w3c.github.io/rdf-tests/sparql/sparql10)
-  - [SPARQL 1.1 tests](https://w3c.github.io/rdf-tests/sparql/sparql11)
-- SHACL tests
-  - [SHACL 1.1 tests](https://w3c.github.io/data-shapes/data-shapes-test-suite/)
+The live interactive W3C conformance dashboard and benchmark reports are published at:
+[https://corese-stack.github.io/corese-w3c/](https://corese-stack.github.io/corese-w3c/)
 
-## Ongoing implementation
-  
-## Planned implementation
+Key dashboard features:
 
-- RDF tests
-  - RDF 1.1 tests
-    - [RDF Schema and Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-mt/)
-- JSON-LD tests
-  - [JSON-LD 1.1 tests](https://json-ld.github.io/json-ld.org/test-suite/reports/)
+- Interactive KPI cards and specification breakdown.
+- Instant search across all 2,900+ test cases (press `/` to focus).
+- Deep-linking via URL hash state (`#suite=...&status=...&q=...&test=...`).
+- EARL 1.0 Turtle and JSON report downloads.
+- 3-state theme toggle (Auto, Light, Dark) without tracking cookies.
 
-## Not implemented in corese
+## Supported W3C Specifications
 
-- RDF tests
-  - RDF 1.2
-    - [N-Triples tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples)
-    - [N-Quads tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-quads)
-    - [Semantics tests](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-semantics)
-    - [Turtle tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-turtle)
-    - [TriG tests (includes 1.1 tests)](https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-trig)
-- SPARQL tests
-  - [SPARQL 1.2 tests](https://w3c.github.io/rdf-tests/sparql/sparql12)
-- LDP
-  - [LDP Tests](https://w3c.github.io/ldp-testsuite/)
-  
-## Issues
+| Specification                         | W3C Test Suite Manifest                                                             | Test Types Covered                                                            |
+|:--------------------------------------|:------------------------------------------------------------------------------------|:------------------------------------------------------------------------------|
+| **Turtle (RDF 1.1)**                  | [Turtle Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/)          | Positive/Negative Syntax, Positive Evaluation                                 |
+| **TriG (RDF 1.1)**                    | [TriG Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/)              | Positive/Negative Syntax, Positive Evaluation                                 |
+| **RDF/XML (RDF 1.1)**                 | [RDF/XML Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/)            | Positive/Negative Syntax, Positive Evaluation                                 |
+| **N-Triples (RDF 1.1)**               | [N-Triples Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/)    | Positive/Negative Syntax, Positive Evaluation                                 |
+| **N-Quads (RDF 1.1)**                 | [N-Quads Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/)        | Positive/Negative Syntax, Positive Evaluation                                 |
+| **RDFC-1.0 (Canonicalization)**       | [RDF-Canon Test Suite](https://w3c.github.io/rdf-canon/tests/)                      | Canonical Evaluation, Map Tests, Negative Evaluation                          |
+| **RDFa 1.1 (XHTML, XML, SVG)**        | [RDFa Test Suite](https://rdfa.info/test-suite/)                                    | XHTML, XML, and SVG Evaluation                                                |
+| **JSON-LD 1.1 (`toRdf` & `fromRdf`)** | [JSON-LD 1.1 Test Suite](https://json-ld.github.io/json-ld.org/test-suite/reports/) | `toRdf` and `fromRdf` Syntax and Evaluation                                   |
+| **SPARQL 1.0**                        | [SPARQL 1.0 Test Suite](https://w3c.github.io/rdf-tests/sparql/sparql10/)           | Query Evaluation (SELECT, ASK, CONSTRUCT, DESCRIBE), Positive/Negative Syntax |
+| **SPARQL 1.1**                        | [SPARQL 1.1 Test Suite](https://w3c.github.io/rdf-tests/sparql/sparql11/)           | Query Evaluation, Syntax, Update Evaluation, CSV Results                      |
 
-- Some tests for SPARQL 1.0 use a turtle format for the results of SELECT queries. To our knowledge, this format is not part of the SPARQL 1.0 standard
-- The vocabulary used to define SHACL tests is an extension of the Manifest vocabulary used in all other tests. As of 04/10/2024, it is not dereferencable or available on Linked Open Vocabularies.
-  - [issue](https://github.com/w3c/shacl/issues/86)
-  - Specific problem of 
+> **Documented Test Exclusions & Rationale**: All documented exclusions (e.g. non-standard Generalized RDF or upstream dependency edge-cases) are formally specified in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).
+
+## Running Tests
+
+### Execute all W3C test suites
+
+```bash
+./gradlew test
+```
+
+Running `./gradlew test` executes all supported W3C suites and displays the consolidated terminal conformance summary table. It also generates and validates two reports from the same in-memory result model:
+
+- `build/reports/w3c-report.json`, the stable dashboard contract;
+- `build/reports/earl-report.ttl`, an RDF report based on the W3C EARL 1.0 vocabulary with PROV-O provenance.
+
+EARL 1.0 is a [W3C Working Group Note](https://www.w3.org/TR/EARL10-Schema/), not a W3C Recommendation. The Turtle graph is constructed and serialized with Corese, parsed again by Corese, and checked with Corese SPARQL queries. Run the standalone verification after the tests with:
+
+```bash
+./gradlew validateEarlReport --no-daemon
+```
+
+The dashboard's `passRate` is `passed / total official manifest entries`. `executedPassRate` is `passed / (passed + failed)` and is `null` when no test was executed. Inapplicable, untested, and cannot-tell outcomes are displayed separately and are never counted as passes.
+
+See [the EARL application profile](docs/EARL_REPORT.md) for the exact model, provenance, validation, and identifier rules.
+
+### Execute a specific test suite
+
+```bash
+# Example: Run Turtle test suite only
+./gradlew test --tests "*TurtleDynamicTest*"
+
+# Example: Run Canonicalization test suite only
+./gradlew test --tests "*CanonicalDynamicTest*"
+
+# JSON-LD 1.1 fromRdf (RDF to JSON-LD) tests
+./gradlew test --tests "*Rdf11JsonldFromRdfDynamicTest*"
+
+# All JSON-LD tests
+./gradlew test --tests "*Jsonld*"
+
+# RDFa 1.1 XHTML tests
+./gradlew test --tests "*Rdf11RDFaXHTMLDynamicTest*"
+
+# RDFa 1.1 XML tests
+./gradlew test --tests "*Rdf11RDFaXMLDynamicTest*"
+
+# RDFa 1.1 SVG tests
+./gradlew test --tests "*Rdf11RDFaSVGDynamicTest*"
+
+# All RDFa tests
+./gradlew test --tests "*RDFa*"
+
+# SPARQL 1.0 tests
+./gradlew test --tests "*Sparql10DynamicTest*"
+
+# SPARQL 1.1 tests
+./gradlew test --tests "*Sparql11DynamicTest*"
+```
+
+### Exclusions Policy
+
+To ensure high scientific integrity and transparency, no test is skipped silently. All exclusions are documented with exact fragment identifiers and reactivation conditions in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md):
+
+- [Inapplicable Tests](docs/W3C_TEST_EXCLUSIONS.md#inapplicable-tests): features outside the RDF 1.1 profile (e.g. generalized RDF blank nodes, unapproved SPARQL 1.1 draft tests).
+- [Untested Tests](docs/W3C_TEST_EXCLUSIONS.md#untested-tests): isolated upstream dependency edge-cases (Titanium JSON-LD 1.6.0, composite RDFa fixtures).
+- [Cannot Tell Tests](docs/W3C_TEST_EXCLUSIONS.md#cannot-tell-tests): actively executed tests with upstream manifest expectation discrepancies (`cast-decimal`).
