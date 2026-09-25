@@ -339,15 +339,9 @@
     const gitRef = safeGitRef(git.commit, git.branch);
     document.querySelectorAll(".exclusions-link").forEach(a => {
       const href = a.getAttribute("href") || "";
-      if (href.includes("docs/exclusions/inapplicable.md")) {
-        a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/exclusions/inapplicable.md";
-      } else if (href.includes("docs/exclusions/untested.md")) {
-        a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/exclusions/untested.md";
-      } else if (href.includes("docs/exclusions/indeterminate.md")) {
-        a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/exclusions/indeterminate.md";
-      } else {
-        a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/W3C_TEST_EXCLUSIONS.md";
-      }
+      const hashIndex = href.indexOf("#");
+      const hash = hashIndex !== -1 ? href.substring(hashIndex) : "";
+      a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/W3C_TEST_EXCLUSIONS.md" + hash;
     });
     document.querySelectorAll(".earl-spec-link").forEach(a => {
       a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/EARL_REPORT.md";
