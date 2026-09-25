@@ -82,15 +82,13 @@
   let currentStatus = "all";
   let searchQuery = "";
 
-  let currentPage = 1;
-  const PAGE_SIZE = 50;
-
   // DOM Elements
   const metaCommit = document.getElementById("meta-commit");
   const metaDate = document.getElementById("meta-date");
   const downloadJson = document.getElementById("download-json");
   const downloadEarl = document.getElementById("download-earl");
   const themeToggle = document.getElementById("theme-toggle");
+  const iconAuto = document.getElementById("icon-auto");
   const iconSun = document.getElementById("icon-sun");
   const iconMoon = document.getElementById("icon-moon");
 
@@ -112,10 +110,6 @@
   const btnResetFilters = document.getElementById("btn-reset-filters");
   const tableBody = document.getElementById("tests-table-body");
 
-  const pageInfo = document.getElementById("page-info");
-  const btnPrev = document.getElementById("btn-prev");
-  const btnNext = document.getElementById("btn-next");
-
   // Modal Elements
   const modal = document.getElementById("test-modal");
   const modalCloseBtn = document.getElementById("modal-close-btn");
@@ -125,6 +119,9 @@
   const modalSuite = document.getElementById("modal-suite");
   const modalFixturesGroup = document.getElementById("modal-fixtures-group");
   const modalFixtures = document.getElementById("modal-fixtures");
+  const modalFixturePreviewGroup = document.getElementById("modal-fixture-preview-group");
+  const modalFixturePreviewTitle = document.getElementById("modal-fixture-preview-title");
+  const modalFixturePreviewContent = document.getElementById("modal-fixture-preview-content");
   const modalLinks = document.getElementById("modal-links");
   const modalDisplayName = document.getElementById("modal-display-name");
   const modalDescriptionGroup = document.getElementById("modal-description-group");
@@ -141,43 +138,93 @@
   const modalCopyUriBtn = document.getElementById("modal-copy-uri-btn");
   let currentModalTest = null;
 
-  // Theme Management (Automatic OS detection + Manual override with Monochrome SVG Icons)
-  function initTheme() {
-    const savedTheme = localStorage.getItem("corese-theme");
-    if (savedTheme) {
-      applyTheme(savedTheme);
-    } else {
-      const prefersLight = window.matchMedia?.("(prefers-color-scheme: light)")?.matches;
-      applyTheme(prefersLight ? "light" : "dark");
-    }
+  // Legal Modal Elements
+  const legalModal = document.getElementById("legal-modal");
+  const legalBtn = document.getElementById("legal-btn");
+  const legalCloseBtn = document.getElementById("legal-close-btn");
+  const legalOkBtn = document.getElementById("legal-ok-btn");
 
-    // Listen for OS theme changes if user has not explicitly set a manual preference
+  // Theme Management (3-state: Auto / Light / Dark)
+  let themeMode = localStorage.getItem("corese-theme-mode") || "auto";
+
+  function initTheme() {
+    if (themeMode !== "auto" && themeMode !== "light" && themeMode !== "dark") {
+      themeMode = "auto";
+    }
+    applyThemeMode(themeMode);
+
     if (window.matchMedia) {
       window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", (e) => {
-        if (!localStorage.getItem("corese-theme")) {
-          applyTheme(e.matches ? "light" : "dark");
+        if (themeMode === "auto") {
+          applySystemTheme(e.matches ? "light" : "dark");
         }
       });
     }
   }
 
-  function applyTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    if (theme === "dark") {
-      iconMoon.style.display = "block";
-      iconSun.style.display = "none";
+  function applySystemTheme(effectiveTheme) {
+    document.documentElement.dataset.theme = effectiveTheme;
+    document.documentElement.dataset.themeMode = "auto";
+    updateThemeToggleUI("auto", effectiveTheme);
+  }
+
+  function applyThemeMode(mode) {
+    themeMode = mode;
+    if (mode === "auto") {
+      localStorage.removeItem("corese-theme-mode");
+      localStorage.removeItem("corese-theme");
+      const prefersLight = window.matchMedia?.("(prefers-color-scheme: light)")?.matches;
+      applySystemTheme(prefersLight ? "light" : "dark");
     } else {
-      iconMoon.style.display = "none";
-      iconSun.style.display = "block";
+      localStorage.setItem("corese-theme-mode", mode);
+      localStorage.setItem("corese-theme", mode);
+      document.documentElement.dataset.theme = mode;
+      document.documentElement.dataset.themeMode = mode;
+      updateThemeToggleUI(mode, mode);
     }
   }
 
-  themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.dataset.theme || "dark";
-    const next = current === "dark" ? "light" : "dark";
-    localStorage.setItem("corese-theme", next);
-    applyTheme(next);
-  });
+  const THEME_LABELS = {
+    auto: {
+      icon: "auto",
+      title: eff => `Theme: Auto (System: ${eff}) - Click for Light`,
+      aria: eff => `Current theme: Auto System (${eff}). Click for Light mode`
+    },
+    light: {
+      icon: "sun",
+      title: () => "Theme: Light - Click for Dark",
+      aria: () => "Current theme: Light. Click for Dark mode"
+    },
+    dark: {
+      icon: "moon",
+      title: () => "Theme: Dark - Click for Auto (System)",
+      aria: () => "Current theme: Dark. Click for Auto System mode"
+    }
+  };
+
+  function updateThemeIcons(activeIcon) {
+    if (iconAuto) iconAuto.style.display = activeIcon === "auto" ? "block" : "none";
+    if (iconSun) iconSun.style.display = activeIcon === "sun" ? "block" : "none";
+    if (iconMoon) iconMoon.style.display = activeIcon === "moon" ? "block" : "none";
+  }
+
+  function updateThemeToggleUI(mode, effectiveTheme) {
+    if (!themeToggle) return;
+    const cfg = THEME_LABELS[mode] || THEME_LABELS.auto;
+    updateThemeIcons(cfg.icon);
+    themeToggle.title = cfg.title(effectiveTheme);
+    themeToggle.setAttribute("aria-label", cfg.aria(effectiveTheme));
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      let next;
+      if (themeMode === "auto") next = "light";
+      else if (themeMode === "light") next = "dark";
+      else next = "auto";
+      applyThemeMode(next);
+    });
+  }
 
   // Load Versions List
   async function loadVersions() {
@@ -271,7 +318,7 @@
     flattenTests();
     renderSuitesGrid();
     populateSuiteSelect();
-    applyFilters();
+    readUrlHash();
   }
 
   function renderMetadata() {
@@ -291,7 +338,16 @@
 
     const gitRef = safeGitRef(git.commit, git.branch);
     document.querySelectorAll(".exclusions-link").forEach(a => {
-      a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/W3C_TEST_EXCLUSIONS.md";
+      const href = a.getAttribute("href") || "";
+      if (href.includes("docs/exclusions/inapplicable.md")) {
+        a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/exclusions/inapplicable.md";
+      } else if (href.includes("docs/exclusions/untested.md")) {
+        a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/exclusions/untested.md";
+      } else if (href.includes("docs/exclusions/indeterminate.md")) {
+        a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/exclusions/indeterminate.md";
+      } else {
+        a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/W3C_TEST_EXCLUSIONS.md";
+      }
     });
     document.querySelectorAll(".earl-spec-link").forEach(a => {
       a.href = "https://github.com/corese-stack/corese-w3c/blob/" + gitRef + "/docs/EARL_REPORT.md";
@@ -509,8 +565,10 @@
       btnResetFilters.style.display = isFiltered ? "inline-block" : "none";
     }
 
-    currentPage = 1;
+    updateStatusPills();
+    updateMetricBlockActive();
     renderTable();
+    updateUrlHash();
   }
 
   if (btnResetFilters) {
@@ -520,11 +578,13 @@
       currentSuite = "all";
       suiteSelect.value = "all";
       currentStatus = "all";
-      document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b.dataset.status === "all"));
       updateSuiteItems();
       renderSuitesGrid();
       populateSuiteSelect();
+      updateStatusPills();
+      updateMetricBlockActive();
       applyFilters();
+      updateUrlHash();
     });
   }
 
@@ -537,44 +597,29 @@
     const btn = e.target.closest(".filter-btn");
     if (!btn) return;
 
-    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
     currentStatus = btn.dataset.status;
+    updateStatusPills();
+    updateMetricBlockActive();
     applyFilters();
   });
 
   // Table Rendering
   function renderTable() {
     const total = filteredTests.length;
-    explorerCount.textContent = `${total} test${total === 1 ? "" : "s"}`;
+    explorerCount.textContent = `${total.toLocaleString()} test${total === 1 ? "" : "s"}`;
 
     if (total === 0) {
       tableBody.innerHTML = `<tr><td colspan="5" class="empty-state">No matching test cases found.<br><button class="btn btn-sm btn-inline-reset" onclick="document.getElementById('btn-reset-filters').click()">Clear all filters</button></td></tr>`;
-      pageInfo.textContent = "Page 0 of 0";
-      btnPrev.disabled = true;
-      btnNext.disabled = true;
       return;
     }
 
-    const totalPages = Math.ceil(total / PAGE_SIZE);
-    currentPage = Math.max(1, Math.min(currentPage, totalPages));
-
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const end = Math.min(start + PAGE_SIZE, total);
-    const pageItems = filteredTests.slice(start, end);
-
-    pageInfo.textContent = `Page ${currentPage} of ${totalPages} (${start + 1} - ${end} of ${total})`;
-    btnPrev.disabled = currentPage <= 1;
-    btnNext.disabled = currentPage >= totalPages;
-
-    tableBody.innerHTML = pageItems.map((test, idx) => {
-      const globalIndex = start + idx;
+    tableBody.innerHTML = filteredTests.map((test, idx) => {
       const outcome = test.outcome;
       const statusClass = "status-" + outcome.toLowerCase();
       const durationMs = Math.max(0, numeric(test.durationMs) || 0);
 
       return `
-        <tr class="clickable-row" onclick="window.__openModal(${globalIndex})">
+        <tr class="clickable-row" onclick="window.__openModal(${idx})">
           <td><span class="status-badge ${statusClass}">${escapeHtml(outcomeLabel(outcome))}</span></td>
           <td><span class="spec-tag">${escapeHtml(test.suiteName)}</span></td>
           <td>
@@ -582,27 +627,12 @@
           </td>
           <td style="text-align: right;"><span class="font-mono">${durationMs}ms</span></td>
           <td style="text-align: center;">
-            <button class="btn-view" onclick="event.stopPropagation(); window.__openModal(${globalIndex})">View</button>
+            <button class="btn-view" aria-label="View details for ${escapeHtml(test.displayName || test.name)}" onclick="event.stopPropagation(); window.__openModal(${idx})">View</button>
           </td>
         </tr>
       `;
     }).join("");
   }
-
-  btnPrev.addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
-      renderTable();
-    }
-  });
-
-  btnNext.addEventListener("click", () => {
-    const totalPages = Math.ceil(filteredTests.length / PAGE_SIZE);
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderTable();
-    }
-  });
 
   // Modal View Helpers
   function getActionLabel(fileName) {
@@ -632,19 +662,6 @@
       : null;
   }
 
-  function buildResultFixtureLink(resultUri) {
-    if (!resultUri) return null;
-    const isHttp = resultUri.startsWith("https://") || resultUri.startsWith("http://");
-    const fileName = resultUri.split("/").pop() || "Expected Result";
-    if (!isHttp) {
-      return `<span>Expected: <code>${escapeHtml(resultUri)}</code></span>`;
-    }
-    const resultHref = safeExternalHref(resultUri);
-    return resultHref
-      ? `<span>Expected: <a href="${escapeHtml(resultHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a></span>`
-      : null;
-  }
-
   function buildTestDefFixtureLink(testUri) {
     if (!testUri) return null;
     const testIriHref = safeExternalHref(testUri);
@@ -662,16 +679,22 @@
       const actionHref = safeExternalHref(test.actionUri);
       if (actionHref) {
         const label = getActionLabel(fileName);
-        fixtureLinks.push(`<span>${label}: <a href="${escapeHtml(actionHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a></span>`);
+        fixtureLinks.push(`<span>${label}: <a href="${escapeHtml(actionHref)}" target="_blank" rel="noopener"><code>${escapeHtml(fileName)}</code> ↗</a> <button type="button" class="btn-view btn-preview-fixture" style="margin-left: 4px; padding: 1px 6px;" data-url="${escapeHtml(actionHref)}" data-name="${escapeHtml(fileName)}">Preview</button></span>`);
       }
     }
     const dataLink = buildDataFixtureLink(test);
     if (dataLink) {
       fixtureLinks.push(dataLink);
     }
-    const resultLink = buildResultFixtureLink(test.resultUri);
-    if (resultLink) {
-      fixtureLinks.push(resultLink);
+    if (test.resultUri) {
+      const isHttp = test.resultUri.startsWith("https://") || test.resultUri.startsWith("http://");
+      const resultFileName = test.resultUri.split("/").pop() || "Expected Result";
+      const resultHref = safeExternalHref(test.resultUri);
+      if (isHttp && resultHref) {
+        fixtureLinks.push(`<span>Expected: <a href="${escapeHtml(resultHref)}" target="_blank" rel="noopener"><code>${escapeHtml(resultFileName)}</code> ↗</a> <button type="button" class="btn-view btn-preview-fixture" style="margin-left: 4px; padding: 1px 6px;" data-url="${escapeHtml(resultHref)}" data-name="${escapeHtml(resultFileName)}">Preview</button></span>`);
+      } else if (!isHttp) {
+        fixtureLinks.push(`<span>Expected: <code>${escapeHtml(test.resultUri)}</code></span>`);
+      }
     }
     const testDefLink = buildTestDefFixtureLink(test.testUri);
     if (testDefLink) {
@@ -795,8 +818,7 @@
   }
 
   // Modal View
-  window.__openModal = function(index) {
-    const test = filteredTests[index];
+  function openModal(test) {
     if (!test) return;
     currentModalTest = test;
 
@@ -813,23 +835,41 @@
     if (modalCopyUriBtn) {
       modalCopyUriBtn.textContent = "Copy Test IRI";
     }
+    if (modalFixturePreviewGroup) {
+      modalFixturePreviewGroup.style.display = "none";
+    }
     renderModalFixtures(buildFixtureLinks(test));
     modalLinks.innerHTML = buildSpecificationLinks(test);
     renderModalSkipSection(test);
     renderModalError(test.errorMessage);
     openModalDialog();
+    updateUrlHash();
+  }
+
+  window.__openModal = function(index) {
+    openModal(filteredTests[index]);
   };
 
   function closeModal() {
+    currentModalTest = null;
+    if (modalFixturePreviewGroup) {
+      modalFixturePreviewGroup.style.display = "none";
+    }
     if (typeof modal.close === "function") {
       modal.close();
     } else {
       modal.removeAttribute("open");
     }
+    updateUrlHash();
   }
 
   modalCloseBtn.addEventListener("click", closeModal);
   modalOkBtn.addEventListener("click", closeModal);
+  modal.addEventListener("cancel", () => {
+    currentModalTest = null;
+    if (modalFixturePreviewGroup) modalFixturePreviewGroup.style.display = "none";
+    updateUrlHash();
+  });
   if (modalCopyUriBtn) {
     modalCopyUriBtn.addEventListener("click", () => {
       const textToCopy = currentModalTest?.testUri || "";
@@ -964,7 +1004,257 @@
     return "develop";
   }
 
+  async function previewFixture(url, fileName) {
+    if (!modalFixturePreviewGroup || !modalFixturePreviewContent) return;
+    modalFixturePreviewGroup.style.display = "flex";
+    if (modalFixturePreviewTitle) {
+      modalFixturePreviewTitle.textContent = `Fixture Preview (${fileName || ""})`;
+    }
+    modalFixturePreviewContent.textContent = "Loading preview...";
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const text = await res.text();
+      modalFixturePreviewContent.textContent = text || "(Empty file)";
+    } catch (e) {
+      modalFixturePreviewContent.textContent = `Preview unavailable directly (${e.message}). This typically occurs when remote hosts (e.g. W3C or GitHub) restrict cross-origin access (CORS). Please click the direct link above to open this fixture in a new tab.`;
+    }
+  }
+  window.__previewFixture = previewFixture;
+
+  if (modalFixtures) {
+    modalFixtures.addEventListener("click", (e) => {
+      const previewBtn = e.target.closest(".btn-preview-fixture");
+      if (!previewBtn) return;
+      const url = previewBtn.dataset.url;
+      const name = previewBtn.dataset.name;
+      if (url) previewFixture(url, name);
+    });
+  }
+
+  function updateStatusPills() {
+    document.querySelectorAll(".filter-btn").forEach(b => {
+      const isActive = b.dataset.status === currentStatus;
+      b.classList.toggle("active", isActive);
+      b.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
+
+  function updateMetricBlockActive() {
+    document.querySelectorAll(".metric-block").forEach(block => {
+      const status = block.dataset.status;
+      const isActive = status === currentStatus && currentStatus !== "all";
+      block.classList.toggle("active", isActive);
+      const btn = block.querySelector(".metric-filter-btn");
+      if (btn) {
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      }
+    });
+  }
+
+  function initMetricBlocks() {
+    document.querySelectorAll(".metric-block").forEach(block => {
+      block.addEventListener("click", (e) => {
+        if (e.target.closest("a")) return;
+        const targetStatus = block.dataset.status;
+        if (!targetStatus) return;
+
+        if (currentStatus === targetStatus && targetStatus !== "all") {
+          currentStatus = "all";
+        } else {
+          currentStatus = targetStatus;
+        }
+        updateStatusPills();
+        updateMetricBlockActive();
+        applyFilters();
+        updateUrlHash();
+      });
+    });
+  }
+
+  function openLegalModal() {
+    if (!legalModal) return;
+    if (typeof legalModal.showModal === "function") {
+      legalModal.showModal();
+    } else {
+      legalModal.setAttribute("open", "");
+    }
+  }
+
+  function closeLegalModal() {
+    if (!legalModal) return;
+    if (typeof legalModal.close === "function") {
+      legalModal.close();
+    } else {
+      legalModal.removeAttribute("open");
+    }
+    if (window.location.hash === "#legal") {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  }
+
+  function initLegalModal() {
+    if (legalBtn) {
+      legalBtn.addEventListener("click", () => {
+        openLegalModal();
+        history.replaceState(null, "", "#legal");
+      });
+    }
+    if (legalCloseBtn) legalCloseBtn.addEventListener("click", closeLegalModal);
+    if (legalOkBtn) legalOkBtn.addEventListener("click", closeLegalModal);
+    if (legalModal) {
+      legalModal.addEventListener("click", (e) => {
+        if (e.target === legalModal) closeLegalModal();
+      });
+      legalModal.addEventListener("cancel", () => {
+        if (window.location.hash === "#legal") {
+          history.replaceState(null, "", window.location.pathname + window.location.search);
+        }
+      });
+    }
+  }
+
+  let isSyncingHash = false;
+
+  function getTestShortId(test) {
+    if (!test?.testUri) return "";
+    const hashIndex = test.testUri.lastIndexOf("#");
+    if (hashIndex !== -1 && hashIndex < test.testUri.length - 1) {
+      return test.testUri.substring(hashIndex + 1);
+    }
+    const slashIndex = test.testUri.lastIndexOf("/");
+    if (slashIndex !== -1 && slashIndex < test.testUri.length - 1) {
+      return test.testUri.substring(slashIndex + 1);
+    }
+    return "";
+  }
+
+  function matchesTest(test, testParam) {
+    if (!test || !testParam) return false;
+    if ((test.displayName || test.name) === testParam) return true;
+    if (test.testUri === testParam) return true;
+    return Boolean(test.testUri?.endsWith("#" + testParam) || test.testUri?.endsWith("/" + testParam));
+  }
+
+  function updateUrlHash() {
+    if (isSyncingHash) return;
+    const params = new URLSearchParams();
+    if (currentSuite && currentSuite !== "all") params.set("suite", currentSuite);
+    if (currentStatus && currentStatus !== "all") params.set("status", currentStatus);
+    if (searchQuery) params.set("q", searchQuery);
+    if (currentModalTest) {
+      const testIdentifier = getTestShortId(currentModalTest) || currentModalTest.displayName || currentModalTest.name;
+      if (testIdentifier) params.set("test", testIdentifier);
+    }
+    const hash = params.toString();
+    const newUrl = hash ? `#${hash}` : window.location.pathname + window.location.search;
+    history.replaceState(null, "", newUrl);
+  }
+
+  function applyUrlFilterParams(params) {
+    const suite = params.get("suite") || "all";
+    currentSuite = suite;
+    if (suiteSelect) suiteSelect.value = suite;
+    updateSuiteItems();
+
+    const status = params.get("status") || "all";
+    currentStatus = status;
+    updateStatusPills();
+    updateMetricBlockActive();
+
+    const q = params.get("q") || "";
+    searchQuery = q;
+    if (searchInput) searchInput.value = q;
+  }
+
+  function applyUrlTestParam(testName) {
+    if (!testName) {
+      if (currentModalTest) closeModal();
+      return;
+    }
+    let found = null;
+    if (currentSuite && currentSuite !== "all") {
+      found = allTests.find(t => t.suiteId === currentSuite && matchesTest(t, testName));
+    }
+    if (!found) {
+      found = allTests.find(t => matchesTest(t, testName));
+    }
+    if (found) {
+      openModal(found);
+    } else if (currentModalTest) {
+      closeModal();
+    }
+  }
+
+  function readUrlHash() {
+    isSyncingHash = true;
+    try {
+      const rawHash = window.location.hash.replace(/^#/, "");
+      if (!rawHash) {
+        applyUrlFilterParams(new URLSearchParams());
+        applyFilters();
+        if (currentModalTest) closeModal();
+        if (legalModal?.open) closeLegalModal();
+        return;
+      }
+      if (rawHash === "legal") {
+        if (currentModalTest) closeModal();
+        openLegalModal();
+        applyFilters();
+        return;
+      }
+      if (legalModal?.open) {
+        closeLegalModal();
+      }
+
+      const params = new URLSearchParams(rawHash);
+      applyUrlFilterParams(params);
+      applyFilters();
+      applyUrlTestParam(params.get("test"));
+    } finally {
+      isSyncingHash = false;
+    }
+  }
+
+  window.addEventListener("hashchange", () => {
+    readUrlHash();
+  });
+
+  function isAnyModalOpen() {
+    return Boolean(modal?.open || legalModal?.open);
+  }
+
+  function isTypingInInput(target) {
+    if (!target) return false;
+    const tag = target.tagName?.toLowerCase() || "";
+    return tag === "input" || tag === "textarea" || tag === "select" || Boolean(target.isContentEditable);
+  }
+
+  function initGlobalShortcuts() {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        if (isAnyModalOpen() || isTypingInInput(e.target)) return;
+        e.preventDefault();
+        if (searchInput) {
+          searchInput.focus();
+          searchInput.select();
+        }
+      } else if (e.key === "Escape" && document.activeElement === searchInput) {
+        if (searchInput.value) {
+          searchQuery = "";
+          searchInput.value = "";
+          applyFilters();
+        } else {
+          searchInput.blur();
+        }
+      }
+    });
+  }
+
   // Init
   initTheme();
+  initMetricBlocks();
+  initLegalModal();
+  initGlobalShortcuts();
   loadVersions();
 })();
