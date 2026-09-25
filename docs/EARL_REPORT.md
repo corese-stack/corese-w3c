@@ -16,7 +16,7 @@ The internal outcomes map exhaustively to EARL:
 | `UNTESTED` | `earl:untested` | omitted |
 | `CANT_TELL` | `earl:cantTell` | `earl:automatic` |
 
-Only JSON-LD `t0118` and `te075` are inapplicable because they require generalized RDF blank-node predicates outside Corese's RDF 1.1 model. Other documented exclusions are untested. Infrastructure classification uses Java exception types at I/O boundaries and never searches exception messages.
+Three tests are inapplicable: JSON-LD `t0118` and `te075` because they require generalized RDF blank-node predicates outside Corese's RDF 1.1 model, and SPARQL 1.1 `agg-avg-03` because it is an unapproved draft test contradicting SPARQL 1.1 §18.5.1.3. Other documented exclusions are untested. Infrastructure classification uses Java exception types at I/O boundaries and never searches exception messages.
 
 ## Identity and provenance
 

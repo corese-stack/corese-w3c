@@ -9,6 +9,14 @@ Tests are dynamically loaded from official W3C manifests and executed against Co
 The live interactive W3C conformance dashboard and benchmark reports are published at:
 [https://corese-stack.github.io/corese-w3c/](https://corese-stack.github.io/corese-w3c/)
 
+Key dashboard features:
+
+- Interactive KPI cards and specification breakdown.
+- Instant search across all 2,900+ test cases (press `/` to focus).
+- Deep-linking via URL hash state (`#suite=...&status=...&q=...&test=...`).
+- EARL 1.0 Turtle and JSON report downloads.
+- 3-state theme toggle (Auto, Light, Dark) without tracking cookies.
+
 ## Supported W3C Specifications
 
 | Specification                         | W3C Test Suite Manifest                                                             | Test Types Covered                                                            |
@@ -85,4 +93,8 @@ See [the EARL application profile](docs/EARL_REPORT.md) for the exact model, pro
 
 ### Exclusions Policy
 
-To ensure high scientific integrity and transparency, no test is skipped silently. All exclusions are documented with exact fragment identifiers and reactivation conditions in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).
+To ensure high scientific integrity and transparency, no test is skipped silently. All exclusions are documented with exact fragment identifiers and reactivation conditions in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md):
+
+- [Inapplicable Tests](docs/W3C_TEST_EXCLUSIONS.md#inapplicable-tests): features outside the RDF 1.1 profile (e.g. generalized RDF blank nodes, unapproved SPARQL 1.1 draft tests).
+- [Untested Tests](docs/W3C_TEST_EXCLUSIONS.md#untested-tests): isolated upstream dependency edge-cases (Titanium JSON-LD 1.6.0, composite RDFa fixtures).
+- [Indeterminate Tests (Cannot Tell)](docs/W3C_TEST_EXCLUSIONS.md#indeterminate-tests): actively executed tests with upstream manifest expectation discrepancies (`cast-decimal`).
