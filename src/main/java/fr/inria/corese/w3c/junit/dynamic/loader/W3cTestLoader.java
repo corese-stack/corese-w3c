@@ -212,6 +212,7 @@ public class W3cTestLoader {
                                                        Map<String, String> testToManifest,
                                                        URI defaultManifestUri) {
         return uriToTypes.entrySet().stream()
+                .filter(entry -> testToManifest.containsKey(entry.getKey()))
                 .map(entry -> createTestCase(entry, manifestProperties, testToManifest, defaultManifestUri))
                 .toList();
     }
