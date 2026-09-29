@@ -2,10 +2,6 @@ package fr.inria.corese.w3c.report.earl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.inria.corese.core.Graph;
-import fr.inria.corese.core.api.Loader;
-import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.load.Load;
 import fr.inria.corese.core.next.data.Values;
 import fr.inria.corese.core.next.data.api.factory.ValueFactory;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
@@ -16,7 +12,13 @@ import fr.inria.corese.core.next.data.api.term.IRI;
 import fr.inria.corese.core.next.data.api.term.Literal;
 import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.io.CoreseIO;
-import fr.inria.corese.core.query.QueryProcess;
+import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.repository.Repository;
+import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
+import fr.inria.corese.core.next.query.api.result.TupleQueryResult;
+import fr.inria.corese.core.next.storage.StorageModels;
+import fr.inria.corese.core.next.storage.Storages;
+import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.report.model.TestReportData;
 import fr.inria.corese.w3c.report.model.TestReportEntry;
 import fr.inria.corese.w3c.report.model.ExecutionOutcome;
@@ -288,45 +290,48 @@ public final class EarlReportValidator {
     }
 
     /**
-     * Executes the 15 offline SPARQL integrity checks using Corese.
-     *
-     * <p>Note: This method currently uses Corese's mature {@link QueryProcess} engine on {@link Graph}.
-     * When the unified SPARQL query evaluation API in {@code corese-next} (targeting {@link Model})
-     * is finalized in corese-core, this method can be seamlessly updated to use the next query API.</p>
+     * Executes the 15 offline SPARQL integrity checks using Corese Next.
      */
     private int validateWithCoreseSparql(Path turtlePath) throws IllegalStateException {
-        Graph graph = Graph.create();
-        Load loader = Load.create(graph);
-        loader.setDefaultGraph(true);
+        StorageManager storage = Storages.create();
+        Model model = StorageModels.create(storage);
         try {
-            loader.parse(turtlePath.toAbsolutePath().toString(), Loader.format.TURTLE_FORMAT);
+            CoreseIO.read(turtlePath, RDFFormat.TURTLE).forEach(model::add);
         } catch (Exception e) {
-            throw new IllegalStateException("Failed to load Turtle into Corese graph for SPARQL validation", e);
+            throw new IllegalStateException("Failed to load Turtle into Corese next model for SPARQL validation", e);
         }
-        QueryProcess queryProcess = QueryProcess.create(graph);
-        for (QueryCheck check : ZERO_VIOLATION_QUERIES) {
-            try {
-                Mappings violations = queryProcess.query(check.query());
-                if (!violations.isEmpty()) {
-                    throw new IllegalStateException("Corese SPARQL validation failed for " + check.name()
-                            + ": " + violations.size() + " violation(s)");
+        try (Repository repository = Repositories.create(storage);
+             RepositoryConnection conn = repository.getConnection()) {
+            for (QueryCheck check : ZERO_VIOLATION_QUERIES) {
+                try (TupleQueryResult violations = conn.prepareTupleQuery(check.query()).evaluate()) {
+                    if (violations.hasNext()) {
+                        long count = violations.stream().count();
+                        throw new IllegalStateException("Corese SPARQL validation failed for " + check.name()
+                                + ": " + count + " violation(s)");
+                    }
+                } catch (Exception e) {
+                    if (e instanceof IllegalStateException ise) {
+                        throw ise;
+                    }
+                    throw new IllegalStateException("Corese SPARQL query execution failed for " + check.name(), e);
                 }
-            } catch (Exception e) {
-                throw new IllegalStateException("Corese SPARQL query execution failed for " + check.name(), e);
             }
-        }
-        try {
-            Mappings subjects = queryProcess.query(PREFIXES + """
+            try (TupleQueryResult subjects = conn.prepareTupleQuery(PREFIXES + """
                     SELECT ?subject
                     WHERE { ?assertion a earl:Assertion ; earl:subject ?subject . }
                     GROUP BY ?subject
-                    """);
-            if (subjects.size() != 1) {
-                throw new IllegalStateException("A report must contain exactly one distinct earl:subject; found "
-                        + subjects.size());
+                    """).evaluate()) {
+                long distinctSubjects = subjects.stream().count();
+                if (distinctSubjects != 1) {
+                    throw new IllegalStateException("A report must contain exactly one distinct earl:subject; found "
+                            + distinctSubjects);
+                }
+            } catch (Exception e) {
+                if (e instanceof IllegalStateException ise) {
+                    throw ise;
+                }
+                throw new IllegalStateException("Corese SPARQL query execution failed for distinct subjects check", e);
             }
-        } catch (Exception e) {
-            throw new IllegalStateException("Corese SPARQL query execution failed for distinct subjects check", e);
         }
         return ZERO_VIOLATION_QUERIES.size() + 1;
     }
