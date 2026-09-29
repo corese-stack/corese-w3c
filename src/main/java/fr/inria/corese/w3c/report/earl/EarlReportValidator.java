@@ -294,46 +294,64 @@ public final class EarlReportValidator {
      */
     private int validateWithCoreseSparql(Path turtlePath) throws IllegalStateException {
         StorageManager storage = Storages.create();
+        loadTurtleModel(turtlePath, storage);
+
+        try (Repository repository = Repositories.create(storage);
+             RepositoryConnection conn = repository.getConnection()) {
+            executeZeroViolationChecks(conn);
+            validateDistinctSubject(conn);
+        }
+        return ZERO_VIOLATION_QUERIES.size() + 1;
+    }
+
+    private static void loadTurtleModel(Path turtlePath, StorageManager storage) {
         Model model = StorageModels.create(storage);
         try {
             CoreseIO.read(turtlePath, RDFFormat.TURTLE).forEach(model::add);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to load Turtle into Corese next model for SPARQL validation", e);
         }
-        try (Repository repository = Repositories.create(storage);
-             RepositoryConnection conn = repository.getConnection()) {
-            for (QueryCheck check : ZERO_VIOLATION_QUERIES) {
-                try (TupleQueryResult violations = conn.prepareTupleQuery(check.query()).evaluate()) {
-                    if (violations.hasNext()) {
-                        long count = violations.stream().count();
-                        throw new IllegalStateException("Corese SPARQL validation failed for " + check.name()
-                                + ": " + count + " violation(s)");
-                    }
-                } catch (Exception e) {
-                    if (e instanceof IllegalStateException ise) {
-                        throw ise;
-                    }
-                    throw new IllegalStateException("Corese SPARQL query execution failed for " + check.name(), e);
-                }
-            }
-            try (TupleQueryResult subjects = conn.prepareTupleQuery(PREFIXES + """
-                    SELECT ?subject
-                    WHERE { ?assertion a earl:Assertion ; earl:subject ?subject . }
-                    GROUP BY ?subject
-                    """).evaluate()) {
-                long distinctSubjects = subjects.stream().count();
-                if (distinctSubjects != 1) {
-                    throw new IllegalStateException("A report must contain exactly one distinct earl:subject; found "
-                            + distinctSubjects);
-                }
+    }
+
+    private static void executeZeroViolationChecks(RepositoryConnection conn) {
+        for (QueryCheck check : ZERO_VIOLATION_QUERIES) {
+            long count;
+            try (TupleQueryResult violations = conn.prepareTupleQuery(check.query()).evaluate()) {
+                count = countSolutions(violations);
             } catch (Exception e) {
-                if (e instanceof IllegalStateException ise) {
-                    throw ise;
-                }
-                throw new IllegalStateException("Corese SPARQL query execution failed for distinct subjects check", e);
+                throw new IllegalStateException("Corese SPARQL query execution failed for " + check.name(), e);
+            }
+            if (count > 0) {
+                throw new IllegalStateException("Corese SPARQL validation failed for " + check.name()
+                        + ": " + count + " violation(s)");
             }
         }
-        return ZERO_VIOLATION_QUERIES.size() + 1;
+    }
+
+    private static void validateDistinctSubject(RepositoryConnection conn) {
+        long distinctSubjects;
+        try (TupleQueryResult subjects = conn.prepareTupleQuery(PREFIXES + """
+                SELECT ?subject
+                WHERE { ?assertion a earl:Assertion ; earl:subject ?subject . }
+                GROUP BY ?subject
+                """).evaluate()) {
+            distinctSubjects = countSolutions(subjects);
+        } catch (Exception e) {
+            throw new IllegalStateException("Corese SPARQL query execution failed for distinct subjects check", e);
+        }
+        if (distinctSubjects != 1) {
+            throw new IllegalStateException("A report must contain exactly one distinct earl:subject; found "
+                    + distinctSubjects);
+        }
+    }
+
+    private static long countSolutions(TupleQueryResult result) {
+        long count = 0;
+        while (result.hasNext()) {
+            result.next();
+            count++;
+        }
+        return count;
     }
 
     private static List<QueryCheck> buildQueries() {
