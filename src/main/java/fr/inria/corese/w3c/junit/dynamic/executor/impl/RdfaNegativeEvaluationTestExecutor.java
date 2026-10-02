@@ -41,9 +41,13 @@ public final class RdfaNegativeEvaluationTestExecutor implements TestExecutor {
     static void verifyAbsence(Model model, String query, String base) {
         try (var repository = Repositories.create(); var connection = repository.getConnection()) {
             connection.add(model);
-            if (connection.prepareBooleanQuery(query, base).evaluate()) {
-                throw new AssertionError("RDFa negative evaluation generated a forbidden pattern: " + base);
-            }
+            requireFalse(connection.prepareBooleanQuery(query, base).evaluate(), base);
+        }
+    }
+
+    static void requireFalse(Boolean answer, String base) {
+        if (!Boolean.FALSE.equals(answer)) {
+            throw new AssertionError("RDFa negative evaluation requires ASK=false, got " + answer + ": " + base);
         }
     }
 }

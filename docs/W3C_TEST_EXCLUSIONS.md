@@ -115,6 +115,58 @@ grounded discrepancies involving `xml:base` and `time`/`datetime`. These are
 targeted observations, not a new complete W3C harness validation or published
 conformance snapshot.
 
+### Structural diagnosis of the RDFa benchmarks
+
+The remaining comparison differences can now be bounded more precisely. Walks
+over `rdf:first`/`rdf:rest` compare each anchored collection's ordered values,
+without depending on canonical blank-node labels. All three actual graphs contain
+five nonempty collections; their Turtle sidecars contain twelve. Four collections
+match. The other actual collection has twelve items, where the reference contains
+eight separate nonempty collections with the same twelve items in total, plus an
+empty collection. Their subject is the benchmark document and their predicate is
+`rdf:value`.
+
+| Host | Actual / reference quads | Actual / reference non-collection quads | Remaining comparison |
+| --- | --- | --- | --- |
+| XHTML | 356 / 364 | 319 / 319 | Isomorphic after removing collection cells and anchors, including the empty-list anchor. |
+| XML | 313 / 318 | 276 / 273 | Isomorphic after also removing the grounded differences described below. |
+| SVG | 313 / 318 | 276 / 273 | Same bounded differences as XML. |
+
+The list discrepancy is consistent with concatenation changing the evaluation
+context. A reduced probe puts these two fragments inside a single document:
+
+```xml
+<div about=""><span property="ex:items" inlist="">A</span></div>
+<div about=""><span property="ex:items" inlist="">B</span></div>
+```
+
+Corese produces one list `("A" "B")` (five triples). Parsing each fragment in its
+own document and unioning their graphs instead gives two one-item lists (six
+triples). In the combined document, both explicit subjects equal the inherited
+parent object. Under [RDFa Core step 8](https://www.w3.org/TR/rdfa-core/#s_sequence),
+that does not reset the list mapping. Thus a union of isolated expected graphs
+does not by itself define the expected graph of the concatenated document.
+This supports a reference-graph construction problem; the upstream generator's
+history has not been verified. It is not a reason to change the parser to reset
+lists on every explicit `about` solely to reproduce the sidecar.
+
+The XML/SVG non-collection mismatches contain ten expected-only and thirteen
+actual-only grounded triples. One pair concerns `xml:base`: the reference attaches
+`"Test 0109"` to the document, while Corese attaches it to
+`http://example.org/invalid/`. The benchmark retains a comment about invalid XHTML,
+but [XML+RDFa permits `xml:base`](https://www.w3.org/TR/rdfa-core/#docconf).
+The other nine expected-only and twelve actual-only triples concern `time`,
+`datetime`, datatype selection and language. The sidecar uses behaviors specified
+by [HTML+RDFa](https://www.w3.org/TR/html-rdfa/#additional-rdfa-processing-rules),
+while these inputs are generic XML or SVG hosts. Applying those HTML rules to all
+hosts just to match the sidecar is not justified.
+
+These controlled removals are diagnostic only: the executor still compares the
+complete unmodified datasets. All three outcomes remain FAILED for that extended
+comparison, and their official nonempty-graph ASK criterion remains satisfied.
+An upstream correction or an explicit separation of official ASK outcomes from
+extended graph diagnostics is needed before changing the reported classifications.
+
 ### MIN and source-term preservation (`agg-min-02`)
 
 `agg-numeric.ttl` contains `:mixed2 :double 2E-1`, while `agg-min-02.srx` expects `"2.0E-1"^^xsd:double`. [SPARQL 1.1 §18.5.1.5](https://www.w3.org/TR/sparql11-query/#defn_aggMin) specifies that MIN selects an existing RDF term from the group, rather than constructing a fresh canonicalized literal. Corese preserves the source term `2E-1`. The discrepancy is visible because `ComputedNumericResults` strictly preserves source terms for extrema aggregates; it remains marked `FAILED` against the upstream fixture.

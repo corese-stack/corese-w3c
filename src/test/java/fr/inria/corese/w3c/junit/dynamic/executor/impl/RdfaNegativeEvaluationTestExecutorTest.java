@@ -36,6 +36,12 @@ class RdfaNegativeEvaluationTestExecutorTest {
     }
 
     @Test
+    void rejectsAnIndeterminateAskAnswer() {
+        assertThrows(AssertionError.class,
+                () -> RdfaNegativeEvaluationTestExecutor.requireFalse(null, "urn:test"));
+    }
+
+    @Test
     void resolvesTheOfficialSidecarAndRejectsUnsupportedResultLocations() {
         assertEquals(URI.create("https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0180.sparql"),
                 RdfaNegativeEvaluationTestExecutor.queryUri(
