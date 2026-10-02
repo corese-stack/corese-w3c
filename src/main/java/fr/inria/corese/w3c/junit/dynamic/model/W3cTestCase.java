@@ -77,6 +77,7 @@ public class W3cTestCase {
     private final TestType type;
     private final URI manifestUri;
     private final Map<String, Object> properties;
+    private volatile String diagnosticInfo;
 
     /**
      * Constructs a new W3cTestCase.
@@ -166,6 +167,24 @@ public class W3cTestCase {
      */
     public Map<String, Object> getProperties() {
         return properties;
+    }
+
+    /**
+     * Gets diagnostic information associated with the execution (e.g., extended full-graph discrepancies).
+     *
+     * @return diagnostic info string or null
+     */
+    public String getDiagnosticInfo() {
+        return diagnosticInfo;
+    }
+
+    /**
+     * Sets diagnostic information associated with the execution.
+     *
+     * @param diagnosticInfo diagnostic info string
+     */
+    public void setDiagnosticInfo(String diagnosticInfo) {
+        this.diagnosticInfo = diagnosticInfo;
     }
 
     /**

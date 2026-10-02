@@ -12,6 +12,7 @@ public class TestExecutorFactory {
 
     // Singleton instances
     private static final RdfPositiveEvaluationTestExecutor POSITIVE_EVALUATION_EXECUTOR = new RdfPositiveEvaluationTestExecutor();
+    private static final RdfaPositiveEvaluationTestExecutor RDFA_POSITIVE_EVALUATION_EXECUTOR = new RdfaPositiveEvaluationTestExecutor();
     private static final RdfPositiveSyntaxTestExecutor POSITIVE_SYNTAX_EXECUTOR = new RdfPositiveSyntaxTestExecutor();
     private static final RdfNegativeTestExecutor NEGATIVE_TEST_EXECUTOR = new RdfNegativeTestExecutor();
     private static final RdfaNegativeEvaluationTestExecutor RDFA_NEGATIVE_EVALUATION_EXECUTOR = new RdfaNegativeEvaluationTestExecutor();
@@ -75,6 +76,9 @@ public class TestExecutorFactory {
             case SPARQL11_POSITIVE_UPDATE_SYNTAX -> SPARQL_UPDATE_POSITIVE_SYNTAX_EXECUTOR;
             case SPARQL11_NEGATIVE_UPDATE_SYNTAX -> SPARQL_UPDATE_NEGATIVE_SYNTAX_EXECUTOR;
             case SPARQL11_UPDATE_EVAL            -> SPARQL_UPDATE_EVALUATION_EXECUTOR;
+
+            // RDFa positives evaluate the official ASK query and record full-graph comparison diagnostics.
+            case RDFA_POSITIVE_EVAL -> RDFA_POSITIVE_EVALUATION_EXECUTOR;
 
             // RDFa negatives forbid a graph pattern; parsing must still succeed.
             case RDFA_NEGATIVE_EVAL -> RDFA_NEGATIVE_EVALUATION_EXECUTOR;

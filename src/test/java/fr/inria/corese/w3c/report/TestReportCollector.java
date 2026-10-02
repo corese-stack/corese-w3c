@@ -88,7 +88,7 @@ public final class TestReportCollector {
             Instant startedAt,
             Instant endedAt) {
         recordEntry(entry(testCase, suite, ExecutionOutcome.PASSED, startedAt, endedAt,
-                duration(startedAt, endedAt), null, null));
+                duration(startedAt, endedAt), testCase.getDiagnosticInfo(), null));
     }
 
     public void recordFailed(
