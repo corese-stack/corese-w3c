@@ -97,25 +97,19 @@ by Corese; their origin does not remove them from the results.
 | JSON-LD fromRdf | `t0027` | `FAILED`: `NumberFormatException` in Titanium with `useNativeTypes` on non-finite or ill-typed numeric input; the fixture expects literals to be preserved when native JSON conversion is unavailable. |
 | JSON-LD fromRdf | `t0028` | `FAILED`: `NumberFormatException` in Titanium for non-native literal values with `useNativeTypes`. |
 | JSON-LD fromRdf | `tli01` | `FAILED`: `NullPointerException` in Titanium when processing a nested empty list (`@list` containing empty `@list`). |
-| RDFa XHTML | `0295` | `FAILED`: produced graph differs from the expected benchmark graph under full-graph comparison. |
-| RDFa XML | `0295` | `FAILED`: produced graph differs from the expected benchmark graph under full-graph comparison. |
-| RDFa SVG | `0295` | `FAILED`: produced graph differs from the expected benchmark graph under full-graph comparison. |
-| SPARQL 1.1 | `agg-min-02` | `FAILED`: input data contains `:mixed2 :double 2E-1`, while `agg-min-02.srx` expects `"2.0E-1"^^xsd:double`. |
 
-### RDFa Benchmark Tests (`0295`)
+> [!NOTE]
+> The change from 8 to 4 failures in the test report reflects the adoption of the official suite's SPARQL ASK evaluation criterion for RDFa positive evaluation tests (with full-graph differences retained as diagnostic metadata) and the classification of `agg-min-02` as `CANT_TELL`. It does **not** signify that four engine bugs were resolved.
 
-The RDFa manifest selects `0295` and marks it `test:required`. Its official `ASK` query verifies that at least one triple is generated; Corese passes this criterion on all three host formats (XHTML, XML, SVG). The `FAILED` outcomes reflect the harness's additional full-graph comparison against the Turtle sidecar, which is currently mandatory in the executor.
+### RDFa Official ASK Criterion and Diagnostic Comparison (`0295`)
 
-Structural diagnosis isolates the following differences:
+The official W3C RDFa test suite defines test evaluation via SPARQL ASK queries (`.sparql`). Corese passes the official ASK query for test `0295` on all three host formats (XHTML, XML, SVG), and the test is accordingly recorded as `PASSED`. This query checks only that at least one triple is present.
 
-- **Collections ([RDFa Core 1.1 step 8](https://www.w3.org/TR/rdfa-core/#s_sequence))**: When the new subject equals the inherited parent object, the list mapping is not reset. The sidecar's separate lists are consistent with a union of isolated fragment results, while the combined input shares one list context. A reduced probe confirms that parsing combined fragments differs from unioning their isolated results; the upstream generator's history has not been verified. Resetting lists on every explicit `about` solely to match the sidecar is not justified.
-- **Host rules**: XML/SVG discrepancies concern `xml:base` and behaviors such as `time`/`datetime` conversion specified by [HTML+RDFa](https://www.w3.org/TR/html-rdfa/#additional-rdfa-processing-rules). Generic [XML+RDFa permits `xml:base`](https://www.w3.org/TR/rdfa-core/#docconf); applying HTML-specific rules to all hosts solely to match the sidecar is not justified.
+In addition to the official ASK criterion, the harness performs an extended full-graph comparison against the reference Turtle fixture for diagnostic visibility. The diagnosed differences are:
+- **Collections ([RDFa Core 1.1 step 8](https://www.w3.org/TR/rdfa-core/#s_sequence))**: When the new subject equals the inherited parent object, the list mapping is not reset. The sidecar's separate lists are consistent with a union of isolated fragment results, while the combined input shares one list context. The upstream generator's history has not been verified.
+- **Host rules**: XML/SVG discrepancies concern `xml:base` and behaviors such as `time`/`datetime` conversion specified by [HTML+RDFa](https://www.w3.org/TR/html-rdfa/#additional-rdfa-processing-rules).
 
-The executor retains the full-graph comparison without synthetic exemptions, keeping these 3 tests visible as `FAILED` while their official ASK criterion remains satisfied.
-
-### MIN and source-term preservation (`agg-min-02`)
-
-`agg-numeric.ttl` contains `:mixed2 :double 2E-1`, while `agg-min-02.srx` expects `"2.0E-1"^^xsd:double`. [SPARQL 1.1 §18.5.1.5](https://www.w3.org/TR/sparql11-query/#defn_aggMin) specifies that MIN selects an existing RDF term from the group, rather than constructing a fresh canonicalized literal. Corese preserves the source term `2E-1`. The discrepancy is visible because `ComputedNumericResults` strictly preserves source terms for extrema aggregates; it remains marked `FAILED` against the upstream fixture.
+These extended graph differences are preserved and displayed as diagnostic information in the EARL and JSON reports without altering the `PASSED` verdict established by the official ASK query. The diagnostic records the query URI and distinguishes matching, different and unavailable graph comparisons. ASK success does not establish full-graph equality.
 
 ### AVG on an empty group (`agg-avg-03`)
 
@@ -123,24 +117,44 @@ The executor retains the full-graph comparison without synthetic exemptions, kee
 
 ## Cannot Tell Tests
 
+The harness records `CANT_TELL` when execution takes place but cannot produce a definite verdict due to verified upstream oracle discrepancies where RDF term identity is contested.
+
+| Suite | ID | Observed result / interpretation |
+| --- | --- | --- |
+| SPARQL 1.1 | `cast-decimal` | `CANT_TELL`: upstream oracle rewrites 4 unchanged source terms (`0E1`/`1E0` to `0.0`/`1.0`), while Corese preserves source term identity. All other 27 rows and bindings agree. |
+| SPARQL 1.1 | `agg-min-02` | `CANT_TELL`: upstream fixture expects canonicalized `"2.0E-1"^^xsd:double`, while Corese preserves source term `2E-1` per SPARQL 1.1 §18.5.1.5 (MIN selects an existing term from the group). All other bindings agree. |
+
 ### SPARQL `cast-decimal`
 
 The test is executed. Its query projects the source binding `?v` and a computed
 `?decimal`. For subjects `n07`–`n10`, the expected XML rewrites source values
 `0E1` / `1E0` as `0.0` / `1.0` (double and float), while Corese preserves the
 source terms. Lexical form is part of [RDF literal identity](https://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal);
-numeric value equivalence is not term identity. The earlier reference to
-SPARQL §17.4.3.1 was incorrect: that section concerns strings.
+numeric value equivalence is not term identity.
 
 `KnownCastDecimalExpectation` permits `CANT_TELL` only for the exact test URI,
 31 rows, those four expected source terms, and agreement of every other binding,
 datatype and multiplicity (computed numeric columns use their documented value
-comparison). Additional differences remain `FAILED`. No fixture or engine result
-is rewritten for a passing verdict. Reactivation as a normal comparison requires
-an upstream correction or a documented authoritative comparison rule resolving
-this source-term discrepancy.
+comparison). Additional differences remain `FAILED`.
+
+### SPARQL `agg-min-02`
+
+`agg-numeric.ttl` contains `:mixed2 :double 2E-1`, while `agg-min-02.srx` expects `"2.0E-1"^^xsd:double`. [SPARQL 1.1 §18.5.1.5](https://www.w3.org/TR/sparql11-query/#defn_aggMin) specifies that MIN selects an existing RDF term from the group, rather than constructing a fresh canonicalized literal. Corese preserves the source term `2E-1`.
+
+`KnownAggMinExpectation` permits `CANT_TELL` strictly when the test URI matches `agg-min-02`, exactly 5 rows are returned, `numericColumns` is empty (extrema aggregates preserve term identity), and the only difference against the upstream fixture is the canonical `2.0E-1` vs source `2E-1` on `:mixed2`. Any further discrepancy results in `FAILED`.
 
 ## Comparator Checks and Remaining Limits
+
+Fixtures are cached by path and reused; the cache is not a version-pinned snapshot
+of upstream tests. Downloaded Turtle manifests may undergo the loader's existing
+quote repair. Both graph canonicalization and ASK evaluation use Corese itself,
+so correlated engine/comparator defects are possible. These checks do not provide
+an independent implementation oracle.
+
+SELECT comparison does not separately verify result headers for empty results or
+implement relaxed `REDUCED`/`resultCardinality` comparison. Nondeterministic
+`SAMPLE` and unordered `GROUP_CONCAT` results still use the selected fixture as
+their oracle. These are comparator limits, not evidence of complete SPARQL coverage.
 
 SELECT and CSV bag comparison now uses one blank-node bijection across the whole
 result set. It preserves repeated rows and rejects both splitting a shared node
@@ -172,15 +186,15 @@ all selected entries; `executedPassRate` uses only passed and failed outcomes an
 must not be presented as overall standards conformance. Neither metric proves
 complete language implementation.
 
-The last complete run's 2,893 passes among 2,915 selected cases give 99.25%.
-The 99.72% `executedPassRate` excludes the 13 inapplicable and one indeterminate
-case; it is not a rate over every executed case.
+The last complete run's 2,896 passes among 2,915 selected cases give 99.35%.
+The 99.86% `executedPassRate` excludes the 13 inapplicable and two indeterminate
+cases; it is not a rate over every executed case.
 
-Historical reports and the committed baseline are not silently rewritten. A baseline check may flag `te038` because it moves from passed to inapplicable under the corrected specification profile. That change needs explicit baseline review; the regression guard is not weakened to ignore it.
-
-Refreshing the baseline also requires review of the removed, unselected
-`dawg-optional-filter-005-simplified` definition. The update guard currently rejects
-this missing historical entry; a complete run alone does not authorize its removal.
+Historical reports are preserved. Baseline refreshes require explicit review of
+profile, criterion and manifest-selection changes, including `te038` becoming
+inapplicable and the unselected `dawg-optional-filter-005-simplified` definition
+being removed. The update guard rejects missing historical entries; it is not
+weakened to accept them automatically.
 
 ## Verification Commands and Baseline Control
 

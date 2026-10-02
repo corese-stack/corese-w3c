@@ -724,19 +724,24 @@
 
   const KNOWN_FAILURE_RATIONALES = [
     {
-      match: (t) => (t.name && t.name.includes("0295")) || (t.testUri && t.testUri.includes("0295")),
+      match: (t) => t.outcome === "PASSED" && ((t.name && t.name.includes("0295")) || (t.testUri && t.testUri.includes("0295"))),
       badge: "Official W3C ASK Passes • Extended Graph Differs",
-      desc: "Corese passes the official W3C ASK evaluation criterion. The extended full-graph comparison differs because Corese merges collections under RDFa Core 1.1 Step 8, whereas the upstream benchmark sidecar unioned isolated test fragments."
+      desc: "The official ASK checks only that the graph is nonempty. Previous full-graph analysis found collection differences consistent with a union of isolated fragments, plus XML/SVG host-rule differences. The reference generator's history has not been verified; the diagnostic below describes this execution."
     },
     {
-      match: (t) => (t.name && t.name.includes("MIN with GROUP BY")) || (t.testUri && t.testUri.includes("agg-min-02")),
+      match: (t) => t.outcome === "CANT_TELL" && ((t.name && t.name.includes("MIN with GROUP BY")) || (t.testUri && t.testUri.includes("agg-min-02"))),
       badge: "Normative SPARQL 1.1 Term Identity (§18.5.1.5)",
       desc: "Corese preserves the source term '2E-1' as required by SPARQL 1.1 §18.5.1.5 (MIN selects an existing term from the group), whereas the upstream fixture expected canonicalized '2.0E-1'^^xsd:double."
     },
     {
+      match: (t) => t.outcome === "CANT_TELL" && ((t.name && t.name.includes("decimal_cast")) || (t.testUri && t.testUri.includes("cast-decimal"))),
+      badge: "Upstream Oracle Source Term Rewriting",
+      desc: "Upstream fixture rewrites 4 unchanged source terms (0E1/1E0 to 0.0/1.0), whereas Corese preserves RDF term identity. All other bindings agree. Classified CANT_TELL."
+    },
+    {
       match: (t) => (t.name && t.name.includes("bad @base")) || (t.testUri && t.testUri.includes("tli12")),
-      badge: "Strict RFC 3987 IRI Validation",
-      desc: "Corese rejects illegal angle brackets '<>' in the base IRI under strict RFC 3987 / RFC 3986 rules with INVALID_BASE_IRI."
+      badge: "Unresolved Base IRI Expectation",
+      desc: "Corese raises INVALID_BASE_IRI for @base containing '<>', while the fixture expects successful conversion. The fixture/specification question remains unresolved; this outcome remains FAILED."
     },
     {
       match: (t) => (t.name && t.name.includes("@list containing empty @list")) || (t.testUri && t.testUri.includes("tli01")),
@@ -777,13 +782,22 @@
       return;
     }
 
-    if (test.outcome === "FAILED" || test.outcome === "CANT_TELL") {
+    if (test.outcome === "FAILED" || test.outcome === "CANT_TELL" || test.info) {
       const known = KNOWN_FAILURE_RATIONALES.find(r => r.match(test));
       if (known) {
         modalSkipReasonGroup.style.display = "flex";
         modalSkipReason.innerHTML = `
           <div class="callout-badge">${escapeHtml(known.badge)}</div>
           <div class="callout-desc">${escapeHtml(known.desc)}</div>
+          ${test.info ? `<div class="callout-desc">${escapeHtml(test.info)}</div>` : ""}
+        `;
+        return;
+      }
+      if (test.info) {
+        modalSkipReasonGroup.style.display = "flex";
+        modalSkipReason.innerHTML = `
+          <div class="callout-badge">Diagnostic Information</div>
+          <div class="callout-desc">${escapeHtml(test.info)}</div>
         `;
         return;
       }

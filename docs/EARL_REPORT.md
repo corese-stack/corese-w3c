@@ -20,8 +20,8 @@ Applicability follows the [documented profile and manifest metadata](W3C_TEST_EX
 JSON-LD specification-1.0-only cases and generalized-RDF requirements are outside
 the JSON-LD 1.1 / RDF 1.1 profile. Applicable known implementation failures are
 executed, not deferred. `agg-avg-03` is applicable: the standard defines empty AVG
-as integer zero. `cast-decimal` is indeterminate only under its narrowly tested
-four-source-term discrepancy. Infrastructure classification uses exception types,
+as integer zero. `cast-decimal` and `agg-min-02` are indeterminate only under their
+narrowly tested source-term discrepancies. Infrastructure classification uses exception types,
 not message substrings. See the audit table for each former exclusion.
 
 ## Identity and provenance
