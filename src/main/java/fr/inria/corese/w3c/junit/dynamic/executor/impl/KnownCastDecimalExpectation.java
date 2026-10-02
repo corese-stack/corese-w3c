@@ -46,12 +46,7 @@ final class KnownCastDecimalExpectation {
         // This is a classification probe, not an altered fixture or a passing comparison.
         // Every other binding, datatype, multiplicity and calculated value must still agree.
         return seen.equals(SOURCE_TERMS.keySet())
-                && normalized(corrected, numericColumns).equals(normalized(actual, numericColumns));
-    }
-
-    private static List<String> normalized(List<Map<String, String>> rows, Set<String> columns) {
-        return rows.stream().map(row -> SparqlQueryEvaluationTestExecutor.normalizeRow(row, columns))
-                .sorted().toList();
+                && SelectResultMultiset.matches(corrected, actual, numericColumns, "_:b_");
     }
 
     private record SourceTerm(String datatype, String rewritten, String lexical) {

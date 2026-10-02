@@ -73,6 +73,17 @@ class KnownCastDecimalExpectationTest {
         assertFalse(matches(expected, actual));
     }
 
+    @Test
+    void rejectsAdditionalCrossRowBlankNodeIdentityErrors() {
+        var expected = rows(false);
+        var actual = rows(true);
+        expected.get(29).put("v", "_:b_shared");
+        expected.get(30).put("v", "_:b_shared");
+        actual.get(29).put("v", "_:b_one");
+        actual.get(30).put("v", "_:b_two");
+        assertFalse(matches(expected, actual));
+    }
+
     private static boolean matches(List<Map<String, String>> expected, List<Map<String, String>> actual) {
         return KnownCastDecimalExpectation.matches(KnownCastDecimalExpectation.TEST_URI, expected, actual, COLUMNS);
     }

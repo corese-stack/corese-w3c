@@ -9,30 +9,40 @@ import java.net.URI;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class Rdf11JsonldExclusionClassificationTest {
     @Test
-    void generalizedRdfCasesAreInapplicableAndTitaniumCasesAreUntested() {
-        Rdf11JsonldToRdfDynamicTest toRdf = new Rdf11JsonldToRdfDynamicTest();
-        assertEquals(SkipKind.NOT_APPLICABLE, toRdf.getSkipDecision(toRdf("t0118")).kind());
-        assertEquals(SkipKind.NOT_APPLICABLE, toRdf.getSkipDecision(toRdf("te075")).kind());
-        assertEquals(SkipKind.DEFERRED, toRdf.getSkipDecision(toRdf("tli12")).kind());
-
-        Rdf11JsonldFromRdfDynamicTest fromRdf = new Rdf11JsonldFromRdfDynamicTest();
-        assertEquals(SkipKind.DEFERRED, fromRdf.getSkipDecision(fromRdf("t0027")).kind());
+    void generalizedRdfIsOutsideTheDataModelProfile() {
+        assertEquals(SkipKind.NOT_APPLICABLE,
+                JsonLd11ConformanceProfile.skipDecision(test(Map.of("produceGeneralizedRdf", "true"))).kind());
+        assertNull(JsonLd11ConformanceProfile.skipDecision(test(Map.of("produceGeneralizedRdf", "false"))));
     }
 
-    private static W3cTestCase toRdf(String fragment) {
-        URI manifest = URI.create("https://w3c.github.io/json-ld-api/tests/toRdf-manifest.jsonld");
-        return test(manifest, fragment, TestType.JSON_LD_POSITIVE_EVAL);
+    @Test
+    void specificationVersionIsNotProcessingMode() {
+        assertEquals(SkipKind.NOT_APPLICABLE,
+                JsonLd11ConformanceProfile.skipDecision(test(Map.of("specVersion", "json-ld-1.0"))).kind());
+        assertNull(JsonLd11ConformanceProfile.skipDecision(test(Map.of("processingMode", "json-ld-1.0"))),
+                "A 1.1 compatibility-mode test remains applicable");
+        assertNull(JsonLd11ConformanceProfile.skipDecision(test(Map.of(
+                "specVersion", "json-ld-1.1", "processingMode", "json-ld-1.0"))));
+        assertNull(JsonLd11ConformanceProfile.skipDecision(test(Map.of())));
     }
 
-    private static W3cTestCase fromRdf(String fragment) {
-        URI manifest = URI.create("https://w3c.github.io/json-ld-api/tests/fromRdf-manifest.jsonld");
-        return test(manifest, fragment, TestType.JSON_LD_FROM_RDF_POSITIVE_EVAL);
+    @Test
+    void knownImplementationFailuresAreExecuted() {
+        for (String fragment : new String[]{"tli12", "t0027", "t0028", "tli01"}) {
+            URI manifest = URI.create("https://w3c.github.io/json-ld-api/tests/fromRdf-manifest");
+            var test = new W3cTestCase(manifest + "#" + fragment, fragment, fragment, "",
+                    TestType.JSON_LD_FROM_RDF_POSITIVE_EVAL, manifest, Map.of("specVersion", "json-ld-1.1"));
+            assertNull(JsonLd11ConformanceProfile.skipDecision(test));
+        }
     }
 
-    private static W3cTestCase test(URI manifest, String fragment, TestType type) {
-        return new W3cTestCase(manifest + "#" + fragment, fragment, fragment, "", type, manifest, Map.of());
+    private static W3cTestCase test(Map<String, Object> properties) {
+        URI manifest = URI.create("https://w3c.github.io/json-ld-api/tests/toRdf-manifest");
+        return new W3cTestCase(manifest + "#test", "test", "test", "",
+                TestType.JSON_LD_POSITIVE_EVAL, manifest, properties);
     }
 }

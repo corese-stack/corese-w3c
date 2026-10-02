@@ -211,7 +211,7 @@ public final class CsvTsvResultParser {
             return cell;
         }
 
-        // Blank node: _:id  →  _:b_id (for normalizeRow compatibility)
+        // Blank node: _:id  →  _:b_id (canonical result representation)
         if (cell.startsWith("_:")) {
             return "_:b_" + cell.substring(2);
         }

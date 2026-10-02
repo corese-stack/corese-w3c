@@ -80,6 +80,14 @@ public class W3cTestLoader {
             Map<String, Set<String>> uriToTypes = collectTestTypes(conn);
             ManifestProperties properties = loadManifestProperties(conn);
             Map<String, String> testToManifest = collectTestManifests(model);
+            // A typed test definition need not be selected by the manifest.
+            // Respect even an explicitly empty mf:entries list. Suites using
+            // legacy vocabularies retain type-based discovery.
+            boolean hasEntries = model.filter(null, null, null).stream()
+                    .anyMatch(stmt -> MF_ENTRIES.equals(stmt.getPredicate().stringValue()));
+            if (hasEntries) {
+                uriToTypes.keySet().retainAll(testToManifest.keySet());
+            }
             List<W3cTestCase> testCases = createTestCases(uriToTypes, properties, testToManifest, manifestUri);
             logger.info("Loaded {} test cases", testCases.size());
             return testCases;
@@ -94,8 +102,11 @@ public class W3cTestLoader {
     private static Map<String, String> collectTestManifests(Model model) {
         Map<String, String> testToManifest = new HashMap<>();
         for (Statement stmt : model.filter(null, null, null)) {
-            if (MF_ENTRIES.equals(stmt.getPredicate().stringValue()) && isIri(stmt.getSubject())) {
-                String manifestIri = stmt.getSubject().stringValue();
+            if (MF_ENTRIES.equals(stmt.getPredicate().stringValue())) {
+                // Anonymous manifest nodes also select entries (e.g. SPARQL
+                // CONSTRUCT). Keep them even without a manifest IRI; report
+                // provenance then uses the requested manifest as before.
+                String manifestIri = isIri(stmt.getSubject()) ? stmt.getSubject().stringValue() : null;
                 Value obj = stmt.getObject();
                 Set<String> entries = new LinkedHashSet<>();
                 if (isIri(obj)) {

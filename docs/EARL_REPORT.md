@@ -16,11 +16,22 @@ The internal outcomes map exhaustively to EARL:
 | `UNTESTED` | `earl:untested` | omitted |
 | `CANT_TELL` | `earl:cantTell` | `earl:automatic` |
 
-Three tests are inapplicable: JSON-LD `t0118` and `te075` because they require generalized RDF blank-node predicates outside Corese's RDF 1.1 model, and SPARQL 1.1 `agg-avg-03` because it is an unapproved draft test contradicting SPARQL 1.1 §18.5.1.3. Other documented exclusions are untested. Infrastructure classification uses Java exception types at I/O boundaries and never searches exception messages.
+Applicability follows the [documented profile and manifest metadata](W3C_TEST_EXCLUSIONS.md):
+JSON-LD specification-1.0-only cases and generalized-RDF requirements are outside
+the JSON-LD 1.1 / RDF 1.1 profile. Applicable known implementation failures are
+executed, not deferred. `agg-avg-03` is applicable: the standard defines empty AVG
+as integer zero. `cast-decimal` is indeterminate only under its narrowly tested
+four-source-term discrepancy. Infrastructure classification uses exception types,
+not message substrings. See the audit table for each former exclusion.
 
 ## Identity and provenance
 
 Assertions and results have deterministic IRIs. Their key is the lowercase SHA-256 of the UTF-8 bytes of `suiteId + "\n" + officialTestUri`. GitHub Actions runs use the Actions run URL as their activity and report base. Local runs use a newly generated UUID URN. The assertor and subject identify the exact full 40-character commits of `corese-w3c` and `corese-core`, respectively.
+
+For a local run with uncommitted changes, these commit identifiers identify the
+base revisions only; the report does not capture the working-tree diff. Such a
+run validates the local checkout but is not a reproducible report of those commits
+alone. Published snapshots must be regenerated from the final recorded sources.
 
 The Corese subject links with `doap:release` to a resource typed `doap:Version`; only that version resource has `doap:revision`. The PROV activity is associated with the harness, uses the Corese build, and generates the report. The report makes no institutional `dct:publisher` or `foaf:maker` claim because that assertion has not been established as project metadata.
 

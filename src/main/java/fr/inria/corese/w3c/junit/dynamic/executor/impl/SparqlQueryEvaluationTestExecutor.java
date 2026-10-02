@@ -133,7 +133,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             // and compare directly against the raw CSV cells (no canonical conversion).
             List<Map<String, String>> actualCsvRows = executeSelectWithCsvFormatter(conn, queryText, baseIRI);
             List<Map<String, String>> expectedRows = CsvTsvResultParser.parseCsvRaw(resultPath);
-            compareCsvTsvRows(expectedRows, actualCsvRows, testCase);
+            compareCsvRows(expectedRows, actualCsvRows, testCase);
             return;
         }
 
@@ -152,6 +152,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                 }
                 actualRows.add(row);
             }
+            SelectResultOrder.verify(queryText, baseIRI, vars, actualRows);
         }
 
         Set<String> numericColumns = ComputedNumericResults.columns(queryText, baseIRI);
@@ -193,17 +194,22 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     private static List<Map<String, String>> executeSelectWithCsvFormatter(
             RepositoryConnection conn, String queryText, String baseIRI) {
         List<Map<String, String>> rows = new ArrayList<>();
+        List<Map<String, String>> canonicalRows = new ArrayList<>();
         try (TupleQueryResult result = conn.prepareTupleQuery(queryText, baseIRI).evaluate()) {
             List<String> vars = result.getBindingNames();
             while (result.hasNext()) {
                 BindingSet bs = result.next();
                 Map<String, String> row = new LinkedHashMap<>();
+                Map<String, String> canonicalRow = new LinkedHashMap<>();
                 for (String bindingName : vars) {
                     Value val = bs.getValue(bindingName);
+                    if (val != null) canonicalRow.put(bindingName, valueToCanonical(val));
                     row.put(bindingName, val != null ? valueToCsvString(val) : "");
                 }
                 rows.add(row);
+                canonicalRows.add(canonicalRow);
             }
+            SelectResultOrder.verify(queryText, baseIRI, vars, canonicalRows);
         }
         return rows;
     }
@@ -227,55 +233,24 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     }
 
     /**
-     * Compares CSV/TSV result rows as multisets using blank-node positional normalization.
+     * Compares CSV result rows as multisets using a result-wide blank-node bijection.
      * Blank node values are identified by the {@code _:} prefix (not the {@code _:b_} prefix
      * used by the canonical form).
      */
-    private void compareCsvTsvRows(List<Map<String, String>> expected,
+    private void compareCsvRows(List<Map<String, String>> expected,
                                    List<Map<String, String>> actual,
                                    W3cTestCase testCase) {
         if (expected.size() != actual.size()) {
             throw new AssertionError(String.format(
-                    "CSV/TSV result row count mismatch for '%s': expected %d rows, got %d rows",
+                    "CSV result row count mismatch for '%s': expected %d rows, got %d rows",
                     testCase.getName(), expected.size(), actual.size()));
         }
-        List<String> expectedNorm = expected.stream()
-                .map(SparqlQueryEvaluationTestExecutor::normalizeCsvRow)
-                .sorted()
-                .toList();
-        List<String> actualNorm = actual.stream()
-                .map(SparqlQueryEvaluationTestExecutor::normalizeCsvRow)
-                .sorted()
-                .toList();
-
-        if (!expectedNorm.equals(actualNorm)) {
+        if (!SelectResultMultiset.matches(expected, actual, Set.of(), "_:")) {
             throw new AssertionError(String.format(
-                    "CSV/TSV result mismatch for '%s'%nExpected:%n%s%nActual:%n%s",
+                    "CSV result mismatch for '%s'%nExpected:%n%s%nActual:%n%s",
                     testCase.getName(),
-                    String.join("\n", expectedNorm),
-                    String.join("\n", actualNorm)));
+                    expected, actual));
         }
-    }
-
-    /**
-     * Produces a canonical string for a CSV/TSV result row.
-     * Blank nodes are identified by the {@code _:} prefix and replaced by
-     * positional tokens so that rows with equivalent blank-node structure compare equal.
-     */
-    private static String normalizeCsvRow(Map<String, String> row) {
-        Map<String, String> bnodeIdMap = new LinkedHashMap<>();
-        int[] counter = {0};
-        StringBuilder sb = new StringBuilder();
-        row.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> {
-                    String val = entry.getValue();
-                    if (val != null && val.startsWith("_:")) {
-                        val = "_:b" + bnodeIdMap.computeIfAbsent(val, k -> String.valueOf(counter[0]++));
-                    }
-                    sb.append(entry.getKey()).append('=').append(val).append(';');
-                });
-        return sb.toString();
     }
 
     private void compareSelectResults(List<Map<String, String>> expected,
@@ -285,22 +260,11 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                     "SELECT result row count mismatch for '%s': expected %d rows, got %d rows",
                     testCase.getName(), expected.size(), actual.size()));
         }
-        // Normalize blank-node IDs per-row, then compare as multisets
-        List<String> expectedNorm = expected.stream()
-                .map(row -> normalizeRow(row, numericColumns))
-                .sorted()
-                .toList();
-        List<String> actualNorm = actual.stream()
-                .map(row -> normalizeRow(row, numericColumns))
-                .sorted()
-                .toList();
-
-        if (!expectedNorm.equals(actualNorm)) {
+        if (!SelectResultMultiset.matches(expected, actual, numericColumns, "_:b_")) {
             AssertionError mismatch = new AssertionError(String.format(
                     "SELECT result mismatch for '%s'%nExpected:%n%s%nActual:%n%s",
                     testCase.getName(),
-                    String.join("\n", expectedNorm),
-                    String.join("\n", actualNorm)));
+                    expected, actual));
             if (KnownCastDecimalExpectation.matches(testCase.getTestUri(), expected, actual, numericColumns)) {
                 throw new InvalidTestExpectationException(
                         "Upstream cast-decimal expected result rewrites four unchanged ?v source terms; "
@@ -308,32 +272,6 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
             }
             throw mismatch;
         }
-    }
-
-    /**
-     * Produces a canonical string for a result row.
-     * Blank-node IDs within the row are replaced by positional tokens so that
-     * {@code ?x=_:b0 ?y=_:b0} (same bnode) is distinguished from
-     * {@code ?x=_:b0 ?y=_:b1} (different bnodes) independently of the actual ID strings.
-     */
-    static String normalizeRow(Map<String, String> row, Set<String> numericColumns) {
-        Map<String, String> bnodeIdMap = new LinkedHashMap<>();
-        int[] counter = {0};
-        StringBuilder sb = new StringBuilder();
-        // Sort by variable name for a stable canonical form
-        row.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> {
-                    String val = entry.getValue();
-                    if (val != null && val.startsWith("_:b_")) {
-                        val = "_:b" + bnodeIdMap.computeIfAbsent(val, k -> String.valueOf(counter[0]++));
-                    }
-                    if (numericColumns.contains(entry.getKey())) {
-                        val = ComputedNumericResults.normalize(val);
-                    }
-                    sb.append(entry.getKey()).append('=').append(val).append(';');
-                });
-        return sb.toString();
     }
 
     // -----------------------------------------------------------------------

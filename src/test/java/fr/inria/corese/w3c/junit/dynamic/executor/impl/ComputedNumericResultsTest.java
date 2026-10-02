@@ -74,18 +74,15 @@ class ComputedNumericResultsTest {
                 "constructed", literal("2.00", "decimal"));
         var valid = Map.of("source", literal("2.00", "decimal"), "calculated", literal("2", "decimal"),
                 "constructed", literal("2.00", "decimal"));
-        assertEquals(row(expected, columns), row(valid, columns));
+        assertTrue(SelectResultMultiset.matches(List.of(expected), List.of(valid), columns, "_:b_"));
         for (String name : List.of("source", "constructed")) {
             var invalid = new java.util.HashMap<>(valid);
             invalid.put(name, literal("2", "decimal"));
-            assertNotEquals(row(expected, columns), row(invalid, columns), name);
+            assertFalse(SelectResultMultiset.matches(List.of(expected), List.of(invalid), columns, "_:b_"), name);
         }
         var missing = new java.util.HashMap<>(valid);
         missing.remove("calculated");
-        assertNotEquals(row(expected, columns), row(missing, columns));
+        assertFalse(SelectResultMultiset.matches(List.of(expected), List.of(missing), columns, "_:b_"));
     }
 
-    private static String row(Map<String, String> row, Set<String> columns) {
-        return SparqlQueryEvaluationTestExecutor.normalizeRow(row, columns);
-    }
 }

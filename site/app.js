@@ -737,13 +737,16 @@
     let rationaleText = test.skipReason;
 
     if (test.skipReason.startsWith("OPTIONAL_UNSUPPORTED:")) {
-      categoryBadge = "Optional Feature (Non-Standard RDF 1.1 Extension)";
+      categoryBadge = "Optional Feature Outside the RDF 1.1 Profile";
       rationaleText = test.skipReason.replace("OPTIONAL_UNSUPPORTED:", "").trim();
+    } else if (test.skipReason.startsWith("SPEC_VERSION_MISMATCH:")) {
+      categoryBadge = "Outside the JSON-LD 1.1 Specification Profile";
+      rationaleText = test.skipReason.replace("SPEC_VERSION_MISMATCH:", "").trim();
     } else if (test.skipReason.startsWith("UPSTREAM_TITANIUM_1_6:")) {
-      categoryBadge = "Upstream Dependency Edge-Case (Titanium JSON-LD 1.6.0)";
+      categoryBadge = "Historical Deferral (Titanium JSON-LD 1.6.0)";
       rationaleText = test.skipReason.replace("UPSTREAM_TITANIUM_1_6:", "").trim();
     } else if (test.skipReason.startsWith("UPSTREAM_FIXTURE:")) {
-      categoryBadge = "Upstream Benchmark Fixture Glitch (RDFa 0295)";
+      categoryBadge = "Historical Deferral (RDFa Benchmark)";
       rationaleText = test.skipReason.replace("UPSTREAM_FIXTURE:", "").trim();
     }
 

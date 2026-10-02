@@ -4,6 +4,12 @@ W3C standards conformance test suite and dynamic execution harness for [Corese](
 
 Tests are dynamically loaded from official W3C manifests and executed against Corese using JUnit 5 Dynamic Tests.
 
+For manifests declaring `mf:entries`, only listed tests are selected, including entries
+in loaded sub-manifests. A test definition elsewhere in the RDF document does not
+activate that test. Suites without `mf:entries` (legacy test vocabularies) retain type-based discovery.
+See [manifest selection](docs/W3C_TEST_EXCLUSIONS.md#manifest-selection) for the
+SPARQL nested OPTIONAL example.
+
 ## Conformance Dashboard
 
 The live interactive W3C conformance dashboard and benchmark reports are published at:
@@ -32,7 +38,7 @@ Key dashboard features:
 | **SPARQL 1.0**                        | [SPARQL 1.0 Test Suite](https://w3c.github.io/rdf-tests/sparql/sparql10/)           | Query Evaluation (SELECT, ASK, CONSTRUCT, DESCRIBE), Positive/Negative Syntax |
 | **SPARQL 1.1**                        | [SPARQL 1.1 Test Suite](https://w3c.github.io/rdf-tests/sparql/sparql11/)           | Query Evaluation, Syntax, Update Evaluation, CSV Results                      |
 
-> **Documented Test Exclusions & Rationale**: All documented exclusions (e.g. non-standard Generalized RDF or upstream dependency edge-cases) are formally specified in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md).
+> **Selection, applicability, and known results**: The [audit notes](docs/W3C_TEST_EXCLUSIONS.md) explain every former exclusion, the specification profile, and remaining failures.
 
 ## Running Tests
 
@@ -91,10 +97,32 @@ See [the EARL application profile](docs/EARL_REPORT.md) for the exact model, pro
 ./gradlew test --tests "*Sparql11DynamicTest*"
 ```
 
-### Exclusions Policy
+### Applicability and outcome policy
 
-To ensure high scientific integrity and transparency, no test is skipped silently. All exclusions are documented with exact fragment identifiers and reactivation conditions in [`docs/W3C_TEST_EXCLUSIONS.md`](docs/W3C_TEST_EXCLUSIONS.md):
+See [the audited classification rules](docs/W3C_TEST_EXCLUSIONS.md). Known applicable
+failures run normally. The JSON-LD 1.1 suites classify specification-1.0-only
+fixtures and generalized-RDF requirements as inapplicable; explicit 1.0 processing
+mode tests remain applicable. There are no deliberate deferrals of known failures.
+`cantTell` is reserved for an indeterminate execution, never counted as a pass,
+and still makes Gradle fail. The report's `outcome` field is authoritative.
 
-- [Inapplicable Tests](docs/W3C_TEST_EXCLUSIONS.md#inapplicable-tests): features outside the RDF 1.1 profile (e.g. generalized RDF blank nodes, unapproved SPARQL 1.1 draft tests).
-- [Untested Tests](docs/W3C_TEST_EXCLUSIONS.md#untested-tests): isolated upstream dependency edge-cases (Titanium JSON-LD 1.6.0, composite RDFa fixtures).
-- [Cannot Tell Tests](docs/W3C_TEST_EXCLUSIONS.md#cannot-tell-tests): actively executed tests with upstream manifest expectation discrepancies (`cast-decimal`).
+## Coverage and limits
+
+The selected manifests define the run's scope, not all functionality of every
+standard named on the dashboard:
+
+- SPARQL 1.0 and the SPARQL 1.1 **engine** manifests cover query, update and the
+  selected result-format fixtures. This is not certification of the separate
+  SPARQL HTTP Protocol, Graph Store HTTP Protocol, Service Description, entailment
+  regimes or federated SERVICE suites; these require their own profiles and,
+  where applicable, server/endpoint fixtures.
+- JSON-LD covers **toRdf and fromRdf** for the 1.1 specification. It is not the
+  standalone compact, expand, flatten, frame, HTML or remote-document API suite.
+- RDFa covers the declared XHTML1, XML and SVG hosts, not every RDFa host language
+  and version. A selected benchmark still has to satisfy its expected graph.
+- `PASSED` means agreement under the harness's comparison rules. It is not a
+  proof of complete implementation. The SELECT comparator preserves
+  row multiplicities and uses a result-wide blank-node bijection. ORDER BY checks
+  cover projected variable keys and a documented subset of term comparisons;
+  hidden keys, arbitrary expressions and other datatypes remain coverage limits.
+  See the audit notes in the exclusions document.
