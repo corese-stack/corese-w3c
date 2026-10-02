@@ -45,10 +45,10 @@ final class ComputedNumericResults {
         if (expression instanceof UnaryPlusAst) return false; // May return the original RDF term.
         if (expression instanceof NumericExpressionAst) return true;
         if (expression instanceof AggregateAst agg) {
+            // MIN/MAX select an existing RDF term (§18.5.1.5–6); do not
+            // erase its lexical identity by treating it as a computed number.
             return agg.function() == AggregateFunction.SUM
-                    || agg.function() == AggregateFunction.AVG
-                    || agg.function() == AggregateFunction.MIN
-                    || agg.function() == AggregateFunction.MAX;
+                    || agg.function() == AggregateFunction.AVG;
         }
         if (expression instanceof FunctionCallAst function) {
             return function.functionName() instanceof IriAst(var iri) && TYPES.contains(resolver.resolveIri(iri));

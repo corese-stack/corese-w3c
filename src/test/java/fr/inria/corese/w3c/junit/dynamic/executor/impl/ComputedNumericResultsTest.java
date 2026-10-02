@@ -47,7 +47,7 @@ class ComputedNumericResultsTest {
     @ValueSource(strings = {"?value", "STRDT('2.0', xsd:decimal)", "STR(?value)",
             "'2.0'^^xsd:decimal", "+?value", "COALESCE(?value, 1/2)",
             "COALESCE(1/2, STRDT('2.0', xsd:decimal))", "COALESCE(1/2, 2.00)",
-            "IF(true, 1/2, STRDT('2.0', xsd:decimal))"})
+            "IF(true, 1/2, STRDT('2.0', xsd:decimal))", "MIN(?value)", "MAX(?value)"})
     void uncertainOrLexicalResultsStayStrict(String expression) {
         assertTrue(columns(expression).isEmpty());
     }
@@ -55,7 +55,7 @@ class ComputedNumericResultsTest {
     @ParameterizedTest
     @ValueSource(strings = {"?a / ?b", "SECONDS(NOW())", "xsd:decimal(?value)",
             "xsd:double(?value)", "xsd:float(?value)", "COALESCE(?a / ?b, -2)",
-            "SUM(?value)", "AVG(?value)", "MIN(?value)", "MAX(?value)"})
+            "SUM(?value)", "AVG(?value)"})
     void recognizesComputedNumericProjections(String expression) {
         assertEquals(Set.of("result"), columns(expression));
     }
@@ -63,6 +63,15 @@ class ComputedNumericResultsTest {
     private static Set<String> columns(String expression) {
         return ComputedNumericResults.columns(PREFIX + "SELECT (" + expression
                 + " AS ?result) WHERE { VALUES ?value { 1 } }", "http://example.org/");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"MIN", "MAX"})
+    void extremaMustPreserveTheSelectedRdfTerm(String aggregate) {
+        var columns = columns(aggregate + "(?value)");
+        var expected = List.of(Map.of("result", literal("2.00", "decimal")));
+        var rewritten = List.of(Map.of("result", literal("2", "decimal")));
+        assertFalse(SelectResultMultiset.matches(expected, rewritten, columns, "_:b_"));
     }
 
     @Test
