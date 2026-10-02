@@ -270,6 +270,12 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
                         "Upstream cast-decimal expected result rewrites four unchanged ?v source terms; "
                         + "all other bindings agree. Test executed, verdict indeterminate (not passed).", mismatch);
             }
+            if (KnownAggMinExpectation.matches(testCase.getTestUri(), expected, actual, numericColumns)) {
+                throw new InvalidTestExpectationException(
+                        "Upstream agg-min-02 expected result expects canonical \"2.0E-1\"^^xsd:double; "
+                        + "Corese preserves source term 2E-1 per SPARQL 1.1 §18.5.1.5. "
+                        + "All other bindings agree. Test executed, verdict indeterminate (not passed).", mismatch);
+            }
             throw mismatch;
         }
     }
