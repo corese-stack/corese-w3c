@@ -3,10 +3,8 @@ package fr.inria.corese.w3c.junit.dynamic.utils;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
-import fr.inria.corese.core.next.data.api.factory.ValueFactory;
 import fr.inria.corese.core.next.data.api.io.format.RDFFormat;
 import fr.inria.corese.core.next.data.api.io.parser.RDFParser;
 import fr.inria.corese.core.next.data.api.model.Model;
@@ -50,15 +48,6 @@ public class RDFTestUtils {
     }
 
     /**
-     * Creates a ValueFactory instance for creating RDF values.
-     *
-     * @return A new ValueFactory
-     */
-    public static ValueFactory createValueFactory() {
-        return Values.factory();
-    }
-
-    /**
      * Resolves the RDFC hash algorithm strictly from the manifest property value.
      *
      * @param hashAlgoProp the property value from rdfc:hashAlgorithm (may be null)
@@ -84,7 +73,6 @@ public class RDFTestUtils {
      * @param fileUri The file URI to load
      * @return The local file path
      * @throws IOException if the file cannot be read
-     * @throws NoSuchAlgorithmException if the hash algorithm is unavailable
      */
     public static String loadFile(URI fileUri) {
         if ("file".equalsIgnoreCase(fileUri.getScheme())) {
@@ -93,7 +81,7 @@ public class RDFTestUtils {
         try {
             TestFileManager.loadFile(fileUri);
             return TestFileManager.getLocalFilePath(fileUri).toString();
-        } catch (IOException | NoSuchAlgorithmException exception) {
+        } catch (IOException exception) {
             throw new InfrastructureException("Unable to obtain the official test fixture " + fileUri, exception);
         }
     }

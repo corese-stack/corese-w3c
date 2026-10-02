@@ -35,6 +35,18 @@ class ModelIsomorphismTest {
     }
 
     @Test
+    void diagnosticsPreserveLiteralIdentityAndGraphNames() {
+        var values = Values.factory();
+        var model = RDFTestUtils.createModel();
+        model.add(values.createIRI("urn:s"), values.createIRI("urn:p"),
+                values.createLiteral("2E-1", values.createIRI("http://www.w3.org/2001/XMLSchema#double")),
+                values.createIRI("urn:graph"));
+        String diagnostic = ModelIsomorphism.canonicalize(model);
+        assertTrue(diagnostic.contains("\"2E-1\"^^<http://www.w3.org/2001/XMLSchema#double>"));
+        assertTrue(diagnostic.contains("<urn:graph>"));
+    }
+
+    @Test
     void defaultGraphIsDistinctFromEveryNamedGraph() {
         for (String graph : List.of("urn:graph", "_:graph")) {
             assertFalse(ModelIsomorphism.areModelsIsomorphic(dataset("urn:s", null), dataset("urn:s", graph)));

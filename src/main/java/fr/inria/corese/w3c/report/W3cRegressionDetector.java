@@ -132,12 +132,9 @@ public final class W3cRegressionDetector {
     private static void validateNoDroppedBaselineKeys(
             Map<String, BaselineTest> baselineMap,
             Map<String, CurrentTest> currentMap) {
-        List<String> missingKeys = new ArrayList<>();
-        for (String key : baselineMap.keySet()) {
-            if (!currentMap.containsKey(key)) {
-                missingKeys.add(key);
-            }
-        }
+        List<String> missingKeys = baselineMap.keySet().stream()
+                .filter(key -> !currentMap.containsKey(key))
+                .toList();
 
         if (!missingKeys.isEmpty()) {
             throw new IllegalArgumentException(String.format(

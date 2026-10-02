@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -175,10 +177,9 @@ public final class CsvTsvResultParser {
                 return rows;
             }
             String[] headers = headerLine.split("\t", -1);
-            List<String> vars = new ArrayList<>();
-            for (String h : headers) {
-                vars.add(h.startsWith("?") ? h.substring(1) : h.trim());
-            }
+            List<String> vars = Arrays.stream(headers)
+                    .map(header -> header.startsWith("?") ? header.substring(1) : header.trim())
+                    .collect(Collectors.toCollection(ArrayList::new));
 
             String line;
             while ((line = reader.readLine()) != null) {

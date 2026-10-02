@@ -2,6 +2,7 @@ package fr.inria.corese.w3c.junit.dynamic.executor.impl;
 
 import fr.inria.corese.core.next.query.impl.sparql.ast.ASTConstants.OrderDirection;
 import fr.inria.corese.core.next.query.impl.sparql.ast.SelectQueryAst;
+import fr.inria.corese.core.next.query.impl.sparql.ast.OrderConditionAst;
 import fr.inria.corese.core.next.query.impl.sparql.ast.VarAst;
 import fr.inria.corese.core.next.query.impl.sparql.parser.SparqlParser;
 import java.math.BigDecimal;
@@ -32,24 +33,29 @@ final class SelectResultOrder {
         for (int i = 0; i < rows.size(); i++) {
             for (int j = i + 1; j < rows.size(); j++) {
                 for (var condition : conditions) {
-                    if (!(condition.expression() instanceof VarAst variable)) break;
-                    String name = variable.name().replaceFirst("^[?$]", "");
-                    if (!projected.contains(name)) break;
-                    String left = rows.get(i).get(name);
-                    String right = rows.get(j).get(name);
-                    // Only identical RDF terms allow advancing to the next ordering condition (§15.1).
-                    if (Objects.equals(left, right)) continue;
-                    Integer comparison = compare(left, right);
-                    if (comparison != null) {
-                        int directed = condition.orderDirection() == OrderDirection.DESC ? -comparison : comparison;
-                        if (directed > 0) throw new AssertionError("ORDER BY inversion on ?" + name
-                                + " between result rows " + (i + 1) + " and " + (j + 1)
-                                + ": " + left + " / " + right);
-                    }
-                    break;
+                    if (!verifyCondition(condition, projected, rows, i, j)) break;
                 }
             }
         }
+    }
+
+    // Only identical RDF terms allow advancing to the next condition (§15.1).
+    private static boolean verifyCondition(OrderConditionAst condition, List<String> projected,
+                                           List<Map<String, String>> rows, int i, int j) {
+        if (!(condition.expression() instanceof VarAst(String variableName))) return false;
+        String name = variableName.replaceFirst("^[?$]", "");
+        if (!projected.contains(name)) return false;
+        String left = rows.get(i).get(name);
+        String right = rows.get(j).get(name);
+        if (Objects.equals(left, right)) return true;
+        Integer comparison = compare(left, right);
+        if (comparison != null) {
+            int directed = condition.orderDirection() == OrderDirection.DESC ? -comparison : comparison;
+            if (directed > 0) throw new AssertionError("ORDER BY inversion on ?" + name
+                    + " between result rows " + (i + 1) + " and " + (j + 1)
+                    + ": " + left + " / " + right);
+        }
+        return false;
     }
 
     private static int rank(String term) {
@@ -60,23 +66,20 @@ final class SelectResultOrder {
     }
 
     private static Integer compare(String left, String right) {
-        int leftRank = rank(left), rightRank = rank(right);
+        int leftRank = rank(left);
+        int rightRank = rank(right);
         if (leftRank != rightRank) return Integer.compare(leftRank, rightRank);
         if (leftRank == 2) return codepointCompare(left, right);
         if (leftRank != 3) return null;
-        String leftType = datatype(left), rightType = datatype(right);
-        String leftLexical = lexical(left), rightLexical = lexical(right);
+        String leftType = datatype(left);
+        String rightType = datatype(right);
+        String leftLexical = lexical(left);
+        String rightLexical = lexical(right);
         if (leftType.equals("string") && rightType.equals("string")) {
             return codepointCompare(leftLexical, rightLexical);
         }
         if (EXACT_NUMERIC.contains(leftType) && EXACT_NUMERIC.contains(rightType)) {
-            // Exponents are not legal decimal/integer lexical forms.
-            if (!validExactNumber(leftLexical, leftType) || !validExactNumber(rightLexical, rightType)) return null;
-            try {
-                return new BigDecimal(leftLexical).compareTo(new BigDecimal(rightLexical));
-            } catch (NumberFormatException invalid) {
-                return null;
-            }
+            return compareExactNumbers(leftLexical, leftType, rightLexical, rightType);
         }
         if (leftType.equals("boolean") && rightType.equals("boolean")) {
             var a = bool(leftLexical);
@@ -84,6 +87,16 @@ final class SelectResultOrder {
             return a == null || b == null ? null : Boolean.compare(a, b);
         }
         return null;
+    }
+
+    private static Integer compareExactNumbers(String left, String leftType, String right, String rightType) {
+        // Exponents are not legal decimal/integer lexical forms.
+        if (!validExactNumber(left, leftType) || !validExactNumber(right, rightType)) return null;
+        try {
+            return new BigDecimal(left).compareTo(new BigDecimal(right));
+        } catch (NumberFormatException invalid) {
+            return null;
+        }
     }
 
     private static boolean validExactNumber(String lexical, String datatype) {

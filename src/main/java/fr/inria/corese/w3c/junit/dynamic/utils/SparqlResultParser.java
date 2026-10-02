@@ -11,6 +11,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -111,11 +113,10 @@ public class SparqlResultParser {
         }
 
         // SELECT result
-        List<String> variables = new ArrayList<>();
         JsonNode vars = root.path("head").path("vars");
-        for (JsonNode v : vars) {
-            variables.add(v.asText());
-        }
+        List<String> variables = StreamSupport.stream(vars.spliterator(), false)
+                .map(JsonNode::asText)
+                .collect(Collectors.toCollection(ArrayList::new));
 
         List<Map<String, String>> rows = new ArrayList<>();
         for (JsonNode binding : root.path("results").path("bindings")) {

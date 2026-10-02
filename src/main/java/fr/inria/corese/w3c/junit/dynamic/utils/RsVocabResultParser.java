@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -91,27 +92,25 @@ public class RsVocabResultParser {
                 .orElseThrow(() -> new AssertionError("No rs:ResultSet node found in result file: " + resultUri));
 
         IRI resultVarIri = Values.factory().createIRI(RS_RESULT_VARIABLE);
-        List<String> variables = new ArrayList<>();
-        for (Statement varStmt : model.filter(resultSetNode, resultVarIri, null)) {
-            if (varStmt.getObject() instanceof Literal lit) {
-                variables.add(lit.getLabel());
-            }
-        }
+        List<String> variables = model.filter(resultSetNode, resultVarIri, null).stream()
+                .map(Statement::getObject)
+                .filter(Literal.class::isInstance)
+                .map(Literal.class::cast)
+                .map(Literal::getLabel)
+                .collect(Collectors.toCollection(ArrayList::new));
 
         IRI solutionIri = Values.factory().createIRI(RS_SOLUTION);
-        List<Map.Entry<Integer, Map<String, String>>> indexedRows = new ArrayList<>();
-
-        for (Statement solStmt : model.filter(resultSetNode, solutionIri, null)) {
-            if (solStmt.getObject() instanceof Resource solRes) {
-                indexedRows.add(parseSolution(model, solRes));
-            }
-        }
+        List<Map.Entry<Integer, Map<String, String>>> indexedRows = model.filter(resultSetNode, solutionIri, null).stream()
+                .map(Statement::getObject)
+                .filter(Resource.class::isInstance)
+                .map(Resource.class::cast)
+                .map(solution -> parseSolution(model, solution))
+                .collect(Collectors.toCollection(ArrayList::new));
 
         indexedRows.sort(Map.Entry.comparingByKey());
-        List<Map<String, String>> rows = new ArrayList<>();
-        for (Map.Entry<Integer, Map<String, String>> e : indexedRows) {
-            rows.add(e.getValue());
-        }
+        List<Map<String, String>> rows = indexedRows.stream()
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toCollection(ArrayList::new));
         return new SparqlResultParser.SparqlResults(false, false, variables, rows);
     }
 

@@ -9,15 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
- * Manages test files, including downloading, loading, and comparing them.
- * This utility class provides methods to handle local storage of remote test
- * resources,
- * ensuring they are up-to-date and providing utility functions for file path
- * manipulation.
+ * Caches downloaded test fixtures locally. Existing files are reused until removed.
  */
 public class TestFileManager {
 
@@ -28,29 +22,9 @@ public class TestFileManager {
      */
     public static final String RESOURCE_PATH_STRING = "src/test/resources/";
     /**
-     * Path string for the corese command line executable JAR.
-     */
-    public static final String CORESE_COMMAND_PATH_STRING = RESOURCE_PATH_STRING + "corese-command.jar";
-
-    /**
-     * Flag indicating whether to check and update outdated cached files.
-     * When enabled, the manager compares local and remote file hashes.
-     */
-    private static boolean updateModeFlag = false;
-
-    /**
      * Private constructor to prevent instantiation of this utility class.
      */
     private TestFileManager() {
-    }
-
-    /**
-     * Checks if the TestFileManager is currently in update mode.
-     *
-     * @return {@code true} if update mode is enabled, {@code false} otherwise.
-     */
-    public static boolean isInUpdateMode() {
-        return updateModeFlag;
     }
 
     /**
@@ -59,14 +33,12 @@ public class TestFileManager {
      *
      * @param fileUri the URI of the file to load (can be a local file:// URI or remote http(s):// URI)
      * @throws IOException if an I/O error occurs during file operations
-     * @throws NoSuchAlgorithmException if SHA-256 hashing algorithm is unavailable
      */
-    public static void loadFile(URI fileUri) throws IOException, NoSuchAlgorithmException {
-        String localFileFolder = getPrefixedFilename(fileUri); // Use getPrefixedFilename for consistency
-        Path localFilePath = Paths.get(RESOURCE_PATH_STRING, localFileFolder); // Combine RESOURCE_PATH_STRING and
-                                                                               // prefixed filename
+    public static void loadFile(URI fileUri) throws IOException {
+        String localFileFolder = getPrefixedFilename(fileUri);
+        Path localFilePath = Paths.get(RESOURCE_PATH_STRING, localFileFolder);
 
-        if ((!Files.exists(localFilePath)) || (isInUpdateMode() && isRemoteFileDifferent(fileUri, localFilePath))) {
+        if (!Files.exists(localFilePath)) {
             downloadFile(fileUri, localFilePath);
         }
     }
@@ -85,34 +57,6 @@ public class TestFileManager {
     }
 
     /**
-     * Compares two files to check if they are different based on their SHA-256
-     * hash.
-     * A temporary file is downloaded for the remote URI to perform the hash
-     * comparison.
-     *
-     * @param remoteUri the remote file URI
-     * @param localFilePath the local cached file path
-     * @return {@code true} if the files differ, {@code false} if they are identical
-     * @throws IOException if an I/O error occurs
-     * @throws NoSuchAlgorithmException if SHA-256 algorithm is unavailable
-     */
-    @SuppressWarnings("java:S5443")
-    private static boolean isRemoteFileDifferent(URI remoteUri, Path localFilePath)
-            throws IOException, NoSuchAlgorithmException {
-        String localFileHash = hashFile(localFilePath);
-
-        Path tempFile = Files.createTempFile("remote_file", ".tmp");
-        try {
-            downloadFile(remoteUri, tempFile);
-            String remoteFileHash = hashFile(tempFile);
-
-            return !localFileHash.equals(remoteFileHash);
-        } finally {
-            Files.delete(tempFile);
-        }
-    }
-
-    /**
      * Downloads a file from a remote URI to a local path.
      * Creates parent directories if they don't exist.
      *
@@ -128,38 +72,7 @@ public class TestFileManager {
         IOException lastException = null;
         for (int attempt = 1; attempt <= 3; attempt++) {
             try {
-                URL url = remoteUri.toURL();
-                for (int redirectCount = 0; redirectCount < 5; redirectCount++) {
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setInstanceFollowRedirects(true);
-                    conn.setConnectTimeout(15000);
-                    conn.setReadTimeout(20000);
-                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
-                    int status = conn.getResponseCode();
-
-                    if (status == HttpURLConnection.HTTP_MOVED_PERM || status == HttpURLConnection.HTTP_MOVED_TEMP
-                            || status == HttpURLConnection.HTTP_SEE_OTHER || status == 307 || status == 308) {
-                        String location = conn.getHeaderField("Location");
-                        conn.disconnect();
-                        if (location != null && !location.isBlank()) {
-                            url = URI.create(location).isAbsolute() ? URI.create(location).toURL() : remoteUri.resolve(location).toURL();
-                            continue;
-                        }
-                    }
-
-                    if (status >= 400) {
-                        conn.disconnect();
-                        throw new IOException("HTTP " + status + " error while downloading: " + remoteUri);
-                    }
-
-                    try (InputStream in = conn.getInputStream()) {
-                        Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
-                    } finally {
-                        conn.disconnect();
-                    }
-                    sanitizeIfTtlManifest(localFilePath);
-                    return;
-                }
+                if (downloadAttempt(remoteUri, localFilePath)) return;
             } catch (IOException e) {
                 lastException = e;
                 try {
@@ -174,6 +87,46 @@ public class TestFileManager {
         throw lastException != null ? lastException : new IOException("Failed to download: " + remoteUri);
     }
 
+    private static boolean downloadAttempt(URI remoteUri, Path localFilePath) throws IOException {
+        URL url = remoteUri.toURL();
+        for (int redirectCount = 0; redirectCount < 5; redirectCount++) {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setInstanceFollowRedirects(true);
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(20000);
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+            int status = conn.getResponseCode();
+
+            if (isRedirect(status)) {
+                String location = conn.getHeaderField("Location");
+                conn.disconnect();
+                if (location != null && !location.isBlank()) {
+                    url = URI.create(location).isAbsolute() ? URI.create(location).toURL() : remoteUri.resolve(location).toURL();
+                    continue;
+                }
+            }
+
+            if (status >= 400) {
+                conn.disconnect();
+                throw new IOException("HTTP " + status + " error while downloading: " + remoteUri);
+            }
+
+            try (InputStream in = conn.getInputStream()) {
+                Files.copy(in, localFilePath, StandardCopyOption.REPLACE_EXISTING);
+            } finally {
+                conn.disconnect();
+            }
+            sanitizeIfTtlManifest(localFilePath);
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isRedirect(int status) {
+        return status == HttpURLConnection.HTTP_MOVED_PERM || status == HttpURLConnection.HTTP_MOVED_TEMP
+                || status == HttpURLConnection.HTTP_SEE_OTHER || status == 307 || status == 308;
+    }
+
     private static void sanitizeIfTtlManifest(Path localFilePath) {
         if (localFilePath.toString().endsWith("manifest.ttl")) {
             try {
@@ -186,42 +139,6 @@ public class TestFileManager {
                 // Ignore if unable to read/write
             }
         }
-    }
-
-    /**
-     * Computes the SHA-256 hash of a file.
-     *
-     * @param filePath the path to the file
-     * @return the SHA-256 hash in hexadecimal format
-     * @throws NoSuchAlgorithmException if SHA-256 algorithm is unavailable
-     * @throws IOException if an I/O error occurs while reading the file
-     */
-    private static String hashFile(Path filePath) throws NoSuchAlgorithmException, IOException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-        try (InputStream fis = Files.newInputStream(filePath)) {
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = fis.read(buffer)) != -1) {
-                digest.update(buffer, 0, bytesRead);
-            }
-        }
-
-        return bytesToHex(digest.digest());
-    }
-
-    /**
-     * Converts a byte array to a hexadecimal string.
-     *
-     * @param bytes the byte array
-     * @return the hexadecimal representation
-     */
-    private static String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder(bytes.length * 2);
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
     }
 
     /**

@@ -51,28 +51,33 @@ final class SelectResultMultiset {
         if (index == left.size()) return true;
         var row = left.get(index);
         for (int candidate = 0; candidate < right.size(); candidate++) {
-            if (used[candidate]) continue;
             var other = right.get(candidate);
-            if (!row.keySet().equals(other.keySet())) continue;
-            Map<String, String> nextForward = new HashMap<>(forward);
-            Map<String, String> nextReverse = new HashMap<>(reverse);
-            boolean compatible = true;
-            for (var entry : row.entrySet()) {
-                String value = entry.getValue();
-                String otherValue = other.get(entry.getKey());
-                if (value.startsWith(prefix) && otherValue.startsWith(prefix)) {
-                    String mapped = nextForward.putIfAbsent(value, otherValue);
-                    String inverse = nextReverse.putIfAbsent(otherValue, value);
-                    if ((mapped != null && !mapped.equals(otherValue))
-                            || (inverse != null && !inverse.equals(value))) compatible = false;
-                } else if (!value.equals(otherValue)) compatible = false;
-                if (!compatible) break;
+            if (!used[candidate] && row.keySet().equals(other.keySet())) {
+                Map<String, String> nextForward = new HashMap<>(forward);
+                Map<String, String> nextReverse = new HashMap<>(reverse);
+                if (compatible(row, other, nextForward, nextReverse, prefix)) {
+                    used[candidate] = true;
+                    if (match(left, right, index + 1, used, nextForward, nextReverse, prefix)) return true;
+                    used[candidate] = false;
+                }
             }
-            if (!compatible) continue;
-            used[candidate] = true;
-            if (match(left, right, index + 1, used, nextForward, nextReverse, prefix)) return true;
-            used[candidate] = false;
         }
         return false;
+    }
+
+    private static boolean compatible(Map<String, String> row, Map<String, String> other,
+                                      Map<String, String> forward, Map<String, String> reverse, String prefix) {
+        for (var entry : row.entrySet()) {
+            if (!compatibleTerm(entry.getValue(), other.get(entry.getKey()), forward, reverse, prefix)) return false;
+        }
+        return true;
+    }
+
+    private static boolean compatibleTerm(String value, String other, Map<String, String> forward,
+                                          Map<String, String> reverse, String prefix) {
+        if (!value.startsWith(prefix) || !other.startsWith(prefix)) return value.equals(other);
+        String mapped = forward.putIfAbsent(value, other);
+        String inverse = reverse.putIfAbsent(other, value);
+        return (mapped == null || mapped.equals(other)) && (inverse == null || inverse.equals(value));
     }
 }

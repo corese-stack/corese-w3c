@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -282,7 +281,7 @@ public class W3cTestLoader {
             if (!Files.exists(cached)) {
                 try {
                     TestFileManager.loadFile(manifestUri);
-                } catch (IOException | NoSuchAlgorithmException e) {
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -583,7 +582,7 @@ public class W3cTestLoader {
     }
 
     private static void parseManifest(URI localManifestUri, URI manifestUri, URI baseUri, Model model)
-            throws IOException, NoSuchAlgorithmException, JsonLdError {
+            throws IOException, JsonLdError {
         RDFFormat format = RDFTestUtils.guessFileFormat(localManifestUri);
         RDFParser parser = RDFTestUtils.createParser(format, model);
         Path localManifestPath = Path.of(localManifestUri);
@@ -594,7 +593,7 @@ public class W3cTestLoader {
     }
 
     private static void configureJsonLdParser(RDFFormat format, RDFParser parser, Path manifestPath, URI baseUri)
-            throws IOException, NoSuchAlgorithmException, JsonLdError {
+            throws IOException, JsonLdError {
         if (format != RDFFormat.JSONLD) {
             return;
         }
@@ -603,7 +602,7 @@ public class W3cTestLoader {
     }
 
     private static void cacheJsonLdContext(Path manifestPath, URI baseUri)
-            throws IOException, NoSuchAlgorithmException, JsonLdError {
+            throws IOException, JsonLdError {
         try (FileInputStream inputStream = new FileInputStream(manifestPath.toFile())) {
             JsonDocument document = JsonDocument.of(inputStream);
             Optional<String> context = document.getJsonContent()
