@@ -119,7 +119,11 @@ standard named on the dashboard:
 - JSON-LD covers **toRdf and fromRdf** for the 1.1 specification. It is not the
   standalone compact, expand, flatten, frame, HTML or remote-document API suite.
 - RDFa covers the declared XHTML1, XML and SVG hosts, not every RDFa host language
-  and version. A selected benchmark still has to satisfy its expected graph.
+  and version. Negative evaluations use the official ASK sidecars. Positive
+  evaluations compare full graphs, a stronger criterion than some official ASK
+  queries: all three `0295` benchmarks pass their official nonempty-graph query
+  but still fail this harness's full-graph comparison. These outcomes must not be
+  described as three failures of the official ASK criterion.
 - `PASSED` means agreement under the harness's comparison rules. It is not a
   proof of complete implementation. The SELECT comparator preserves
   row multiplicities and uses a result-wide blank-node bijection. ORDER BY checks

@@ -84,41 +84,46 @@ this option to true.
 | toRdf | `t0118` | Keep blank-node predicates. | A generalized-RDF profile and data model are implemented. |
 | toRdf | `te075` | Blank-node `@vocab` produces blank-node predicates. | A generalized-RDF profile and data model are implemented. |
 
-## Executed Cases Previously Deferred
+## Known Failures and Discrepancies
 
-The audit on 2026-09-30 re-executed every previously excluded case. The following
-applicable tests now run normally. These observations describe the tested local
-checkout and Titanium 1.6.0; future runs determine their actual outcomes.
+The following applicable tests are executed and currently result in known failures or discrepancies against the test fixtures:
 
 | Suite | ID | Observed result / interpretation |
 | --- | --- | --- |
 | JSON-LD toRdf | `tli12` | `FAILED`: the processor rejects `@base: "http://invalid/<>/"` with `INVALID_BASE_IRI`, while the selected fixture expects successful list conversion. The fixture/specification question remains open; no unverified upstream-bug exemption is applied. |
-| JSON-LD fromRdf | `t0027` | `FAILED`: `NumberFormatException` with `useNativeTypes` and non-finite or ill-typed numeric input; the fixture expects literals to be preserved when native JSON conversion is unavailable. |
-| JSON-LD fromRdf | `t0028` | `FAILED`: `NumberFormatException` for non-native literal values with `useNativeTypes`. |
-| JSON-LD fromRdf | `tli01` | `FAILED`: a nested empty RDF list triggers `NullPointerException`. |
-| RDFa XHTML | `0295` | `FAILED`: produced graph differs from the expected benchmark graph. |
-| RDFa XML | `0295` | `FAILED`: produced graph differs from the expected benchmark graph. |
-| RDFa SVG | `0295` | `FAILED`: produced graph differs from the expected benchmark graph. |
+| JSON-LD fromRdf | `t0027` | `FAILED`: `NumberFormatException` in Titanium with `useNativeTypes` on non-finite or ill-typed numeric input; the fixture expects literals to be preserved when native JSON conversion is unavailable. |
+| JSON-LD fromRdf | `t0028` | `FAILED`: `NumberFormatException` in Titanium for non-native literal values with `useNativeTypes`. |
+| JSON-LD fromRdf | `tli01` | `FAILED`: `NullPointerException` in Titanium when processing a nested empty list (`@list` containing empty `@list`). |
+| RDFa XHTML | `0295` | `FAILED`: produced graph differs from the expected benchmark graph under full-graph comparison. |
+| RDFa XML | `0295` | `FAILED`: produced graph differs from the expected benchmark graph under full-graph comparison. |
+| RDFa SVG | `0295` | `FAILED`: produced graph differs from the expected benchmark graph under full-graph comparison. |
+| SPARQL 1.1 | `agg-min-02` | `FAILED`: input data contains `:mixed2 :double 2E-1`, while `agg-min-02.srx` expects `"2.0E-1"^^xsd:double`. |
 
-The RDFa manifests select `0295` and mark it `test:required`. Calling it a
-benchmark does not make its correctness check optional. The earlier claim that
-all differences were caused by concatenated upstream fixtures was not backed by
-an exhaustive discrepancy check. These mismatches remain visible until a parser
-fix or a substantiated upstream correction resolves them.
+The RDFa manifests select `0295` and mark it `test:required`. Each official ASK sidecar only verifies that at least one triple is generated; all three produced graphs satisfy that official criterion. The `FAILED` entries above reflect the harness's stricter full-graph comparison.
 
-The nine previously deferred JSON-LD 1.0 cases (`te014`, `te026`, `te071`, `te115`,
-`te116`, `ter02`, `ter03`, `ter24`, `ter32`) and fromRdf `t0008` are now
-`INAPPLICABLE` for the specification-profile reason above, not because Titanium
-failed them. `te038`, which previously passed, is classified by the same rule.
+The separate parent-object list bug is now covered by six unit regressions in
+`RDFaParserTest`: descendants share an ordered collection on the relation object,
+subject and object lists remain distinct, and incomplete relations and empty
+lists retain their owners. The corrected incoming/local/child list contexts pass
+the complete corese-core regression run (3,200 tests, no failures). Targeted
+`0295` probes nevertheless produce exactly the same canonical graphs as before
+this list correction: XHTML has 356 quads against 364 expected, and XML/SVG have
+313 against 318. All three official ASK queries still pass and all three
+full-graph comparisons still fail. The reproduced list bug therefore cannot be
+claimed to explain or resolve those benchmark differences; XML/SVG also retain
+grounded discrepancies involving `xml:base` and `time`/`datetime`. These are
+targeted observations, not a new complete W3C harness validation or published
+conformance snapshot.
 
-### AVG on an empty group
+### MIN and source-term preservation (`agg-min-02`)
 
-`agg-avg-03` is applicable. [SPARQL 1.1 §18.5.1.4](https://www.w3.org/TR/sparql11-query/#defn_aggAvg)
-defines the average of an empty multiset as integer zero. The former exclusion
-cited §18.5.1.3 (Sum) and incorrectly asserted that the expected zero contradicted
-the standard. Lack of an approval triple alone is not an exclusion criterion.
-The exclusion is removed; Corese's empty-group AVG branch and its regression test
-are corrected to return integer zero.
+`agg-numeric.ttl` contains `:mixed2 :double 2E-1`, while `agg-min-02.srx` expects `"2.0E-1"^^xsd:double`. [SPARQL 1.1 §18.5.1.5](https://www.w3.org/TR/sparql11-query/#defn_aggMin) specifies that MIN selects an existing RDF term from the group, rather than constructing a fresh canonicalized literal. Corese preserves the source term `2E-1`. The discrepancy is visible because `ComputedNumericResults` strictly preserves source terms for extrema aggregates; it remains marked `FAILED` against the upstream fixture.
+
+The version-restricted JSON-LD 1.0 cases (`te014`, `te026`, `te038`, `te071`, `te115`, `te116`, `ter02`, `ter03`, `ter24`, `ter32`, `t0008`) are classified as `INAPPLICABLE` for the specification-profile reason above, not because the processor failed them.
+
+### AVG on an empty group (`agg-avg-03`)
+
+`agg-avg-03` is applicable. [SPARQL 1.1 §18.5.1.4](https://www.w3.org/TR/sparql11-query/#defn_aggAvg) defines the average of an empty multiset as integer zero. Corese's empty-group AVG returns integer zero and passes.
 
 ## Cannot Tell Tests
 
@@ -171,30 +176,16 @@ all selected entries; `executedPassRate` uses only passed and failed outcomes an
 must not be presented as overall standards conformance. Neither metric proves
 complete language implementation.
 
-Historical reports and the committed baseline are not silently rewritten by this
-audit. A baseline check may flag `te038` because it moves from passed to
-inapplicable under the corrected specification profile. That change needs explicit
-baseline review; the regression guard is not weakened to ignore it.
+Historical reports and the committed baseline are not silently rewritten. A baseline check may flag `te038` because it moves from passed to inapplicable under the corrected specification profile. That change needs explicit baseline review; the regression guard is not weakened to ignore it.
 
-## Audit Validation (2026-09-30)
+## Verification Commands and Baseline Control
 
-The final full run selected the same 2,915 identifiers as the pre-audit local run:
-2,894 passed, 7 failed, 13 inapplicable, 0 untested, 1 cannot-tell. SPARQL 1.0 has
-482/482 passing comparisons; SPARQL 1.1 has 494 passed and the one `cast-decimal`
-indeterminate result. The core query-module run passed all 1,739 tests.
-
-The full harness command executed 3,023 JUnit tests (including harness unit tests),
-with 8 failures and 13 skips. Eight is expected here: the seven failing conformance
-cases plus `cast-decimal`, which remains a failing JUnit execution. The generated
-EARL report passed its 15 validation queries. The regression-baseline command
-flagged exactly one transition: `te038`, passed to inapplicable because of its
-manifest's specification-1.0 restriction. The baseline was left unchanged.
+The test suite and EARL report can be verified locally without altering committed dashboard snapshots:
 
 ```sh
-./gradlew test -x syncW3cReports --offline --console=plain
-./gradlew validateEarlReport enforceW3cRegressions --offline --console=plain
+./gradlew test -x syncW3cReports --console=plain
+./gradlew validateEarlReport enforceW3cRegressions --console=plain
 ```
 
-`-x syncW3cReports` keeps this audit's local reports under `build/reports/` without
-replacing the committed dashboard snapshots. A normal publication run must use
-the audited sources and regenerate those snapshots rather than hand-edit counts.
+- `-x syncW3cReports` keeps reports in `build/reports/` without replacing the committed dashboard snapshots. A publication run must use reviewed sources and regenerate snapshots rather than manually editing counts.
+- `enforceW3cRegressions` checks results against the committed baseline to ensure no unexpected regressions occur.
