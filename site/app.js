@@ -372,12 +372,7 @@
     const failedCount = Number(summary.failed || 0);
     valFailed.textContent = failedCount.toLocaleString();
     if (valFailedNote) {
-      if (failedCount === 0) {
-        valFailedNote.textContent = "0 regressions";
-      } else {
-        const suffix = failedCount > 1 ? "s" : "";
-        valFailedNote.textContent = `${failedCount} regression${suffix}`;
-      }
+      valFailedNote.innerHTML = `<a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md#known-failures-and-discrepancies" target="_blank" rel="noopener">See rationale</a>`;
     }
     valCantTell.textContent = Number(summary.cantTell || 0).toLocaleString();
 
@@ -727,33 +722,74 @@
     return links.join(" &nbsp;&bull;&nbsp; ") || "-";
   }
 
+  const KNOWN_FAILURE_RATIONALES = [
+    {
+      match: (t) => (t.name && t.name.includes("0295")) || (t.testUri && t.testUri.includes("0295")),
+      badge: "Official W3C ASK Passes • Extended Graph Differs",
+      desc: "Corese passes the official W3C ASK evaluation criterion. The extended full-graph comparison differs because Corese merges collections under RDFa Core 1.1 Step 8, whereas the upstream benchmark sidecar unioned isolated test fragments."
+    },
+    {
+      match: (t) => (t.name && t.name.includes("MIN with GROUP BY")) || (t.testUri && t.testUri.includes("agg-min-02")),
+      badge: "Normative SPARQL 1.1 Term Identity (§18.5.1.5)",
+      desc: "Corese preserves the source term '2E-1' as required by SPARQL 1.1 §18.5.1.5 (MIN selects an existing term from the group), whereas the upstream fixture expected canonicalized '2.0E-1'^^xsd:double."
+    },
+    {
+      match: (t) => (t.name && t.name.includes("bad @base")) || (t.testUri && t.testUri.includes("tli12")),
+      badge: "Strict RFC 3987 IRI Validation",
+      desc: "Corese rejects illegal angle brackets '<>' in the base IRI under strict RFC 3987 / RFC 3986 rules with INVALID_BASE_IRI."
+    },
+    {
+      match: (t) => (t.name && t.name.includes("@list containing empty @list")) || (t.testUri && t.testUri.includes("tli01")),
+      badge: "Third-Party Dependency Issue (Titanium JSON-LD)",
+      desc: "Unhandled nested empty list (@list containing empty @list) in upstream library com.apicatalog:titanium-json-ld (NullPointerException)."
+    },
+    {
+      match: (t) => (t.name && t.name.includes("use native types")) || (t.testUri && (t.testUri.includes("t0027") || t.testUri.includes("t0028"))),
+      badge: "Third-Party Dependency Issue (Titanium JSON-LD)",
+      desc: "NumberFormatException in Titanium JSON-LD when converting non-finite or non-native numeric values under useNativeTypes."
+    }
+  ];
+
   function renderModalSkipSection(test) {
-    if (!test.skipReason) {
-      modalSkipReasonGroup.style.display = "none";
+    if (test.skipReason) {
+      modalSkipReasonGroup.style.display = "flex";
+      let categoryBadge = "Documented Exclusion";
+      let rationaleText = test.skipReason;
+
+      if (test.skipReason.startsWith("OPTIONAL_UNSUPPORTED:")) {
+        categoryBadge = "Optional Feature Outside the RDF 1.1 Profile";
+        rationaleText = test.skipReason.replace("OPTIONAL_UNSUPPORTED:", "").trim();
+      } else if (test.skipReason.startsWith("SPEC_VERSION_MISMATCH:")) {
+        categoryBadge = "Outside the JSON-LD 1.1 Specification Profile";
+        rationaleText = test.skipReason.replace("SPEC_VERSION_MISMATCH:", "").trim();
+      } else if (test.skipReason.startsWith("UPSTREAM_TITANIUM_1_6:")) {
+        categoryBadge = "Historical Deferral (Titanium JSON-LD 1.6.0)";
+        rationaleText = test.skipReason.replace("UPSTREAM_TITANIUM_1_6:", "").trim();
+      } else if (test.skipReason.startsWith("UPSTREAM_FIXTURE:")) {
+        categoryBadge = "Historical Deferral (RDFa Benchmark)";
+        rationaleText = test.skipReason.replace("UPSTREAM_FIXTURE:", "").trim();
+      }
+
+      modalSkipReason.innerHTML = `
+        <div class="callout-badge">${escapeHtml(categoryBadge)}</div>
+        <div class="callout-desc">${escapeHtml(rationaleText)}</div>
+      `;
       return;
     }
-    modalSkipReasonGroup.style.display = "flex";
-    let categoryBadge = "Documented Exclusion";
-    let rationaleText = test.skipReason;
 
-    if (test.skipReason.startsWith("OPTIONAL_UNSUPPORTED:")) {
-      categoryBadge = "Optional Feature Outside the RDF 1.1 Profile";
-      rationaleText = test.skipReason.replace("OPTIONAL_UNSUPPORTED:", "").trim();
-    } else if (test.skipReason.startsWith("SPEC_VERSION_MISMATCH:")) {
-      categoryBadge = "Outside the JSON-LD 1.1 Specification Profile";
-      rationaleText = test.skipReason.replace("SPEC_VERSION_MISMATCH:", "").trim();
-    } else if (test.skipReason.startsWith("UPSTREAM_TITANIUM_1_6:")) {
-      categoryBadge = "Historical Deferral (Titanium JSON-LD 1.6.0)";
-      rationaleText = test.skipReason.replace("UPSTREAM_TITANIUM_1_6:", "").trim();
-    } else if (test.skipReason.startsWith("UPSTREAM_FIXTURE:")) {
-      categoryBadge = "Historical Deferral (RDFa Benchmark)";
-      rationaleText = test.skipReason.replace("UPSTREAM_FIXTURE:", "").trim();
+    if (test.outcome === "FAILED" || test.outcome === "CANT_TELL") {
+      const known = KNOWN_FAILURE_RATIONALES.find(r => r.match(test));
+      if (known) {
+        modalSkipReasonGroup.style.display = "flex";
+        modalSkipReason.innerHTML = `
+          <div class="callout-badge">${escapeHtml(known.badge)}</div>
+          <div class="callout-desc">${escapeHtml(known.desc)}</div>
+        `;
+        return;
+      }
     }
 
-    modalSkipReason.innerHTML = `
-      <div class="callout-badge">${escapeHtml(categoryBadge)}</div>
-      <div class="callout-desc">${escapeHtml(rationaleText)}</div>
-    `;
+    modalSkipReasonGroup.style.display = "none";
   }
 
   function renderModalTestUri(testUri) {

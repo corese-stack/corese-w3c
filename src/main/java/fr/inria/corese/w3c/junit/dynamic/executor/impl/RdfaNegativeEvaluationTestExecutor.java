@@ -16,6 +16,9 @@ public final class RdfaNegativeEvaluationTestExecutor implements TestExecutor {
     @Override
     public void execute(W3cTestCase testCase) throws Exception {
         URI action = testCase.getActionFileUri();
+        if (action == null) {
+            throw new IllegalArgumentException("RDFa negative test requires an action URI: " + testCase.getName());
+        }
         URI queryUri = queryUri(testCase.getResultFileUri());
         String actionPath = RDFTestUtils.loadFile(action);
         String queryPath = RDFTestUtils.loadFile(queryUri);
@@ -31,10 +34,16 @@ public final class RdfaNegativeEvaluationTestExecutor implements TestExecutor {
     // The manifest's Turtle result is not consistently an expected full graph:
     // 0180 describes a forbidden triple, while 0258 describes permitted triples.
     static URI queryUri(URI result) {
-        if (result == null || !result.toString().endsWith(".ttl")) {
-            throw new IllegalArgumentException("RDFa negative test requires a Turtle result with an official ASK sidecar: " + result);
+        if (result == null) {
+            throw new IllegalArgumentException("RDFa negative test requires a non-null result URI");
         }
         String uri = result.toString();
+        if (uri.endsWith(".sparql")) {
+            return result;
+        }
+        if (!uri.endsWith(".ttl")) {
+            throw new IllegalArgumentException("RDFa negative test requires a Turtle or SPARQL result with an official ASK sidecar: " + result);
+        }
         return URI.create(uri.substring(0, uri.length() - 4) + ".sparql");
     }
 

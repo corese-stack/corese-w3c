@@ -52,7 +52,7 @@ public class RdfPositiveEvaluationTestExecutor implements TestExecutor {
             throws IOException, NoSuchAlgorithmException {
         String filePath = RDFTestUtils.loadFile(fileUri);
         String baseUri = testCase.getProperty(W3cTestCase.Property.BASE_URI, String.class);
-        RDFFormat format = ((testCase.getType() == TestType.RDFA_POSITIVE_EVAL || testCase.getType() == TestType.RDFA_NEGATIVE_EVAL) && fileUri.equals(testCase.getActionFileUri()))
+        RDFFormat format = (testCase.getType() == TestType.RDFA_POSITIVE_EVAL && fileUri.equals(testCase.getActionFileUri()))
                 ? RDFFormat.RDFA
                 : RDFTestUtils.guessFileFormat(fileUri);
         Model model = RDFTestUtils.createModel();

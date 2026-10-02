@@ -2835,8 +2835,8 @@
     }, {
       "name" : "Drop blank node predicates by default",
       "displayName" : "Drop blank node predicates by default",
-      "status" : "PASSED",
-      "outcome" : "PASSED",
+      "status" : "SKIPPED",
+      "outcome" : "INAPPLICABLE",
       "durationMs" : 0,
       "testUri" : "https://w3c.github.io/json-ld-api/tests/toRdf-manifest#te038",
       "manifestUri" : "https://w3c.github.io/json-ld-api/tests/toRdf-manifest.jsonld",
@@ -2844,6 +2844,8 @@
       "description" : "Triples with blank node predicates are dropped by default (from expand-0038).",
       "actionUri" : "https://w3c.github.io/json-ld-api/tests/toRdf/e038-in.jsonld",
       "resultUri" : "https://w3c.github.io/json-ld-api/tests/toRdf/e038-out.nq",
+      "skipReason" : "SPEC_VERSION_MISMATCH: manifest specVersion=json-ld-1.0 targets the superseded specification; this suite tests JSON-LD 1.1 (explicit processingMode is still honored)",
+      "info" : "SPEC_VERSION_MISMATCH: manifest specVersion=json-ld-1.0 targets the superseded specification; this suite tests JSON-LD 1.1 (explicit processingMode is still honored)",
       "startedAt" : "2026-09-04T11:22:04.909207445Z",
       "endedAt" : "2026-09-04T11:22:04.910032261Z"
     }, {

@@ -104,7 +104,7 @@
               <span class="metric-label">Failures</span>
               <span class="metric-num text-danger" id="val-failed">0</span>
             </button>
-            <span class="metric-note" id="val-failed-note">0 regressions</span>
+            <span class="metric-note" id="val-failed-note"><a class="exclusions-link" href="https://github.com/corese-stack/corese-w3c/blob/develop/docs/W3C_TEST_EXCLUSIONS.md#known-failures-and-discrepancies" target="_blank" rel="noopener">See rationale</a></span>
           </div>
           <div class="metric-block" data-status="UNTESTED">
             <button type="button" class="metric-filter-btn" data-status="UNTESTED" title="Filter by Untested Tests" aria-pressed="false">
@@ -256,7 +256,7 @@
           <div class="info-code font-mono" id="modal-test-uri" style="word-break: break-all;">-</div>
         </div>
         <div class="info-row" id="modal-skip-reason-group" style="display: none;">
-          <span class="info-label">Exclusion Rationale</span>
+          <span class="info-label">Diagnostic &amp; Rationale</span>
           <div class="info-callout warning" id="modal-skip-reason">-</div>
         </div>
         <div class="info-row" id="modal-error-group" style="display: none;">

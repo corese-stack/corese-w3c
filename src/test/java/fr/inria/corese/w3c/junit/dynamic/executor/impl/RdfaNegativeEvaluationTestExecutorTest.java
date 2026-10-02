@@ -46,6 +46,11 @@ class RdfaNegativeEvaluationTestExecutorTest {
         assertEquals(URI.create("https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0180.sparql"),
                 RdfaNegativeEvaluationTestExecutor.queryUri(
                         URI.create("https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0180.ttl")));
+        assertEquals(URI.create("https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0180.sparql"),
+                RdfaNegativeEvaluationTestExecutor.queryUri(
+                        URI.create("https://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml1/0180.sparql")));
+        assertThrows(IllegalArgumentException.class,
+                () -> RdfaNegativeEvaluationTestExecutor.queryUri(null));
         assertThrows(IllegalArgumentException.class,
                 () -> RdfaNegativeEvaluationTestExecutor.queryUri(URI.create("urn:unsupported")));
     }

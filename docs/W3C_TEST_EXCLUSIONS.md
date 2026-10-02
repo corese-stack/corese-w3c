@@ -88,6 +88,9 @@ this option to true.
 
 The following applicable tests are executed and currently result in known failures or discrepancies against the test fixtures:
 
+Failures in the JSON-LD dependency remain limitations of the behavior delivered
+by Corese; their origin does not remove them from the results.
+
 | Suite | ID | Observed result / interpretation |
 | --- | --- | --- |
 | JSON-LD toRdf | `tli12` | `FAILED`: the processor rejects `@base: "http://invalid/<>/"` with `INVALID_BASE_IRI`, while the selected fixture expects successful list conversion. The fixture/specification question remains open; no unverified upstream-bug exemption is applied. |
@@ -99,79 +102,20 @@ The following applicable tests are executed and currently result in known failur
 | RDFa SVG | `0295` | `FAILED`: produced graph differs from the expected benchmark graph under full-graph comparison. |
 | SPARQL 1.1 | `agg-min-02` | `FAILED`: input data contains `:mixed2 :double 2E-1`, while `agg-min-02.srx` expects `"2.0E-1"^^xsd:double`. |
 
-The RDFa manifests select `0295` and mark it `test:required`. Each official ASK sidecar only verifies that at least one triple is generated; all three produced graphs satisfy that official criterion. The `FAILED` entries above reflect the harness's stricter full-graph comparison.
+### RDFa Benchmark Tests (`0295`)
 
-The separate parent-object list bug is now covered by six unit regressions in
-`RDFaParserTest`: descendants share an ordered collection on the relation object,
-subject and object lists remain distinct, and incomplete relations and empty
-lists retain their owners. The corrected incoming/local/child list contexts pass
-the complete corese-core regression run (3,200 tests, no failures). Targeted
-`0295` probes nevertheless produce exactly the same canonical graphs as before
-this list correction: XHTML has 356 quads against 364 expected, and XML/SVG have
-313 against 318. All three official ASK queries still pass and all three
-full-graph comparisons still fail. The reproduced list bug therefore cannot be
-claimed to explain or resolve those benchmark differences; XML/SVG also retain
-grounded discrepancies involving `xml:base` and `time`/`datetime`. These are
-targeted observations, not a new complete W3C harness validation or published
-conformance snapshot.
+The RDFa manifest selects `0295` and marks it `test:required`. Its official `ASK` query verifies that at least one triple is generated; Corese passes this criterion on all three host formats (XHTML, XML, SVG). The `FAILED` outcomes reflect the harness's additional full-graph comparison against the Turtle sidecar, which is currently mandatory in the executor.
 
-### Structural diagnosis of the RDFa benchmarks
+Structural diagnosis isolates the following differences:
 
-The remaining comparison differences can now be bounded more precisely. Walks
-over `rdf:first`/`rdf:rest` compare each anchored collection's ordered values,
-without depending on canonical blank-node labels. All three actual graphs contain
-five nonempty collections; their Turtle sidecars contain twelve. Four collections
-match. The other actual collection has twelve items, where the reference contains
-eight separate nonempty collections with the same twelve items in total, plus an
-empty collection. Their subject is the benchmark document and their predicate is
-`rdf:value`.
+- **Collections ([RDFa Core 1.1 step 8](https://www.w3.org/TR/rdfa-core/#s_sequence))**: When the new subject equals the inherited parent object, the list mapping is not reset. The sidecar's separate lists are consistent with a union of isolated fragment results, while the combined input shares one list context. A reduced probe confirms that parsing combined fragments differs from unioning their isolated results; the upstream generator's history has not been verified. Resetting lists on every explicit `about` solely to match the sidecar is not justified.
+- **Host rules**: XML/SVG discrepancies concern `xml:base` and behaviors such as `time`/`datetime` conversion specified by [HTML+RDFa](https://www.w3.org/TR/html-rdfa/#additional-rdfa-processing-rules). Generic [XML+RDFa permits `xml:base`](https://www.w3.org/TR/rdfa-core/#docconf); applying HTML-specific rules to all hosts solely to match the sidecar is not justified.
 
-| Host | Actual / reference quads | Actual / reference non-collection quads | Remaining comparison |
-| --- | --- | --- | --- |
-| XHTML | 356 / 364 | 319 / 319 | Isomorphic after removing collection cells and anchors, including the empty-list anchor. |
-| XML | 313 / 318 | 276 / 273 | Isomorphic after also removing the grounded differences described below. |
-| SVG | 313 / 318 | 276 / 273 | Same bounded differences as XML. |
-
-The list discrepancy is consistent with concatenation changing the evaluation
-context. A reduced probe puts these two fragments inside a single document:
-
-```xml
-<div about=""><span property="ex:items" inlist="">A</span></div>
-<div about=""><span property="ex:items" inlist="">B</span></div>
-```
-
-Corese produces one list `("A" "B")` (five triples). Parsing each fragment in its
-own document and unioning their graphs instead gives two one-item lists (six
-triples). In the combined document, both explicit subjects equal the inherited
-parent object. Under [RDFa Core step 8](https://www.w3.org/TR/rdfa-core/#s_sequence),
-that does not reset the list mapping. Thus a union of isolated expected graphs
-does not by itself define the expected graph of the concatenated document.
-This supports a reference-graph construction problem; the upstream generator's
-history has not been verified. It is not a reason to change the parser to reset
-lists on every explicit `about` solely to reproduce the sidecar.
-
-The XML/SVG non-collection mismatches contain ten expected-only and thirteen
-actual-only grounded triples. One pair concerns `xml:base`: the reference attaches
-`"Test 0109"` to the document, while Corese attaches it to
-`http://example.org/invalid/`. The benchmark retains a comment about invalid XHTML,
-but [XML+RDFa permits `xml:base`](https://www.w3.org/TR/rdfa-core/#docconf).
-The other nine expected-only and twelve actual-only triples concern `time`,
-`datetime`, datatype selection and language. The sidecar uses behaviors specified
-by [HTML+RDFa](https://www.w3.org/TR/html-rdfa/#additional-rdfa-processing-rules),
-while these inputs are generic XML or SVG hosts. Applying those HTML rules to all
-hosts just to match the sidecar is not justified.
-
-These controlled removals are diagnostic only: the executor still compares the
-complete unmodified datasets. All three outcomes remain FAILED for that extended
-comparison, and their official nonempty-graph ASK criterion remains satisfied.
-An upstream correction or an explicit separation of official ASK outcomes from
-extended graph diagnostics is needed before changing the reported classifications.
+The executor retains the full-graph comparison without synthetic exemptions, keeping these 3 tests visible as `FAILED` while their official ASK criterion remains satisfied.
 
 ### MIN and source-term preservation (`agg-min-02`)
 
 `agg-numeric.ttl` contains `:mixed2 :double 2E-1`, while `agg-min-02.srx` expects `"2.0E-1"^^xsd:double`. [SPARQL 1.1 §18.5.1.5](https://www.w3.org/TR/sparql11-query/#defn_aggMin) specifies that MIN selects an existing RDF term from the group, rather than constructing a fresh canonicalized literal. Corese preserves the source term `2E-1`. The discrepancy is visible because `ComputedNumericResults` strictly preserves source terms for extrema aggregates; it remains marked `FAILED` against the upstream fixture.
-
-The version-restricted JSON-LD 1.0 cases (`te014`, `te026`, `te038`, `te071`, `te115`, `te116`, `ter02`, `ter03`, `ter24`, `ter32`, `t0008`) are classified as `INAPPLICABLE` for the specification-profile reason above, not because the processor failed them.
 
 ### AVG on an empty group (`agg-avg-03`)
 
@@ -228,7 +172,15 @@ all selected entries; `executedPassRate` uses only passed and failed outcomes an
 must not be presented as overall standards conformance. Neither metric proves
 complete language implementation.
 
+The last complete run's 2,893 passes among 2,915 selected cases give 99.25%.
+The 99.72% `executedPassRate` excludes the 13 inapplicable and one indeterminate
+case; it is not a rate over every executed case.
+
 Historical reports and the committed baseline are not silently rewritten. A baseline check may flag `te038` because it moves from passed to inapplicable under the corrected specification profile. That change needs explicit baseline review; the regression guard is not weakened to ignore it.
+
+Refreshing the baseline also requires review of the removed, unselected
+`dawg-optional-filter-005-simplified` definition. The update guard currently rejects
+this missing historical entry; a complete run alone does not authorize its removal.
 
 ## Verification Commands and Baseline Control
 
