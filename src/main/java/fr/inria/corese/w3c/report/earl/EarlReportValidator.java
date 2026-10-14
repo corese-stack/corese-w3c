@@ -12,11 +12,9 @@ import fr.inria.corese.core.next.data.api.term.IRI;
 import fr.inria.corese.core.next.data.api.term.Literal;
 import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.io.CoreseIO;
-import fr.inria.corese.core.Graph;
-import fr.inria.corese.core.api.Loader;
-import fr.inria.corese.core.kgram.core.Mappings;
-import fr.inria.corese.core.load.Load;
-import fr.inria.corese.core.query.QueryProcess;
+import fr.inria.corese.core.next.query.Repositories;
+import fr.inria.corese.core.next.query.api.repository.Repository;
+import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
 import fr.inria.corese.w3c.report.model.TestReportData;
 import fr.inria.corese.w3c.report.model.TestReportEntry;
 import fr.inria.corese.w3c.report.model.ExecutionOutcome;
@@ -288,62 +286,58 @@ public final class EarlReportValidator {
     }
 
     /**
-     * Executes the 15 offline SPARQL integrity checks using Corese.
-     *
-     * <p>Note: This method uses Corese's mature {@link QueryProcess} engine on {@link Graph}.
-     * Until the in-memory statement store in {@code corese-next} is indexed (CORE-02 in roadmap),
-     * evaluating 15 join queries over a 37,000-triple EARL report requires indexed graph storage.</p>
+     * Executes the 15 offline SPARQL integrity checks using Corese repository.
      */
     private int validateWithCoreseSparql(Path turtlePath) throws IllegalStateException {
-        Graph graph = loadTurtleGraph(turtlePath);
-        QueryProcess queryProcess = QueryProcess.create(graph);
-        executeZeroViolationChecks(queryProcess);
-        validateDistinctSubject(queryProcess);
-        return ZERO_VIOLATION_QUERIES.size() + 1;
-    }
-
-    private static Graph loadTurtleGraph(Path turtlePath) {
-        Graph graph = Graph.create();
-        Load loader = Load.create(graph);
-        loader.setDefaultGraph(true);
-        try {
-            loader.parse(turtlePath.toAbsolutePath().toString(), Loader.format.TURTLE_FORMAT);
-            return graph;
+        try (Repository repo = Repositories.create(); RepositoryConnection conn = repo.getConnection()) {
+            Model model = CoreseIO.read(turtlePath, RDFFormat.TURTLE);
+            conn.add(model);
+            executeZeroViolationChecks(conn);
+            validateDistinctSubject(conn);
+            return ZERO_VIOLATION_QUERIES.size() + 1;
         } catch (Exception e) {
-            throw new IllegalStateException("Failed to load Turtle into Corese graph for SPARQL validation", e);
+            if (e instanceof IllegalStateException ise) {
+                throw ise;
+            }
+            throw new IllegalStateException("Failed to load Turtle into Corese repository for SPARQL validation", e);
         }
     }
 
-    private static void executeZeroViolationChecks(QueryProcess queryProcess) {
+    private static void executeZeroViolationChecks(RepositoryConnection conn) {
         for (QueryCheck check : ZERO_VIOLATION_QUERIES) {
-            Mappings violations;
-            try {
-                violations = queryProcess.query(check.query());
+            int violationCount = 0;
+            try (var results = conn.prepareTupleQuery(check.query()).evaluate()) {
+                while (results.hasNext()) {
+                    results.next();
+                    violationCount++;
+                }
             } catch (Exception e) {
                 throw new IllegalStateException("Corese SPARQL query execution failed for " + check.name(), e);
             }
-            if (violations != null && !violations.isEmpty()) {
+            if (violationCount > 0) {
                 throw new IllegalStateException("Corese SPARQL validation failed for " + check.name()
-                        + ": " + violations.size() + " violation(s)");
+                        + ": " + violationCount + " violation(s)");
             }
         }
     }
 
-    private static void validateDistinctSubject(QueryProcess queryProcess) {
-        Mappings subjects;
-        try {
-            subjects = queryProcess.query(PREFIXES + """
-                    SELECT ?subject
-                    WHERE { ?assertion a earl:Assertion ; earl:subject ?subject . }
-                    GROUP BY ?subject
-                    """);
+    private static void validateDistinctSubject(RepositoryConnection conn) {
+        int subjectsCount = 0;
+        try (var results = conn.prepareTupleQuery(PREFIXES + """
+                SELECT ?subject
+                WHERE { ?assertion a earl:Assertion ; earl:subject ?subject . }
+                GROUP BY ?subject
+                """).evaluate()) {
+            while (results.hasNext()) {
+                results.next();
+                subjectsCount++;
+            }
         } catch (Exception e) {
             throw new IllegalStateException("Corese SPARQL query execution failed for distinct subjects check", e);
         }
-        if (subjects == null || subjects.size() != 1) {
-            int size = subjects == null ? 0 : subjects.size();
+        if (subjectsCount != 1) {
             throw new IllegalStateException("A report must contain exactly one distinct earl:subject; found "
-                    + size);
+                    + subjectsCount);
         }
     }
 
