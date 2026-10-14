@@ -100,6 +100,7 @@ tasks.test {
     val configuredRunUrl = providers.environmentVariable("GITHUB_RUN_URL").orNull
     val ci = providers.environmentVariable("GITHUB_ACTIONS").orNull == "true"
 
+    systemProperty("w3c.storage.type", providers.gradleProperty("w3cStorage").getOrElse("memory"))
     systemProperty("w3c.report.harnessVersion", project.version.toString())
     systemProperty("w3c.report.harnessCommit", configuredHarnessCommit)
     systemProperty("w3c.report.coreVersion", configuredCoreVersion)

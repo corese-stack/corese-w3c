@@ -130,3 +130,22 @@ standard named on the dashboard:
   cover projected variable keys and a documented subset of term comparisons;
   hidden keys, arbitrary expressions and other datatypes remain coverage limits.
   See the audit notes in the exclusions document.
+
+
+### Storage under test
+
+```sh
+./gradlew test -Pw3cStorage=memory
+./gradlew enforceW3cRegressions
+```
+
+The W3C harness executes against the canonical `MemoryStorageManager` backend.
+Target executor models, reference dataset models, query/update repositories,
+manifest loading and EARL report construction all run against this engine.
+
+`build/reports/w3c-report.json` includes `metadata.storage` with the selected type,
+actual manager classes and number of instances created. A witness test verifies
+that the selected manager executes an insertion and a lookup. Only `memory` is supported; other values of `w3cStorage` are rejected.
+The build report is overwritten on each run. This setting does not update `conformance/baseline-report.json` or change
+outcome categories. Existing known failures can still make the test task fail;
+run the regression detector separately to compare individual official cases.
