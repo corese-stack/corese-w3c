@@ -10,11 +10,11 @@ import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
 import fr.inria.corese.core.next.storage.StorageModels;
-import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.NamedGraphData;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
+import fr.inria.corese.w3c.junit.dynamic.utils.W3cStorages;
 import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 
@@ -55,7 +55,7 @@ public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
         String updateText = Files.readString(Path.of(requestPath), StandardCharsets.UTF_8);
 
         // 2. Build initial dataset
-        StorageManager storage = Storages.create();
+        StorageManager storage = W3cStorages.create();
         Model model = StorageModels.create(storage);
 
         loadInitialDataset(testCase, model);
@@ -64,9 +64,8 @@ public class SparqlUpdateEvaluationTestExecutor implements TestExecutor {
         try (Repository repo = Repositories.create(storage);
              RepositoryConnection conn = repo.getConnection()) {
             conn.prepareUpdate(updateText).execute();
+            verifyExpectedDataset(testCase, model);
         }
-
-        verifyExpectedDataset(testCase, model);
     }
 
     private static void loadInitialDataset(W3cTestCase testCase, Model model) throws IOException {

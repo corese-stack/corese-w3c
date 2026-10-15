@@ -5,9 +5,9 @@ import fr.inria.corese.core.next.query.api.exception.QueryException;
 import fr.inria.corese.core.next.query.api.exception.QuerySyntaxException;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
-import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
+import fr.inria.corese.w3c.junit.dynamic.utils.W3cStorages;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 
 import java.net.URI;
@@ -33,7 +33,7 @@ public class SparqlUpdatePositiveSyntaxTestExecutor implements TestExecutor {
         String updatePath = RDFTestUtils.loadFile(updateUri);
         String updateText = Files.readString(Path.of(updatePath), StandardCharsets.UTF_8);
 
-        try (Repository repo = Repositories.create(Storages.create());
+        try (Repository repo = Repositories.create(W3cStorages.create());
              RepositoryConnection conn = repo.getConnection()) {
             conn.prepareUpdate(updateText);
         } catch (QueryException e) {

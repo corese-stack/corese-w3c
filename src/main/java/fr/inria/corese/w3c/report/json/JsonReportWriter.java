@@ -34,6 +34,7 @@ public final class JsonReportWriter {
         ReportRunMetadata metadata = data.metadata();
         Map<String, Object> root = new LinkedHashMap<>();
         Map<String, Object> metadataJson = new LinkedHashMap<>();
+        metadataJson.put("storage", fr.inria.corese.w3c.junit.dynamic.utils.W3cStorages.reportMetadata());
         metadataJson.put("generatedAt", metadata.endedAt().toString());
         metadataJson.put("project", "corese-w3c");
         metadataJson.put(KEY_VERSION, metadata.harnessVersion());

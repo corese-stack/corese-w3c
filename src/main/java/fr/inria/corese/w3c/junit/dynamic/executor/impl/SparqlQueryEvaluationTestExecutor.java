@@ -17,11 +17,11 @@ import fr.inria.corese.core.next.query.api.result.BindingSet;
 import fr.inria.corese.core.next.query.api.result.GraphQueryResult;
 import fr.inria.corese.core.next.query.api.result.TupleQueryResult;
 import fr.inria.corese.core.next.storage.StorageModels;
-import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.executor.InvalidTestExpectationException;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
+import fr.inria.corese.w3c.junit.dynamic.utils.W3cStorages;
 import fr.inria.corese.w3c.junit.dynamic.utils.CsvTsvResultParser;
 import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
@@ -88,7 +88,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
         String queryText = Files.readString(Path.of(queryPath), StandardCharsets.UTF_8);
 
         // 4. Build in-memory dataset (default graph + named graphs)
-        StorageManager storage = Storages.create();
+        StorageManager storage = W3cStorages.create();
         Model model = StorageModels.create(storage);
         if (dataUriStr != null) {
             loadRdfFile(URI.create(dataUriStr), model);
@@ -327,7 +327,7 @@ public class SparqlQueryEvaluationTestExecutor implements TestExecutor {
     private void executeGraphTest(RepositoryConnection conn, String queryText, String baseIRI,
                                   URI resultUri, W3cTestCase testCase) throws java.io.IOException {
         // Collect actual triples from the graph query result
-        Model actualModel = StorageModels.create(Storages.create());
+        Model actualModel = StorageModels.create(W3cStorages.create());
         try (GraphQueryResult result = conn.prepareGraphQuery(queryText, baseIRI).evaluate()) {
             while (result.hasNext()) {
                 Statement stmt = result.next();

@@ -8,11 +8,11 @@ import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.core.next.query.api.repository.Repository;
 import fr.inria.corese.core.next.query.api.repository.RepositoryConnection;
-import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.core.next.storage.StorageModels;
 import fr.inria.corese.core.next.storage.api.StorageManager;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
+import fr.inria.corese.w3c.junit.dynamic.utils.W3cStorages;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class AskBasedTestExecutor implements TestExecutor {
         String resultFilePath = RDFTestUtils.loadFile(resultFileUri);
 
         // Create storage + model for this test (pure next API, no legacy Graph)
-        StorageManager storage = Storages.create();
+        StorageManager storage = W3cStorages.create();
         Model actionModel = StorageModels.create(storage);
 
         // Get format and create parser

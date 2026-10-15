@@ -11,7 +11,6 @@ import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.data.api.term.Value;
 import fr.inria.corese.core.next.data.Values;
 import fr.inria.corese.core.next.io.CoreseIO;
-import fr.inria.corese.core.next.storage.Storages;
 import fr.inria.corese.core.next.storage.StorageModels;
 import fr.inria.corese.w3c.junit.dynamic.executor.InfrastructureException;
 
@@ -32,7 +31,7 @@ public class RDFTestUtils {
      * @return A new Model ready for parsing
      */
     public static Model createModel() {
-        return StorageModels.create(Storages.create());
+        return StorageModels.create(W3cStorages.create());
     }
 
     /**
@@ -72,7 +71,7 @@ public class RDFTestUtils {
      *
      * @param fileUri The file URI to load
      * @return The local file path
-     * @throws IOException if the file cannot be read
+     * @throws InfrastructureException if the file cannot be read
      */
     public static String loadFile(URI fileUri) {
         if ("file".equalsIgnoreCase(fileUri.getScheme())) {

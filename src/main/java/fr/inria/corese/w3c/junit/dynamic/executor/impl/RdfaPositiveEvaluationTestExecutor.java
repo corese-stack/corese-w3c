@@ -5,6 +5,7 @@ import fr.inria.corese.core.next.data.api.model.Model;
 import fr.inria.corese.core.next.query.Repositories;
 import fr.inria.corese.w3c.junit.dynamic.executor.TestExecutor;
 import fr.inria.corese.w3c.junit.dynamic.model.W3cTestCase;
+import fr.inria.corese.w3c.junit.dynamic.utils.W3cStorages;
 import fr.inria.corese.w3c.junit.dynamic.utils.ModelIsomorphism;
 import fr.inria.corese.w3c.junit.dynamic.utils.RDFTestUtils;
 import fr.inria.corese.w3c.report.ReportTextSanitizer;
@@ -78,7 +79,7 @@ public final class RdfaPositiveEvaluationTestExecutor implements TestExecutor {
     }
 
     static void verifyPresence(Model model, String query, String base) {
-        try (var repository = Repositories.create(); var connection = repository.getConnection()) {
+        try (var repository = Repositories.create(W3cStorages.create()); var connection = repository.getConnection()) {
             connection.add(model);
             requireTrue(connection.prepareBooleanQuery(query, base).evaluate(), base);
         }
