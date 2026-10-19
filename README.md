@@ -26,7 +26,7 @@ Key dashboard features:
 ## Supported W3C Specifications
 
 | Specification                         | W3C Test Suite Manifest                                                             | Test Types Covered                                                            |
-|:--------------------------------------|:------------------------------------------------------------------------------------|:------------------------------------------------------------------------------|
+| :------------------------------------ | :---------------------------------------------------------------------------------- | :---------------------------------------------------------------------------- |
 | **Turtle (RDF 1.1)**                  | [Turtle Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-turtle/)          | Positive/Negative Syntax, Positive Evaluation                                 |
 | **TriG (RDF 1.1)**                    | [TriG Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-trig/)              | Positive/Negative Syntax, Positive Evaluation                                 |
 | **RDF/XML (RDF 1.1)**                 | [RDF/XML Test Suite](https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/)            | Positive/Negative Syntax, Positive Evaluation                                 |
@@ -130,7 +130,6 @@ standard named on the dashboard:
   cover projected variable keys and a documented subset of term comparisons;
   hidden keys, arbitrary expressions and other datatypes remain coverage limits.
   See the audit notes in the exclusions document.
-
 
 ### Storage under test
 
